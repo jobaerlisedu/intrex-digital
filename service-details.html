@@ -71,15 +71,30 @@
     <section id="service-details" class="service-details section">
       <div class="container">
         <div class="row gy-5">
+
+          <!-- Left Sidebar -->
           <div class="col-lg-4" data-aos="fade-up" data-aos-delay="100">
             <div class="service-box">
-              <h4>Serices List</h4>
-              <div class="services-list">
-                <a href="#" class="active"><i class="bi bi-arrow-right-circle"></i><span>Web Design</span></a>
-                <a href="#"><i class="bi bi-arrow-right-circle"></i><span>Web Design</span></a>
-                <a href="#"><i class="bi bi-arrow-right-circle"></i><span>Product Management</span></a>
-                <a href="#"><i class="bi bi-arrow-right-circle"></i><span>Graphic Design</span></a>
-                <a href="#"><i class="bi bi-arrow-right-circle"></i><span>Marketing</span></a>
+              <h4>Services List</h4>
+              <div class="services-list" id="services-list">
+                <a href="#" class="active" data-service="network-solutions">
+                  <i class="bi bi-arrow-right-circle"></i><span>Network Solutions</span>
+                </a>
+                <a href="#" data-service="cloud-solutions">
+                  <i class="bi bi-arrow-right-circle"></i><span>Cloud Solutions</span>
+                </a>
+                <a href="#" data-service="security-solutions">
+                  <i class="bi bi-arrow-right-circle"></i><span>Security Solutions</span>
+                </a>
+                <a href="#" data-service="it-managed-services">
+                  <i class="bi bi-arrow-right-circle"></i><span>IT Managed Services</span>
+                </a>
+                <a href="#" data-service="business-suite">
+                  <i class="bi bi-arrow-right-circle"></i><span>Business Suite</span>
+                </a>
+                <a href="#" data-service="professional-training">
+                  <i class="bi bi-arrow-right-circle"></i><span>Professional Training</span>
+                </a>
               </div>
             </div><!-- End Services List -->
 
@@ -89,7 +104,7 @@
                 <a href="#"><i class="bi bi-filetype-pdf"></i><span>Catalog PDF</span></a>
                 <a href="#"><i class="bi bi-file-earmark-word"></i><span>Catalog DOC</span></a>
               </div>
-            </div><!-- End Services List -->
+            </div><!-- End Download Catalog -->
 
             <div class="help-box d-flex flex-column justify-content-center align-items-center">
               <i class="bi bi-headset help-icon"></i>
@@ -97,33 +112,214 @@
               <p class="d-flex align-items-center mt-2 mb-0"><i class="bi bi-telephone me-2"></i> <span>+1 5589 55488 55</span></p>
               <p class="d-flex align-items-center mt-1 mb-0"><i class="bi bi-envelope me-2"></i> <a href="mailto:contact@example.com">contact@example.com</a></p>
             </div>
-
           </div>
 
-          <div class="col-lg-8 ps-lg-5" data-aos="fade-up" data-aos-delay="200">
-            <img src="assets/img/services.jpg" alt="" class="img-fluid services-img">
-            <h3>Temporibus et in vero dicta aut eius lidero plastis trand lined voluptas dolorem ut voluptas</h3>
-            <p>
-              Blanditiis voluptate odit ex error ea sed officiis deserunt. Cupiditate non consequatur et doloremque consequuntur. Accusantium labore reprehenderit error temporibus saepe perferendis fuga doloribus vero. Qui omnis quo sit. Dolorem architecto eum et quos deleniti officia qui.
-            </p>
-            <ul>
-              <li><i class="bi bi-check-circle"></i> <span>Aut eum totam accusantium voluptatem.</span></li>
-              <li><i class="bi bi-check-circle"></i> <span>Assumenda et porro nisi nihil nesciunt voluptatibus.</span></li>
-              <li><i class="bi bi-check-circle"></i> <span>Ullamco laboris nisi ut aliquip ex ea</span></li>
-            </ul>
-            <p>
-              Est reprehenderit voluptatem necessitatibus asperiores neque sed ea illo. Deleniti quam sequi optio iste veniam repellat odit. Aut pariatur itaque nesciunt fuga.
-            </p>
-            <p>
-              Sunt rem odit accusantium omnis perspiciatis officia. Laboriosam aut consequuntur recusandae mollitia doloremque est architecto cupiditate ullam. Quia est ut occaecati fuga. Distinctio ex repellendus eveniet velit sint quia sapiente cumque. Et ipsa perferendis ut nihil. Laboriosam vel voluptates tenetur nostrum. Eaque iusto cupiditate et totam et quia dolorum in. Sunt molestiae ipsum at consequatur vero. Architecto ut pariatur autem ad non cumque nesciunt qui maxime. Sunt eum quia impedit dolore alias explicabo ea.
-            </p>
+          <!-- Right Content -->
+          <div class="col-lg-8 ps-lg-5" data-aos="fade-up" data-aos-delay="200" id="service-content">
+
+            <!-- Network Solutions -->
+            <div class="service-detail active" data-service="network-solutions">
+              <img src="assets/img/network-solutions.jpg" alt="Network Solutions" class="img-fluid services-img">
+              <h3>Reliable and Scalable Network Solutions for Modern Business Needs</h3>
+              <p>
+                Our network solutions are designed to support businesses with seamless connectivity, enhanced security, and optimized performance. Whether you're a small business or a large enterprise, we ensure your infrastructure meets the demands of today’s fast-paced digital landscape.
+              </p>
+              <ul>
+                <li><i class="bi bi-check-circle"></i> <span>Custom-designed network architecture tailored to your business.</span></li>
+                <li><i class="bi bi-check-circle"></i> <span>Secure, high-speed data transmission and reliable uptime.</span></li>
+                <li><i class="bi bi-check-circle"></i> <span>Ongoing monitoring, support, and scalability for growth.</span></li>
+              </ul>
+              <p>
+                From initial consultation to implementation and maintenance, our team ensures that your network is not only powerful but also resilient. We utilize the latest technologies and best practices to minimize risks and maximize efficiency.
+              </p>
+              <p>
+                With years of industry experience, we help businesses streamline operations, improve collaboration, and stay connected around the clock. Trust us to build and manage your network infrastructure with precision and care.
+              </p>
+            </div>
+
+            <!-- Cloud Solutions -->
+            <div class="service-detail" data-service="cloud-solutions" style="display:none;">
+              <img src="assets/img/cloud-solutions.jpg" alt="Cloud Solutions" class="img-fluid services-img">
+              <h3>Scalable and Secure Cloud Solutions for Agile Businesses</h3>
+              <p>
+                Our cloud solutions empower organizations to move faster, reduce costs, and operate more securely. Whether you're migrating to the cloud, building cloud-native apps, or optimizing your existing environment, we deliver tailored solutions to meet your goals.
+              </p>
+              <ul>
+                <li><i class="bi bi-check-circle"></i> <span>Public, private, and hybrid cloud infrastructure.</span></li>
+                <li><i class="bi bi-check-circle"></i> <span>Cloud migration, deployment, and management.</span></li>
+                <li><i class="bi bi-check-circle"></i> <span>Disaster recovery and data backup services.</span></li>
+              </ul>
+              <p>
+                Partnering with leading cloud providers, we offer robust and compliant platforms that scale as your business grows. Our expert team ensures your transition to the cloud is smooth, secure, and cost-effective.
+              </p>
+            </div>
+
+            <!-- Security Solutions -->
+            <div class="service-detail" data-service="security-solutions" style="display:none;">
+              <img src="assets/img/security-solutions.jpg" alt="Security Solutions" class="img-fluid services-img">
+              <h3>Advanced Cybersecurity Solutions to Safeguard Your Business</h3>
+              <p>
+                Protect your digital assets with our end-to-end cybersecurity services. We defend your infrastructure from threats, ensure regulatory compliance, and help build a security-first culture within your organization.
+              </p>
+              <ul>
+                <li><i class="bi bi-check-circle"></i> <span>Network and endpoint protection.</span></li>
+                <li><i class="bi bi-check-circle"></i> <span>Firewall, antivirus, and intrusion prevention systems.</span></li>
+                <li><i class="bi bi-check-circle"></i> <span>Risk assessments and compliance audits.</span></li>
+              </ul>
+              <p>
+                Our solutions are designed to proactively detect vulnerabilities and respond quickly to cyber threats. With 24/7 monitoring and expert support, your business stays protected at all times.
+              </p>
+            </div>
+
+            <!-- IT Managed Services -->
+            <div class="service-detail" data-service="it-managed-services" style="display:none;">
+              <img src="assets/img/it-managed-services.jpg" alt="IT Managed Services" class="img-fluid services-img">
+              <h3>End-to-End IT Managed Services to Maximize Efficiency</h3>
+              <p>
+                Focus on growing your business while we handle the IT. Our managed services provide round-the-clock support, maintenance, and monitoring for all your IT needs—ensuring performance, uptime, and peace of mind.
+              </p>
+              <ul>
+                <li><i class="bi bi-check-circle"></i> <span>24/7 IT support and helpdesk services.</span></li>
+                <li><i class="bi bi-check-circle"></i> <span>Proactive maintenance and system monitoring.</span></li>
+                <li><i class="bi bi-check-circle"></i> <span>IT infrastructure optimization and consulting.</span></li>
+              </ul>
+              <p>
+                With predictable costs and dedicated expertise, our IT managed services help reduce downtime and free up internal resources. We act as your extended IT team to deliver reliable performance every day.
+              </p>
+            </div>
+
+            <!-- Business Suite -->
+            <div class="service-detail" data-service="business-suite" style="display:none;">
+              <img src="assets/img/business-suite.jpg" alt="Business Suite" class="img-fluid services-img">
+              <h3>Integrated Business Suite for Smarter Operations</h3>
+              <p>
+                Streamline your business processes with our all-in-one business suite. From accounting and HR to CRM and project management, we provide tools that integrate and automate your daily operations.
+              </p>
+              <ul>
+                <li><i class="bi bi-check-circle"></i> <span>ERP, CRM, HR, and financial management modules.</span></li>
+                <li><i class="bi bi-check-circle"></i> <span>Customizable dashboards and real-time analytics.</span></li>
+                <li><i class="bi bi-check-circle"></i> <span>Seamless integration with third-party platforms.</span></li>
+              </ul>
+              <p>
+                Boost efficiency, improve data visibility, and drive growth with our scalable business management solutions. We tailor each suite to meet your specific industry and organizational needs.
+              </p>
+            </div>
+
+            <!-- Professional Training -->
+            <div class="service-detail" data-service="professional-training" style="display:none;">
+              <img src="assets/img/professional-training.jpg" alt="Professional Training" class="img-fluid services-img">
+              <h3>Professional Training to Upskill Your Workforce</h3>
+              <p>
+                Equip your team with the knowledge and skills to thrive in today’s tech-driven world. Our professional training programs cover a wide range of IT and business topics, led by industry-certified instructors.
+              </p>
+              <ul>
+                <li><i class="bi bi-check-circle"></i> <span>Technical training on networking, cloud, and cybersecurity.</span></li>
+                <li><i class="bi bi-check-circle"></i> <span>Soft skills and leadership development workshops.</span></li>
+                <li><i class="bi bi-check-circle"></i> <span>On-site, virtual, and self-paced training options.</span></li>
+              </ul>
+              <p>
+                We work closely with organizations to develop customized training paths that align with their goals. Our programs ensure practical learning and measurable results for long-term success.
+              </p>
+            </div>
+
           </div>
 
         </div>
-
       </div>
+    </section>
 
-    </section><!-- /Service Details Section -->
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        const servicesList = document.getElementById('services-list');
+        const links = servicesList.querySelectorAll('a');
+        const details = document.querySelectorAll('.service-detail');
+
+        links.forEach(link => {
+          link.addEventListener('click', e => {
+            e.preventDefault();
+
+            // Remove active from all links
+            links.forEach(l => l.classList.remove('active'));
+            // Add active to clicked
+            link.classList.add('active');
+
+            const service = link.getAttribute('data-service');
+
+            // Hide all details
+            details.forEach(detail => {
+              if (detail.getAttribute('data-service') === service) {
+                detail.style.display = '';
+                detail.classList.add('active');
+              } else {
+                detail.style.display = 'none';
+                detail.classList.remove('active');
+              }
+            });
+          });
+        });
+      });
+
+      function showServiceDetail(service) {
+        // Hide all service detail sections
+        document.querySelectorAll('.service-detail').forEach(el => {
+          el.style.display = 'none';
+          el.classList.remove('active');
+        });
+
+        // Show the selected service detail
+        const target = document.querySelector(`.service-detail[data-service="${service}"]`);
+        if (target) {
+          target.style.display = 'block';
+          target.classList.add('active');
+        }
+
+        // Highlight active in sidebar menu
+        document.querySelectorAll('.services-list a').forEach(link => {
+          link.classList.remove('active');
+          if (link.getAttribute('data-service') === service) {
+            link.classList.add('active');
+          }
+        });
+      }
+
+      // Run on page load
+      window.addEventListener('DOMContentLoaded', () => {
+        const hash = window.location.hash.replace('#', '');
+        if (hash) {
+          showServiceDetail(hash);
+
+          // Optionally scroll into view
+          const detailSection = document.querySelector('#service-details');
+          if (detailSection) {
+            detailSection.scrollIntoView({ behavior: 'smooth' });
+          }
+        }
+      });
+    </script>
+
+    <style>
+      /* Optional styling for active links */
+      .services-list a.active {
+        font-weight: 700;
+        color: #007bff;
+      }
+      .services-list a {
+        display: flex;
+        align-items: center;
+        padding: 8px 0;
+        cursor: pointer;
+        color: #444;
+        text-decoration: none;
+        transition: color 0.3s ease;
+      }
+      .services-list a:hover {
+        color: #007bff;
+      }
+      .services-list a i {
+        margin-right: 8px;
+        font-size: 1.2rem;
+      }
+    </style>
 
   </main>
 

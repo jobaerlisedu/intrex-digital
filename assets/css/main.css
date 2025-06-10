@@ -1256,6 +1256,7 @@ section,
 
 .service-details p {
   font-size: 15px;
+  text-align: justify;
 }
 
 .service-details ul {
@@ -1274,11 +1275,4 @@ section,
   font-size: 20px;
   margin-right: 8px;
   color: var(--accent-color);
-}
-
-/*--------------------------------------------------------------
-# Starter Section Section
---------------------------------------------------------------*/
-.starter-section {
-  /* Add your styles here */
 }
