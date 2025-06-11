@@ -1,11 +1,3 @@
-/**
-* Template Name: eNno
-* Template URL: https://bootstrapmade.com/enno-free-simple-bootstrap-template/
-* Updated: Aug 07 2024 with Bootstrap v5.3.3
-* Author: BootstrapMade.com
-* License: https://bootstrapmade.com/license/
-*/
-
 (function() {
   "use strict";
 
@@ -207,3 +199,70 @@
   document.addEventListener('scroll', navmenuScrollspy);
 
 })();
+
+document.addEventListener('DOMContentLoaded', () => {
+  const servicesList = document.getElementById('services-list');
+  const links = servicesList.querySelectorAll('a');
+  const details = document.querySelectorAll('.service-detail');
+
+  links.forEach(link => {
+    link.addEventListener('click', e => {
+      e.preventDefault();
+
+      // Remove active from all links
+      links.forEach(l => l.classList.remove('active'));
+      // Add active to clicked
+      link.classList.add('active');
+
+      const service = link.getAttribute('data-service');
+
+      // Hide all details
+      details.forEach(detail => {
+        if (detail.getAttribute('data-service') === service) {
+          detail.style.display = '';
+          detail.classList.add('active');
+        } else {
+          detail.style.display = 'none';
+          detail.classList.remove('active');
+        }
+      });
+    });
+  });
+});
+
+function showServiceDetail(service) {
+  // Hide all service detail sections
+  document.querySelectorAll('.service-detail').forEach(el => {
+    el.style.display = 'none';
+    el.classList.remove('active');
+  });
+
+  // Show the selected service detail
+  const target = document.querySelector(`.service-detail[data-service="${service}"]`);
+  if (target) {
+    target.style.display = 'block';
+    target.classList.add('active');
+  }
+
+  // Highlight active in sidebar menu
+  document.querySelectorAll('.services-list a').forEach(link => {
+    link.classList.remove('active');
+    if (link.getAttribute('data-service') === service) {
+      link.classList.add('active');
+    }
+  });
+}
+
+// Run on page load
+window.addEventListener('DOMContentLoaded', () => {
+  const hash = window.location.hash.replace('#', '');
+  if (hash) {
+    showServiceDetail(hash);
+
+    // Optionally scroll into view
+    const detailSection = document.querySelector('#service-details');
+    if (detailSection) {
+      detailSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  }
+});

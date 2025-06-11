@@ -1196,11 +1196,6 @@ section,
   color: var(--contrast-color);
 }
 
-.service-details .services-list a:hover {
-  background-color: color-mix(in srgb, var(--accent-color), transparent 95%);
-  color: var(--accent-color);
-}
-
 .service-details .download-catalog a {
   color: var(--default-color);
   display: flex;
