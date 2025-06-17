@@ -881,42 +881,54 @@ section,
 /*--------------------------------------------------------------
 # About Section
 --------------------------------------------------------------*/
+.about .content {
+  background-color: color-mix(in srgb, var(--accent-color), transparent 95%);
+  padding: 40px;
+}
+
 .about .content h3 {
-  font-size: 1.75rem;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--accent-color);
+  text-transform: uppercase;
+}
+
+.about .content h2 {
+  font-size: 24px;
   font-weight: 700;
 }
 
-.about img {
-  height: 415px;
-  width: 100%;
-  border-radius: 8px;
+.about .content p {
+  margin: 15px 0 30px 0;
+  line-height: 24px;
+  text-align: justify;
 }
 
-.about .content ul {
-  list-style: none;
-  padding: 0;
+.about .content .btn-read-more {
+  color: var(--contrast-color);
+  background: var(--accent-color);
+  line-height: 0;
+  padding: 15px 40px;
+  border-radius: 4px;
+  transition: 0.5s;
+  box-shadow: 0px 5px 25px rgba(0, 0, 0, 0.1);
 }
 
-.about .content ul li {
-  padding: 10px 0 0 0;
-  display: flex;
+.about .content .btn-read-more span {
+  font-family: var(--default-font);
+  font-weight: 600;
+  font-size: 16px;
+  letter-spacing: 1px;
 }
 
-.about .content ul i {
-  color: var(--accent-color);
-  margin-right: 0.5rem;
-  line-height: 1.2;
-  font-size: 1.25rem;
+.about .content .btn-read-more i {
+  margin-left: 5px;
+  font-size: 18px;
+  transition: 0.3s;
 }
 
-.about .content p:last-child {
-  margin-bottom: 0;
-}
-
-.about .pulsating-play-btn {
-  position: absolute;
-  left: calc(50% - 47px);
-  top: calc(50% - 47px);
+.about .content .btn-read-more:hover i {
+  transform: translateX(5px);
 }
 
 /*--------------------------------------------------------------
@@ -963,54 +975,51 @@ section,
 --------------------------------------------------------------*/
 .services .service-item {
   background-color: var(--surface-color);
-  text-align: center;
-  border: 1px solid color-mix(in srgb, var(--default-color), transparent 85%);
-  padding: 80px 20px;
-  transition: border ease-in-out 0.3s;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
   height: 100%;
+  padding: 60px 30px;
+  text-align: center;
+  transition: 0.3s;
+  border-radius: 5px;
+  border-bottom: 3px solid #5f687b; /* Updated border color */
 }
 
 .services .service-item .icon {
-  margin: 0 auto;
-  width: 64px;
-  height: 64px;
-  background: var(--accent-color);
+  font-size: 36px;
+  padding: 20px;
   border-radius: 4px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 20px;
+  position: relative;
+  margin-bottom: 25px;
+  display: inline-block;
+  line-height: 0;
   transition: 0.3s;
-}
-
-.services .service-item .icon i {
-  color: var(--contrast-color);
-  font-size: 28px;
-  transition: ease-in-out 0.3s;
+  color: #5f687b;
+  background: rgba(95, 104, 123, 0.1); /* Subtle background matching main color */
 }
 
 .services .service-item h3 {
+  font-size: 24px;
   font-weight: 700;
-  margin: 10px 0 15px 0;
-  font-size: 22px;
-  transition: 0.3s;
 }
 
 .services .service-item p {
-  line-height: 24px;
-  font-size: 14px;
-  margin-bottom: 0;
+  font-size: 15px;
+  margin: 0;
   text-align: justify;
-  padding-left: 15px;
-  padding-right: 15px;
 }
 
+/* Hover Effects */
 .services .service-item:hover {
-  border-color: var(--accent-color);
+  background: #5f687b; /* Hover background color */
 }
 
-.services .service-item:hover h3 {
-  color: var(--accent-color);
+.services .service-item:hover h3,
+.services .service-item:hover p {
+  color: #fff;
+}
+
+.services .service-item:hover .icon {
+  background: #fff;
 }
 
 /*--------------------------------------------------------------
@@ -1142,4 +1151,81 @@ section,
 .team .member .social i {
   font-size: 16px;
   margin: 0 2px;
+}
+
+/*--------------------------------------------------------------
+# Faq Section
+--------------------------------------------------------------*/
+.faq .faq-container .faq-item {
+  position: relative;
+  padding: 20px 0;
+  border-bottom: 1px solid color-mix(in srgb, var(--default-color), transparent 85%);
+  overflow: hidden;
+}
+
+.faq .faq-container .faq-item:last-child {
+  margin-bottom: 0;
+}
+
+.faq .faq-container .faq-item h3 {
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 24px;
+  margin: 0 30px 0 0;
+  transition: 0.3s;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.faq .faq-container .faq-item h3 .num {
+  color: var(--accent-color);
+  padding-right: 5px;
+}
+
+.faq .faq-container .faq-item h3:hover {
+  color: var(--accent-color);
+}
+
+.faq .faq-container .faq-item .faq-content {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: 0.3s ease-in-out;
+  visibility: hidden;
+  opacity: 0;
+}
+
+.faq .faq-container .faq-item .faq-content p {
+  margin-bottom: 0;
+  overflow: hidden;
+}
+
+.faq .faq-container .faq-item .faq-toggle {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  font-size: 16px;
+  line-height: 0;
+  transition: 0.3s;
+  cursor: pointer;
+}
+
+.faq .faq-container .faq-item .faq-toggle:hover {
+  color: var(--accent-color);
+}
+
+.faq .faq-container .faq-active h3 {
+  color: var(--accent-color);
+}
+
+.faq .faq-container .faq-active .faq-content {
+  grid-template-rows: 1fr;
+  visibility: visible;
+  opacity: 1;
+  padding-top: 10px;
+}
+
+.faq .faq-container .faq-active .faq-toggle {
+  transform: rotate(90deg);
+  color: var(--accent-color);
 }
