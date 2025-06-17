@@ -388,7 +388,7 @@ h6 {
 --------------------------------------------------------------*/
 .footer {
   color: var(--default-color);
-  background-color: var(--background-color);
+  background-color: color-mix(in srgb, var(--accent-color), transparent 97%);
   font-size: 14px;
   position: relative;
 }
@@ -1005,7 +1005,6 @@ section,
 .services .service-item p {
   font-size: 15px;
   margin: 0;
-  text-align: justify;
 }
 
 /* Hover Effects */
@@ -1228,4 +1227,63 @@ section,
 .faq .faq-container .faq-active .faq-toggle {
   transform: rotate(90deg);
   color: var(--accent-color);
+}
+
+/*--------------------------------------------------------------
+# Contact Section
+--------------------------------------------------------------*/
+.contact .info-item {
+  background: color-mix(in srgb, var(--default-color), transparent 96%);
+  padding: 30px;
+  text-align: left;
+  border-radius: 6px;
+  transition: 0.3s;
+  height: 100%;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+}
+
+.contact .info-item:hover {
+  background: color-mix(in srgb, var(--accent-color), transparent 90%);
+  transform: translateY(-3px);
+}
+
+.contact .info-item i {
+  font-size: 38px;
+  line-height: 0;
+  color: var(--accent-color);
+  margin-bottom: 15px;
+  display: inline-block;
+}
+
+.contact .info-item h3 {
+  font-size: 20px;
+  font-weight: 700;
+  margin: 15px 0 10px 0;
+  color: var(--heading-color, #333);
+}
+
+.contact .info-item p {
+  padding: 0;
+  line-height: 24px;
+  font-size: 14px;
+  margin-bottom: 0;
+  color: var(--text-color, #666);
+}
+
+/* Responsive tweaks */
+@media (max-width: 991px) {
+  .contact .info-item {
+    margin-bottom: 20px;
+    text-align: center;
+  }
+}
+
+@media (max-width: 767px) {
+  .contact .info-item {
+    padding: 20px;
+  }
+
+  .contact .info-item i {
+    font-size: 32px;
+  }
 }
