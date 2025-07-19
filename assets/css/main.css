@@ -974,7 +974,7 @@ section,
 # Services Section
 --------------------------------------------------------------*/
 .services .service-item {
-  background-color: var(--surface-color);
+  background-color: var(--background-color);
   box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
   height: 100%;
   padding: 60px 30px;
