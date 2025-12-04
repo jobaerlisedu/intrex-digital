@@ -84,7 +84,7 @@
       mirror: false
     });
   }
-  window.addEventListener('load', aosInit);
+  window.addEventListener('DOMContentLoaded', aosInit);  // Changed from 'load' to 'DOMContentLoaded' to fix CLS
 
   /**
    * Initiate glightbox

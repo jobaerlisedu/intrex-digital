@@ -49,9 +49,6 @@
   scroll-behavior: smooth;
 }
 
-/*--------------------------------------------------------------
-# General Styling & Shared Classes
---------------------------------------------------------------*/
 body {
   color: var(--default-color);
   background-color: var(--background-color);
@@ -79,8 +76,7 @@ h6 {
   font-family: var(--heading-font);
 }
 
-/* PHP Email Form Messages
-------------------------------*/
+/* PHP Email Form Messages */
 .php-email-form .error-message {
   display: none;
   background: #df1529;
@@ -131,9 +127,7 @@ h6 {
   }
 }
 
-/*--------------------------------------------------------------
-# Global Header
---------------------------------------------------------------*/
+/* Global Header */
 .header {
   --background-color: rgba(255, 255, 255, 0);
   color: var(--default-color);
@@ -214,9 +208,7 @@ h6 {
   }
 }
 
-/*--------------------------------------------------------------
-# Navigation Menu
---------------------------------------------------------------*/
+/* Navigation Menu */
 /* Navmenu - Desktop */
 @media (min-width: 1200px) {
   .navmenu {
@@ -451,9 +443,7 @@ h6 {
   }
 }
 
-/*--------------------------------------------------------------
-# Global Footer
---------------------------------------------------------------*/
+/* Global Footer */
 .footer {
   color: var(--default-color);
   background-color: var(--background-color);
@@ -568,9 +558,7 @@ h6 {
   font-size: 13px;
 }
 
-/*--------------------------------------------------------------
-# Scroll Top Button
---------------------------------------------------------------*/
+/* Scroll Top Button */
 .scroll-top {
   position: fixed;
   visibility: hidden;
@@ -602,57 +590,14 @@ h6 {
   bottom: 15px;
 }
 
-/*--------------------------------------------------------------
-# Disable aos animation delay on mobile devices
---------------------------------------------------------------*/
+/* Disable aos animation delay on mobile devices */
 @media screen and (max-width: 768px) {
   [data-aos-delay] {
     transition-delay: 0 !important;
   }
 }
 
-/*--------------------------------------------------------------
-# Global Page Titles & Breadcrumbs
---------------------------------------------------------------*/
-.page-title {
-  color: var(--default-color);
-  background-color: var(--background-color);
-  padding: 170px 0 80px 0;
-  text-align: center;
-  position: relative;
-}
-
-.page-title h1 {
-  font-size: 42px;
-  font-weight: 700;
-  margin-bottom: 10px;
-}
-
-.page-title .breadcrumbs ol {
-  display: flex;
-  flex-wrap: wrap;
-  list-style: none;
-  justify-content: center;
-  padding: 0;
-  margin: 0;
-  font-size: 16px;
-  font-weight: 400;
-}
-
-.page-title .breadcrumbs ol li+li {
-  padding-left: 10px;
-}
-
-.page-title .breadcrumbs ol li+li::before {
-  content: "/";
-  display: inline-block;
-  padding-right: 10px;
-  color: color-mix(in srgb, var(--default-color), transparent 70%);
-}
-
-/*--------------------------------------------------------------
-# Global Sections
---------------------------------------------------------------*/
+/* Global Sections */
 section,
 .section {
   color: var(--default-color);
@@ -670,9 +615,7 @@ section,
   }
 }
 
-/*--------------------------------------------------------------
-# Global Section Titles
---------------------------------------------------------------*/
+/* Global Section Titles */
 .section-title {
   text-align: center;
   padding-bottom: 60px;
@@ -704,9 +647,7 @@ section,
   margin-bottom: 0;
 }
 
-/*--------------------------------------------------------------
-# Hero Section
---------------------------------------------------------------*/
+/* Hero Section */
 .hero {
   position: relative;
   padding-top: 160px;
@@ -949,9 +890,7 @@ section,
   }
 }
 
-/*--------------------------------------------------------------
-# About Section
---------------------------------------------------------------*/
+/* About Section */
 .about .about-meta {
   color: var(--accent-color);
   font-weight: 600;
@@ -1139,9 +1078,7 @@ section,
   }
 }
 
-/*--------------------------------------------------------------
-# Features Cards Section
---------------------------------------------------------------*/
+/* Features Cards Section */
 .features-cards {
   --default-color: #555;
   --heading-color: #333;
@@ -1206,9 +1143,7 @@ section,
   color: var(--background-color);
 }
 
-/*--------------------------------------------------------------
-# Call To Action Section
---------------------------------------------------------------*/
+/* Call To Action Section */
 .call-to-action .container {
   background: var(--accent-color);
   color: var(--contrast-color);
@@ -1370,9 +1305,7 @@ section,
   }
 }
 
-/*--------------------------------------------------------------
-# Clients Section
---------------------------------------------------------------*/
+/* Clients Section */
 .clients .swiper-slide img {
   opacity: 0.5;
   transition: 0.3s;
@@ -1404,9 +1337,7 @@ section,
   background-color: var(--accent-color);
 }
 
-/*--------------------------------------------------------------
-# Testimonials Section
---------------------------------------------------------------*/
+/* Testimonials Section */
 .testimonials .testimonial-item {
   background-color: var(--surface-color);
   box-shadow: 0px 2px 30px rgba(0, 0, 0, 0.08);
@@ -1471,9 +1402,7 @@ section,
   padding: 0;
 }
 
-/*--------------------------------------------------------------
-# Services Section
---------------------------------------------------------------*/
+/* Services Section */
 .services .service-card {
   height: 100%;
   padding: 30px;
@@ -1541,9 +1470,7 @@ section,
   transform: translateX(5px);
 }
 
-/*--------------------------------------------------------------
-# Faq Section
---------------------------------------------------------------*/
+/* Faq Section */
 .faq .faq-title {
   font-size: 2.5rem;
   font-weight: 700;
@@ -1637,9 +1564,7 @@ section,
   color: var(--accent-color);
 }
 
-/*--------------------------------------------------------------
-# Call To Action 2 Section
---------------------------------------------------------------*/
+/* Call To Action 2 Section */
 .call-to-action-2 {
   padding: 80px 0;
 }
@@ -1678,9 +1603,7 @@ section,
   color: var(--accent-color);
 }
 
-/*--------------------------------------------------------------
-# Contact Section
---------------------------------------------------------------*/
+/* Contact Section */
 .contact .info-box {
   background-color: var(--accent-color);
   color: var(--contrast-color);
@@ -1830,4 +1753,28 @@ section,
 
 .contact .contact-form .btn:hover {
   background-color: color-mix(in srgb, var(--accent-color), var(--contrast-color) 20%);
+}
+
+/* AOS Scroll Animations – FIXED & BEAUTIFUL */
+[data-aos] {
+  transition-property: transform, opacity;
+}
+
+[data-aos="fade-up"] {
+  opacity: 0;
+  transform: translate3d(0, 50px, 0);
+}
+
+[data-aos].aos-animate {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+/* Optional: smoother staggered cards */
+.testimonials .testimonial-item,
+.services .service-card,
+.faq .faq-container .faq-item,
+.contact .info-box,
+.contact .contact-form {
+  transition: all 0.6s ease-out;
 }
