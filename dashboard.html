@@ -127,7 +127,7 @@
               <div class="col-lg-5 d-flex flex-column gap-4">
                 <!-- GENERATOR CARD -->
                 <div class="card p-4 rounded-4 shadow-sm border">
-                  <h3 class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color"><i
+                  <h3 id="formTitle" class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color"><i
                       class="bi bi-patch-plus me-2 text-primary"></i>Generate Certificate Record</h3>
 
                   <div id="actionSuccess" class="alert alert-success d-none alert-dismissible fade show small"
@@ -208,9 +208,14 @@
                       </div>
                     </div>
 
-                    <button type="submit" class="btn btn-primary w-100 fw-semibold py-2">
-                      <i class="bi bi-cloud-arrow-up me-2"></i>Save Certificate to Firestore
-                    </button>
+                    <div class="d-flex gap-2">
+                      <button type="submit" id="submitCertBtn" class="btn btn-primary w-100 fw-semibold py-2">
+                        <i class="bi bi-cloud-arrow-up me-2"></i>Save Certificate to Firestore
+                      </button>
+                      <button type="button" id="cancelEditBtn" class="btn btn-outline-secondary w-50 fw-semibold py-2 d-none">
+                        Cancel
+                      </button>
+                    </div>
                   </form>
                 </div>
 
@@ -357,6 +362,9 @@
               <button class="btn btn-sm btn-outline-primary copy-link-record" data-link="${verifyUrl}">
                 <i class="bi bi-link-45deg"></i> Link
               </button>
+              <button class="btn btn-sm btn-outline-secondary edit-record" data-id="${record.certificateId}">
+                <i class="bi bi-pencil"></i> Edit
+              </button>
               <button class="btn btn-sm btn-outline-danger delete-record" data-id="${record.certificateId}" data-name="${record.studentName}">
                 <i class="bi bi-trash"></i> Delete
               </button>
@@ -382,6 +390,17 @@
             btn.classList.remove("btn-success");
             btn.classList.add("btn-outline-primary");
           }, 1500);
+        };
+      });
+
+      // Bind edit actions to list buttons
+      document.querySelectorAll(".edit-record").forEach(btn => {
+        btn.onclick = function () {
+          const certId = btn.getAttribute("data-id");
+          const record = allRecords.find(r => r.certificateId === certId);
+          if (record) {
+            startEditMode(record);
+          }
         };
       });
 
@@ -459,12 +478,60 @@
       }
     });
 
+    let editingCertId = null;
+
+    function startEditMode(record) {
+      editingCertId = record.certificateId;
+      
+      // Populate form
+      document.getElementById("certId").value = record.certificateId.replace("INTREX-CERT-", "");
+      document.getElementById("certId").disabled = true;
+      document.getElementById("studentName").value = record.studentName || "";
+      document.getElementById("courseName").value = record.courseName || "";
+      document.getElementById("issueDate").value = record.issueDate || "";
+      document.getElementById("grade").value = record.grade && record.grade !== "N/A" ? record.grade : "";
+      document.getElementById("certBatch").value = record.batch || "";
+      document.getElementById("certStatus").value = record.status || "Verified";
+
+      // Change UI labels
+      document.getElementById("formTitle").innerHTML = `<i class="bi bi-pencil-square me-2 text-primary"></i>Edit Certificate Record`;
+      document.getElementById("submitCertBtn").innerHTML = `<i class="bi bi-check-lg me-2"></i>Update Certificate`;
+      document.getElementById("cancelEditBtn").classList.remove("d-none");
+      
+      // Focus on student name
+      document.getElementById("studentName").focus();
+      
+      // Scroll to form (top on mobile/desktop right side)
+      document.getElementById("formTitle").scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function cancelEditMode() {
+      editingCertId = null;
+      
+      // Reset form
+      document.getElementById("addCertForm").reset();
+      document.getElementById("certId").disabled = false;
+      
+      // Reset date to today
+      if (dateInput) {
+        dateInput.value = new Date().toISOString().substring(0, 10);
+      }
+      
+      // Reset UI labels
+      document.getElementById("formTitle").innerHTML = `<i class="bi bi-patch-plus me-2 text-primary"></i>Generate Certificate Record`;
+      document.getElementById("submitCertBtn").innerHTML = `<i class="bi bi-cloud-arrow-up me-2"></i>Save Certificate to Firestore`;
+      document.getElementById("cancelEditBtn").classList.add("d-none");
+    }
+
+    // Cancel edit button click listener
+    document.getElementById("cancelEditBtn").addEventListener("click", cancelEditMode);
+
     // Add Certificate Form Handler
     document.getElementById("addCertForm").addEventListener("submit", async function (e) {
       e.preventDefault();
 
       const rawInput = document.getElementById("certId").value.trim();
-      const certificateId = "INTREX-CERT-" + rawInput;
+      const certificateId = editingCertId || ("INTREX-CERT-" + rawInput);
       const studentName = document.getElementById("studentName").value.trim();
       const courseName = document.getElementById("courseName").value;
       const issueDate = document.getElementById("issueDate").value;
@@ -493,16 +560,20 @@
         const verifyUrl = getVerifyUrl(certificateId);
         document.getElementById("generatedLink").value = verifyUrl;
 
+        successAlert.querySelector("span").innerText = editingCertId ? "Certificate updated successfully!" : "Certificate created successfully!";
         successAlert.classList.remove("d-none");
-        document.getElementById("addCertForm").reset();
 
-        // Reset default date and focus ID input
-        if (dateInput) {
-          dateInput.value = new Date().toISOString().substring(0, 10);
+        if (editingCertId) {
+          cancelEditMode();
+        } else {
+          document.getElementById("addCertForm").reset();
+          if (dateInput) {
+            dateInput.value = new Date().toISOString().substring(0, 10);
+          }
+          document.getElementById("certId").focus();
         }
-        document.getElementById("certId").focus();
 
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        document.getElementById("formTitle").scrollIntoView({ behavior: 'smooth' });
 
         // Refresh records list
         loadRecords();
@@ -510,7 +581,7 @@
       } catch (err) {
         errorAlert.innerText = "Error: " + err.message;
         errorAlert.classList.remove("d-none");
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        document.getElementById("formTitle").scrollIntoView({ behavior: 'smooth' });
       }
     });
 
