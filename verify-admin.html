@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Certificate Admin Portal | Intrex Digital Hub</title>
+  <link rel="icon" href="assets/images/logo/intrex-favicon.svg" type="image/svg+xml">
+  <meta name="robots" content="noindex, nofollow">
+
+  <!-- ======= Google Font =======-->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&amp;display=swap" rel="stylesheet">
+
+  <!-- ======= Styles =======-->
+  <link href="assets/vendors/bootstrap/bootstrap.min.css" rel="stylesheet">
+  <link href="assets/vendors/bootstrap-icons/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link href="assets/vendors/aos/aos.css" rel="stylesheet">
+  <link href="assets/css/style.css" rel="stylesheet">
+  <script>
+    (function () {
+      const storedTheme = localStorage.getItem('theme') || 'light';
+      document.documentElement.setAttribute('data-bs-theme', storedTheme);
+    })();
+  </script>
+</head>
+
+<body>
+
+  <div class="site-wrap">
+
+    <!-- ======= Header =======-->
+    <header class="fbs__net-navbar navbar navbar-expand-lg dark relative" aria-label="navbar">
+      <div class="container-fluid px-md-5 d-flex align-items-center justify-content-between">
+        <a class="navbar-brand w-auto d-flex align-items-center gap-2 text-decoration-none" href="index.html">
+          <img src="assets/images/logo/intrex-logo.svg" alt="Intrex Digital Hub Logo" style="height: 35px; width: auto;">
+        </a>
+      </div>
+    </header>
+
+    <!-- ======= Admin Dashboard Section =======-->
+    <section class="section">
+      <div class="container-fluid px-md-5">
+        <div class="row justify-content-center">
+          
+          <!-- 1. LOGIN INTERFACE -->
+          <div id="loginSection" class="col-md-5" data-aos="fade-up">
+            <div class="card p-4 rounded-4 shadow-sm border">
+              <div class="text-center mb-4">
+                <img src="assets/images/logo/intrex-logo.svg" alt="Logo" class="mb-3" style="height: 40px;">
+                <h2 class="h4 fw-bold text-heading-color">Admin Portal Login</h2>
+                <p class="text-muted small">Access the Certificate Verification & Records Dashboard.</p>
+              </div>
+
+              <div id="loginError" class="alert alert-danger d-none small"></div>
+
+              <form id="loginForm">
+                <div class="mb-3">
+                  <label for="adminEmail" class="form-label small fw-semibold">Email Address</label>
+                  <input type="email" class="form-control" id="adminEmail" required placeholder="admin@intrex-digital.com">
+                </div>
+                <div class="mb-3">
+                  <label for="adminPassword" class="form-label small fw-semibold">Password</label>
+                  <input type="password" class="form-control" id="adminPassword" required placeholder="••••••••">
+                </div>
+                <button type="submit" class="btn btn-primary w-100 fw-semibold py-2 mt-2">
+                  <i class="bi bi-box-arrow-in-right me-2"></i>Login
+                </button>
+              </form>
+            </div>
+          </div>
+
+          <!-- 2. DASHBOARD PANEL (HIDDEN BY DEFAULT) -->
+          <div id="dashboardSection" class="col-12 d-none" data-aos="fade-up">
+            <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+              <div>
+                <span class="badge bg-primary text-white mb-1">INTREX HUB SYSTEM</span>
+                <h2 class="h3 fw-bold text-heading-color mb-0">Certificate Management Dashboard</h2>
+              </div>
+              <button id="logoutBtn" class="btn btn-outline-danger btn-sm py-2 px-3">
+                <i class="bi bi-box-arrow-right me-1"></i> Logout
+              </button>
+            </div>
+
+            <div class="row g-4">
+              <!-- Left Side: Student List (col-lg-7) -->
+              <div class="col-lg-7">
+                <!-- BATCH WISE STUDENT LIST CARD -->
+                <div class="card p-4 rounded-4 shadow-sm border h-100">
+                  <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom flex-wrap gap-2">
+                    <h3 class="h5 fw-bold text-heading-color mb-0">
+                      <i class="bi bi-people me-2 text-primary"></i>Student Records by Batch
+                    </h3>
+                    <div class="d-flex align-items-center gap-2">
+                      <select id="batchFilter" class="form-select form-select-sm" style="width: auto; min-width: 150px;">
+                        <option value="all">All Batches</option>
+                      </select>
+                      <button id="refreshListBtn" class="btn btn-sm btn-outline-secondary" type="button" title="Refresh List">
+                        <i class="bi bi-arrow-clockwise"></i>
+                      </button>
+                    </div>
+                  </div>
+
+                  <!-- List container -->
+                  <div class="table-responsive" style="max-height: 620px; overflow-y: auto;">
+                    <table class="table table-hover align-middle mb-0" id="studentTable">
+                      <thead class="table-light">
+                        <tr>
+                          <th class="small fw-semibold">Student Name</th>
+                          <th class="small fw-semibold">Certificate ID</th>
+                          <th class="small fw-semibold">Course</th>
+                          <th class="small fw-semibold">Batch</th>
+                          <th class="small fw-semibold">Status</th>
+                          <th class="small fw-semibold text-end">Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody id="studentTableBody">
+                        <tr>
+                          <td colspan="6" class="text-center py-4 text-muted">
+                            <div class="spinner-border spinner-border-sm text-primary me-2" role="status"></div>
+                            Loading student records...
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Right Side: Certificate Generator & Link Generator (col-lg-5) -->
+              <div class="col-lg-5 d-flex flex-column gap-4">
+                <!-- GENERATOR CARD -->
+                <div class="card p-4 rounded-4 shadow-sm border">
+                  <h3 class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color"><i class="bi bi-patch-plus me-2 text-primary"></i>Generate Certificate Record</h3>
+                  
+                  <div id="actionSuccess" class="alert alert-success d-none alert-dismissible fade show small" role="alert">
+                    <span>Certificate created successfully!</span>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                  </div>
+                  <div id="actionError" class="alert alert-danger d-none alert-dismissible fade show small" role="alert">
+                    <span>An error occurred. Please try again.</span>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                  </div>
+
+                  <form id="addCertForm">
+                    
+                    <div class="row g-3 mb-3">
+                      <div class="col-md-6">
+                        <label class="form-label small fw-semibold mb-1" for="certId">Certificate ID <span class="text-danger">*</span></label>
+                        <div class="input-group">
+                          <span class="input-group-text bg-body-secondary border-end-0 fw-semibold text-muted" style="font-size: 0.9rem;">INTREX-CERT-</span>
+                          <input type="text" class="form-control ps-1" id="certId" required placeholder="495001" minlength="1">
+                        </div>
+                        <span class="text-muted small" style="font-size: 0.75rem;">Creates document ID: <strong>INTREX-CERT-495XXX</strong></span>
+                      </div>
+
+                      <div class="col-md-6">
+                        <label class="form-label small fw-semibold mb-1" for="studentName">Student Full Name <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="studentName" required placeholder="e.g. Jobaer Hossain">
+                      </div>
+                    </div>
+
+                    <div class="row g-3 mb-3">
+                      <div class="col-md-6">
+                        <label class="form-label small fw-semibold mb-1" for="courseName">Course <span class="text-danger">*</span></label>
+                        <select class="form-select" id="courseName" required>
+                          <option value="" disabled selected>Select Course</option>
+                          <option value="CompTIA A+">CompTIA A+</option>
+                          <option value="CompTIA Network+">CompTIA Network+</option>
+                          <option value="CCNA 200-301">CCNA 200-301</option>
+                          <option value="MTCNA & MTCRE (MikroTik)">MTCNA &amp; MTCRE (MikroTik)</option>
+                          <option value="RHCSA / RHCE (Red Hat Linux)">RHCSA / RHCE (Red Hat Linux)</option>
+                          <option value="CompTIA Security+">CompTIA Security+</option>
+                        </select>
+                      </div>
+
+                      <div class="col-md-6">
+                        <label class="form-label small fw-semibold mb-1" for="issueDate">Issue Date <span class="text-danger">*</span></label>
+                        <input type="date" class="form-control" id="issueDate" required>
+                      </div>
+                    </div>
+
+                    <div class="row g-3 mb-4">
+                      <div class="col-md-4">
+                        <label class="form-label small fw-semibold mb-1" for="grade">Grade / Result</label>
+                        <input type="text" class="form-control" id="grade" placeholder="e.g. Pass, A+, A">
+                      </div>
+
+                      <div class="col-md-4">
+                        <label class="form-label small fw-semibold mb-1" for="certBatch">Batch <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="certBatch" placeholder="e.g. Batch-01" required>
+                      </div>
+
+                      <div class="col-md-4">
+                        <label class="form-label small fw-semibold mb-1" for="certStatus">Status</label>
+                        <select class="form-select" id="certStatus">
+                          <option value="Verified" selected>Verified</option>
+                          <option value="Revoked">Revoked</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-100 fw-semibold py-2">
+                      <i class="bi bi-cloud-arrow-up me-2"></i>Save Certificate to Firestore
+                    </button>
+                  </form>
+                </div>
+
+                <!-- QUICK LOOKUP FOR TESTING -->
+                <div class="card p-4 rounded-4 shadow-sm border">
+                  <h3 class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color"><i class="bi bi-link-45deg me-2 text-primary"></i>Direct Link Generator</h3>
+                  <p class="text-muted small">Generate verification link to send directly to students:</p>
+                  
+                  <div class="input-group">
+                    <input type="text" id="generatedLink" class="form-control bg-body-secondary" readonly>
+                    <button id="copyLinkBtn" class="btn btn-outline-primary" type="button"><i class="bi bi-clipboard"></i> Copy Link</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- ======= Javascripts =======-->
+  <script src="assets/vendors/bootstrap/bootstrap.bundle.min.js"></script>
+  <script src="assets/vendors/aos/aos.js"></script>
+
+  <script type="module">
+    import { loginAdmin, logoutAdmin, onAdminAuthStateChanged, addCertificate, getAllCertificates, deleteCertificate } from "./assets/js/verify.js";
+
+    // Initialize AOS
+    if (window.AOS) {
+      AOS.init({ duration: 800, once: true });
+    }
+
+    // Helper to generate verification link, using production domain if running locally
+    function getVerifyUrl(certificateId) {
+      let origin = window.location.origin;
+      if (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1" || window.location.hostname === "[::1]") {
+        origin = "https://intrex-digital.com";
+      }
+      return `${origin}${window.location.pathname.replace('verify-admin.html', 'verify.html')}?id=${certificateId}`;
+    }
+
+    // Set today's date in form by default
+    const dateInput = document.getElementById("issueDate");
+    if (dateInput) {
+      dateInput.value = new Date().toISOString().substring(0, 10);
+    }
+
+    let allRecords = [];
+
+    // Load batch list & records
+    async function loadRecords() {
+      const tbody = document.getElementById("studentTableBody");
+      const batchFilter = document.getElementById("batchFilter");
+      
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="6" class="text-center py-4 text-muted">
+            <div class="spinner-border spinner-border-sm text-primary me-2" role="status"></div>
+            Fetching student records...
+          </td>
+        </tr>
+      `;
+
+      try {
+        allRecords = await getAllCertificates();
+        
+        // Populate batch filter dropdown
+        const currentSelection = batchFilter.value;
+        batchFilter.innerHTML = '<option value="all">All Batches</option>';
+        
+        // Find unique batches
+        const batches = new Set();
+        allRecords.forEach(r => {
+          if (r.batch) {
+            batches.add(r.batch.trim());
+          }
+        });
+        
+        // Sort and add batches to dropdown
+        Array.from(batches).sort().forEach(batch => {
+          const option = document.createElement("option");
+          option.value = batch;
+          option.textContent = batch;
+          batchFilter.appendChild(option);
+        });
+
+        // Restore filter selection if it still exists, otherwise default to all
+        if (batches.has(currentSelection)) {
+          batchFilter.value = currentSelection;
+        } else {
+          batchFilter.value = "all";
+        }
+
+        renderFilteredRecords();
+      } catch (err) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="6" class="text-center py-4 text-danger">
+              <i class="bi bi-exclamation-triangle-fill me-2"></i>Failed to load records: ${err.message}
+            </td>
+          </tr>
+        `;
+      }
+    }
+
+    function renderFilteredRecords() {
+      const tbody = document.getElementById("studentTableBody");
+      const filter = document.getElementById("batchFilter").value;
+      
+      let filtered = allRecords;
+      if (filter !== "all") {
+        filtered = allRecords.filter(r => r.batch === filter);
+      }
+
+      // Sort by student name
+      filtered.sort((a, b) => a.studentName.localeCompare(b.studentName));
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="6" class="text-center py-4 text-muted">No student records found.</td>
+          </tr>
+        `;
+        return;
+      }
+
+      tbody.innerHTML = "";
+      filtered.forEach(record => {
+        const verifyUrl = getVerifyUrl(record.certificateId);
+        
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td><strong>${record.studentName}</strong></td>
+          <td><code class="text-dark font-monospace">${record.certificateId}</code></td>
+          <td><span class="small">${record.courseName}</span></td>
+          <td><span class="badge bg-secondary">${record.batch || 'N/A'}</span></td>
+          <td><span class="badge ${record.status === 'Verified' ? 'bg-success' : 'bg-danger'}">${record.status}</span></td>
+          <td class="text-end">
+            <div class="btn-group gap-1">
+              <button class="btn btn-sm btn-outline-primary copy-link-record" data-link="${verifyUrl}">
+                <i class="bi bi-link-45deg"></i> Link
+              </button>
+              <button class="btn btn-sm btn-outline-danger delete-record" data-id="${record.certificateId}" data-name="${record.studentName}">
+                <i class="bi bi-trash"></i> Delete
+              </button>
+            </div>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      // Bind copy actions to list buttons
+      document.querySelectorAll(".copy-link-record").forEach(btn => {
+        btn.onclick = function() {
+          const link = btn.getAttribute("data-link");
+          navigator.clipboard.writeText(link);
+          
+          // Micro-animation / feedback
+          const origText = btn.innerHTML;
+          btn.innerHTML = '<i class="bi bi-check-lg"></i> Copied';
+          btn.classList.remove("btn-outline-primary");
+          btn.classList.add("btn-success");
+          setTimeout(() => {
+            btn.innerHTML = origText;
+            btn.classList.remove("btn-success");
+            btn.classList.add("btn-outline-primary");
+          }, 1500);
+        };
+      });
+
+      // Bind delete actions to list buttons
+      document.querySelectorAll(".delete-record").forEach(btn => {
+        btn.onclick = async function() {
+          const certId = btn.getAttribute("data-id");
+          const name = btn.getAttribute("data-name");
+          
+          if (confirm(`Are you sure you want to delete the certificate record for "${name}" (${certId})? This action cannot be undone.`)) {
+            try {
+              btn.disabled = true;
+              btn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status"></span>';
+              
+              await deleteCertificate(certId);
+              loadRecords();
+            } catch (err) {
+              alert("Failed to delete record: " + err.message);
+              btn.disabled = false;
+              btn.innerHTML = '<i class="bi bi-trash"></i> Delete';
+            }
+          }
+        };
+      });
+    }
+
+    // Filter selection handler
+    document.getElementById("batchFilter").addEventListener("change", renderFilteredRecords);
+
+    // Refresh list handler
+    document.getElementById("refreshListBtn").addEventListener("click", loadRecords);
+
+    // Auth monitor
+    onAdminAuthStateChanged((user) => {
+      const loginSection = document.getElementById("loginSection");
+      const dashboardSection = document.getElementById("dashboardSection");
+
+      if (user) {
+        // Authenticated
+        loginSection.classList.add("d-none");
+        dashboardSection.classList.remove("d-none");
+        if (window.AOS) AOS.refresh();
+        loadRecords();
+      } else {
+        // Unauthenticated
+        loginSection.classList.remove("d-none");
+        dashboardSection.classList.add("d-none");
+        if (window.AOS) AOS.refresh();
+      }
+    });
+
+    // Login Form Handler
+    document.getElementById("loginForm").addEventListener("submit", async function(e) {
+      e.preventDefault();
+      const email = document.getElementById("adminEmail").value.trim();
+      const password = document.getElementById("adminPassword").value;
+      const errorDiv = document.getElementById("loginError");
+
+      errorDiv.classList.add("d-none");
+
+      try {
+        await loginAdmin(email, password);
+      } catch (err) {
+        errorDiv.innerText = "Login failed: " + err.message.replace("Firebase: ", "");
+        errorDiv.classList.remove("d-none");
+      }
+    });
+
+    // Logout Handler
+    document.getElementById("logoutBtn").addEventListener("click", async function() {
+      try {
+        await logoutAdmin();
+      } catch (err) {
+        alert("Logout failed: " + err.message);
+      }
+    });
+
+    // Add Certificate Form Handler
+    document.getElementById("addCertForm").addEventListener("submit", async function(e) {
+      e.preventDefault();
+      
+      const rawInput = document.getElementById("certId").value.trim();
+      const certificateId = "INTREX-CERT-" + rawInput;
+      const studentName = document.getElementById("studentName").value.trim();
+      const courseName = document.getElementById("courseName").value;
+      const issueDate = document.getElementById("issueDate").value;
+      const grade = document.getElementById("grade").value.trim() || "Pass";
+      const batch = document.getElementById("certBatch").value.trim();
+      const status = document.getElementById("certStatus").value;
+
+      const successAlert = document.getElementById("actionSuccess");
+      const errorAlert = document.getElementById("actionError");
+
+      successAlert.classList.add("d-none");
+      errorAlert.classList.add("d-none");
+
+      try {
+        await addCertificate({
+          certificateId,
+          studentName,
+          courseName,
+          issueDate,
+          grade,
+          batch,
+          status
+        });
+
+        // Set Link generator value
+        const verifyUrl = getVerifyUrl(certificateId);
+        document.getElementById("generatedLink").value = verifyUrl;
+
+        successAlert.classList.remove("d-none");
+        document.getElementById("addCertForm").reset();
+        
+        // Reset default date and focus ID input
+        if (dateInput) {
+          dateInput.value = new Date().toISOString().substring(0, 10);
+        }
+        document.getElementById("certId").focus();
+
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+
+        // Refresh records list
+        loadRecords();
+
+      } catch (err) {
+        errorAlert.innerText = "Error: " + err.message;
+        errorAlert.classList.remove("d-none");
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    });
+
+    // Copy Link button handler
+    document.getElementById("copyLinkBtn").addEventListener("click", function() {
+      const linkInput = document.getElementById("generatedLink");
+      if (linkInput.value) {
+        linkInput.select();
+        navigator.clipboard.writeText(linkInput.value);
+        alert("Verification link copied to clipboard!");
+      } else {
+        alert("Please generate a certificate first to create a link.");
+      }
+    });
+  </script>
+
+</body>
+
+</html>
