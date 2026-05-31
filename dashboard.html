@@ -244,7 +244,7 @@
       if (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1" || window.location.hostname === "[::1]") {
         origin = "https://intrex-digital.com";
       }
-      return `${origin}${window.location.pathname.replace('verify-admin.html', 'verify.html')}?id=${certificateId}`;
+      return `${origin}${window.location.pathname.replace('dashboard.html', 'verify.html')}?id=${certificateId}`;
     }
 
     // Set today's date in form by default
