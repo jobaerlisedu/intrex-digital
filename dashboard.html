@@ -102,12 +102,12 @@
                     <table class="table table-hover align-middle mb-0" id="studentTable">
                       <thead class="table-light">
                         <tr>
-                          <th class="small fw-semibold">Student Name</th>
-                          <th class="small fw-semibold">Certificate ID</th>
-                          <th class="small fw-semibold">Course</th>
-                          <th class="small fw-semibold">Batch</th>
-                          <th class="small fw-semibold">Status</th>
-                          <th class="small fw-semibold text-end">Actions</th>
+                          <th class="small fw-semibold text-center">Student Name</th>
+                          <th class="small fw-semibold text-center">Certificate ID</th>
+                          <th class="small fw-semibold text-center">Course</th>
+                          <th class="small fw-semibold text-center">Batch</th>
+                          <th class="small fw-semibold text-center">Status</th>
+                          <th class="small fw-semibold text-center">Actions</th>
                         </tr>
                       </thead>
                       <tbody id="studentTableBody">
@@ -352,12 +352,12 @@
 
         const tr = document.createElement("tr");
         tr.innerHTML = `
-          <td><strong>${record.studentName}</strong></td>
-          <td><code class="text-dark font-monospace">${record.certificateId}</code></td>
-          <td><span class="small">${record.courseName}</span></td>
-          <td><span class="badge bg-secondary">${record.batch || 'N/A'}</span></td>
-          <td><span class="badge ${record.status === 'Verified' ? 'bg-success' : 'bg-danger'}">${record.status}</span></td>
-          <td class="text-end">
+          <td class="text-center"><strong>${record.studentName}</strong></td>
+          <td class="text-center"><code class="text-dark font-monospace">${record.certificateId}</code></td>
+          <td class="text-center"><span class="small">${record.courseName}</span></td>
+          <td class="text-center"><span class="badge bg-secondary">${record.batch || 'N/A'}</span></td>
+          <td class="text-center"><span class="badge ${record.status === 'Verified' ? 'bg-success' : 'bg-danger'}">${record.status}</span></td>
+          <td class="text-center">
             <div class="btn-group gap-1">
               <button class="btn btn-sm btn-outline-primary copy-link-record" data-link="${verifyUrl}">
                 <i class="bi bi-link-45deg"></i> Link
