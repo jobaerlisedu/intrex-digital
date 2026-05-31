@@ -826,18 +826,40 @@ h6 {
   position: absolute;
   max-width: 280px;
   bottom: -40px;
-  left: -60px;
+  right: -30px;
+  left: auto;
 }
 @media (max-width: 991.98px) {
-  .hero__v6 .hero-img .img-card {
-    left: 10px;
-    max-width: 380px;
+  .hero__v6 {
+    padding: 5rem 0 2rem 0 !important;
   }
-}
-@media (max-width: 575.98px) {
+  .hero__v6 .hero-img {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+  .hero__v6 .hero-img .img-main {
+    -webkit-box-ordinal-group: 2;
+        -ms-flex-order: 1;
+            order: 1;
+  }
   .hero__v6 .hero-img .img-card {
-    left: 10px;
-    max-width: 280px;
+    -webkit-box-ordinal-group: 3;
+        -ms-flex-order: 2;
+            order: 2;
+    position: relative;
+    left: auto;
+    right: auto;
+    bottom: auto;
+    margin: 20px auto 0 auto;
+    max-width: 100%;
+    width: 100%;
   }
 }
 
