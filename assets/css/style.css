@@ -29,6 +29,11 @@ Buy Pro
   --nav-inverse-alt: #ffffff;
 }
 
+html,
+body {
+  overflow-x: hidden;
+}
+
 body {
   font: 1rem/1.7 "Inter", sans-serif;
   background-color: var(--bs-body-bg);
@@ -39,6 +44,7 @@ body {
 
 .site-wrap {
   position: relative;
+  overflow-x: hidden;
 }
 
 ::-moz-selection {
@@ -193,7 +199,8 @@ h6 {
   width: auto;
 }
 
-.form-control {
+.form-control,
+.form-select {
   padding-top: 10px;
   padding-bottom: 10px;
   border-width: 1px;
@@ -202,7 +209,8 @@ h6 {
   border-color: rgba(var(--inverse-color-rgb), 0.1);
 }
 
-.form-control:focus {
+.form-control:focus,
+.form-select:focus {
   outline: none;
   -webkit-box-shadow: none;
           box-shadow: none;
