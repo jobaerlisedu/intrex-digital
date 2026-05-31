@@ -1,4 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
+
+  /* ── Contact / Inquiry Form ─────────────────────────────────── */
   const contactForm = document.getElementById("contactForm");
   const successMessage = document.getElementById("successMessage");
   const errorMessage = document.getElementById("errorMessage");
@@ -55,4 +57,72 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
   }
+
+  /* ── Newsletter Form ────────────────────────────────────────── */
+  const newsletterForm = document.getElementById("newsletterForm");
+
+  if (newsletterForm) {
+    newsletterForm.addEventListener("submit", function (event) {
+      event.preventDefault();
+
+      const submitBtn = newsletterForm.querySelector('button[type="submit"]');
+      const feedback = document.getElementById("newsletterFeedback");
+      const originalBtnText = submitBtn.textContent;
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Subscribing...";
+      if (feedback) {
+        feedback.textContent = "";
+        feedback.className = "small mt-2";
+      }
+
+      const formData = new FormData(newsletterForm);
+      const endpoint = newsletterForm.dataset.formspree;
+
+      if (!endpoint) {
+        if (feedback) {
+          feedback.textContent = "Newsletter endpoint not configured.";
+          feedback.classList.add("text-danger");
+        }
+        submitBtn.disabled = false;
+        submitBtn.textContent = originalBtnText;
+        return;
+      }
+
+      fetch(endpoint, {
+        method: "POST",
+        body: formData,
+        headers: { Accept: "application/json" },
+      })
+        .then(function (response) {
+          submitBtn.disabled = false;
+          submitBtn.textContent = originalBtnText;
+          if (response.ok) {
+            newsletterForm.reset();
+            if (feedback) {
+              feedback.textContent = "✓ You're subscribed! Thank you.";
+              feedback.classList.add("text-success", "fw-semibold");
+            }
+          } else {
+            return response.json().then(function (data) {
+              if (feedback) {
+                feedback.textContent =
+                  data.errors
+                    ? data.errors.map(function (e) { return e.message; }).join(", ")
+                    : "Subscription failed. Please try again.";
+                feedback.classList.add("text-danger");
+              }
+            });
+          }
+        })
+        .catch(function () {
+          submitBtn.disabled = false;
+          submitBtn.textContent = originalBtnText;
+          if (feedback) {
+            feedback.textContent = "Network error. Please try again.";
+            feedback.classList.add("text-danger");
+          }
+        });
+    });
+  }
+
 });

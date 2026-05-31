@@ -403,10 +403,11 @@
             </p>
           </div>
           <div class="col-md-5">
-            <form class="d-flex gap-2">
-              <input class="form-control" type="email" placeholder="Enter your email" required="">
+            <form id="newsletterForm" class="d-flex gap-2" data-formspree="https://formspree.io/f/xlgvklyb">
+              <input class="form-control" type="email" name="email" placeholder="Enter your email" required="">
               <button class="btn btn-primary fs-6" type="submit">Subscribe</button>
             </form>
+            <div id="newsletterFeedback" class="small mt-2"></div>
           </div>
         </div>
         <div class="row justify-content-between mb-5 g-xl-5">
