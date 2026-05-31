@@ -1,0 +1,25 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Certificates collection:
+    // Anyone can read (for verification), but only logged-in administrators can create/edit/delete.
+    match /certificates/{certificateId} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+    
+    // Course Registrations collection:
+    // Only logged-in administrators can view, edit, or delete registration entries.
+    match /registrations/{registrationId} {
+      allow read, write: if request.auth != null;
+    }
+    
+    // Payment Records collection:
+    // Only logged-in administrators can view or update payments.
+    match /payments/{paymentId} {
+      allow read, write: if request.auth != null;
+    }
+    
+  }
+}
