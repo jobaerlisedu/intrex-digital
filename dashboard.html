@@ -884,13 +884,10 @@
       AOS.init({ duration: 800, once: true });
     }
 
-    // Helper to generate verification link, using production domain if running locally
+    // Helper to generate verification link (always uses production domain)
     function getVerifyUrl(certificateId) {
-      let origin = window.location.origin;
-      if (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1" || window.location.hostname === "[::1]") {
-        origin = "https://intrex-digital.com";
-      }
-      return `${origin}${window.location.pathname.replace('dashboard.html', 'verify.html')}?id=${certificateId}`;
+      const origin = "https://intrex-digital.com";
+      return `${origin}/verify.html?id=${certificateId}`;
     }
 
     // Set today's date in form by default
