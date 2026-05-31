@@ -347,7 +347,6 @@
                 <ul class="dropdown-menu">
                   <li><a class="nav-link dropdown-item" href="about/background.html">Background</a></li>
                   <li><a class="nav-link dropdown-item" href="about/team.html">Our Team</a></li>
-                  <li><a class="nav-link dropdown-item active" href="verify.html">Verify Certificate</a></li>
                 </ul>
               </li>
               <li class="nav-item"><a class="nav-link" href="index.html#services">Services</a></li>
@@ -598,11 +597,8 @@
             day: 'numeric'
           });
 
-          let origin = window.location.origin;
-          if (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1" || window.location.hostname === "[::1]") {
-            origin = "https://intrex-digital.com";
-          }
-          const verifyUrl = `${origin}${window.location.pathname}?id=${certData.certificateId}`;
+          const origin = "https://intrex-digital.com";
+          const verifyUrl = `${origin}/verify.html?id=${certData.certificateId}`;
 
           // Generate Certificate Template Markup
           certResult.innerHTML = `
@@ -623,6 +619,7 @@
                 
                 <div class="cert-footer-row">
                   <div class="text-start">
+                    <div class="cert-meta-item"><strong>Student ID:</strong> ${certData.studentId || 'N/A'}</div>
                     <div class="cert-meta-item"><strong>Certificate ID:</strong> ${certData.certificateId}</div>
                     <div class="cert-meta-item"><strong>Issue Date:</strong> ${formattedDate}</div>
                     <div class="cert-meta-item"><strong>Grade:</strong> ${certData.grade}</div>
