@@ -18,6 +18,52 @@
   <link href="assets/vendors/bootstrap-icons/font/bootstrap-icons.min.css" rel="stylesheet">
   <link href="assets/vendors/aos/aos.css" rel="stylesheet">
   <link href="assets/css/style.css" rel="stylesheet">
+  <style>
+    /* ── Quick-fill autocomplete dropdown ── */
+    .qf-wrapper { position: relative; }
+    .qf-dropdown {
+      position: absolute;
+      top: calc(100% + 4px);
+      left: 0;
+      right: 0;
+      z-index: 9999;
+      background: var(--bs-body-bg, #fff);
+      border: 1px solid var(--bs-border-color, #dee2e6);
+      border-radius: .5rem;
+      box-shadow: 0 8px 24px rgba(0,0,0,.12);
+      overflow: hidden;
+      display: none;
+      max-height: 260px;
+      overflow-y: auto;
+    }
+    .qf-dropdown.show { display: block; }
+    .qf-item {
+      display: flex;
+      align-items: center;
+      gap: .55rem;
+      padding: .45rem .85rem;
+      cursor: pointer;
+      font-size: .83rem;
+      transition: background .15s;
+      border-bottom: 1px solid var(--bs-border-color-translucent, rgba(0,0,0,.06));
+    }
+    .qf-item:last-child { border-bottom: none; }
+    .qf-item:hover, .qf-item.active {
+      background: rgba(var(--bs-primary-rgb, 13,110,253),.10);
+    }
+    .qf-badge {
+      font-size: .72rem;
+      padding: .18em .5em;
+      border-radius: .3em;
+      background: var(--bs-primary);
+      color: #fff;
+      font-weight: 600;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .qf-name { color: var(--bs-body-color); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .qf-empty { padding: .5rem .85rem; font-size: .83rem; color: var(--bs-secondary-color); }
+  </style>
   <script>
     (function () {
       const storedTheme = localStorage.getItem('theme') || 'light';
@@ -469,12 +515,13 @@
                             <i class="bi bi-people me-2 text-primary"></i>Student Registration Records
                           </h3>
                           <div class="d-flex align-items-center gap-2 flex-wrap">
-                            <div class="input-group" style="width: auto; max-width: 260px;">
-                              <input type="text" id="searchRegStudent" class="form-control"
-                                placeholder="Search by Student ID, name...">
+                            <div class="input-group qf-wrapper" style="width: auto; max-width: 260px;">
+                              <input type="text" id="searchRegStudent" class="form-control" autocomplete="off"
+                                placeholder="Search by ID number, name...">
                               <button id="searchRegBtn" class="btn btn-outline-primary" type="button" title="Search">
                                 <i class="bi bi-search"></i>
                               </button>
+                              <div id="qfDropReg" class="qf-dropdown"></div>
                             </div>
                             <select id="courseRegFilter" class="form-select" style="width: auto; min-width: 140px;">
                               <option value="all">All Courses</option>
@@ -534,12 +581,13 @@
                             <i class="bi bi-credit-card me-2 text-primary"></i>Course Payment Records
                           </h3>
                           <div class="d-flex align-items-center gap-2 flex-wrap">
-                            <div class="input-group" style="width: auto; max-width: 260px;">
-                              <input type="text" id="searchPayStudent" class="form-control"
-                                placeholder="Search by Student ID, name...">
+                            <div class="input-group qf-wrapper" style="width: auto; max-width: 260px;">
+                              <input type="text" id="searchPayStudent" class="form-control" autocomplete="off"
+                                placeholder="Search by ID number, name...">
                               <button id="searchPayBtn" class="btn btn-outline-primary" type="button" title="Search">
                                 <i class="bi bi-search"></i>
                               </button>
+                              <div id="qfDropPay" class="qf-dropdown"></div>
                             </div>
                             <select id="paymentStatusFilter" class="form-select" style="width: auto; min-width: 140px;">
                               <option value="all">All Statuses</option>
@@ -733,12 +781,13 @@
                             <i class="bi bi-award me-2 text-primary"></i>Student list by Batch
                           </h3>
                           <div class="d-flex align-items-center gap-2 flex-wrap">
-                            <div class="input-group" style="width: auto; max-width: 260px;">
-                              <input type="text" id="searchCertId" class="form-control"
-                                placeholder="Search by Student ID, name...">
+                            <div class="input-group qf-wrapper" style="width: auto; max-width: 260px;">
+                              <input type="text" id="searchCertId" class="form-control" autocomplete="off"
+                                placeholder="Search by ID number, name...">
                               <button id="searchBtn" class="btn btn-outline-primary" type="button" title="Search">
                                 <i class="bi bi-search"></i>
                               </button>
+                              <div id="qfDropCert" class="qf-dropdown"></div>
                             </div>
                             <select id="batchFilter" class="form-select" style="width: auto; min-width: 140px;">
                               <option value="all">All Batches</option>
@@ -2085,6 +2134,110 @@
     };
     document.getElementById("paymentStatusFilter").onchange = renderFilteredPayments;
     document.getElementById("refreshPayListBtn").onclick = loadPayments;
+
+    // ============================================================
+    // QUICK-FILL AUTOCOMPLETE
+    // ============================================================
+    function attachQuickFill(inputId, dropId, getRecords, getLabel, onSelect) {
+      const input = document.getElementById(inputId);
+      const drop  = document.getElementById(dropId);
+      if (!input || !drop) return;
+
+      const extractNum = (id) => {
+        if (!id) return '';
+        const m = id.match(/-(495\d+)$/i);
+        return m ? m[1] : '';
+      };
+
+      let activeIdx = -1;
+
+      function buildItems(val) {
+        const q = val.toLowerCase().trim();
+        if (q.length < 2) { close(); return; }
+        const records = getRecords();
+        const matches = records.filter(r => {
+          const label = getLabel(r).toLowerCase();
+          const num   = extractNum(r.studentId);
+          return label.includes(q) ||
+                 (r.studentId && r.studentId.toLowerCase().includes(q)) ||
+                 num.includes(q);
+        }).slice(0, 7);
+
+        if (matches.length === 0) {
+          drop.innerHTML = '<div class="qf-empty">No matches found</div>';
+        } else {
+          drop.innerHTML = matches.map((r, i) => {
+            const num  = extractNum(r.studentId) || r.studentId || '';
+            const name = getLabel(r);
+            return `<div class="qf-item" data-idx="${i}" data-value="${num}">
+              <span class="qf-badge">${num}</span>
+              <span class="qf-name">${name}</span>
+            </div>`;
+          }).join('');
+          drop.querySelectorAll('.qf-item').forEach(el => {
+            el.addEventListener('mousedown', e => {
+              e.preventDefault();
+              const val = el.dataset.value;
+              input.value = val;
+              close();
+              onSelect();
+            });
+          });
+        }
+        activeIdx = -1;
+        drop.classList.add('show');
+      }
+
+      function close() {
+        drop.classList.remove('show');
+        drop.innerHTML = '';
+        activeIdx = -1;
+      }
+
+      function navigate(dir) {
+        const items = drop.querySelectorAll('.qf-item');
+        if (!items.length) return;
+        items[activeIdx]?.classList.remove('active');
+        activeIdx = (activeIdx + dir + items.length) % items.length;
+        const active = items[activeIdx];
+        active.classList.add('active');
+        active.scrollIntoView({ block: 'nearest' });
+      }
+
+      input.addEventListener('input', () => buildItems(input.value));
+      input.addEventListener('focus', () => { if (input.value.length >= 2) buildItems(input.value); });
+      input.addEventListener('blur',  () => setTimeout(close, 150));
+      input.addEventListener('keydown', e => {
+        if (e.key === 'ArrowDown')  { e.preventDefault(); navigate(1); }
+        else if (e.key === 'ArrowUp') { e.preventDefault(); navigate(-1); }
+        else if (e.key === 'Enter') {
+          const active = drop.querySelector('.qf-item.active');
+          if (active) { e.preventDefault(); input.value = active.dataset.value; close(); onSelect(); }
+          else { close(); onSelect(); }
+        }
+        else if (e.key === 'Escape') close();
+      });
+    }
+
+    // Wire up all three search inputs
+    attachQuickFill(
+      'searchRegStudent', 'qfDropReg',
+      () => allRegistrations,
+      r => r.fullName || '',
+      renderFilteredRegistrations
+    );
+    attachQuickFill(
+      'searchPayStudent', 'qfDropPay',
+      () => allPayments,
+      p => p.studentName || '',
+      renderFilteredPayments
+    );
+    attachQuickFill(
+      'searchCertId', 'qfDropCert',
+      () => allRecords,
+      r => r.studentName || '',
+      renderFilteredRecords
+    );
   </script>
 
   <!-- Edit Payment Modal -->
