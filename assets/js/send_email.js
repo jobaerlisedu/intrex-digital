@@ -15,15 +15,44 @@ document.addEventListener("DOMContentLoaded", function () {
       successMessage.classList.add("d-none");
       errorMessage.classList.add("d-none");
 
-      // Simulate sending email (AJAX request)
-      setTimeout(function () {
+      const formData = new FormData(contactForm);
+      const endpoint = contactForm.dataset.formspree;
+
+      if (!endpoint) {
+        errorMessage.textContent = "Form endpoint not configured.";
+        errorMessage.classList.remove("d-none");
         submitBtn.disabled = false;
         submitBtn.textContent = originalBtnText;
+        return;
+      }
 
-        // Success simulation
-        successMessage.classList.remove("d-none");
-        contactForm.reset();
-      }, 1500);
+      fetch(endpoint, {
+        method: "POST",
+        body: formData,
+        headers: { Accept: "application/json" },
+      })
+        .then(function (response) {
+          submitBtn.disabled = false;
+          submitBtn.textContent = originalBtnText;
+          if (response.ok) {
+            successMessage.classList.remove("d-none");
+            contactForm.reset();
+          } else {
+            return response.json().then(function (data) {
+              errorMessage.textContent =
+                data.errors
+                  ? data.errors.map(function (e) { return e.message; }).join(", ")
+                  : "Request failed. Please try again.";
+              errorMessage.classList.remove("d-none");
+            });
+          }
+        })
+        .catch(function () {
+          submitBtn.disabled = false;
+          submitBtn.textContent = originalBtnText;
+          errorMessage.textContent = "Network error. Please check your connection and try again.";
+          errorMessage.classList.remove("d-none");
+        });
     });
   }
 });
