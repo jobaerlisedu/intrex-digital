@@ -599,6 +599,10 @@
                               title="Refresh List">
                               <i class="bi bi-arrow-clockwise"></i>
                             </button>
+                            <button id="bulkReceiptBtn" class="btn btn-sm btn-outline-success" type="button"
+                              title="Download all visible receipts">
+                              <i class="bi bi-file-earmark-arrow-down me-1"></i>Receipts
+                            </button>
                           </div>
                         </div>
 
@@ -2008,9 +2012,14 @@
           <td class="text-center">${methodHtml}</td>
           <td class="text-center"><span class="badge ${statusBadgeClass}">${record.status || 'Unpaid'}</span></td>
           <td class="text-center">
-            <button class="btn btn-sm btn-outline-primary edit-payment" data-id="${record.studentId}">
-              <i class="bi bi-pencil-square"></i> Update
-            </button>
+            <div class="btn-group gap-1">
+              <button class="btn btn-sm btn-outline-primary edit-payment" data-id="${record.studentId}">
+                <i class="bi bi-pencil-square"></i> Update
+              </button>
+              <button class="btn btn-sm btn-outline-success dl-receipt" data-id="${record.studentId}">
+                <i class="bi bi-file-earmark-arrow-down"></i> Receipt
+              </button>
+            </div>
           </td>
         `;
         tbody.appendChild(tr);
@@ -2021,9 +2030,16 @@
         btn.onclick = function () {
           const regId = btn.getAttribute("data-id");
           const record = allPayments.find(p => p.studentId === regId);
-          if (record) {
-            openPaymentModal(record);
-          }
+          if (record) openPaymentModal(record);
+        };
+      });
+
+      // Bind receipt download buttons
+      tbody.querySelectorAll(".dl-receipt").forEach(btn => {
+        btn.onclick = function () {
+          const regId = btn.getAttribute("data-id");
+          const record = allPayments.find(p => p.studentId === regId);
+          if (record) downloadReceipt(record);
         };
       });
     }
@@ -2238,6 +2254,151 @@
       r => r.studentName || '',
       renderFilteredRecords
     );
+
+    // ============================================================
+    // PAYMENT RECEIPT GENERATOR
+    // ============================================================
+    function downloadReceipt(record) {
+      const effectiveTotal = Math.max(0, (record.totalFee || 0) - (record.discount || 0));
+      const due = Math.max(0, effectiveTotal - (record.amountPaid || 0));
+      const statusColor = record.status === 'Fully Paid' ? '#16a34a' :
+                          record.status === 'Partially Paid' ? '#d97706' : '#dc2626';
+      const now = new Date();
+      const printDate = now.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+      const printTime = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+
+      const txRow = (record.paymentType && record.paymentType !== 'Cash' && record.transactionId)
+        ? `<tr><td>Transaction ID</td><td><strong>${record.transactionId}</strong></td></tr>` : '';
+
+      const html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Payment Receipt — ${record.studentId}</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; background: #f4f6fa; color: #1e293b; }
+    .page { max-width: 640px; margin: 32px auto; background: #fff; border-radius: 16px;
+            box-shadow: 0 4px 32px rgba(0,0,0,.10); overflow: hidden; }
+    .header { background: linear-gradient(135deg, #1d4ed8 0%, #3b82f6 100%);
+              color: #fff; padding: 32px 36px 24px; }
+    .header h1 { font-size: 1.5rem; font-weight: 700; letter-spacing: -.5px; }
+    .header p { font-size: .82rem; opacity: .85; margin-top: 4px; }
+    .receipt-meta { display: flex; justify-content: space-between; align-items: flex-start;
+                    margin-top: 20px; font-size: .8rem; opacity: .9; gap: 16px; }
+    .receipt-no { font-size: .95rem; font-weight: 700; }
+    .body { padding: 28px 36px; }
+    .student-box { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px;
+                   padding: 16px 20px; margin-bottom: 24px; }
+    .student-box h2 { font-size: 1.1rem; font-weight: 700; margin-bottom: 4px; }
+    .student-box p { font-size: .82rem; color: #64748b; }
+    .label { font-size: .72rem; text-transform: uppercase; letter-spacing: .06em;
+             color: #94a3b8; font-weight: 600; margin-bottom: 12px; }
+    table.details { width: 100%; border-collapse: collapse; margin-bottom: 24px; }
+    table.details td { padding: 8px 0; font-size: .875rem; border-bottom: 1px solid #f1f5f9; }
+    table.details td:first-child { color: #64748b; width: 52%; }
+    table.details td:last-child { text-align: right; }
+    .divider { border: none; border-top: 2px dashed #e2e8f0; margin: 16px 0; }
+    .totals { background: #f8fafc; border-radius: 10px; padding: 16px 20px; }
+    .totals table { width: 100%; border-collapse: collapse; }
+    .totals td { padding: 6px 0; font-size: .875rem; }
+    .totals td:last-child { text-align: right; font-weight: 600; }
+    .totals .grand td { font-size: 1rem; font-weight: 700; border-top: 2px solid #e2e8f0; padding-top: 10px; }
+    .status-pill { display: inline-block; padding: 4px 16px; border-radius: 999px; font-size: .78rem;
+                   font-weight: 700; color: #fff; background: ${statusColor}; margin-top: 16px; }
+    .footer { background: #f8fafc; border-top: 1px solid #e2e8f0; padding: 18px 36px;
+              display: flex; justify-content: space-between; align-items: center; font-size: .78rem; color: #94a3b8; }
+    .print-btn { display: block; margin: 0 auto 24px; padding: 10px 32px; background: #1d4ed8;
+                 color: #fff; border: none; border-radius: 8px; font-size: .9rem; font-weight: 600;
+                 cursor: pointer; letter-spacing: .02em; }
+    .print-btn:hover { background: #1e40af; }
+    @media print {
+      body { background: #fff; }
+      .page { box-shadow: none; margin: 0; border-radius: 0; }
+      .print-btn { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="header">
+      <h1>🎓 Intrex Digital Hub</h1>
+      <p>Professional IT Training &amp; Certification Center</p>
+      <div class="receipt-meta">
+        <div>
+          <div style="opacity:.75; font-size:.75rem;">RECEIPT NUMBER</div>
+          <div class="receipt-no">${record.studentId}</div>
+        </div>
+        <div style="text-align:right;">
+          <div style="opacity:.75; font-size:.75rem;">ISSUED ON</div>
+          <div>${printDate}</div>
+          <div style="opacity:.75;">${printTime}</div>
+        </div>
+      </div>
+    </div>
+    <div class="body">
+      <button class="print-btn" onclick="window.print()">🖨️ Print / Save as PDF</button>
+      <div class="student-box">
+        <h2>${record.studentName}</h2>
+        <p>${record.courseName}</p>
+        <p style="margin-top:4px; font-family:monospace; font-size:.8rem;">${record.studentId}</p>
+      </div>
+
+      <div class="label">Payment Details</div>
+      <table class="details">
+        <tr><td>Payment Method</td><td><strong>${record.paymentType || 'Cash'}</strong></td></tr>
+        ${txRow}
+        <tr><td>Payment Status</td><td><strong style="color:${statusColor}">${record.status || 'Unpaid'}</strong></td></tr>
+      </table>
+
+      <div class="label">Fee Breakdown</div>
+      <div class="totals">
+        <table>
+          <tr><td style="color:#64748b;">Course Fee</td><td>${(record.totalFee || 0).toLocaleString()} BDT</td></tr>
+          <tr><td style="color:#64748b;">Discount</td><td style="color:#16a34a;">− ${(record.discount || 0).toLocaleString()} BDT</td></tr>
+          <tr><td style="color:#64748b;">Net Payable</td><td>${effectiveTotal.toLocaleString()} BDT</td></tr>
+          <tr class="grand"><td>Amount Paid</td><td style="color:#16a34a;">${(record.amountPaid || 0).toLocaleString()} BDT</td></tr>
+          <tr class="grand"><td>Balance Due</td><td style="color:${due > 0 ? '#dc2626' : '#16a34a'};">${due.toLocaleString()} BDT</td></tr>
+        </table>
+        <div><span class="status-pill">${record.status || 'Unpaid'}</span></div>
+      </div>
+    </div>
+    <div class="footer">
+      <span>Intrex Digital Hub &mdash; Official Payment Receipt</span>
+      <span>Generated: ${printDate}</span>
+    </div>
+  </div>
+</body>
+</html>`;
+
+      const win = window.open('', '_blank', 'width=700,height=900');
+      if (win) {
+        win.document.write(html);
+        win.document.close();
+      }
+    }
+
+    // Bulk receipts button — prints all currently visible payment rows
+    document.getElementById('bulkReceiptBtn').addEventListener('click', () => {
+      const visible = allPayments.filter(p => {
+        const statusVal = document.getElementById('paymentStatusFilter').value;
+        const searchVal = document.getElementById('searchPayStudent').value.toLowerCase().trim();
+        const extractNum = id => { if (!id) return ''; const m = id.match(/-(495\d+)$/i); return m ? m[1] : ''; };
+        const matchStatus = statusVal === 'all' || p.status === statusVal;
+        const matchSearch = !searchVal ||
+          (p.studentId && p.studentId.toLowerCase().includes(searchVal)) ||
+          extractNum(p.studentId).includes(searchVal) ||
+          (p.studentName && p.studentName.toLowerCase().includes(searchVal)) ||
+          (p.email && p.email.toLowerCase().includes(searchVal));
+        return matchStatus && matchSearch;
+      });
+      if (visible.length === 0) { alert('No records visible to print.'); return; }
+      if (visible.length > 15) {
+        if (!confirm(`This will open ${visible.length} receipt windows. Continue?`)) return;
+      }
+      visible.forEach((r, i) => setTimeout(() => downloadReceipt(r), i * 300));
+    });
   </script>
 
   <!-- Edit Payment Modal -->
