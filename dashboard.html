@@ -30,22 +30,13 @@
 
   <div class="site-wrap">
 
-    <!-- ======= Header =======-->
-    <header class="fbs__net-navbar navbar navbar-expand-lg dark relative" aria-label="navbar">
-      <div class="container-fluid px-md-5 d-flex align-items-center justify-content-between">
-        <a class="navbar-brand w-auto d-flex align-items-center gap-2 text-decoration-none" href="index.html">
-          <img src="assets/images/logo/intrex-logo.svg" alt="Intrex Digital Hub Logo" style="height: 35px; width: auto;">
-        </a>
-      </div>
-    </header>
-
     <!-- ======= Admin Dashboard Section =======-->
-    <section class="section">
+    <section class="section min-vh-100 d-flex flex-column justify-content-center py-5">
       <div class="container-fluid px-md-5">
         <div class="row justify-content-center">
-          
+
           <!-- 1. LOGIN INTERFACE -->
-          <div id="loginSection" class="col-md-4" data-aos="fade-up">
+          <div id="loginSection" class="col-md-3" data-aos="fade-up">
             <div class="card p-4 rounded-4 shadow-sm border">
               <div class="text-center mb-4">
                 <img src="assets/images/logo/intrex-logo.svg" alt="Logo" class="mb-3" style="height: 40px;">
@@ -58,7 +49,8 @@
               <form id="loginForm">
                 <div class="mb-3">
                   <label for="adminEmail" class="form-label small fw-semibold">Email Address</label>
-                  <input type="email" class="form-control" id="adminEmail" required placeholder="admin@intrex-digital.com">
+                  <input type="email" class="form-control" id="adminEmail" required
+                    placeholder="admin@intrex-digital.com">
                 </div>
                 <div class="mb-3">
                   <label for="adminPassword" class="form-label small fw-semibold">Password</label>
@@ -88,15 +80,18 @@
               <div class="col-lg-7">
                 <!-- BATCH WISE STUDENT LIST CARD -->
                 <div class="card p-4 rounded-4 shadow-sm border h-100">
-                  <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom flex-wrap gap-2">
+                  <div
+                    class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom flex-wrap gap-2">
                     <h3 class="h5 fw-bold text-heading-color mb-0">
                       <i class="bi bi-people me-2 text-primary"></i>Student Records by Batch
                     </h3>
                     <div class="d-flex align-items-center gap-2">
-                      <select id="batchFilter" class="form-select form-select-sm" style="width: auto; min-width: 150px;">
+                      <select id="batchFilter" class="form-select form-select-sm"
+                        style="width: auto; min-width: 150px;">
                         <option value="all">All Batches</option>
                       </select>
-                      <button id="refreshListBtn" class="btn btn-sm btn-outline-secondary" type="button" title="Refresh List">
+                      <button id="refreshListBtn" class="btn btn-sm btn-outline-secondary" type="button"
+                        title="Refresh List">
                         <i class="bi bi-arrow-clockwise"></i>
                       </button>
                     </div>
@@ -132,38 +127,48 @@
               <div class="col-lg-5 d-flex flex-column gap-4">
                 <!-- GENERATOR CARD -->
                 <div class="card p-4 rounded-4 shadow-sm border">
-                  <h3 class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color"><i class="bi bi-patch-plus me-2 text-primary"></i>Generate Certificate Record</h3>
-                  
-                  <div id="actionSuccess" class="alert alert-success d-none alert-dismissible fade show small" role="alert">
+                  <h3 class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color"><i
+                      class="bi bi-patch-plus me-2 text-primary"></i>Generate Certificate Record</h3>
+
+                  <div id="actionSuccess" class="alert alert-success d-none alert-dismissible fade show small"
+                    role="alert">
                     <span>Certificate created successfully!</span>
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                   </div>
-                  <div id="actionError" class="alert alert-danger d-none alert-dismissible fade show small" role="alert">
+                  <div id="actionError" class="alert alert-danger d-none alert-dismissible fade show small"
+                    role="alert">
                     <span>An error occurred. Please try again.</span>
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                   </div>
 
                   <form id="addCertForm">
-                    
+
                     <div class="row g-3 mb-3">
                       <div class="col-md-6">
-                        <label class="form-label small fw-semibold mb-1" for="certId">Certificate ID <span class="text-danger">*</span></label>
+                        <label class="form-label small fw-semibold mb-1" for="certId">Certificate ID <span
+                            class="text-danger">*</span></label>
                         <div class="input-group">
-                          <span class="input-group-text bg-body-secondary border-end-0 fw-semibold text-muted" style="font-size: 0.9rem;">INTREX-CERT-</span>
-                          <input type="text" class="form-control ps-1" id="certId" required placeholder="495001" minlength="1">
+                          <span class="input-group-text bg-body-secondary border-end-0 fw-semibold text-muted"
+                            style="font-size: 0.9rem;">INTREX-CERT-</span>
+                          <input type="text" class="form-control ps-1" id="certId" required placeholder="495001"
+                            minlength="1">
                         </div>
-                        <span class="text-muted small" style="font-size: 0.75rem;">Creates document ID: <strong>INTREX-CERT-495XXX</strong></span>
+                        <span class="text-muted small" style="font-size: 0.75rem;">Creates document ID:
+                          <strong>INTREX-CERT-495XXX</strong></span>
                       </div>
 
                       <div class="col-md-6">
-                        <label class="form-label small fw-semibold mb-1" for="studentName">Student Full Name <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" id="studentName" required placeholder="e.g. Jobaer Hossain">
+                        <label class="form-label small fw-semibold mb-1" for="studentName">Student Full Name <span
+                            class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="studentName" required
+                          placeholder="e.g. Jobaer Hossain">
                       </div>
                     </div>
 
                     <div class="row g-3 mb-3">
                       <div class="col-md-6">
-                        <label class="form-label small fw-semibold mb-1" for="courseName">Course <span class="text-danger">*</span></label>
+                        <label class="form-label small fw-semibold mb-1" for="courseName">Course <span
+                            class="text-danger">*</span></label>
                         <select class="form-select" id="courseName" required>
                           <option value="" disabled selected>Select Course</option>
                           <option value="CompTIA A+">CompTIA A+</option>
@@ -176,7 +181,8 @@
                       </div>
 
                       <div class="col-md-6">
-                        <label class="form-label small fw-semibold mb-1" for="issueDate">Issue Date <span class="text-danger">*</span></label>
+                        <label class="form-label small fw-semibold mb-1" for="issueDate">Issue Date <span
+                            class="text-danger">*</span></label>
                         <input type="date" class="form-control" id="issueDate" required>
                       </div>
                     </div>
@@ -188,7 +194,8 @@
                       </div>
 
                       <div class="col-md-4">
-                        <label class="form-label small fw-semibold mb-1" for="certBatch">Batch <span class="text-danger">*</span></label>
+                        <label class="form-label small fw-semibold mb-1" for="certBatch">Batch <span
+                            class="text-danger">*</span></label>
                         <input type="text" class="form-control" id="certBatch" placeholder="e.g. Batch-01" required>
                       </div>
 
@@ -209,19 +216,21 @@
 
                 <!-- QUICK LOOKUP FOR TESTING -->
                 <div class="card p-4 rounded-4 shadow-sm border">
-                  <h3 class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color"><i class="bi bi-link-45deg me-2 text-primary"></i>Direct Link Generator</h3>
+                  <h3 class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color"><i
+                      class="bi bi-link-45deg me-2 text-primary"></i>Direct Link Generator</h3>
                   <p class="text-muted small">Generate verification link to send directly to students:</p>
-                  
+
                   <div class="input-group">
                     <input type="text" id="generatedLink" class="form-control bg-body-secondary" readonly>
-                    <button id="copyLinkBtn" class="btn btn-outline-primary" type="button"><i class="bi bi-clipboard"></i> Copy Link</button>
+                    <button id="copyLinkBtn" class="btn btn-outline-primary" type="button"><i
+                        class="bi bi-clipboard"></i> Copy Link</button>
                   </div>
                 </div>
               </div>
             </div>
 
+          </div>
         </div>
-      </div>
     </section>
 
   </div>
@@ -259,7 +268,7 @@
     async function loadRecords() {
       const tbody = document.getElementById("studentTableBody");
       const batchFilter = document.getElementById("batchFilter");
-      
+
       tbody.innerHTML = `
         <tr>
           <td colspan="6" class="text-center py-4 text-muted">
@@ -271,11 +280,11 @@
 
       try {
         allRecords = await getAllCertificates();
-        
+
         // Populate batch filter dropdown
         const currentSelection = batchFilter.value;
         batchFilter.innerHTML = '<option value="all">All Batches</option>';
-        
+
         // Find unique batches
         const batches = new Set();
         allRecords.forEach(r => {
@@ -283,7 +292,7 @@
             batches.add(r.batch.trim());
           }
         });
-        
+
         // Sort and add batches to dropdown
         Array.from(batches).sort().forEach(batch => {
           const option = document.createElement("option");
@@ -314,7 +323,7 @@
     function renderFilteredRecords() {
       const tbody = document.getElementById("studentTableBody");
       const filter = document.getElementById("batchFilter").value;
-      
+
       let filtered = allRecords;
       if (filter !== "all") {
         filtered = allRecords.filter(r => r.batch === filter);
@@ -335,7 +344,7 @@
       tbody.innerHTML = "";
       filtered.forEach(record => {
         const verifyUrl = getVerifyUrl(record.certificateId);
-        
+
         const tr = document.createElement("tr");
         tr.innerHTML = `
           <td><strong>${record.studentName}</strong></td>
@@ -359,10 +368,10 @@
 
       // Bind copy actions to list buttons
       document.querySelectorAll(".copy-link-record").forEach(btn => {
-        btn.onclick = function() {
+        btn.onclick = function () {
           const link = btn.getAttribute("data-link");
           navigator.clipboard.writeText(link);
-          
+
           // Micro-animation / feedback
           const origText = btn.innerHTML;
           btn.innerHTML = '<i class="bi bi-check-lg"></i> Copied';
@@ -378,15 +387,15 @@
 
       // Bind delete actions to list buttons
       document.querySelectorAll(".delete-record").forEach(btn => {
-        btn.onclick = async function() {
+        btn.onclick = async function () {
           const certId = btn.getAttribute("data-id");
           const name = btn.getAttribute("data-name");
-          
+
           if (confirm(`Are you sure you want to delete the certificate record for "${name}" (${certId})? This action cannot be undone.`)) {
             try {
               btn.disabled = true;
               btn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status"></span>';
-              
+
               await deleteCertificate(certId);
               loadRecords();
             } catch (err) {
@@ -425,7 +434,7 @@
     });
 
     // Login Form Handler
-    document.getElementById("loginForm").addEventListener("submit", async function(e) {
+    document.getElementById("loginForm").addEventListener("submit", async function (e) {
       e.preventDefault();
       const email = document.getElementById("adminEmail").value.trim();
       const password = document.getElementById("adminPassword").value;
@@ -442,7 +451,7 @@
     });
 
     // Logout Handler
-    document.getElementById("logoutBtn").addEventListener("click", async function() {
+    document.getElementById("logoutBtn").addEventListener("click", async function () {
       try {
         await logoutAdmin();
       } catch (err) {
@@ -451,9 +460,9 @@
     });
 
     // Add Certificate Form Handler
-    document.getElementById("addCertForm").addEventListener("submit", async function(e) {
+    document.getElementById("addCertForm").addEventListener("submit", async function (e) {
       e.preventDefault();
-      
+
       const rawInput = document.getElementById("certId").value.trim();
       const certificateId = "INTREX-CERT-" + rawInput;
       const studentName = document.getElementById("studentName").value.trim();
@@ -486,7 +495,7 @@
 
         successAlert.classList.remove("d-none");
         document.getElementById("addCertForm").reset();
-        
+
         // Reset default date and focus ID input
         if (dateInput) {
           dateInput.value = new Date().toISOString().substring(0, 10);
@@ -506,7 +515,7 @@
     });
 
     // Copy Link button handler
-    document.getElementById("copyLinkBtn").addEventListener("click", function() {
+    document.getElementById("copyLinkBtn").addEventListener("click", function () {
       const linkInput = document.getElementById("generatedLink");
       if (linkInput.value) {
         linkInput.select();
