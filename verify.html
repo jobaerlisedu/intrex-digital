@@ -26,171 +26,22 @@
 
   <!-- Custom print styling and certificate visual CSS -->
   <style>
-    /* Certificate Design */
-    .certificate-container {
+    /* Verification Report Card Design */
+    .verification-table-card {
       background: #fff;
       color: #333;
       font-family: 'Inter', sans-serif;
-      border: 20px solid #215C5C;
-      padding: 40px;
-      position: relative;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-      border-radius: 8px;
-      margin-top: 30px;
-      background-image: radial-gradient(circle, rgba(33, 92, 92, 0.03) 1px, transparent 1px);
-      background-size: 20px 20px;
       max-width: 850px;
       width: 100%;
-      margin-left: auto;
-      margin-right: auto;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      box-sizing: border-box;
-    }
-
-    @media (min-width: 768px) {
-      .certificate-container {
-        min-height: 600px;
-      }
-    }
-
-    .certificate-inner-border {
-      border: 2px solid #CCE8C9;
-      padding: 30px;
-      text-align: center;
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      flex-grow: 1;
-      height: 100%;
-    }
-
-    .cert-logo {
-      height: 60px;
-      width: auto;
-      margin-bottom: 25px;
-    }
-
-    .cert-title {
-      font-family: 'Lato', sans-serif;
-      font-size: 2.8rem;
-      font-weight: 900;
-      color: #215C5C;
-      margin-bottom: 10px;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-    }
-
-    .cert-subtitle {
-      font-size: 1rem;
-      letter-spacing: 4px;
-      text-transform: uppercase;
-      color: #777;
-      margin-bottom: 30px;
-      font-weight: 600;
-    }
-
-    .cert-recipient-label {
-      font-size: 1.1rem;
-      font-style: italic;
-      color: #555;
-      margin-bottom: 15px;
-    }
-
-    .cert-name {
-      font-family: 'Lato', sans-serif;
-      font-size: 2.5rem;
-      font-weight: 700;
-      color: #16181B;
-      display: inline-block;
-      padding-bottom: 5px;
-      margin-bottom: 25px;
-      min-width: 300px;
-    }
-
-    .cert-text {
-      font-size: 1.1rem;
-      color: #555;
-      max-width: 650px;
-      margin: 0 auto 30px;
-      line-height: 1.8;
-    }
-
-    .cert-course {
-      font-family: 'Lato', sans-serif;
-      font-weight: 900;
-      color: #215C5C;
-      font-size: 1.8rem;
-      display: inline-block;
-      margin-top: 5px;
-    }
-
-    .cert-footer-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-end;
-      margin-top: 50px;
-      padding: 0 10px;
-    }
-
-    .cert-sign-block {
-      text-align: center;
-      width: 200px;
-    }
-
-    .cert-signature-line {
-      border-top: 1px solid #aaa;
-      margin-top: 10px;
-      padding-top: 5px;
-      font-size: 0.85rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      color: #666;
-    }
-
-    .cert-meta-item {
-      font-size: 0.9rem;
-      color: #666;
-      margin-bottom: 5px;
-      text-align: left;
-    }
-
-    .cert-meta-item strong {
-      color: #215C5C;
-    }
-
-    .cert-qr-placeholder {
-      width: 80px;
-      height: 80px;
-      background: #f7f7f7;
-      border: 1px solid #eee;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 8px;
-      color: #aaa;
-    }
-
-    .cert-watermark {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      opacity: 0.04;
-      pointer-events: none;
-      width: 400px;
-      height: auto;
-      z-index: 0;
+      margin: 30px auto 0;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1) !important;
     }
 
     /* Print styles */
     @media print {
       @page {
-        size: A4 landscape;
-        margin: 0;
+        size: A4 portrait;
+        margin: 15mm;
       }
 
       body * {
@@ -203,7 +54,7 @@
       #back-to-top,
       .btn,
       .alert,
-      .card,
+      .card:not(.verification-table-card),
       #loadingState,
       #errorState,
       #certActions {
@@ -213,12 +64,11 @@
       .site-wrap,
       .search-section {
         display: block !important;
-        height: 0 !important;
+        height: auto !important;
         min-height: 0 !important;
         margin: 0 !important;
         padding: 0 !important;
         border: none !important;
-        overflow: visible !important;
       }
 
       #print-area,
@@ -230,73 +80,19 @@
         position: absolute;
         left: 0;
         top: 0;
-        width: 297mm;
-        height: 210mm;
-        margin: 0;
-        padding: 0;
-        overflow: hidden !important;
-      }
-
-      .certificate-container {
-        box-shadow: none !important;
-        border-radius: 0 !important;
-        border-width: 20px !important;
-        margin: 0 !important;
-        width: 297mm !important;
-        height: 210mm !important;
-        box-sizing: border-box !important;
-        display: flex !important;
-        flex-direction: column !important;
-        justify-content: space-between !important;
-        min-height: 210mm !important;
-        page-break-inside: avoid !important;
-        overflow: hidden !important;
-        background-color: #fff !important;
-        background-image: radial-gradient(circle, rgba(33, 92, 92, 0.03) 1px, transparent 1px) !important;
-        background-size: 20px 20px !important;
-        print-color-adjust: exact !important;
-        -webkit-print-color-adjust: exact !important;
-      }
-
-      .certificate-inner-border {
-        overflow: hidden !important;
+        width: 100% !important;
       }
     }
 
-    /* html2pdf specific overrides to guarantee perfect print styling */
-    .html2pdf__container .certificate-container {
+    /* html2pdf specific overrides */
+    .html2pdf__container .verification-table-card {
       box-shadow: none !important;
-      border-radius: 0 !important;
-      border: 20px solid #215C5C !important;
+      border: 1px solid #dee2e6 !important;
       margin: 0 !important;
-      width: 297mm !important;
-      height: 210mm !important;
-      min-height: 210mm !important;
-      box-sizing: border-box !important;
-      display: flex !important;
-      flex-direction: column !important;
-      justify-content: space-between !important;
-      background-color: #fff !important;
-      background-image: radial-gradient(circle, rgba(33, 92, 92, 0.03) 1px, transparent 1px) !important;
-      background-size: 20px 20px !important;
-      transform: none !important;
+      width: 100% !important;
       max-width: none !important;
+      transform: none !important;
       position: relative !important;
-      overflow: hidden !important;
-    }
-
-    .html2pdf__container .certificate-inner-border {
-      border: 2px solid #CCE8C9 !important;
-      padding: 30px !important;
-      text-align: center !important;
-      position: relative !important;
-      display: flex !important;
-      flex-direction: column !important;
-      justify-content: space-between !important;
-      flex-grow: 1 !important;
-      height: 100% !important;
-      box-sizing: border-box !important;
-      overflow: hidden !important;
     }
 
     .html2pdf__container [data-aos] {
@@ -461,7 +257,7 @@
             <div id="certActions" class="d-none justify-content-center gap-3 mt-4">
               <button onclick="window.print()"
                 class="btn btn-outline-primary d-flex align-items-center gap-2 px-4 shadow-sm">
-                <i class="bi bi-printer"></i> Print Certificate
+                <i class="bi bi-printer"></i> Print Verification
               </button>
               <button id="downloadPdfBtn" class="btn btn-primary d-flex align-items-center gap-2 px-4 shadow">
                 <i class="bi bi-file-earmark-pdf"></i> Download PDF
@@ -600,39 +396,66 @@
           const origin = "https://intrex-digital.com";
           const verifyUrl = `${origin}/verify.html?id=${certData.certificateId}`;
 
-          // Generate Certificate Template Markup
+          // Generate Verification Report Data Table Markup
           certResult.innerHTML = `
-            <div class="certificate-container" data-aos="zoom-in">
-              <img src="assets/images/logo/intrex-logo.svg" alt="Intrex Watermark" class="cert-watermark">
-              <div class="certificate-inner-border">
-                <img src="assets/images/logo/intrex-logo.svg" alt="Intrex Digital Hub Logo" class="cert-logo">
-                <h3 class="cert-title">Certificate of Completion</h3>
-                
-                <p class="cert-recipient-label">This document proudly certifies that</p>
-                <div class="cert-name">${certData.studentName}</div>
-                
-                <p class="cert-text">
-                  has successfully completed all laboratory exercises, examinations, and coursework requirements prescribed for the certification of
-                  <br>
-                  <span class="cert-course">${certData.courseName}</span>
-                </p>
-                
-                <div class="cert-footer-row">
-                  <div class="text-start">
-                    <div class="cert-meta-item"><strong>Student ID:</strong> ${certData.studentId || 'N/A'}</div>
-                    <div class="cert-meta-item"><strong>Certificate ID:</strong> ${certData.certificateId}</div>
-                    <div class="cert-meta-item"><strong>Issue Date:</strong> ${formattedDate}</div>
-                    <div class="cert-meta-item"><strong>Grade:</strong> ${certData.grade}</div>
-                    <div class="cert-meta-item"><strong>Verification Status:</strong> <span class="badge bg-success">Verified</span></div>
+            <div class="card p-4 rounded-4 shadow-sm border mt-4 verification-table-card" data-aos="zoom-in">
+              <div class="d-flex align-items-center justify-content-between mb-4 pb-3 border-bottom flex-wrap gap-3">
+                <div class="d-flex align-items-center gap-3">
+                  <div class="bg-success-subtle text-success rounded-circle d-flex align-items-center justify-content-center" style="width: 48px; height: 48px;">
+                    <i class="bi bi-shield-fill-check fs-4"></i>
                   </div>
-                  
-                  <!-- Secure Verification QR Code (Right-Aligned in place of Signature) -->
-                  <div class="d-flex flex-column align-items-end">
-                    <div style="padding: 8px; background: #fff; border: 2px solid #CCE8C9; border-radius: 6px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); display: inline-block;">
-                      <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(verifyUrl)}" alt="Verification QR Code" style="width: 120px; height: 120px; display: block;">
-                    </div>
+                  <div>
+                    <h3 class="h5 fw-bold text-heading-color mb-0">Certificate Authenticity Verified</h3>
+                    <p class="text-muted small mb-0">This credential record is official and active.</p>
                   </div>
                 </div>
+                <!-- Secure Verification QR Code -->
+                <div class="d-flex align-items-center gap-2 bg-body-tertiary p-2 rounded border">
+                  <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=${encodeURIComponent(verifyUrl)}" alt="Verification QR Code" style="width: 60px; height: 60px; display: block;">
+                  <div class="text-start">
+                    <span class="d-block fw-bold text-heading-color" style="font-size: 0.75rem;">Scan to Verify</span>
+                    <span class="text-muted" style="font-size: 0.65rem; display: block; max-width: 120px; line-height: 1.2;">Scan this QR code to verify authenticity online.</span>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="table-responsive">
+                <table class="table table-bordered align-middle mb-0">
+                  <tbody>
+                    <tr>
+                      <th class="bg-body-secondary fw-semibold py-3 ps-3" style="width: 35%;">Student Name</th>
+                      <td class="py-3 ps-3 fw-bold text-dark">${certData.studentName}</td>
+                    </tr>
+                    <tr>
+                      <th class="bg-body-secondary fw-semibold py-3 ps-3">Student ID</th>
+                      <td class="py-3 ps-3"><code class="text-dark font-monospace fw-semibold">${certData.studentId || 'N/A'}</code></td>
+                    </tr>
+                    <tr>
+                      <th class="bg-body-secondary fw-semibold py-3 ps-3">Course Name</th>
+                      <td class="py-3 ps-3 text-dark">${certData.courseName}</td>
+                    </tr>
+                    <tr>
+                      <th class="bg-body-secondary fw-semibold py-3 ps-3">Batch</th>
+                      <td class="py-3 ps-3"><span class="badge bg-secondary text-dark">${certData.batch || 'N/A'}</span></td>
+                    </tr>
+                    <tr>
+                      <th class="bg-body-secondary fw-semibold py-3 ps-3">Certificate ID</th>
+                      <td class="py-3 ps-3"><code class="text-dark font-monospace fw-semibold">${certData.certificateId}</code></td>
+                    </tr>
+                    <tr>
+                      <th class="bg-body-secondary fw-semibold py-3 ps-3">Issue Date</th>
+                      <td class="py-3 ps-3 text-dark">${formattedDate}</td>
+                    </tr>
+                    <tr>
+                      <th class="bg-body-secondary fw-semibold py-3 ps-3">Grade / Result</th>
+                      <td class="py-3 ps-3 text-dark">${certData.grade}</td>
+                    </tr>
+                    <tr>
+                      <th class="bg-body-secondary fw-semibold py-3 ps-3">Verification Status</th>
+                      <td class="py-3 ps-3"><span class="badge bg-success py-2 px-3 fw-semibold"><i class="bi bi-check-circle-fill me-1"></i> ${certData.status || 'Verified'}</span></td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
             </div>
           `;
@@ -647,10 +470,10 @@
             downloadBtn.disabled = true;
             downloadBtn.innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Generating PDF...`;
 
-            const element = document.querySelector(".certificate-container");
+            const element = document.querySelector(".verification-table-card");
             const opt = {
-              margin: 0,
-              filename: `Certificate-${certData.studentName.replace(/\s+/g, '_')}.pdf`,
+              margin: 10,
+              filename: `Verification-${certData.studentName.replace(/\s+/g, '_')}.pdf`,
               image: { type: 'jpeg', quality: 0.98 },
               html2canvas: {
                 scale: 2,
@@ -658,7 +481,7 @@
                 letterRendering: true,
                 logging: false
               },
-              jsPDF: { unit: 'mm', format: 'a4', orientation: 'landscape' }
+              jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
             };
 
             html2pdf().set(opt).from(element).save().then(() => {
