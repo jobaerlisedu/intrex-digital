@@ -253,16 +253,6 @@
                   class="alert-link text-decoration-underline">info@intrex-digital.com</a> for verification support.</p>
             </div>
 
-            <!-- Print Actions -->
-            <div id="certActions" class="d-none justify-content-center gap-3 mt-4">
-              <button onclick="window.print()"
-                class="btn btn-outline-primary d-flex align-items-center gap-2 px-4 shadow-sm">
-                <i class="bi bi-printer"></i> Print Verification
-              </button>
-              <button id="downloadPdfBtn" class="btn btn-primary d-flex align-items-center gap-2 px-4 shadow">
-                <i class="bi bi-file-earmark-pdf"></i> Download PDF
-              </button>
-            </div>
 
             <!-- Certificate Renders Here -->
             <div id="print-area">
@@ -355,8 +345,6 @@
   <script src="assets/vendors/aos/aos.js"></script>
   <script src="assets/js/custom.js"></script>
 
-  <!-- html2pdf Library for PDF Download -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
   <!-- Load Verify logic -->
   <script type="module">
@@ -371,14 +359,11 @@
       const loadingState = document.getElementById("loadingState");
       const errorState = document.getElementById("errorState");
       const certResult = document.getElementById("certResult");
-      const certActions = document.getElementById("certActions");
 
       // Reset UI state
       loadingState.classList.remove("d-none");
       errorState.classList.add("d-none");
       certResult.classList.add("d-none");
-      certActions.classList.remove("d-flex");
-      certActions.classList.add("d-none");
 
       try {
         const certData = await verifyCertificate(certId);
@@ -460,40 +445,6 @@
             </div>
           `;
           certResult.classList.remove("d-none");
-          certActions.classList.remove("d-none");
-          certActions.classList.add("d-flex");
-
-          // Setup PDF Download action
-          const downloadBtn = document.getElementById("downloadPdfBtn");
-          downloadBtn.onclick = function () {
-            const originalContent = downloadBtn.innerHTML;
-            downloadBtn.disabled = true;
-            downloadBtn.innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Generating PDF...`;
-
-            const element = document.querySelector(".verification-table-card");
-            const opt = {
-              margin: 10,
-              filename: `Verification-${certData.studentName.replace(/\s+/g, '_')}.pdf`,
-              image: { type: 'jpeg', quality: 0.98 },
-              html2canvas: {
-                scale: 2,
-                useCORS: true,
-                letterRendering: true,
-                logging: false
-              },
-              jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-            };
-
-            html2pdf().set(opt).from(element).save().then(() => {
-              downloadBtn.disabled = false;
-              downloadBtn.innerHTML = originalContent;
-            }).catch(err => {
-              console.error("PDF generation failed:", err);
-              downloadBtn.disabled = false;
-              downloadBtn.innerHTML = originalContent;
-              alert("Failed to generate PDF. Please try using the Print option or check your connection.");
-            });
-          };
 
           // Re-init AOS for animated entry
           if (window.AOS) {
