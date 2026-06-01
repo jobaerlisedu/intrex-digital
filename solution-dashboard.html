@@ -1,0 +1,1500 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Solutions Management Dashboard | Intrex Digital Hub</title>
+  <link rel="icon" href="assets/images/logo/intrex-favicon.svg" type="image/svg+xml">
+  <meta name="robots" content="noindex, nofollow">
+
+  <!-- ======= Google Font =======-->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&amp;display=swap" rel="stylesheet">
+
+  <!-- ======= Styles =======-->
+  <link href="assets/vendors/bootstrap/bootstrap.min.css" rel="stylesheet">
+  <link href="assets/vendors/bootstrap-icons/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link href="assets/vendors/aos/aos.css" rel="stylesheet">
+  <link href="assets/css/style.css" rel="stylesheet">
+  <style>
+    :root {
+      --primary-color: #215C5C;
+      --primary-hover: #174242;
+    }
+  </style>
+  <script>
+    (function () {
+      const storedTheme = localStorage.getItem('theme') || 'light';
+      document.documentElement.setAttribute('data-bs-theme', storedTheme);
+    })();
+  </script>
+</head>
+
+<body>
+
+  <div class="site-wrap">
+
+    <!-- ======= Admin Dashboard Section =======-->
+    <section class="section py-4 py-md-5">
+      <div class="container-fluid px-md-5">
+
+        <!-- 1. LOGIN INTERFACE -->
+        <div id="loginSection" class="row justify-content-center align-items-center" style="min-height: 75vh;">
+          <div class="col-12 col-md-4 col-lg-3">
+            <div class="card p-4 rounded-4 shadow-sm border">
+              <div class="text-center mb-4">
+                <img src="assets/images/logo/intrex-logo.svg" alt="Logo" class="mb-3" style="height: 40px;">
+                <h2 class="h4 fw-bold text-heading-color">Solutions Portal Login</h2>
+                <p class="text-muted small">Access the Projects, Budgets, & Operations Dashboard.</p>
+              </div>
+
+              <div id="loginError" class="alert alert-danger d-none small"></div>
+
+              <form id="loginForm">
+                <div class="mb-3">
+                  <label for="adminEmail" class="form-label small fw-semibold">Email Address</label>
+                  <input type="email" class="form-control" id="adminEmail" required
+                    placeholder="admin@intrex-digital.com">
+                </div>
+                <div class="mb-3">
+                  <label for="adminPassword" class="form-label small fw-semibold">Password</label>
+                  <input type="password" class="form-control" id="adminPassword" required placeholder="••••••••">
+                </div>
+                <button type="submit" class="btn btn-primary w-100 fw-semibold py-2 mt-2">
+                  <i class="bi bi-box-arrow-in-right me-2"></i>Login
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. DASHBOARD PANEL (HIDDEN BY DEFAULT) -->
+        <div id="dashboardSection" class="d-none">
+          <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2 pb-3 border-bottom">
+            <div>
+              <span class="badge bg-primary text-white mb-1">INTREX SOLUTIONS OPERATIONS</span>
+              <h2 class="h3 fw-bold text-heading-color mb-0">Operations & Project Management</h2>
+            </div>
+            <button id="logoutBtn" class="btn btn-outline-danger btn-sm py-2 px-3">
+              <i class="bi bi-box-arrow-right me-1"></i> Logout
+            </button>
+          </div>
+
+          <!-- Sidebar Layout Row -->
+          <div class="row g-4 mt-2">
+            <!-- Left Sidebar Tabs Navigation -->
+            <div class="col-12 col-md-3 col-lg-2 border-end pe-md-4">
+              <div class="nav flex-column nav-pills gap-2" id="dashboardTabs" role="tablist"
+                aria-orientation="vertical">
+                <button class="nav-link active text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
+                  id="overview-tab" data-bs-toggle="tab" data-bs-target="#overviewPanel" type="button" role="tab">
+                  <i class="bi bi-bar-chart-line"></i> Overview
+                </button>
+                <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
+                  id="projects-tab" data-bs-toggle="tab" data-bs-target="#projectsPanel" type="button" role="tab">
+                  <i class="bi bi-kanban"></i> Project Creator
+                </button>
+                <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
+                  id="contacts-tab" data-bs-toggle="tab" data-bs-target="#contactsPanel" type="button" role="tab">
+                  <i class="bi bi-telephone-inbound"></i> Contact Directory
+                </button>
+                <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
+                  id="meetings-tab" data-bs-toggle="tab" data-bs-target="#meetingsPanel" type="button" role="tab">
+                  <i class="bi bi-calendar-event"></i> Meeting Scheduler
+                </button>
+                <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
+                  id="budget-tab" data-bs-toggle="tab" data-bs-target="#budgetPanel" type="button" role="tab">
+                  <i class="bi bi-wallet2"></i> Budget Planner
+                </button>
+                <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
+                  id="updates-tab" data-bs-toggle="tab" data-bs-target="#updatesPanel" type="button" role="tab">
+                  <i class="bi bi-activity"></i> Progress Updates
+                </button>
+                <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
+                  id="requisition-tab" data-bs-toggle="tab" data-bs-target="#requisitionPanel" type="button" role="tab">
+                  <i class="bi bi-file-earmark-plus"></i> Requisitions
+                </button>
+                <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
+                  id="purchases-tab" data-bs-toggle="tab" data-bs-target="#purchasesPanel" type="button" role="tab">
+                  <i class="bi bi-cart-check"></i> Purchases
+                </button>
+                <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
+                  id="expenses-tab" data-bs-toggle="tab" data-bs-target="#expensesPanel" type="button" role="tab">
+                  <i class="bi bi-cash-coin"></i> Expense Management
+                </button>
+              </div>
+            </div>
+
+            <!-- Right Content Panel -->
+            <div class="col-12 col-md-9 col-lg-10">
+              <div class="tab-content" id="dashboardTabContent">
+
+                <!-- 0. OVERVIEW PANEL -->
+                <div class="tab-pane fade show active" id="overviewPanel" role="tabpanel">
+                  <div class="row g-3 mb-4">
+                    <div class="col-6 col-md-3">
+                      <div class="card border-0 rounded-4 shadow-sm h-100 bg-primary text-white">
+                        <div class="card-body p-3">
+                          <div class="d-flex align-items-center justify-content-between mb-2">
+                            <span class="small fw-semibold opacity-75">Active Projects</span>
+                            <i class="bi bi-kanban fs-4"></i>
+                          </div>
+                          <div class="h2 fw-bold mb-0" id="kpiActiveProjects">—</div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-6 col-md-3">
+                      <div class="card border-0 rounded-4 shadow-sm h-100 bg-primary text-white">
+                        <div class="card-body p-3">
+                          <div class="d-flex align-items-center justify-content-between mb-2">
+                            <span class="small fw-semibold opacity-75">Total Budget Allocated</span>
+                            <i class="bi bi-cash-stack fs-4"></i>
+                          </div>
+                          <div class="h3 fw-bold mb-0" id="kpiTotalBudget">—</div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-6 col-md-3">
+                      <div class="card border-0 rounded-4 shadow-sm h-100 bg-primary text-white">
+                        <div class="card-body p-3">
+                          <div class="d-flex align-items-center justify-content-between mb-2">
+                            <span class="small fw-semibold opacity-75">Actual Expenses</span>
+                            <i class="bi bi-wallet2 fs-4"></i>
+                          </div>
+                          <div class="h3 fw-bold mb-0" id="kpiTotalExpenses">—</div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-6 col-md-3">
+                      <div class="card border-0 rounded-4 shadow-sm h-100 bg-primary text-white">
+                        <div class="card-body p-3">
+                          <div class="d-flex align-items-center justify-content-between mb-2">
+                            <span class="small fw-semibold opacity-75">Pending Requisitions</span>
+                            <i class="bi bi-card-checklist fs-4"></i>
+                          </div>
+                          <div class="h2 fw-bold mb-0" id="kpiPendingReqs">—</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row g-4 mb-4">
+                    <div class="col-md-6">
+                      <div class="card border-0 rounded-4 shadow-sm h-100">
+                        <div class="card-body p-4">
+                          <h6 class="fw-bold text-heading-color mb-3"><i class="bi bi-pie-chart-fill me-2 text-primary"></i>Project Status</h6>
+                          <div style="position:relative;height:240px;">
+                            <canvas id="chartProjectStatus"></canvas>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="card border-0 rounded-4 shadow-sm h-100">
+                        <div class="card-body p-4">
+                          <h6 class="fw-bold text-heading-color mb-3"><i class="bi bi-bar-chart-fill me-2 text-primary"></i>Budget vs Expense by Project</h6>
+                          <div style="position:relative;height:240px;">
+                            <canvas id="chartBudgetVsExpense"></canvas>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- 1. PROJECT CREATOR PANEL -->
+                <div class="tab-pane fade" id="projectsPanel" role="tabpanel">
+                  <div class="row g-4">
+                    <div class="col-md-4">
+                      <div class="card p-4 rounded-4 shadow-sm border">
+                        <h3 id="projFormTitle" class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
+                          <i class="bi bi-kanban me-2 text-primary"></i>Create Project
+                        </h3>
+                        <form id="projectForm">
+                          <div class="mb-3">
+                            <label class="form-label small fw-semibold" for="projId">Project ID <span class="text-danger">*</span></label>
+                            <input class="form-control" id="projId" type="text" placeholder="e.g. PRJ-2026-A" required>
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label small fw-semibold" for="projName">Project Name <span class="text-danger">*</span></label>
+                            <input class="form-control" id="projName" type="text" placeholder="e.g. Cloud Migration Phase 1" required>
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label small fw-semibold" for="projClient">Client Name <span class="text-danger">*</span></label>
+                            <input class="form-control" id="projClient" type="text" placeholder="e.g. Global Tech Corp" required>
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label small fw-semibold" for="projDesc">Description</label>
+                            <textarea class="form-control" id="projDesc" rows="3" placeholder="Brief outline..."></textarea>
+                          </div>
+                          <div class="row g-2 mb-3">
+                            <div class="col-md-6">
+                              <label class="form-label small fw-semibold" for="projStart">Start Date</label>
+                              <input class="form-control" id="projStart" type="date">
+                            </div>
+                            <div class="col-md-6">
+                              <label class="form-label small fw-semibold" for="projEnd">End Date</label>
+                              <input class="form-control" id="projEnd" type="date">
+                            </div>
+                          </div>
+                          <div class="mb-4">
+                            <label class="form-label small fw-semibold" for="projStatus">Initial Status</label>
+                            <select class="form-select" id="projStatus">
+                              <option value="Planned" selected>Planned</option>
+                              <option value="Active">Active</option>
+                              <option value="On Hold">On Hold</option>
+                              <option value="Completed">Completed</option>
+                            </select>
+                          </div>
+                          <div class="d-flex gap-2">
+                            <button type="submit" id="submitProjBtn" class="btn btn-primary w-100 fw-semibold py-2">
+                              <i class="bi bi-save me-2"></i>Save Project
+                            </button>
+                            <button type="button" id="cancelProjEditBtn" class="btn btn-outline-secondary w-50 py-2 d-none">
+                              Cancel
+                            </button>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                    <div class="col-md-8">
+                      <div class="card p-4 rounded-4 shadow-sm border h-100">
+                        <h3 class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
+                          <i class="bi bi-list-task me-2 text-primary"></i>Projects Directory
+                        </h3>
+                        <div class="table-responsive">
+                          <table class="table table-hover align-middle mb-0" id="projectsTable">
+                            <thead class="table-light">
+                              <tr>
+                                <th>Project ID</th>
+                                <th>Project Name</th>
+                                <th>Client</th>
+                                <th>Timeline</th>
+                                <th>Status</th>
+                                <th class="text-center">Actions</th>
+                              </tr>
+                            </thead>
+                            <tbody id="projectsTableBody">
+                              <tr>
+                                <td colspan="6" class="text-center py-4 text-muted">Loading projects...</td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- 2. CONTACT DIRECTORY PANEL -->
+                <div class="tab-pane fade" id="contactsPanel" role="tabpanel">
+                  <div class="row g-4">
+                    <div class="col-md-4">
+                      <div class="card p-4 rounded-4 shadow-sm border">
+                        <h3 id="contactFormTitle" class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
+                          <i class="bi bi-telephone-plus me-2 text-primary"></i>Add Contact
+                        </h3>
+                        <form id="contactForm">
+                          <input type="hidden" id="contactId">
+                          <div class="mb-3">
+                            <label class="form-label small fw-semibold" for="contactProjId">Project Relationship <span class="text-danger">*</span></label>
+                            <select class="form-select project-id-select" id="contactProjId" required>
+                              <option value="" disabled selected>Loading projects...</option>
+                            </select>
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label small fw-semibold" for="contactName">Full Name <span class="text-danger">*</span></label>
+                            <input class="form-control" id="contactName" type="text" placeholder="e.g. Jobaer Hossain" required>
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label small fw-semibold" for="contactDesig">Designation</label>
+                            <input class="form-control" id="contactDesig" type="text" placeholder="e.g. Lead Network Engineer">
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label small fw-semibold" for="contactOrg">Organization</label>
+                            <input class="form-control" id="contactOrg" type="text" placeholder="e.g. Intrex Digital Hub">
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label small fw-semibold" for="contactMobile">Mobile Number</label>
+                            <input class="form-control" id="contactMobile" type="tel" placeholder="e.g. +88017XXXXXXXX">
+                          </div>
+                          <div class="mb-4">
+                            <label class="form-label small fw-semibold" for="contactEmail">Email Address</label>
+                            <input class="form-control" id="contactEmail" type="email" placeholder="e.g. name@domain.com">
+                          </div>
+                          <div class="d-flex gap-2">
+                            <button type="submit" id="submitContactBtn" class="btn btn-primary w-100 fw-semibold py-2">
+                              <i class="bi bi-save me-2"></i>Save Contact
+                            </button>
+                            <button type="button" id="cancelContactEditBtn" class="btn btn-outline-secondary w-50 py-2 d-none">
+                              Cancel
+                            </button>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                    <div class="col-md-8">
+                      <div class="card p-4 rounded-4 shadow-sm border h-100">
+                        <h3 class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
+                          <i class="bi bi-journals me-2 text-primary"></i>Contacts List
+                        </h3>
+                        <div class="table-responsive">
+                          <table class="table table-hover align-middle mb-0" id="contactsTable">
+                            <thead class="table-light">
+                              <tr>
+                                <th>Name</th>
+                                <th>Designation / Org</th>
+                                <th>Mobile</th>
+                                <th>Email</th>
+                                <th>Project ID</th>
+                                <th class="text-center">Actions</th>
+                              </tr>
+                            </thead>
+                            <tbody id="contactsTableBody">
+                              <tr>
+                                <td colspan="6" class="text-center py-4 text-muted">Loading contacts...</td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- 3. MEETING SCHEDULER PANEL -->
+                <div class="tab-pane fade" id="meetingsPanel" role="tabpanel">
+                  <div class="row g-4">
+                    <div class="col-md-4">
+                      <div class="card p-4 rounded-4 shadow-sm border">
+                        <h3 class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
+                          <i class="bi bi-calendar-plus me-2 text-primary"></i>Schedule Meeting
+                        </h3>
+                        <form id="meetingForm">
+                          <div class="mb-3">
+                            <label class="form-label small fw-semibold" for="meetProjId">Related Project <span class="text-danger">*</span></label>
+                            <select class="form-select project-id-select" id="meetProjId" required>
+                              <option value="" disabled selected>Loading projects...</option>
+                            </select>
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label small fw-semibold" for="meetTitle">Meeting Title <span class="text-danger">*</span></label>
+                            <input class="form-control" id="meetTitle" type="text" placeholder="e.g. Kickoff Session" required>
+                          </div>
+                          <div class="row g-2 mb-3">
+                            <div class="col-md-6">
+                              <label class="form-label small fw-semibold" for="meetDate">Date <span class="text-danger">*</span></label>
+                              <input class="form-control" id="meetDate" type="date" required>
+                            </div>
+                            <div class="col-md-6">
+                              <label class="form-label small fw-semibold" for="meetTime">Time <span class="text-danger">*</span></label>
+                              <input class="form-control" id="meetTime" type="time" required>
+                            </div>
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label small fw-semibold" for="meetDur">Duration</label>
+                            <input class="form-control" id="meetDur" type="text" placeholder="e.g. 1 hour" value="30 mins">
+                          </div>
+                          <div class="mb-4">
+                            <label class="form-label small fw-semibold" for="meetAgenda">Agenda / Notes</label>
+                            <textarea class="form-control" id="meetAgenda" rows="3" placeholder="Core objectives..."></textarea>
+                          </div>
+                          <button type="submit" class="btn btn-primary w-100 fw-semibold py-2">
+                            <i class="bi bi-clock-history me-2"></i>Schedule Meeting
+                          </button>
+                        </form>
+                      </div>
+                    </div>
+                    <div class="col-md-8">
+                      <div class="card p-4 rounded-4 shadow-sm border h-100">
+                        <h3 class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
+                          <i class="bi bi-calendar3 me-2 text-primary"></i>Scheduled Meetings
+                        </h3>
+                        <div class="table-responsive">
+                          <table class="table table-hover align-middle mb-0" id="meetingsTable">
+                            <thead class="table-light">
+                              <tr>
+                                <th>Meeting Title</th>
+                                <th>Date & Time</th>
+                                <th>Duration</th>
+                                <th>Project ID</th>
+                                <th>Agenda</th>
+                                <th class="text-center">Actions</th>
+                              </tr>
+                            </thead>
+                            <tbody id="meetingsTableBody">
+                              <tr>
+                                <td colspan="6" class="text-center py-4 text-muted">Loading meetings...</td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- 4. BUDGET PLANNER PANEL -->
+                <div class="tab-pane fade" id="budgetPanel" role="tabpanel">
+                  <div class="row g-4">
+                    <div class="col-md-4">
+                      <div class="card p-4 rounded-4 shadow-sm border">
+                        <h3 class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
+                          <i class="bi bi-cash-stack me-2 text-primary"></i>Allocate Budget
+                        </h3>
+                        <form id="budgetForm">
+                          <div class="mb-3">
+                            <label class="form-label small fw-semibold" for="budgProjId">Select Project <span class="text-danger">*</span></label>
+                            <select class="form-select project-id-select" id="budgProjId" required>
+                              <option value="" disabled selected>Loading projects...</option>
+                            </select>
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label small fw-semibold" for="budgAmount">Estimated Budget (BDT) <span class="text-danger">*</span></label>
+                            <input class="form-control" id="budgAmount" type="number" min="0" placeholder="e.g. 500000" required>
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label small fw-semibold" for="budgStatus">Budget Status</label>
+                            <select class="form-select" id="budgStatus">
+                              <option value="Draft" selected>Draft</option>
+                              <option value="Under Review">Under Review</option>
+                              <option value="Approved">Approved</option>
+                              <option value="Rejected">Rejected</option>
+                            </select>
+                          </div>
+                          <div class="mb-4">
+                            <label class="form-label small fw-semibold" for="budgNotes">Allocation Breakdown & Notes</label>
+                            <textarea class="form-control" id="budgNotes" rows="3" placeholder="Allocation strategy..."></textarea>
+                          </div>
+                          <button type="submit" class="btn btn-primary w-100 fw-semibold py-2">
+                            <i class="bi bi-plus-circle me-2"></i>Save Budget Configuration
+                          </button>
+                        </form>
+                      </div>
+                    </div>
+                    <div class="col-md-8">
+                      <div class="card p-4 rounded-4 shadow-sm border h-100">
+                        <h3 class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
+                          <i class="bi bi-wallet-fill me-2 text-primary"></i>Budget Overview
+                        </h3>
+                        <div class="table-responsive">
+                          <table class="table table-hover align-middle mb-0" id="budgetTable">
+                            <thead class="table-light">
+                              <tr>
+                                <th>Project ID</th>
+                                <th>Project Name</th>
+                                <th>Estimated Budget</th>
+                                <th>Allocations Notes</th>
+                                <th>Status</th>
+                                <th class="text-center">Actions</th>
+                              </tr>
+                            </thead>
+                            <tbody id="budgetTableBody">
+                              <tr>
+                                <td colspan="6" class="text-center py-4 text-muted">Loading budgets...</td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- 5. WORKING PROGRESS UPDATES PANEL -->
+                <div class="tab-pane fade" id="updatesPanel" role="tabpanel">
+                  <div class="row g-4">
+                    <div class="col-md-4">
+                      <div class="card p-4 rounded-4 shadow-sm border">
+                        <h3 class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
+                          <i class="bi bi-activity me-2 text-primary"></i>Log Work Update
+                        </h3>
+                        <form id="updateForm">
+                          <div class="mb-3">
+                            <label class="form-label small fw-semibold" for="updProjId">Related Project <span class="text-danger">*</span></label>
+                            <select class="form-select project-id-select" id="updProjId" required>
+                              <option value="" disabled selected>Loading projects...</option>
+                            </select>
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label small fw-semibold" for="updDate">Update Date <span class="text-danger">*</span></label>
+                            <input class="form-control" id="updDate" type="date" required>
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label small fw-semibold" for="updProgress">Work Progress (%) <span class="text-danger">*</span></label>
+                            <input class="form-control" id="updProgress" type="number" min="0" max="100" placeholder="e.g. 45" required>
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label small fw-semibold" for="updStatus">Update Project Status</label>
+                            <select class="form-select" id="updStatus">
+                              <option value="Active" selected>Active</option>
+                              <option value="On Hold">On Hold</option>
+                              <option value="Completed">Completed</option>
+                            </select>
+                          </div>
+                          <div class="mb-4">
+                            <label class="form-label small fw-semibold" for="updNotes">Accomplishments & Status Notes</label>
+                            <textarea class="form-control" id="updNotes" rows="3" placeholder="Detail tasks completed..."></textarea>
+                          </div>
+                          <button type="submit" class="btn btn-primary w-100 fw-semibold py-2">
+                            <i class="bi bi-save2 me-2"></i>Post Progress Update
+                          </button>
+                        </form>
+                      </div>
+                    </div>
+                    <div class="col-md-8">
+                      <div class="card p-4 rounded-4 shadow-sm border h-100">
+                        <h3 class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
+                          <i class="bi bi-list-stars me-2 text-primary"></i>Work Updates History
+                        </h3>
+                        <div class="table-responsive">
+                          <table class="table table-hover align-middle mb-0" id="updatesTable">
+                            <thead class="table-light">
+                              <tr>
+                                <th>Project ID</th>
+                                <th>Update Date</th>
+                                <th>Progress (%)</th>
+                                <th>Details</th>
+                                <th>Status</th>
+                                <th class="text-center">Actions</th>
+                              </tr>
+                            </thead>
+                            <tbody id="updatesTableBody">
+                              <tr>
+                                <td colspan="6" class="text-center py-4 text-muted">Loading updates...</td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- 6. PURCHASE REQUISITION PANEL -->
+                <div class="tab-pane fade" id="requisitionPanel" role="tabpanel">
+                  <div class="row g-4">
+                    <div class="col-md-4">
+                      <div class="card p-4 rounded-4 shadow-sm border">
+                        <h3 class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
+                          <i class="bi bi-file-earmark-plus me-2 text-primary"></i>Create Requisition
+                        </h3>
+                        <form id="requisitionForm">
+                          <div class="mb-3">
+                            <label class="form-label small fw-semibold" for="reqProjId">Project Relationship <span class="text-danger">*</span></label>
+                            <select class="form-select project-id-select" id="reqProjId" required>
+                              <option value="" disabled selected>Loading projects...</option>
+                            </select>
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label small fw-semibold" for="reqItem">Item Name / Description <span class="text-danger">*</span></label>
+                            <input class="form-control" id="reqItem" type="text" placeholder="e.g. Cisco Catalyst 9200 Switch" required>
+                          </div>
+                          <div class="row g-2 mb-3">
+                            <div class="col-md-6">
+                              <label class="form-label small fw-semibold" for="reqQty">Quantity <span class="text-danger">*</span></label>
+                              <input class="form-control" id="reqQty" type="number" min="1" value="1" required>
+                            </div>
+                            <div class="col-md-6">
+                              <label class="form-label small fw-semibold" for="reqCost">Estimated Cost (BDT) <span class="text-danger">*</span></label>
+                              <input class="form-control" id="reqCost" type="number" min="0" placeholder="e.g. 150000" required>
+                            </div>
+                          </div>
+                          <div class="mb-4">
+                            <label class="form-label small fw-semibold" for="reqStatus">Requisition Status</label>
+                            <select class="form-select" id="reqStatus">
+                              <option value="Pending" selected>Pending</option>
+                              <option value="Approved">Approved</option>
+                              <option value="Rejected">Rejected</option>
+                            </select>
+                          </div>
+                          <button type="submit" class="btn btn-primary w-100 fw-semibold py-2">
+                            <i class="bi bi-send-plus me-2"></i>Submit Requisition
+                          </button>
+                        </form>
+                      </div>
+                    </div>
+                    <div class="col-md-8">
+                      <div class="card p-4 rounded-4 shadow-sm border h-100">
+                        <h3 class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
+                          <i class="bi bi-file-earmark-spreadsheet me-2 text-primary"></i>Requisitions Directory
+                        </h3>
+                        <div class="table-responsive">
+                          <table class="table table-hover align-middle mb-0" id="requisitionsTable">
+                            <thead class="table-light">
+                              <tr>
+                                <th>Req ID</th>
+                                <th>Item Details</th>
+                                <th>Qty</th>
+                                <th>Est. Cost</th>
+                                <th>Project ID</th>
+                                <th>Status</th>
+                                <th class="text-center">Actions</th>
+                              </tr>
+                            </thead>
+                            <tbody id="requisitionsTableBody">
+                              <tr>
+                                <td colspan="7" class="text-center py-4 text-muted">Loading requisitions...</td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- 7. PURCHASE MANAGEMENT PANEL -->
+                <div class="tab-pane fade" id="purchasesPanel" role="tabpanel">
+                  <div class="row g-4">
+                    <div class="col-md-4">
+                      <div class="card p-4 rounded-4 shadow-sm border">
+                        <h3 class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
+                          <i class="bi bi-cart-plus me-2 text-primary"></i>Log Purchase Record
+                        </h3>
+                        <form id="purchaseForm">
+                          <div class="mb-3">
+                            <label class="form-label small fw-semibold" for="purRequisitionId">Link Requisition</label>
+                            <select class="form-select" id="purRequisitionId">
+                              <option value="Direct">Direct Purchase (No Requisition)</option>
+                            </select>
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label small fw-semibold" for="purProjId">Select Project <span class="text-danger">*</span></label>
+                            <select class="form-select project-id-select" id="purProjId" required>
+                              <option value="" disabled selected>Loading projects...</option>
+                            </select>
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label small fw-semibold" for="purItemName">Item Purchased <span class="text-danger">*</span></label>
+                            <input class="form-control" id="purItemName" type="text" placeholder="e.g. Cisco Catalyst 9200 Switch" required>
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label small fw-semibold" for="purSupplier">Supplier</label>
+                            <input class="form-control" id="purSupplier" type="text" placeholder="e.g. Cisco Systems BD">
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label small fw-semibold" for="purCost">Final Cost (BDT) <span class="text-danger">*</span></label>
+                            <input class="form-control" id="purCost" type="number" min="0" placeholder="e.g. 145000" required>
+                          </div>
+                          <div class="mb-4">
+                            <label class="form-label small fw-semibold" for="purStatus">Purchase Status</label>
+                            <select class="form-select" id="purStatus">
+                              <option value="Ordered" selected>Ordered</option>
+                              <option value="Received">Received</option>
+                              <option value="Paid">Paid</option>
+                            </select>
+                          </div>
+                          <button type="submit" class="btn btn-primary w-100 fw-semibold py-2">
+                            <i class="bi bi-cart-check-fill me-2"></i>Save Purchase Ledger
+                          </button>
+                        </form>
+                      </div>
+                    </div>
+                    <div class="col-md-8">
+                      <div class="card p-4 rounded-4 shadow-sm border h-100">
+                        <h3 class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
+                          <i class="bi bi-receipt-cutoff me-2 text-primary"></i>Purchase Ledger
+                        </h3>
+                        <div class="table-responsive">
+                          <table class="table table-hover align-middle mb-0" id="purchasesTable">
+                            <thead class="table-light">
+                              <tr>
+                                <th>Purchase ID</th>
+                                <th>Item</th>
+                                <th>Supplier</th>
+                                <th>Final Cost</th>
+                                <th>Project ID</th>
+                                <th>Status</th>
+                                <th class="text-center">Actions</th>
+                              </tr>
+                            </thead>
+                            <tbody id="purchasesTableBody">
+                              <tr>
+                                <td colspan="7" class="text-center py-4 text-muted">Loading purchases...</td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- 8. COST/EXPENSE PANEL -->
+                <div class="tab-pane fade" id="expensesPanel" role="tabpanel">
+                  <div class="row g-4">
+                    <div class="col-md-4">
+                      <div class="card p-4 rounded-4 shadow-sm border">
+                        <h3 class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
+                          <i class="bi bi-cash-coin me-2 text-primary"></i>Log Operational Expense
+                        </h3>
+                        <form id="expenseForm">
+                          <div class="mb-3">
+                            <label class="form-label small fw-semibold" for="expProjId">Select Project <span class="text-danger">*</span></label>
+                            <select class="form-select project-id-select" id="expProjId" required>
+                              <option value="" disabled selected>Loading projects...</option>
+                            </select>
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label small fw-semibold" for="expCategory">Category <span class="text-danger">*</span></label>
+                            <select class="form-select" id="expCategory" required>
+                              <option value="" disabled selected>Select category</option>
+                              <option value="Consulting & Labor">Consulting & Labor</option>
+                              <option value="Equipment & Supplies">Equipment & Supplies</option>
+                              <option value="Software & Licensing">Software &amp; Licensing</option>
+                              <option value="Travel & Logistics">Travel &amp; Logistics</option>
+                              <option value="Operational Overhead">Operational Overhead</option>
+                            </select>
+                          </div>
+                          <div class="row g-2 mb-3">
+                            <div class="col-md-6">
+                              <label class="form-label small fw-semibold" for="expAmount">Amount (BDT) <span class="text-danger">*</span></label>
+                              <input class="form-control" id="expAmount" type="number" min="0" placeholder="e.g. 25000" required>
+                            </div>
+                            <div class="col-md-6">
+                              <label class="form-label small fw-semibold" for="expDate">Date <span class="text-danger">*</span></label>
+                              <input class="form-control" id="expDate" type="date" required>
+                            </div>
+                          </div>
+                          <div class="mb-4">
+                            <label class="form-label small fw-semibold" for="expDesc">Description</label>
+                            <textarea class="form-control" id="expDesc" rows="3" placeholder="Expense description..."></textarea>
+                          </div>
+                          <button type="submit" class="btn btn-primary w-100 fw-semibold py-2">
+                            <i class="bi bi-plus-lg me-2"></i>Post Expense Record
+                          </button>
+                        </form>
+                      </div>
+                    </div>
+                    <div class="col-md-8">
+                      <div class="card p-4 rounded-4 shadow-sm border h-100">
+                        <h3 class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
+                          <i class="bi bi-clipboard-data me-2 text-primary"></i>Operational Expenses Ledger
+                        </h3>
+                        <div class="table-responsive">
+                          <table class="table table-hover align-middle mb-0" id="expensesTable">
+                            <thead class="table-light">
+                              <tr>
+                                <th>Category</th>
+                                <th>Amount</th>
+                                <th>Date</th>
+                                <th>Project ID</th>
+                                <th>Description</th>
+                                <th class="text-center">Actions</th>
+                              </tr>
+                            </thead>
+                            <tbody id="expensesTableBody">
+                              <tr>
+                                <td colspan="6" class="text-center py-4 text-muted">Loading expenses...</td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- ======= Javascripts =======-->
+  <script src="assets/vendors/bootstrap/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script type="module">
+    import {
+      loginAdmin, logoutAdmin, onAdminAuthStateChanged,
+      addProject, getAllProjects, deleteProject,
+      addContact, getAllContacts, deleteContact,
+      addMeeting, getAllMeetings, deleteMeeting,
+      addBudget, getAllBudgets, deleteBudget,
+      addProjectUpdate, getAllProjectUpdates, deleteProjectUpdate,
+      addRequisition, getAllRequisitions, deleteRequisition,
+      addPurchase, getAllPurchases, deletePurchase,
+      addExpense, getAllExpenses, deleteExpense
+    } from "./assets/js/solution.js";
+
+    // Set today's dates
+    document.querySelectorAll('input[type="date"]').forEach(input => {
+      input.value = new Date().toISOString().substring(0, 10);
+    });
+
+    let allProjects = [];
+    let allContacts = [];
+    let allMeetings = [];
+    let allBudgets = [];
+    let allUpdates = [];
+    let allRequisitions = [];
+    let allPurchases = [];
+    let allExpenses = [];
+
+    let chartProjectStatusInstance = null;
+    let chartBudgetVsExpenseInstance = null;
+
+    // Populate dropdown selection lists with Project IDs for referential integrity
+    function populateProjectDropdowns() {
+      const selects = document.querySelectorAll(".project-id-select");
+      selects.forEach(select => {
+        const selectedVal = select.value;
+        select.innerHTML = '<option value="" disabled selected>Select Project</option>';
+        allProjects.forEach(p => {
+          const opt = document.createElement("option");
+          opt.value = p.projectId;
+          opt.textContent = `${p.projectId} - ${p.projectName}`;
+          select.appendChild(opt);
+        });
+        if (selectedVal && allProjects.some(p => p.projectId === selectedVal)) {
+          select.value = selectedVal;
+        }
+      });
+    }
+
+    // Populate Requisition ID in Purchase log
+    function populateRequisitionDropdowns() {
+      const select = document.getElementById("purRequisitionId");
+      if (!select) return;
+      const selectedVal = select.value;
+      select.innerHTML = '<option value="Direct">Direct Purchase (No Requisition)</option>';
+      allRequisitions.filter(r => r.status === "Pending" || r.status === "Approved").forEach(r => {
+        const opt = document.createElement("optgroup");
+        opt.label = `Project: ${r.projectId}`;
+        const itemOpt = document.createElement("option");
+        itemOpt.value = r.requisitionId;
+        itemOpt.textContent = `${r.requisitionId} - ${r.itemName} (${r.quantity} qty)`;
+        opt.appendChild(itemOpt);
+        select.appendChild(opt);
+      });
+      select.value = selectedVal || "Direct";
+    }
+
+    // Auto-fill logic when requisition is selected in Purchase Form
+    document.getElementById("purRequisitionId")?.addEventListener("change", function(e) {
+      const reqId = e.target.value;
+      const projSelect = document.getElementById("purProjId");
+      const itemInput = document.getElementById("purItemName");
+      const costInput = document.getElementById("purCost");
+
+      if (reqId === "Direct") {
+        projSelect.disabled = false;
+        itemInput.disabled = false;
+        itemInput.value = "";
+        projSelect.value = "";
+        costInput.value = "";
+      } else {
+        const req = allRequisitions.find(r => r.requisitionId === reqId);
+        if (req) {
+          projSelect.value = req.projectId;
+          itemInput.value = req.itemName;
+          costInput.value = req.estimatedCost;
+          projSelect.disabled = true;
+          itemInput.disabled = true;
+        }
+      }
+    });
+
+    // Overview Update and Rendering
+    function updateOverview() {
+      const activeProjCount = allProjects.filter(p => p.status === "Active").length;
+      document.getElementById("kpiActiveProjects").textContent = activeProjCount;
+
+      const totalBudgetSum = allBudgets.reduce((sum, b) => sum + (Number(b.estimatedBudget) || 0), 0);
+      document.getElementById("kpiTotalBudget").textContent = `${totalBudgetSum.toLocaleString()} BDT`;
+
+      const totalExpensesSum = allExpenses.reduce((sum, e) => sum + (Number(e.amount) || 0), 0);
+      document.getElementById("kpiTotalExpenses").textContent = `${totalExpensesSum.toLocaleString()} BDT`;
+
+      const pendingReqsCount = allRequisitions.filter(r => r.status === "Pending").length;
+      document.getElementById("kpiPendingReqs").textContent = pendingReqsCount;
+
+      // Render Charts
+      if (typeof Chart === 'undefined') return;
+
+      const isDark = document.documentElement.getAttribute('data-bs-theme') === 'dark';
+      const textColor = isDark ? '#f8f9fa' : '#494B5B';
+      const gridColor = isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.05)';
+
+      // 1. Project Status Chart
+      const planned = allProjects.filter(p => p.status === "Planned").length;
+      const active = allProjects.filter(p => p.status === "Active").length;
+      const onhold = allProjects.filter(p => p.status === "On Hold").length;
+      const completed = allProjects.filter(p => p.status === "Completed").length;
+
+      const ctxStatus = document.getElementById("chartProjectStatus")?.getContext("2d");
+      if (ctxStatus) {
+        if (chartProjectStatusInstance) chartProjectStatusInstance.destroy();
+        chartProjectStatusInstance = new Chart(ctxStatus, {
+          type: 'doughnut',
+          data: {
+            labels: ['Planned', 'Active', 'On Hold', 'Completed'],
+            datasets: [{
+              data: [planned, active, onhold, completed],
+              backgroundColor: ['#6c757d', '#28a745', '#ffc107', '#215C5C'],
+              borderWidth: isDark ? 2 : 1,
+              borderColor: isDark ? '#212529' : '#fff'
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                position: 'bottom',
+                labels: { color: textColor }
+              }
+            }
+          }
+        });
+      }
+
+      // 2. Budget vs Expense Chart
+      const projectLabels = allProjects.map(p => p.projectId);
+      const budgetData = allProjects.map(p => {
+        const b = allBudgets.find(budg => budg.projectId === p.projectId);
+        return b ? Number(b.estimatedBudget) : 0;
+      });
+      const expenseData = allProjects.map(p => {
+        const projsExpenses = allExpenses.filter(e => e.projectId === p.projectId);
+        return projsExpenses.reduce((sum, e) => sum + Number(e.amount), 0);
+      });
+
+      const ctxBudget = document.getElementById("chartBudgetVsExpense")?.getContext("2d");
+      if (ctxBudget) {
+        if (chartBudgetVsExpenseInstance) chartBudgetVsExpenseInstance.destroy();
+        chartBudgetVsExpenseInstance = new Chart(ctxBudget, {
+          type: 'bar',
+          data: {
+            labels: projectLabels,
+            datasets: [
+              { label: 'Budget', data: budgetData, backgroundColor: '#215C5C', borderRadius: 4 },
+              { label: 'Actual Expenses', data: expenseData, backgroundColor: '#dc3545', borderRadius: 4 }
+            ]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: { position: 'top', labels: { color: textColor } }
+            },
+            scales: {
+              x: { grid: { display: false }, ticks: { color: textColor } },
+              y: { grid: { color: gridColor }, ticks: { color: textColor } }
+            }
+          }
+        });
+      }
+    }
+
+    // Refresh datasets from Firestore
+    async function loadAllData() {
+      try {
+        allProjects = await getAllProjects();
+        allContacts = await getAllContacts();
+        allMeetings = await getAllMeetings();
+        allBudgets = await getAllBudgets();
+        allUpdates = await getAllProjectUpdates();
+        allRequisitions = await getAllRequisitions();
+        allPurchases = await getAllPurchases();
+        allExpenses = await getAllExpenses();
+
+        populateProjectDropdowns();
+        populateRequisitionDropdowns();
+
+        renderProjects();
+        renderContacts();
+        renderMeetings();
+        renderBudgets();
+        renderUpdates();
+        renderRequisitions();
+        renderPurchases();
+        renderExpenses();
+
+        updateOverview();
+      } catch (err) {
+        console.error("Data refresh failed:", err);
+      }
+    }
+
+    // Render lists in tables
+    function renderProjects() {
+      const tbody = document.getElementById("projectsTableBody");
+      if (!tbody) return;
+      if (allProjects.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="6" class="text-center py-3 text-muted">No projects found.</td></tr>';
+        return;
+      }
+      tbody.innerHTML = allProjects.map(p => `
+        <tr>
+          <td><code class="text-dark fw-bold font-monospace">${p.projectId}</code></td>
+          <td><strong>${p.projectName}</strong></td>
+          <td>${p.clientName}</td>
+          <td><span class="small">${p.startDate || 'N/A'} to ${p.endDate || 'N/A'}</span></td>
+          <td><span class="badge bg-secondary text-dark">${p.status}</span></td>
+          <td class="text-center">
+            <button class="btn btn-sm btn-outline-danger delete-proj-btn" data-id="${p.projectId}">
+              <i class="bi bi-trash"></i>
+            </button>
+          </td>
+        </tr>
+      `).join('');
+
+      document.querySelectorAll(".delete-proj-btn").forEach(btn => {
+        btn.onclick = async () => {
+          const id = btn.dataset.id;
+          if (confirm(`Delete project ${id}?`)) {
+            await deleteProject(id);
+            loadAllData();
+          }
+        };
+      });
+    }
+
+    function renderContacts() {
+      const tbody = document.getElementById("contactsTableBody");
+      if (!tbody) return;
+      if (allContacts.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="6" class="text-center py-3 text-muted">No contacts found.</td></tr>';
+        return;
+      }
+      tbody.innerHTML = allContacts.map(c => `
+        <tr>
+          <td><strong>${c.fullName}</strong></td>
+          <td><span class="small">${c.designation || 'N/A'} at ${c.organization || 'N/A'}</span></td>
+          <td>${c.mobile || 'N/A'}</td>
+          <td>${c.email || 'N/A'}</td>
+          <td><code class="text-dark font-monospace">${c.projectId}</code></td>
+          <td class="text-center">
+            <button class="btn btn-sm btn-outline-danger delete-contact-btn" data-id="${c.contactId}">
+              <i class="bi bi-trash"></i>
+            </button>
+          </td>
+        </tr>
+      `).join('');
+
+      document.querySelectorAll(".delete-contact-btn").forEach(btn => {
+        btn.onclick = async () => {
+          const id = btn.dataset.id;
+          if (confirm(`Delete this contact?`)) {
+            await deleteContact(id);
+            loadAllData();
+          }
+        };
+      });
+    }
+
+    function renderMeetings() {
+      const tbody = document.getElementById("meetingsTableBody");
+      if (!tbody) return;
+      if (allMeetings.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="6" class="text-center py-3 text-muted">No meetings scheduled.</td></tr>';
+        return;
+      }
+      tbody.innerHTML = allMeetings.map(m => `
+        <tr>
+          <td><strong>${m.title}</strong></td>
+          <td><span class="small">${m.date} at ${m.time}</span></td>
+          <td>${m.duration}</td>
+          <td><code class="text-dark font-monospace">${m.projectId}</code></td>
+          <td><span class="small text-muted">${m.agenda || 'N/A'}</span></td>
+          <td class="text-center">
+            <button class="btn btn-sm btn-outline-danger delete-meeting-btn" data-id="${m.meetingId}">
+              <i class="bi bi-trash"></i>
+            </button>
+          </td>
+        </tr>
+      `).join('');
+
+      document.querySelectorAll(".delete-meeting-btn").forEach(btn => {
+        btn.onclick = async () => {
+          const id = btn.dataset.id;
+          if (confirm(`Cancel meeting?`)) {
+            await deleteMeeting(id);
+            loadAllData();
+          }
+        };
+      });
+    }
+
+    function renderBudgets() {
+      const tbody = document.getElementById("budgetTableBody");
+      if (!tbody) return;
+      if (allBudgets.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="6" class="text-center py-3 text-muted">No project budgets configured.</td></tr>';
+        return;
+      }
+      tbody.innerHTML = allBudgets.map(b => {
+        const proj = allProjects.find(p => p.projectId === b.projectId);
+        return `
+          <tr>
+            <td><code class="text-dark fw-bold font-monospace">${b.projectId}</code></td>
+            <td><strong>${proj ? proj.projectName : 'Unknown Project'}</strong></td>
+            <td><strong>${Number(b.estimatedBudget).toLocaleString()} BDT</strong></td>
+            <td><span class="small text-muted">${b.notes || 'N/A'}</span></td>
+            <td><span class="badge bg-secondary text-dark">${b.status}</span></td>
+            <td class="text-center">
+              <button class="btn btn-sm btn-outline-danger delete-budget-btn" data-id="${b.projectId}">
+                <i class="bi bi-trash"></i>
+              </button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+
+      document.querySelectorAll(".delete-budget-btn").forEach(btn => {
+        btn.onclick = async () => {
+          const id = btn.dataset.id;
+          if (confirm(`Remove budget data for project ${id}?`)) {
+            await deleteBudget(id);
+            loadAllData();
+          }
+        };
+      });
+    }
+
+    function renderUpdates() {
+      const tbody = document.getElementById("updatesTableBody");
+      if (!tbody) return;
+      if (allUpdates.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="6" class="text-center py-3 text-muted">No progress updates logged.</td></tr>';
+        return;
+      }
+      tbody.innerHTML = allUpdates.map(u => `
+        <tr>
+          <td><code class="text-dark fw-bold font-monospace">${u.projectId}</code></td>
+          <td>${u.date}</td>
+          <td>
+            <div class="d-flex align-items-center gap-2">
+              <div class="progress flex-grow-1" style="height: 6px;">
+                <div class="progress-bar bg-success" role="progressbar" style="width: ${u.progressPercent}%"></div>
+              </div>
+              <span class="small fw-semibold">${u.progressPercent}%</span>
+            </div>
+          </td>
+          <td><span class="small text-muted">${u.updateNotes || 'N/A'}</span></td>
+          <td><span class="badge bg-secondary text-dark">${u.status}</span></td>
+          <td class="text-center">
+            <button class="btn btn-sm btn-outline-danger delete-update-btn" data-id="${u.updateId}">
+              <i class="bi bi-trash"></i>
+            </button>
+          </td>
+        </tr>
+      `).join('');
+
+      document.querySelectorAll(".delete-update-btn").forEach(btn => {
+        btn.onclick = async () => {
+          const id = btn.dataset.id;
+          if (confirm(`Delete this update entry?`)) {
+            await deleteProjectUpdate(id);
+            loadAllData();
+          }
+        };
+      });
+    }
+
+    function renderRequisitions() {
+      const tbody = document.getElementById("requisitionsTableBody");
+      if (!tbody) return;
+      if (allRequisitions.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="7" class="text-center py-3 text-muted">No requisitions created.</td></tr>';
+        return;
+      }
+      tbody.innerHTML = allRequisitions.map(r => `
+        <tr>
+          <td><code class="text-dark font-monospace">${r.requisitionId}</code></td>
+          <td><strong>${r.itemName}</strong></td>
+          <td>${r.quantity}</td>
+          <td>${Number(r.estimatedCost).toLocaleString()} BDT</td>
+          <td><code class="text-dark font-monospace">${r.projectId}</code></td>
+          <td><span class="badge bg-secondary text-dark">${r.status}</span></td>
+          <td class="text-center">
+            <button class="btn btn-sm btn-outline-danger delete-req-btn" data-id="${r.requisitionId}">
+              <i class="bi bi-trash"></i>
+            </button>
+          </td>
+        </tr>
+      `).join('');
+
+      document.querySelectorAll(".delete-req-btn").forEach(btn => {
+        btn.onclick = async () => {
+          const id = btn.dataset.id;
+          if (confirm(`Delete requisition ${id}?`)) {
+            await deleteRequisition(id);
+            loadAllData();
+          }
+        };
+      });
+    }
+
+    function renderPurchases() {
+      const tbody = document.getElementById("purchasesTableBody");
+      if (!tbody) return;
+      if (allPurchases.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="7" class="text-center py-3 text-muted">No purchases logged.</td></tr>';
+        return;
+      }
+      tbody.innerHTML = allPurchases.map(p => `
+        <tr>
+          <td><code class="text-dark font-monospace">${p.purchaseId}</code></td>
+          <td><strong>${p.itemName}</strong> <span class="small text-muted">(${p.requisitionId === 'Direct' ? 'Direct' : 'Linked'})</span></td>
+          <td>${p.supplier || 'N/A'}</td>
+          <td><strong>${Number(p.finalCost).toLocaleString()} BDT</strong></td>
+          <td><code class="text-dark font-monospace">${p.projectId}</code></td>
+          <td><span class="badge bg-secondary text-dark">${p.status}</span></td>
+          <td class="text-center">
+            <button class="btn btn-sm btn-outline-danger delete-pur-btn" data-id="${p.purchaseId}">
+              <i class="bi bi-trash"></i>
+            </button>
+          </td>
+        </tr>
+      `).join('');
+
+      document.querySelectorAll(".delete-pur-btn").forEach(btn => {
+        btn.onclick = async () => {
+          const id = btn.dataset.id;
+          if (confirm(`Delete purchase record ${id}?`)) {
+            await deletePurchase(id);
+            loadAllData();
+          }
+        };
+      });
+    }
+
+    function renderExpenses() {
+      const tbody = document.getElementById("expensesTableBody");
+      if (!tbody) return;
+      if (allExpenses.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="6" class="text-center py-3 text-muted">No operational expenses logged.</td></tr>';
+        return;
+      }
+      tbody.innerHTML = allExpenses.map(e => `
+        <tr>
+          <td><span class="badge bg-light text-dark border">${e.category}</span></td>
+          <td><strong>${Number(e.amount).toLocaleString()} BDT</strong></td>
+          <td>${e.date}</td>
+          <td><code class="text-dark font-monospace">${e.projectId}</code></td>
+          <td><span class="small text-muted">${e.description || 'N/A'}</span></td>
+          <td class="text-center">
+            <button class="btn btn-sm btn-outline-danger delete-exp-btn" data-id="${e.expenseId}">
+              <i class="bi bi-trash"></i>
+            </button>
+          </td>
+        </tr>
+      `).join('');
+
+      document.querySelectorAll(".delete-exp-btn").forEach(btn => {
+        btn.onclick = async () => {
+          const id = btn.dataset.id;
+          if (confirm(`Remove this expense record?`)) {
+            await deleteExpense(id);
+            loadAllData();
+          }
+        };
+      });
+    }
+
+    // FORM SUBMISSIONS
+    document.getElementById("projectForm").onsubmit = async (e) => {
+      e.preventDefault();
+      try {
+        await addProject({
+          projectId: document.getElementById("projId").value,
+          projectName: document.getElementById("projName").value,
+          clientName: document.getElementById("projClient").value,
+          description: document.getElementById("projDesc").value,
+          startDate: document.getElementById("projStart").value,
+          endDate: document.getElementById("projEnd").value,
+          status: document.getElementById("projStatus").value
+        });
+        document.getElementById("projectForm").reset();
+        loadAllData();
+      } catch (err) {
+        alert("Failed to save project: " + err.message);
+      }
+    };
+
+    document.getElementById("contactForm").onsubmit = async (e) => {
+      e.preventDefault();
+      try {
+        await addContact({
+          contactId: document.getElementById("contactId").value || null,
+          projectId: document.getElementById("contactProjId").value,
+          fullName: document.getElementById("contactName").value,
+          designation: document.getElementById("contactName").value ? document.getElementById("contactDesig").value : "",
+          organization: document.getElementById("contactOrg").value,
+          mobile: document.getElementById("contactMobile").value,
+          email: document.getElementById("contactEmail").value
+        });
+        document.getElementById("contactForm").reset();
+        loadAllData();
+      } catch (err) {
+        alert("Failed to save contact: " + err.message);
+      }
+    };
+
+    document.getElementById("meetingForm").onsubmit = async (e) => {
+      e.preventDefault();
+      try {
+        await addMeeting({
+          projectId: document.getElementById("meetProjId").value,
+          title: document.getElementById("meetTitle").value,
+          date: document.getElementById("meetDate").value,
+          time: document.getElementById("meetTime").value,
+          duration: document.getElementById("meetDur").value,
+          agenda: document.getElementById("meetAgenda").value
+        });
+        document.getElementById("meetingForm").reset();
+        loadAllData();
+      } catch (err) {
+        alert("Failed to schedule meeting: " + err.message);
+      }
+    };
+
+    document.getElementById("budgetForm").onsubmit = async (e) => {
+      e.preventDefault();
+      try {
+        await addBudget({
+          projectId: document.getElementById("budgProjId").value,
+          estimatedBudget: document.getElementById("budgAmount").value,
+          status: document.getElementById("budgStatus").value,
+          notes: document.getElementById("budgNotes").value
+        });
+        document.getElementById("budgetForm").reset();
+        loadAllData();
+      } catch (err) {
+        alert("Failed to configure budget: " + err.message);
+      }
+    };
+
+    document.getElementById("updateForm").onsubmit = async (e) => {
+      e.preventDefault();
+      try {
+        await addProjectUpdate({
+          projectId: document.getElementById("updProjId").value,
+          date: document.getElementById("updDate").value,
+          progressPercent: document.getElementById("updProgress").value,
+          status: document.getElementById("updStatus").value,
+          updateNotes: document.getElementById("updNotes").value
+        });
+        document.getElementById("updateForm").reset();
+        loadAllData();
+      } catch (err) {
+        alert("Failed to post progress update: " + err.message);
+      }
+    };
+
+    document.getElementById("requisitionForm").onsubmit = async (e) => {
+      e.preventDefault();
+      try {
+        await addRequisition({
+          projectId: document.getElementById("reqProjId").value,
+          itemName: document.getElementById("reqItem").value,
+          quantity: document.getElementById("reqQty").value,
+          estimatedCost: document.getElementById("reqCost").value,
+          status: document.getElementById("reqStatus").value
+        });
+        document.getElementById("requisitionForm").reset();
+        loadAllData();
+      } catch (err) {
+        alert("Failed to save requisition: " + err.message);
+      }
+    };
+
+    document.getElementById("purchaseForm").onsubmit = async (e) => {
+      e.preventDefault();
+      try {
+        await addPurchase({
+          requisitionId: document.getElementById("purRequisitionId").value,
+          projectId: document.getElementById("purProjId").value,
+          itemName: document.getElementById("purItemName").value,
+          supplier: document.getElementById("purSupplier").value,
+          finalCost: document.getElementById("purCost").value,
+          status: document.getElementById("purStatus").value
+        });
+        document.getElementById("purchaseForm").reset();
+        // Enable back inputs that might have been disabled by auto-fill
+        document.getElementById("purProjId").disabled = false;
+        document.getElementById("purItemName").disabled = false;
+        loadAllData();
+      } catch (err) {
+        alert("Failed to log purchase: " + err.message);
+      }
+    };
+
+    document.getElementById("expenseForm").onsubmit = async (e) => {
+      e.preventDefault();
+      try {
+        await addExpense({
+          projectId: document.getElementById("expProjId").value,
+          category: document.getElementById("expCategory").value,
+          amount: document.getElementById("expAmount").value,
+          date: document.getElementById("expDate").value,
+          description: document.getElementById("expDesc").value
+        });
+        document.getElementById("expenseForm").reset();
+        loadAllData();
+      } catch (err) {
+        alert("Failed to post expense: " + err.message);
+      }
+    };
+
+    // Firebase Auth State listener
+    onAdminAuthStateChanged((user) => {
+      const loginSection = document.getElementById("loginSection");
+      const dashboardSection = document.getElementById("dashboardSection");
+
+      if (user) {
+        loginSection.classList.add("d-none");
+        dashboardSection.classList.remove("d-none");
+        loadAllData();
+      } else {
+        loginSection.classList.remove("d-none");
+        dashboardSection.classList.add("d-none");
+      }
+    });
+
+    // Login Form Handler
+    document.getElementById("loginForm").addEventListener("submit", async function (e) {
+      e.preventDefault();
+      const email = document.getElementById("adminEmail").value.trim();
+      const password = document.getElementById("adminPassword").value;
+      const errorDiv = document.getElementById("loginError");
+      errorDiv.classList.add("d-none");
+
+      try {
+        await loginAdmin(email, password);
+      } catch (err) {
+        errorDiv.innerText = "Login failed: " + err.message.replace("Firebase: ", "");
+        errorDiv.classList.remove("d-none");
+      }
+    });
+
+    // Logout Handler
+    document.getElementById("logoutBtn").addEventListener("click", async function () {
+      try {
+        await logoutAdmin();
+      } catch (err) {
+        alert("Logout failed: " + err.message);
+      }
+    });
+
+    // Dynamic theme observer to update charts styling on the fly
+    const themeObserver = new MutationObserver(() => {
+      if (allProjects.length > 0) {
+        updateOverview();
+      }
+    });
+    themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['data-bs-theme'] });
+  </script>
+
+</body>
+
+</html>
