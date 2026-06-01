@@ -2630,7 +2630,7 @@
             <td><code class="text-dark fw-bold font-monospace">${p.project_id}</code></td>
             <td><strong>${p.project_name}</strong></td>
             <td>${p.client_sponsor}</td>
-            <td>${pm ? pm.contact_name : 'Unknown Manager'}</td>
+            <td>${pm ? (pm.employee_name || pm.contact_name) : 'Unknown Manager'}</td>
             <td><span class="small">${p.start_date} to ${p.end_date}</span></td>
             <td><span class="badge bg-secondary text-dark">${p.project_status}</span></td>
             <td class="text-center">
