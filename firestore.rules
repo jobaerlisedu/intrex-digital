@@ -59,6 +59,9 @@ service cloud.firestore {
     match /tbl_domain_hosting_sales/{id} {
       allow read, write: if request.auth != null;
     }
+    match /tbl_audit_logs/{id} {
+      allow read, write: if request.auth != null;
+    }
     
   }
 }

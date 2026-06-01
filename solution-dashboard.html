@@ -206,6 +206,10 @@
                   id="hosting-tab" data-bs-toggle="tab" data-bs-target="#hostingPanel" type="button" role="tab">
                   <i class="bi bi-server"></i> Domain & Hosting
                 </button>
+                <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
+                  id="logs-tab" data-bs-toggle="tab" data-bs-target="#logsPanel" type="button" role="tab">
+                  <i class="bi bi-shield-check"></i> System Audit Logs
+                </button>
               </div>
             </div>
 
@@ -306,7 +310,7 @@
                           <label class="form-label small fw-semibold" for="project_name">Project Name <span
                               class="text-danger">*</span></label>
                           <input class="form-control" id="project_name" type="text" placeholder="Project title" required
-                            maxlength="100">
+                             maxlength="100">
                         </div>
                         <div class="col-md-6">
                           <label class="form-label small fw-semibold" for="client_sponsor">Client / Sponsor <span
@@ -347,9 +351,14 @@
                             placeholder="Scope & objectives..."></textarea>
                         </div>
                       </div>
-                      <button type="submit" class="btn btn-primary fw-semibold py-2 px-4 mt-3">
-                        <i class="bi bi-save me-2"></i>Save Project
-                      </button>
+                      <div class="d-flex gap-2 mt-3">
+                        <button type="submit" id="projSubmitBtn" class="btn btn-primary fw-semibold py-2 px-4">
+                          <i class="bi bi-save me-2"></i>Save Project
+                        </button>
+                        <button type="button" id="cancelProjEditBtn" class="btn btn-outline-secondary py-2 px-3 d-none">
+                          Cancel Edit
+                        </button>
+                      </div>
                     </form>
                   </div>
                   <!-- Directory -->
@@ -384,7 +393,7 @@
                 <div class="tab-pane fade" id="employeesPanel" role="tabpanel">
                   <!-- Form -->
                   <div class="card p-4 rounded-4 shadow-sm border mb-4">
-                    <h3 class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
+                    <h3 id="empFormTitle" class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
                       <i class="bi bi-person-plus-fill me-2 text-primary"></i>Add Employee Record
                     </h3>
                     <form id="employeeForm">
@@ -444,9 +453,14 @@
                           <input class="form-control" id="emp_employee_id" type="text" placeholder="e.g. EMP-0001">
                         </div>
                       </div>
-                      <button type="submit" class="btn btn-primary fw-semibold py-2 px-4 mt-3">
-                        <i class="bi bi-save me-2"></i>Save Employee Record
-                      </button>
+                      <div class="d-flex gap-2 mt-3">
+                        <button type="submit" id="empSubmitBtn" class="btn btn-primary fw-semibold py-2 px-4">
+                          <i class="bi bi-save me-2"></i>Save Employee Record
+                        </button>
+                        <button type="button" id="cancelEmpEditBtn" class="btn btn-outline-secondary py-2 px-3 d-none">
+                          Cancel Edit
+                        </button>
+                      </div>
                     </form>
                   </div>
                   <!-- Directory -->
@@ -482,7 +496,7 @@
                 <div class="tab-pane fade" id="contactsPanel" role="tabpanel">
                   <!-- Form -->
                   <div class="card p-4 rounded-4 shadow-sm border mb-4">
-                    <h3 class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
+                    <h3 id="contactFormTitle" class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
                       <i class="bi bi-telephone-plus me-2 text-primary"></i>Add Contact
                     </h3>
                     <form id="contactForm">
@@ -543,9 +557,14 @@
                             projects.</div>
                         </div>
                       </div>
-                      <button type="submit" class="btn btn-primary fw-semibold py-2 px-4 mt-3">
-                        <i class="bi bi-save me-2"></i>Save Contact
-                      </button>
+                      <div class="d-flex gap-2 mt-3">
+                        <button type="submit" id="contactSubmitBtn" class="btn btn-primary fw-semibold py-2 px-4">
+                          <i class="bi bi-save me-2"></i>Save Contact
+                        </button>
+                        <button type="button" id="cancelContactEditBtn" class="btn btn-outline-secondary py-2 px-3 d-none">
+                          Cancel Edit
+                        </button>
+                      </div>
                     </form>
                   </div>
                   <!-- Directory -->
@@ -581,10 +600,11 @@
                 <div class="tab-pane fade" id="meetingsPanel" role="tabpanel">
                   <!-- Form -->
                   <div class="card p-4 rounded-4 shadow-sm border mb-4">
-                    <h3 class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
+                    <h3 id="meetFormTitle" class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
                       <i class="bi bi-calendar-plus me-2 text-primary"></i>Schedule Meeting
                     </h3>
                     <form id="meetingForm">
+                      <input type="hidden" id="meet_meeting_id">
                       <div class="row g-3">
                         <div class="col-md-6">
                           <label class="form-label small fw-semibold" for="meet_project_id">Related Project <span
@@ -630,9 +650,14 @@
                             placeholder="Post-meeting outcomes..."></textarea>
                         </div>
                       </div>
-                      <button type="submit" class="btn btn-primary fw-semibold py-2 px-4 mt-3">
-                        <i class="bi bi-clock-history me-2"></i>Schedule Meeting
-                      </button>
+                      <div class="d-flex gap-2 mt-3">
+                        <button type="submit" id="meetSubmitBtn" class="btn btn-primary fw-semibold py-2 px-4">
+                          <i class="bi bi-clock-history me-2"></i>Schedule Meeting
+                        </button>
+                        <button type="button" id="cancelMeetEditBtn" class="btn btn-outline-secondary py-2 px-3 d-none">
+                          Cancel Edit
+                        </button>
+                      </div>
                     </form>
                   </div>
                   <!-- Directory -->
@@ -667,10 +692,11 @@
                 <div class="tab-pane fade" id="budgetPanel" role="tabpanel">
                   <!-- Form -->
                   <div class="card p-4 rounded-4 shadow-sm border mb-4">
-                    <h3 class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
+                    <h3 id="budgetFormTitle" class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
                       <i class="bi bi-cash-stack me-2 text-primary"></i>Allocate Budget Line
                     </h3>
                     <form id="budgetForm">
+                      <input type="hidden" id="budg_budget_line_id">
                       <div class="row g-3">
                         <div class="col-md-6">
                           <label class="form-label small fw-semibold" for="budg_project_id">Select Project <span
@@ -711,9 +737,14 @@
                           </select>
                         </div>
                       </div>
-                      <button type="submit" class="btn btn-primary fw-semibold py-2 px-4 mt-3">
-                        <i class="bi bi-plus-circle me-2"></i>Save Budget Line
-                      </button>
+                      <div class="d-flex gap-2 mt-3">
+                        <button type="submit" id="budgetSubmitBtn" class="btn btn-primary fw-semibold py-2 px-4">
+                          <i class="bi bi-plus-circle me-2"></i>Save Budget Line
+                        </button>
+                        <button type="button" id="cancelBudgetEditBtn" class="btn btn-outline-secondary py-2 px-3 d-none">
+                          Cancel Edit
+                        </button>
+                      </div>
                     </form>
                   </div>
                   <!-- Directory -->
@@ -749,7 +780,7 @@
                 <div class="tab-pane fade" id="tasksPanel" role="tabpanel">
                   <!-- Form -->
                   <div class="card p-4 rounded-4 shadow-sm border mb-4">
-                    <h3 class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
+                    <h3 id="taskFormTitle" class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
                       <i class="bi bi-activity me-2 text-primary"></i>Create / Manage Task
                     </h3>
                     <form id="taskForm">
@@ -817,7 +848,7 @@
                         </div>
                       </div>
                       <div class="d-flex gap-2 mt-3">
-                        <button type="submit" class="btn btn-primary fw-semibold py-2 px-4">
+                        <button type="submit" id="taskSubmitBtn" class="btn btn-primary fw-semibold py-2 px-4">
                           <i class="bi bi-save me-2"></i>Save Task
                         </button>
                         <button type="button" id="cancelTaskEditBtn" class="btn btn-outline-secondary py-2 px-3 d-none">
@@ -860,10 +891,11 @@
                 <div class="tab-pane fade" id="requisitionPanel" role="tabpanel">
                   <!-- Form -->
                   <div class="card p-4 rounded-4 shadow-sm border mb-4">
-                    <h3 class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
+                    <h3 id="reqFormTitle" class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
                       <i class="bi bi-file-earmark-plus me-2 text-primary"></i>Create Requisition
                     </h3>
                     <form id="requisitionForm">
+                      <input type="hidden" id="req_requisition_id">
                       <div class="row g-3">
                         <div class="col-md-6">
                           <label class="form-label small fw-semibold" for="req_project_id">Project ID <span
@@ -926,9 +958,14 @@
                             minlength="10"></textarea>
                         </div>
                       </div>
-                      <button type="submit" class="btn btn-primary fw-semibold py-2 px-4 mt-3">
-                        <i class="bi bi-send-plus me-2"></i>Submit Requisition
-                      </button>
+                      <div class="d-flex gap-2 mt-3">
+                        <button type="submit" id="reqSubmitBtn" class="btn btn-primary fw-semibold py-2 px-4">
+                          <i class="bi bi-send-plus me-2"></i>Submit Requisition
+                        </button>
+                        <button type="button" id="cancelReqEditBtn" class="btn btn-outline-secondary py-2 px-3 d-none">
+                          Cancel Edit
+                        </button>
+                      </div>
                     </form>
                   </div>
                   <!-- Directory -->
@@ -966,7 +1003,7 @@
                 <div class="tab-pane fade" id="purchasesPanel" role="tabpanel">
                   <!-- Form -->
                   <div class="card p-4 rounded-4 shadow-sm border mb-4">
-                    <h3 class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
+                    <h3 id="poFormTitle" class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
                       <i class="bi bi-cart-plus me-2 text-primary"></i>Create Purchase Order
                     </h3>
                     <form id="purchaseForm">
@@ -1030,9 +1067,14 @@
                           </select>
                         </div>
                       </div>
-                      <button type="submit" class="btn btn-primary fw-semibold py-2 px-4 mt-3">
-                        <i class="bi bi-cart-check-fill me-2"></i>Save Purchase Order
-                      </button>
+                      <div class="d-flex gap-2 mt-3">
+                        <button type="submit" id="poSubmitBtn" class="btn btn-primary fw-semibold py-2 px-4">
+                          <i class="bi bi-cart-check-fill me-2"></i>Save Purchase Order
+                        </button>
+                        <button type="button" id="cancelPoEditBtn" class="btn btn-outline-secondary py-2 px-3 d-none">
+                          Cancel Edit
+                        </button>
+                      </div>
                     </form>
                   </div>
                   <!-- Directory -->
@@ -1069,10 +1111,11 @@
                 <div class="tab-pane fade" id="expensesPanel" role="tabpanel">
                   <!-- Form -->
                   <div class="card p-4 rounded-4 shadow-sm border mb-4">
-                    <h3 class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
+                    <h3 id="expenseFormTitle" class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
                       <i class="bi bi-cash-coin me-2 text-primary"></i>Log Expense / Payment
                     </h3>
                     <form id="expenseForm">
+                      <input type="hidden" id="exp_expense_id">
                       <div class="row g-3">
                         <div class="col-md-6">
                           <label class="form-label small fw-semibold" for="exp_project_id">Select Project <span
@@ -1140,9 +1183,14 @@
                           <input class="form-control bg-light" id="exp_clearance_date" type="date" disabled>
                         </div>
                       </div>
-                      <button type="submit" class="btn btn-primary fw-semibold py-2 px-4 mt-3">
-                        <i class="bi bi-cash-coin me-2"></i>Post Expense Record
-                      </button>
+                      <div class="d-flex gap-2 mt-3">
+                        <button type="submit" id="expenseSubmitBtn" class="btn btn-primary fw-semibold py-2 px-4">
+                          <i class="bi bi-cash-coin me-2"></i>Post Expense Record
+                        </button>
+                        <button type="button" id="cancelExpenseEditBtn" class="btn btn-outline-secondary py-2 px-3 d-none">
+                          Cancel Edit
+                        </button>
+                      </div>
                     </form>
                   </div>
                   <!-- Directory -->
@@ -1580,6 +1628,40 @@
                   </div>
                 </div>
 
+                <!-- 11. SYSTEM AUDIT LOGS PANEL -->
+                <div class="tab-pane fade" id="logsPanel" role="tabpanel">
+                  <div class="card p-4 rounded-4 shadow-sm border">
+                    <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
+                      <h3 class="h5 fw-bold mb-0 text-heading-color">
+                        <i class="bi bi-shield-check me-2 text-primary"></i>System Audit Logs
+                      </h3>
+                      <button type="button" id="refreshLogsBtn" class="btn btn-outline-primary py-1 px-3 d-flex align-items-center gap-2">
+                        <i class="bi bi-arrow-clockwise"></i> Refresh Logs
+                      </button>
+                    </div>
+                    <div class="table-responsive">
+                      <table class="table table-hover align-middle mb-0" id="logsTable">
+                        <thead class="table-light">
+                          <tr>
+                            <th>Log ID</th>
+                            <th>Timestamp</th>
+                            <th>User Email</th>
+                            <th>Action Type</th>
+                            <th>Collection</th>
+                            <th>Record ID</th>
+                            <th>Details</th>
+                          </tr>
+                        </thead>
+                        <tbody id="logsTableBody">
+                          <tr>
+                            <td colspan="7" class="text-center py-4 text-muted">Loading logs...</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+
               </div>
             </div>
           </div>
@@ -1638,7 +1720,8 @@
       addEmployee, getAllEmployees, deleteEmployee,
       addSupportTicket, getAllSupportTickets, deleteSupportTicket,
       addClientPayment, getAllClientPayments, deleteClientPayment,
-      addDomainHosting, getAllDomainHosting, deleteDomainHosting
+      addDomainHosting, getAllDomainHosting, deleteDomainHosting,
+      addAuditLog, getAllAuditLogs
     } from "./assets/js/solution.js";
 
     // Set today's dates as default (except clearance date & client payment received date)
@@ -1650,6 +1733,9 @@
         input.max = todayDateStr;
       }
     });
+
+    let currentUserEmail = "";
+    let allAuditLogs = [];
 
     let allProjects = [];
     let allContacts = [];
@@ -2077,6 +2163,96 @@
       document.getElementById("ticket_resolution_notes").value = "";
     });
 
+    // Cancel Project Edit
+    document.getElementById("cancelProjEditBtn")?.addEventListener("click", function () {
+      document.getElementById("projectForm").reset();
+      document.getElementById("project_id").readOnly = false;
+      document.getElementById("projFormTitle").innerHTML = '<i class="bi bi-kanban me-2 text-primary"></i>Create Project';
+      document.getElementById("projSubmitBtn").innerHTML = '<i class="bi bi-save me-2"></i>Save Project';
+      document.getElementById("cancelProjEditBtn").classList.add("d-none");
+      document.querySelectorAll('input[type="date"]').forEach(input => {
+        if (input.id === "exp_clearance_date" || input.id === "inv_date_received") return;
+        input.value = todayDateStr;
+      });
+    });
+
+    // Cancel Employee Edit
+    document.getElementById("cancelEmpEditBtn")?.addEventListener("click", function () {
+      document.getElementById("employeeForm").reset();
+      document.getElementById("emp_employee_id").readOnly = false;
+      document.getElementById("empFormTitle").innerHTML = '<i class="bi bi-person-plus-fill me-2 text-primary"></i>Add Employee Record';
+      document.getElementById("empSubmitBtn").innerHTML = '<i class="bi bi-save me-2"></i>Save Employee Record';
+      document.getElementById("cancelEmpEditBtn").classList.add("d-none");
+    });
+
+    // Cancel Contact Edit
+    document.getElementById("cancelContactEditBtn")?.addEventListener("click", function () {
+      document.getElementById("contactForm").reset();
+      document.getElementById("contact_id").value = "";
+      document.getElementById("contactFormTitle").innerHTML = '<i class="bi bi-telephone-plus me-2 text-primary"></i>Add Contact';
+      document.getElementById("contactSubmitBtn").innerHTML = '<i class="bi bi-save me-2"></i>Save Contact';
+      document.getElementById("cancelContactEditBtn").classList.add("d-none");
+    });
+
+    // Cancel Meeting Edit
+    document.getElementById("cancelMeetEditBtn")?.addEventListener("click", function () {
+      document.getElementById("meetingForm").reset();
+      document.getElementById("meet_meeting_id").value = "";
+      document.getElementById("meetFormTitle").innerHTML = '<i class="bi bi-calendar-plus me-2 text-primary"></i>Schedule Meeting';
+      document.getElementById("meetSubmitBtn").innerHTML = '<i class="bi bi-clock-history me-2"></i>Schedule Meeting';
+      document.getElementById("cancelMeetEditBtn").classList.add("d-none");
+      document.querySelectorAll('input[type="date"]').forEach(input => {
+        if (input.id === "exp_clearance_date" || input.id === "inv_date_received") return;
+        input.value = todayDateStr;
+      });
+    });
+
+    // Cancel Budget Edit
+    document.getElementById("cancelBudgetEditBtn")?.addEventListener("click", function () {
+      document.getElementById("budgetForm").reset();
+      document.getElementById("budg_budget_line_id").value = "";
+      document.getElementById("budgetFormTitle").innerHTML = '<i class="bi bi-cash-stack me-2 text-primary"></i>Allocate Budget Line';
+      document.getElementById("budgetSubmitBtn").innerHTML = '<i class="bi bi-plus-circle me-2"></i>Save Budget Line';
+      document.getElementById("cancelBudgetEditBtn").classList.add("d-none");
+    });
+
+    // Cancel Requisition Edit
+    document.getElementById("cancelReqEditBtn")?.addEventListener("click", function () {
+      document.getElementById("requisitionForm").reset();
+      document.getElementById("req_requisition_id").value = "";
+      document.getElementById("reqFormTitle").innerHTML = '<i class="bi bi-file-earmark-plus me-2 text-primary"></i>Create Requisition';
+      document.getElementById("reqSubmitBtn").innerHTML = '<i class="bi bi-send-plus me-2"></i>Submit Requisition';
+      document.getElementById("cancelReqEditBtn").classList.add("d-none");
+      document.getElementById("req_rejection_reason_container").style.display = "none";
+      calculateReqTotal();
+    });
+
+    // Cancel Purchase Order Edit
+    document.getElementById("cancelPoEditBtn")?.addEventListener("click", function () {
+      document.getElementById("purchaseForm").reset();
+      document.getElementById("po_number").readOnly = false;
+      document.getElementById("poFormTitle").innerHTML = '<i class="bi bi-cart-plus me-2 text-primary"></i>Create Purchase Order';
+      document.getElementById("poSubmitBtn").innerHTML = '<i class="bi bi-cart-check-fill me-2"></i>Save Purchase Order';
+      document.getElementById("cancelPoEditBtn").classList.add("d-none");
+      populateRequisitionDropdowns();
+      document.querySelectorAll('input[type="date"]').forEach(input => {
+        if (input.id === "exp_clearance_date" || input.id === "inv_date_received") return;
+        input.value = todayDateStr;
+      });
+    });
+
+    // Cancel Expense Edit
+    document.getElementById("cancelExpenseEditBtn")?.addEventListener("click", function () {
+      document.getElementById("expenseForm").reset();
+      document.getElementById("exp_expense_id").value = "";
+      document.getElementById("expenseFormTitle").innerHTML = '<i class="bi bi-cash-coin me-2 text-primary"></i>Log Expense / Payment';
+      document.getElementById("expenseSubmitBtn").innerHTML = '<i class="bi bi-cash-coin me-2"></i>Post Expense Record';
+      document.getElementById("cancelExpenseEditBtn").classList.add("d-none");
+      document.getElementById("exp_po_number_container").style.display = "none";
+      document.getElementById("exp_clearance_date").disabled = true;
+      document.getElementById("exp_clearance_date").classList.add("bg-light");
+    });
+
     // Live Requisition Total calculation
     function calculateReqTotal() {
       const qty = Number(document.getElementById("req_qty_requested").value) || 0;
@@ -2194,6 +2370,7 @@
         allSupportTickets = await getAllSupportTickets();
         allClientPayments = await getAllClientPayments();
         allDomainHosting = await getAllDomainHosting();
+        allAuditLogs = await getAllAuditLogs();
 
         populateProjectDropdowns();
         populateContactSelects();
@@ -2216,6 +2393,7 @@
         renderClientPayments();
         renderSupportTickets();
         renderDomainHosting();
+        renderAuditLogs();
 
         updateOverview();
       } catch (err) {
@@ -2233,7 +2411,15 @@
       const dashboardSection = document.getElementById("dashboardSection");
       if (dashboardSection && !dashboardSection.classList.contains("d-none")) {
         inactivityTimer = setTimeout(async () => {
+          const emailBeforeLogout = currentUserEmail || "admin@example.com";
           try {
+            await addAuditLog({
+              user_email: emailBeforeLogout,
+              action_type: "LOGOUT",
+              collection_name: "N/A",
+              record_id: "N/A",
+              details: "Admin logged out due to inactivity auto-logout"
+            });
             await logoutAdmin();
             alert("You have been logged out due to 3 minutes of inactivity.");
           } catch (err) {
@@ -2244,6 +2430,54 @@
     }
 
     // Monitor events to track activity
+    window.onload = resetInactivityTimer;
+    document.onmousemove = resetInactivityTimer;
+    document.onkeydown = resetInactivityTimer;
+
+    async function refreshAuditLogs() {
+      try {
+        allAuditLogs = await getAllAuditLogs();
+        renderAuditLogs();
+      } catch (err) {
+        console.error("refreshAuditLogs failed:", err);
+      }
+    }
+
+    function renderAuditLogs() {
+      const tbody = document.getElementById("logsTableBody");
+      if (!tbody) return;
+      if (allAuditLogs.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="7" class="text-center py-3 text-muted">No audit logs found.</td></tr>';
+        return;
+      }
+
+      function actionBadge(action) {
+        const map = {
+          "CREATE": '<span class="badge bg-success text-white px-2 py-1 fw-bold" style="font-size: 0.75rem;">CREATE</span>',
+          "UPDATE": '<span class="badge bg-warning text-dark px-2 py-1 fw-bold" style="font-size: 0.75rem;">UPDATE</span>',
+          "DELETE": '<span class="badge bg-danger text-white px-2 py-1 fw-bold" style="font-size: 0.75rem;">DELETE</span>',
+          "LOGIN": '<span class="badge bg-info text-dark px-2 py-1 fw-bold" style="font-size: 0.75rem;">LOGIN</span>',
+          "LOGOUT": '<span class="badge bg-secondary text-white px-2 py-1 fw-bold" style="font-size: 0.75rem;">LOGOUT</span>'
+        };
+        return map[action] || `<span class="badge bg-secondary text-white px-2 py-1 fw-bold" style="font-size: 0.75rem;">${action}</span>`;
+      }
+
+      tbody.innerHTML = allAuditLogs.map(log => {
+        return `
+          <tr>
+            <td><code class="text-dark fw-bold font-monospace">${log.log_id}</code></td>
+            <td><span class="small text-muted">${log.local_time || '—'}</span></td>
+            <td><strong>${log.user_email}</strong></td>
+            <td>${actionBadge(log.action_type)}</td>
+            <td><span class="small font-monospace text-secondary">${log.collection_name}</span></td>
+            <td><code class="text-dark font-monospace">${log.record_id}</code></td>
+            <td><span class="small text-wrap">${log.details}</span></td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    // Targeted Refreshes for Performance Optimization track activity
     ['mousemove', 'keydown', 'click', 'scroll', 'touchstart', 'input'].forEach(evt => {
       document.addEventListener(evt, resetInactivityTimer, { passive: true });
     });
@@ -2403,6 +2637,9 @@
               <button class="btn btn-sm btn-outline-success view-proj-btn me-1" data-id="${p.project_id}" title="View Details">
                 <i class="bi bi-eye"></i>
               </button>
+              <button class="btn btn-sm btn-outline-primary edit-proj-btn me-1" data-id="${p.project_id}">
+                <i class="bi bi-pencil"></i>
+              </button>
               <button class="btn btn-sm btn-outline-danger delete-proj-btn" data-id="${p.project_id}">
                 <i class="bi bi-trash"></i>
               </button>
@@ -2417,12 +2654,47 @@
         };
       });
 
+      document.querySelectorAll(".edit-proj-btn").forEach(btn => {
+        btn.onclick = () => {
+          const id = btn.dataset.id;
+          const p = allProjects.find(proj => proj.project_id === id);
+          if (p) {
+            document.getElementById("project_id").value = p.project_id;
+            document.getElementById("project_id").readOnly = true;
+            document.getElementById("project_name").value = p.project_name;
+            document.getElementById("client_sponsor").value = p.client_sponsor;
+            document.getElementById("project_manager").value = p.project_manager;
+            document.getElementById("start_date").value = p.start_date;
+            document.getElementById("end_date").value = p.end_date;
+            document.getElementById("project_status").value = p.project_status;
+            document.getElementById("project_desc").value = p.project_desc || "";
+
+            document.getElementById("projFormTitle").innerHTML = '<i class="bi bi-kanban me-2 text-primary"></i>Edit Project';
+            document.getElementById("projSubmitBtn").innerHTML = '<i class="bi bi-pencil-square me-2"></i>Update Project';
+            document.getElementById("cancelProjEditBtn").classList.remove("d-none");
+            document.getElementById("projectForm").scrollIntoView({ behavior: 'smooth' });
+          }
+        };
+      });
+
       document.querySelectorAll(".delete-proj-btn").forEach(btn => {
         btn.onclick = async () => {
           const id = btn.dataset.id;
           if (confirm(`Delete project ${id}?`)) {
-            await deleteProject(id);
-            refreshProjects();
+            try {
+              await deleteProject(id);
+              await addAuditLog({
+                user_email: currentUserEmail || "admin@example.com",
+                action_type: "DELETE",
+                collection_name: "tbl_projects",
+                record_id: id,
+                details: `Deleted project with ID: ${id}`
+              });
+              refreshProjects();
+              refreshAuditLogs();
+            } catch (err) {
+              alert("Failed to delete project: " + err.message);
+            }
           }
         };
       });
@@ -2450,6 +2722,9 @@
               <button class="btn btn-sm btn-outline-success view-contact-btn me-1" data-id="${c.contact_id}" title="View Details">
                 <i class="bi bi-eye"></i>
               </button>
+              <button class="btn btn-sm btn-outline-primary edit-contact-btn me-1" data-id="${c.contact_id}">
+                <i class="bi bi-pencil"></i>
+              </button>
               <button class="btn btn-sm btn-outline-danger delete-contact-btn" data-id="${c.contact_id}">
                 <i class="bi bi-trash"></i>
               </button>
@@ -2464,12 +2739,50 @@
         };
       });
 
+      document.querySelectorAll(".edit-contact-btn").forEach(btn => {
+        btn.onclick = () => {
+          const id = btn.dataset.id;
+          const c = allContacts.find(con => con.contact_id === id);
+          if (c) {
+            document.getElementById("contact_id").value = c.contact_id;
+            document.getElementById("contact_name").value = c.contact_name;
+            document.getElementById("contact_designation").value = c.designation;
+            document.getElementById("contact_organization").value = c.organization;
+            document.getElementById("contact_mobile_phone").value = c.mobile_phone || "";
+            document.getElementById("contact_email").value = c.email || "";
+
+            const projSelect = document.getElementById("contact_project_id");
+            const linkedArr = Array.isArray(c.project_id) ? c.project_id : [c.project_id];
+            for (let i = 0; i < projSelect.options.length; i++) {
+              projSelect.options[i].selected = linkedArr.includes(projSelect.options[i].value);
+            }
+
+            document.getElementById("contactFormTitle").innerHTML = '<i class="bi bi-telephone-plus me-2 text-primary"></i>Edit Contact';
+            document.getElementById("contactSubmitBtn").innerHTML = '<i class="bi bi-pencil-square me-2"></i>Update Contact';
+            document.getElementById("cancelContactEditBtn").classList.remove("d-none");
+            document.getElementById("contactForm").scrollIntoView({ behavior: 'smooth' });
+          }
+        };
+      });
+
       document.querySelectorAll(".delete-contact-btn").forEach(btn => {
         btn.onclick = async () => {
           const id = btn.dataset.id;
           if (confirm(`Delete this contact?`)) {
-            await deleteContact(id);
-            refreshContacts();
+            try {
+              await deleteContact(id);
+              await addAuditLog({
+                user_email: currentUserEmail || "admin@example.com",
+                action_type: "DELETE",
+                collection_name: "tbl_contacts",
+                record_id: id,
+                details: `Deleted contact with ID: ${id}`
+              });
+              refreshContacts();
+              refreshAuditLogs();
+            } catch (err) {
+              alert("Failed to delete contact: " + err.message);
+            }
           }
         };
       });
@@ -2495,6 +2808,9 @@
             <button class="btn btn-sm btn-outline-success view-emp-btn me-1" data-id="${e.employee_id}" title="View Details">
               <i class="bi bi-eye"></i>
             </button>
+            <button class="btn btn-sm btn-outline-primary edit-emp-btn me-1" data-id="${e.employee_id}">
+              <i class="bi bi-pencil"></i>
+            </button>
             <button class="btn btn-sm btn-outline-danger delete-emp-btn" data-id="${e.employee_id}">
               <i class="bi bi-trash"></i>
             </button>
@@ -2508,13 +2824,43 @@
         };
       });
 
+      document.querySelectorAll(".edit-emp-btn").forEach(btn => {
+        btn.onclick = () => {
+          const id = btn.dataset.id;
+          const e = allEmployees.find(emp => emp.employee_id === id);
+          if (e) {
+            document.getElementById("emp_employee_id").value = e.employee_id;
+            document.getElementById("emp_employee_id").readOnly = true;
+            document.getElementById("emp_employee_name").value = e.employee_name;
+            document.getElementById("emp_designation").value = e.designation;
+            document.getElementById("emp_department").value = e.department;
+            document.getElementById("emp_mobile_phone").value = e.mobile_phone || "";
+            document.getElementById("emp_email").value = e.email || "";
+            document.getElementById("emp_status").value = e.status;
+
+            document.getElementById("empFormTitle").innerHTML = '<i class="bi bi-person-plus-fill me-2 text-primary"></i>Edit Employee Record';
+            document.getElementById("empSubmitBtn").innerHTML = '<i class="bi bi-pencil-square me-2"></i>Update Employee Record';
+            document.getElementById("cancelEmpEditBtn").classList.remove("d-none");
+            document.getElementById("employeeForm").scrollIntoView({ behavior: 'smooth' });
+          }
+        };
+      });
+
       document.querySelectorAll(".delete-emp-btn").forEach(btn => {
         btn.onclick = async () => {
           const id = btn.dataset.id;
           if (confirm(`Delete employee ${id}?`)) {
             try {
               await deleteEmployee(id);
+              await addAuditLog({
+                user_email: currentUserEmail || "admin@example.com",
+                action_type: "DELETE",
+                collection_name: "tbl_employees",
+                record_id: id,
+                details: `Deleted employee with ID: ${id}`
+              });
               refreshEmployees();
+              refreshAuditLogs();
             } catch (err) {
               alert("Failed to delete employee: " + err.message);
             }
@@ -2522,8 +2868,6 @@
         };
       });
     }
-
-
 
     function renderMeetings() {
       const tbody = document.getElementById("meetingsTableBody");
@@ -2547,6 +2891,9 @@
               <button class="btn btn-sm btn-outline-success view-meeting-btn me-1" data-id="${m.meeting_id}" title="View Details">
                 <i class="bi bi-eye"></i>
               </button>
+              <button class="btn btn-sm btn-outline-primary edit-meeting-btn me-1" data-id="${m.meeting_id}">
+                <i class="bi bi-pencil"></i>
+              </button>
               <button class="btn btn-sm btn-outline-danger delete-meeting-btn" data-id="${m.meeting_id}">
                 <i class="bi bi-trash"></i>
               </button>
@@ -2561,12 +2908,51 @@
         };
       });
 
+      document.querySelectorAll(".edit-meeting-btn").forEach(btn => {
+        btn.onclick = () => {
+          const id = btn.dataset.id;
+          const m = allMeetings.find(meet => meet.meeting_id === id);
+          if (m) {
+            document.getElementById("meet_meeting_id").value = m.meeting_id;
+            document.getElementById("meet_project_id").value = m.project_id;
+            document.getElementById("meet_meeting_title").value = m.meeting_title;
+            document.getElementById("meeting_timestamp").value = m.meeting_timestamp;
+            document.getElementById("meet_meeting_url").value = m.meeting_url;
+            document.getElementById("meet_agenda").value = m.agenda || "";
+            document.getElementById("meet_meeting_minutes").value = m.meeting_minutes || "";
+
+            const attSelect = document.getElementById("meet_attendees_list");
+            const attendees = Array.isArray(m.attendees_list) ? m.attendees_list : [m.attendees_list];
+            for (let i = 0; i < attSelect.options.length; i++) {
+              attSelect.options[i].selected = attendees.includes(attSelect.options[i].value);
+            }
+
+            document.getElementById("meetFormTitle").innerHTML = '<i class="bi bi-calendar-plus me-2 text-primary"></i>Edit Scheduled Meeting';
+            document.getElementById("meetSubmitBtn").innerHTML = '<i class="bi bi-pencil-square me-2"></i>Update Meeting';
+            document.getElementById("cancelMeetEditBtn").classList.remove("d-none");
+            document.getElementById("meetingForm").scrollIntoView({ behavior: 'smooth' });
+          }
+        };
+      });
+
       document.querySelectorAll(".delete-meeting-btn").forEach(btn => {
         btn.onclick = async () => {
           const id = btn.dataset.id;
           if (confirm(`Cancel meeting ${id}?`)) {
-            await deleteMeeting(id);
-            refreshMeetings();
+            try {
+              await deleteMeeting(id);
+              await addAuditLog({
+                user_email: currentUserEmail || "admin@example.com",
+                action_type: "DELETE",
+                collection_name: "tbl_meetings",
+                record_id: id,
+                details: `Cancelled meeting with ID: ${id}`
+              });
+              refreshMeetings();
+              refreshAuditLogs();
+            } catch (err) {
+              alert("Failed to cancel meeting: " + err.message);
+            }
           }
         };
       });
@@ -2594,6 +2980,9 @@
               <button class="btn btn-sm btn-outline-success view-budget-btn me-1" data-id="${b.budget_line_id}" title="View Details">
                 <i class="bi bi-eye"></i>
               </button>
+              <button class="btn btn-sm btn-outline-primary edit-budget-btn me-1" data-id="${b.budget_line_id}">
+                <i class="bi bi-pencil"></i>
+              </button>
               <button class="btn btn-sm btn-outline-danger delete-budget-btn" data-id="${b.budget_line_id}">
                 <i class="bi bi-trash"></i>
               </button>
@@ -2608,12 +2997,44 @@
         };
       });
 
+      document.querySelectorAll(".edit-budget-btn").forEach(btn => {
+        btn.onclick = () => {
+          const id = btn.dataset.id;
+          const b = allBudgets.find(budg => budg.budget_line_id === id);
+          if (b) {
+            document.getElementById("budg_budget_line_id").value = b.budget_line_id;
+            document.getElementById("budg_project_id").value = b.project_id;
+            document.getElementById("budg_cost_category").value = b.cost_category;
+            document.getElementById("budg_line_description").value = b.line_description;
+            document.getElementById("budg_allocated_amount").value = b.allocated_amount;
+            document.getElementById("budg_approved_by").value = b.approved_by;
+
+            document.getElementById("budgetFormTitle").innerHTML = '<i class="bi bi-cash-stack me-2 text-primary"></i>Edit Allocated Budget Line';
+            document.getElementById("budgetSubmitBtn").innerHTML = '<i class="bi bi-pencil-square me-2"></i>Update Budget Line';
+            document.getElementById("cancelBudgetEditBtn").classList.remove("d-none");
+            document.getElementById("budgetForm").scrollIntoView({ behavior: 'smooth' });
+          }
+        };
+      });
+
       document.querySelectorAll(".delete-budget-btn").forEach(btn => {
         btn.onclick = async () => {
           const id = btn.dataset.id;
           if (confirm(`Remove budget line ${id}?`)) {
-            await deleteBudget(id);
-            refreshBudgets();
+            try {
+              await deleteBudget(id);
+              await addAuditLog({
+                user_email: currentUserEmail || "admin@example.com",
+                action_type: "DELETE",
+                collection_name: "tbl_budget",
+                record_id: id,
+                details: `Removed budget line with ID: ${id}`
+              });
+              refreshBudgets();
+              refreshAuditLogs();
+            } catch (err) {
+              alert("Failed to remove budget line: " + err.message);
+            }
           }
         };
       });
@@ -2683,6 +3104,8 @@
             document.getElementById("task_working_update_log").value = t.working_update || "";
             document.getElementById("task_working_update_new").value = "";
 
+            document.getElementById("taskFormTitle").innerHTML = '<i class="bi bi-activity me-2 text-primary"></i>Edit Task';
+            document.getElementById("taskSubmitBtn").innerHTML = '<i class="bi bi-pencil-square me-2"></i>Update Task';
             document.getElementById("cancelTaskEditBtn").classList.remove("d-none");
 
             // Scroll smoothly to task form
@@ -2695,6 +3118,8 @@
         document.getElementById("taskForm").reset();
         document.getElementById("task_id").value = "";
         document.getElementById("task_working_update_log").value = "";
+        document.getElementById("taskFormTitle").innerHTML = '<i class="bi bi-activity me-2 text-primary"></i>Create / Manage Task';
+        document.getElementById("taskSubmitBtn").innerHTML = '<i class="bi bi-save me-2"></i>Save Task';
         document.getElementById("cancelTaskEditBtn").classList.add("d-none");
       };
 
@@ -2702,8 +3127,20 @@
         btn.onclick = async () => {
           const id = btn.dataset.id;
           if (confirm(`Delete task ${id}?`)) {
-            await deleteTask(id);
-            refreshTasks();
+            try {
+              await deleteTask(id);
+              await addAuditLog({
+                user_email: currentUserEmail || "admin@example.com",
+                action_type: "DELETE",
+                collection_name: "tbl_tasks",
+                record_id: id,
+                details: `Deleted task with ID: ${id}`
+              });
+              refreshTasks();
+              refreshAuditLogs();
+            } catch (err) {
+              alert("Failed to delete task: " + err.message);
+            }
           }
         };
       });
@@ -2732,6 +3169,9 @@
               <button class="btn btn-sm btn-outline-success view-req-btn me-1" data-id="${r.requisition_id}" title="View Details">
                 <i class="bi bi-eye"></i>
               </button>
+              <button class="btn btn-sm btn-outline-primary edit-req-btn me-1" data-id="${r.requisition_id}">
+                <i class="bi bi-pencil"></i>
+              </button>
               <button class="btn btn-sm btn-outline-danger delete-req-btn" data-id="${r.requisition_id}">
                 <i class="bi bi-trash"></i>
               </button>
@@ -2746,12 +3186,59 @@
         };
       });
 
+      document.querySelectorAll(".edit-req-btn").forEach(btn => {
+        btn.onclick = () => {
+          const id = btn.dataset.id;
+          const r = allRequisitions.find(req => req.requisition_id === id);
+          if (r) {
+            document.getElementById("req_requisition_id").value = r.requisition_id;
+            document.getElementById("req_project_id").value = r.project_id;
+            document.getElementById("req_item_category").value = r.item_category;
+            document.getElementById("req_qty_requested").value = r.qty_requested;
+            document.getElementById("req_est_unit_cost").value = r.est_unit_cost;
+            document.getElementById("req_dept_approval").value = r.dept_approval;
+
+            const reasonContainer = document.getElementById("req_rejection_reason_container");
+            const reasonInput = document.getElementById("req_rejection_reason");
+            if (r.dept_approval === "Rejected") {
+              reasonContainer.style.display = "block";
+              reasonInput.required = true;
+              reasonInput.value = r.rejection_reason || "";
+            } else {
+              reasonContainer.style.display = "none";
+              reasonInput.required = false;
+              reasonInput.value = "";
+            }
+
+            document.getElementById("req_item_description").value = r.item_description;
+            calculateReqTotal();
+
+            document.getElementById("reqFormTitle").innerHTML = '<i class="bi bi-file-earmark-plus me-2 text-primary"></i>Edit Requisition';
+            document.getElementById("reqSubmitBtn").innerHTML = '<i class="bi bi-pencil-square me-2"></i>Update Requisition';
+            document.getElementById("cancelReqEditBtn").classList.remove("d-none");
+            document.getElementById("requisitionForm").scrollIntoView({ behavior: 'smooth' });
+          }
+        };
+      });
+
       document.querySelectorAll(".delete-req-btn").forEach(btn => {
         btn.onclick = async () => {
           const id = btn.dataset.id;
           if (confirm(`Delete requisition ${id}?`)) {
-            await deleteRequisition(id);
-            refreshRequisitions();
+            try {
+              await deleteRequisition(id);
+              await addAuditLog({
+                user_email: currentUserEmail || "admin@example.com",
+                action_type: "DELETE",
+                collection_name: "tbl_requisitions",
+                record_id: id,
+                details: `Deleted requisition with ID: ${id}`
+              });
+              refreshRequisitions();
+              refreshAuditLogs();
+            } catch (err) {
+              alert("Failed to delete requisition: " + err.message);
+            }
           }
         };
       });
@@ -2778,6 +3265,9 @@
             <button class="btn btn-sm btn-outline-success view-po-btn me-1" data-id="${po.po_number}" title="View Details">
               <i class="bi bi-eye"></i>
             </button>
+            <button class="btn btn-sm btn-outline-primary edit-po-btn me-1" data-id="${po.po_number}">
+              <i class="bi bi-pencil"></i>
+            </button>
             <button class="btn btn-sm btn-outline-danger delete-po-btn" data-id="${po.po_number}">
               <i class="bi bi-trash"></i>
             </button>
@@ -2791,12 +3281,51 @@
         };
       });
 
+      document.querySelectorAll(".edit-po-btn").forEach(btn => {
+        btn.onclick = () => {
+          const id = btn.dataset.id;
+          const po = allPurchaseOrders.find(p => p.po_number === id);
+          if (po) {
+            const reqSelect = document.getElementById("po_requisition_id");
+            reqSelect.innerHTML = `<option value="${po.requisition_id}">${po.requisition_id}</option>`;
+            reqSelect.value = po.requisition_id;
+            populateRequisitionDropdowns();
+
+            document.getElementById("po_number").value = po.po_number;
+            document.getElementById("po_number").readOnly = true;
+            document.getElementById("po_project_id").value = po.project_id;
+            document.getElementById("po_vendor_name").value = po.vendor_name;
+            document.getElementById("po_final_po_total").value = po.final_po_total;
+            document.getElementById("po_payment_terms").value = po.payment_terms;
+            document.getElementById("po_issue_date").value = po.po_issue_date;
+            document.getElementById("po_status").value = po.po_status;
+
+            document.getElementById("poFormTitle").innerHTML = '<i class="bi bi-cart-plus me-2 text-primary"></i>Edit Purchase Order';
+            document.getElementById("poSubmitBtn").innerHTML = '<i class="bi bi-pencil-square me-2"></i>Update Purchase Order';
+            document.getElementById("cancelPoEditBtn").classList.remove("d-none");
+            document.getElementById("purchaseForm").scrollIntoView({ behavior: 'smooth' });
+          }
+        };
+      });
+
       document.querySelectorAll(".delete-po-btn").forEach(btn => {
         btn.onclick = async () => {
           const id = btn.dataset.id;
           if (confirm(`Delete purchase order ${id}?`)) {
-            await deletePurchaseOrder(id);
-            refreshPurchaseOrders();
+            try {
+              await deletePurchaseOrder(id);
+              await addAuditLog({
+                user_email: currentUserEmail || "admin@example.com",
+                action_type: "DELETE",
+                collection_name: "tbl_purchase_orders",
+                record_id: id,
+                details: `Deleted purchase order with ID: ${id}`
+              });
+              refreshPurchaseOrders();
+              refreshAuditLogs();
+            } catch (err) {
+              alert("Failed to delete purchase order: " + err.message);
+            }
           }
         };
       });
@@ -2824,6 +3353,9 @@
             <button class="btn btn-sm btn-outline-success view-exp-btn me-1" data-id="${e.expense_id}" title="View Details">
               <i class="bi bi-eye"></i>
             </button>
+            <button class="btn btn-sm btn-outline-primary edit-exp-btn me-1" data-id="${e.expense_id}">
+              <i class="bi bi-pencil"></i>
+            </button>
             <button class="btn btn-sm btn-outline-danger delete-exp-btn" data-id="${e.expense_id}">
               <i class="bi bi-trash"></i>
             </button>
@@ -2837,12 +3369,72 @@
         };
       });
 
+      document.querySelectorAll(".edit-exp-btn").forEach(btn => {
+        btn.onclick = () => {
+          const id = btn.dataset.id;
+          const e = allExpenses.find(exp => exp.expense_id === id);
+          if (e) {
+            document.getElementById("exp_expense_id").value = e.expense_id;
+            document.getElementById("exp_project_id").value = e.project_id;
+            document.getElementById("exp_expense_routing_type").value = e.expense_routing_type;
+
+            const poContainer = document.getElementById("exp_po_number_container");
+            const poRef = document.getElementById("exp_po_number_ref");
+            if (e.expense_routing_type === "PO-Backed") {
+              poContainer.style.display = "block";
+              poRef.required = true;
+              poRef.value = e.po_number_ref || "";
+            } else {
+              poContainer.style.display = "none";
+              poRef.required = false;
+              poRef.value = "";
+            }
+
+            document.getElementById("exp_vendor_invoice_num").value = e.vendor_invoice_num;
+            document.getElementById("exp_invoice_amount").value = e.invoice_amount;
+            document.getElementById("exp_amount_paid").value = e.amount_paid;
+            document.getElementById("exp_payment_status").value = e.payment_status;
+            document.getElementById("exp_payment_method").value = e.payment_method;
+
+            const clearanceDateInput = document.getElementById("exp_clearance_date");
+            if (e.payment_status === "Unpaid / Awaiting Approval") {
+              clearanceDateInput.disabled = true;
+              clearanceDateInput.required = false;
+              clearanceDateInput.value = "";
+              clearanceDateInput.classList.add("bg-light");
+            } else {
+              clearanceDateInput.disabled = false;
+              clearanceDateInput.required = true;
+              clearanceDateInput.classList.remove("bg-light");
+              clearanceDateInput.value = e.clearance_date || "";
+            }
+
+            document.getElementById("expenseFormTitle").innerHTML = '<i class="bi bi-cash-coin me-2 text-primary"></i>Edit Expense / Payment';
+            document.getElementById("expenseSubmitBtn").innerHTML = '<i class="bi bi-pencil-square me-2"></i>Update Expense Record';
+            document.getElementById("cancelExpenseEditBtn").classList.remove("d-none");
+            document.getElementById("expenseForm").scrollIntoView({ behavior: 'smooth' });
+          }
+        };
+      });
+
       document.querySelectorAll(".delete-exp-btn").forEach(btn => {
         btn.onclick = async () => {
           const id = btn.dataset.id;
           if (confirm(`Delete expense record ${id}?`)) {
-            await deleteExpense(id);
-            refreshExpenses();
+            try {
+              await deleteExpense(id);
+              await addAuditLog({
+                user_email: currentUserEmail || "admin@example.com",
+                action_type: "DELETE",
+                collection_name: "tbl_expenses",
+                record_id: id,
+                details: `Deleted expense record with ID: ${id}`
+              });
+              refreshExpenses();
+              refreshAuditLogs();
+            } catch (err) {
+              alert("Failed to delete expense record: " + err.message);
+            }
           }
         };
       });
@@ -2949,8 +3541,20 @@
         btn.onclick = async () => {
           const id = btn.dataset.id;
           if (confirm(`Delete support ticket ${id}?`)) {
-            await deleteSupportTicket(id);
-            refreshTickets();
+            try {
+              await deleteSupportTicket(id);
+              await addAuditLog({
+                user_email: currentUserEmail || "admin@example.com",
+                action_type: "DELETE",
+                collection_name: "tbl_support_tickets",
+                record_id: id,
+                details: `Deleted support ticket with ID: ${id}`
+              });
+              refreshTickets();
+              refreshAuditLogs();
+            } catch (err) {
+              alert("Failed to delete support ticket: " + err.message);
+            }
           }
         };
       });
@@ -3058,8 +3662,20 @@
         btn.onclick = async () => {
           const id = btn.dataset.id;
           if (confirm(`Delete invoice ${id}?`)) {
-            await deleteClientPayment(id);
-            refreshPayments();
+            try {
+              await deleteClientPayment(id);
+              await addAuditLog({
+                user_email: currentUserEmail || "admin@example.com",
+                action_type: "DELETE",
+                collection_name: "tbl_client_payments",
+                record_id: id,
+                details: `Deleted client invoice with ID: ${id}`
+              });
+              refreshPayments();
+              refreshAuditLogs();
+            } catch (err) {
+              alert("Failed to delete client invoice: " + err.message);
+            }
           }
         };
       });
@@ -3078,10 +3694,13 @@
         return;
       }
 
+      const isEdit = document.getElementById("project_id").readOnly;
+      const projectName = document.getElementById("project_name").value;
+
       try {
-        await addProject({
+        const savedId = await addProject({
           project_id: document.getElementById("project_id").value || null,
-          project_name: document.getElementById("project_name").value,
+          project_name: projectName,
           client_sponsor: document.getElementById("client_sponsor").value,
           project_desc: document.getElementById("project_desc").value,
           start_date: document.getElementById("start_date").value,
@@ -3089,8 +3708,24 @@
           project_status: document.getElementById("project_status").value,
           project_manager: document.getElementById("project_manager").value
         });
+        await addAuditLog({
+          user_email: currentUserEmail || "admin@example.com",
+          action_type: isEdit ? "UPDATE" : "CREATE",
+          collection_name: "tbl_projects",
+          record_id: savedId,
+          details: `${isEdit ? "Updated" : "Created"} project "${projectName}"`
+        });
         document.getElementById("projectForm").reset();
+        document.getElementById("project_id").readOnly = false;
+        document.getElementById("projFormTitle").innerHTML = '<i class="bi bi-kanban me-2 text-primary"></i>Create Project';
+        document.getElementById("projSubmitBtn").innerHTML = '<i class="bi bi-save me-2"></i>Save Project';
+        document.getElementById("cancelProjEditBtn").classList.add("d-none");
+        document.querySelectorAll('input[type="date"]').forEach(input => {
+          if (input.id === "exp_clearance_date" || input.id === "inv_date_received") return;
+          input.value = todayDateStr;
+        });
         refreshProjects();
+        refreshAuditLogs();
         alert("Project saved successfully.");
       } catch (err) {
         alert("Failed to save project: " + err.message);
@@ -3107,18 +3742,33 @@
         return;
       }
 
+      const isEdit = document.getElementById("emp_employee_id").readOnly;
+      const employeeName = document.getElementById("emp_employee_name").value.trim();
+
       try {
-        await addEmployee({
+        const savedId = await addEmployee({
           employee_id: document.getElementById("emp_employee_id").value.trim() || null,
-          employee_name: document.getElementById("emp_employee_name").value.trim(),
+          employee_name: employeeName,
           designation: document.getElementById("emp_designation").value,
           department: document.getElementById("emp_department").value,
           mobile_phone: mobile,
           email: document.getElementById("emp_email").value.trim() || null,
           status: document.getElementById("emp_status").value
         });
+        await addAuditLog({
+          user_email: currentUserEmail || "admin@example.com",
+          action_type: isEdit ? "UPDATE" : "CREATE",
+          collection_name: "tbl_employees",
+          record_id: savedId,
+          details: `${isEdit ? "Updated" : "Created"} employee "${employeeName}"`
+        });
         document.getElementById("employeeForm").reset();
+        document.getElementById("emp_employee_id").readOnly = false;
+        document.getElementById("empFormTitle").innerHTML = '<i class="bi bi-person-plus-fill me-2 text-primary"></i>Add Employee Record';
+        document.getElementById("empSubmitBtn").innerHTML = '<i class="bi bi-save me-2"></i>Save Employee Record';
+        document.getElementById("cancelEmpEditBtn").classList.add("d-none");
         refreshEmployees();
+        refreshAuditLogs();
         alert("Employee saved successfully.");
       } catch (err) {
         alert("Failed to save employee: " + err.message);
@@ -3137,26 +3787,38 @@
 
       const projSelect = document.getElementById("contact_project_id");
       const selectedProjIds = Array.from(projSelect.selectedOptions).map(opt => opt.value);
+      const isEdit = !!document.getElementById("contact_id").value;
+      const contactName = document.getElementById("contact_name").value;
 
       try {
-        await addContact({
+        const savedId = await addContact({
           contact_id: document.getElementById("contact_id").value || null,
           project_id: selectedProjIds,
-          contact_name: document.getElementById("contact_name").value,
+          contact_name: contactName,
           designation: document.getElementById("contact_designation").value,
           organization: document.getElementById("contact_organization").value,
           mobile_phone: mobile,
           email: document.getElementById("contact_email").value
         });
+        await addAuditLog({
+          user_email: currentUserEmail || "admin@example.com",
+          action_type: isEdit ? "UPDATE" : "CREATE",
+          collection_name: "tbl_contacts",
+          record_id: savedId,
+          details: `${isEdit ? "Updated" : "Created"} contact "${contactName}"`
+        });
         document.getElementById("contactForm").reset();
+        document.getElementById("contact_id").value = "";
+        document.getElementById("contactFormTitle").innerHTML = '<i class="bi bi-telephone-plus me-2 text-primary"></i>Add Contact';
+        document.getElementById("contactSubmitBtn").innerHTML = '<i class="bi bi-save me-2"></i>Save Contact';
+        document.getElementById("cancelContactEditBtn").classList.add("d-none");
         refreshContacts();
+        refreshAuditLogs();
         alert("Contact added successfully.");
       } catch (err) {
         alert("Failed to save contact: " + err.message);
       }
     };
-
-
 
     document.getElementById("meetingForm").onsubmit = async (e) => {
       e.preventDefault();
@@ -3169,19 +3831,38 @@
 
       const attendeesSelect = document.getElementById("meet_attendees_list");
       const selectedEmails = Array.from(attendeesSelect.selectedOptions).map(opt => opt.value);
+      const isEdit = !!document.getElementById("meet_meeting_id").value;
+      const meetingTitle = document.getElementById("meet_meeting_title").value;
 
       try {
-        await addMeeting({
+        const savedId = await addMeeting({
+          meeting_id: document.getElementById("meet_meeting_id").value || null,
           project_id: document.getElementById("meet_project_id").value,
-          meeting_title: document.getElementById("meet_meeting_title").value,
+          meeting_title: meetingTitle,
           meeting_timestamp: document.getElementById("meeting_timestamp").value,
           agenda: document.getElementById("meet_agenda").value,
           attendees_list: selectedEmails,
           meeting_url: document.getElementById("meet_meeting_url").value,
           meeting_minutes: document.getElementById("meet_meeting_minutes").value
         });
+        await addAuditLog({
+          user_email: currentUserEmail || "admin@example.com",
+          action_type: isEdit ? "UPDATE" : "CREATE",
+          collection_name: "tbl_meetings",
+          record_id: savedId,
+          details: `${isEdit ? "Updated" : "Scheduled"} meeting "${meetingTitle}"`
+        });
         document.getElementById("meetingForm").reset();
+        document.getElementById("meet_meeting_id").value = "";
+        document.getElementById("meetFormTitle").innerHTML = '<i class="bi bi-calendar-plus me-2 text-primary"></i>Schedule Meeting';
+        document.getElementById("meetSubmitBtn").innerHTML = '<i class="bi bi-clock-history me-2"></i>Schedule Meeting';
+        document.getElementById("cancelMeetEditBtn").classList.add("d-none");
+        document.querySelectorAll('input[type="date"]').forEach(input => {
+          if (input.id === "exp_clearance_date" || input.id === "inv_date_received") return;
+          input.value = todayDateStr;
+        });
         refreshMeetings();
+        refreshAuditLogs();
         alert("Meeting scheduled successfully.");
       } catch (err) {
         alert("Failed to schedule meeting: " + err.message);
@@ -3190,16 +3871,32 @@
 
     document.getElementById("budgetForm").onsubmit = async (e) => {
       e.preventDefault();
+      const isEdit = !!document.getElementById("budg_budget_line_id").value;
+      const costCategory = document.getElementById("budg_cost_category").value;
+      const projectId = document.getElementById("budg_project_id").value;
       try {
-        await addBudget({
-          project_id: document.getElementById("budg_project_id").value,
-          cost_category: document.getElementById("budg_cost_category").value,
+        const savedId = await addBudget({
+          budget_line_id: document.getElementById("budg_budget_line_id").value || null,
+          project_id: projectId,
+          cost_category: costCategory,
           line_description: document.getElementById("budg_line_description").value,
           allocated_amount: document.getElementById("budg_allocated_amount").value,
           approved_by: document.getElementById("budg_approved_by").value
         });
+        await addAuditLog({
+          user_email: currentUserEmail || "admin@example.com",
+          action_type: isEdit ? "UPDATE" : "CREATE",
+          collection_name: "tbl_budget",
+          record_id: savedId,
+          details: `${isEdit ? "Updated" : "Allocated"} budget line for category "${costCategory}" in project ${projectId}`
+        });
         document.getElementById("budgetForm").reset();
+        document.getElementById("budg_budget_line_id").value = "";
+        document.getElementById("budgetFormTitle").innerHTML = '<i class="bi bi-cash-stack me-2 text-primary"></i>Allocate Budget Line';
+        document.getElementById("budgetSubmitBtn").innerHTML = '<i class="bi bi-plus-circle me-2"></i>Save Budget Line';
+        document.getElementById("cancelBudgetEditBtn").classList.add("d-none");
         refreshBudgets();
+        refreshAuditLogs();
         alert("Budget allocation configured successfully.");
       } catch (err) {
         alert("Failed to configure budget: " + err.message);
@@ -3241,12 +3938,15 @@
         workingUpdate = `[${timestamp}] ${newNote}`;
       }
 
+      const isEdit = !!document.getElementById("task_id").value;
+      const taskName = document.getElementById("task_name").value;
+
       try {
-        await addTask({
+        const savedId = await addTask({
           task_id: document.getElementById("task_id").value || null,
           project_id: projId,
           wbs_code: wbsCode,
-          task_name: document.getElementById("task_name").value,
+          task_name: taskName,
           assigned_to: document.getElementById("task_assigned_to").value,
           task_startDate: document.getElementById("task_startDate").value,
           task_endDate: document.getElementById("task_endDate").value,
@@ -3254,13 +3954,23 @@
           task_status: document.getElementById("task_status").value,
           working_update: workingUpdate
         });
+        await addAuditLog({
+          user_email: currentUserEmail || "admin@example.com",
+          action_type: isEdit ? "UPDATE" : "CREATE",
+          collection_name: "tbl_tasks",
+          record_id: savedId,
+          details: `${isEdit ? "Updated" : "Created"} task "${taskName}"`
+        });
 
         document.getElementById("taskForm").reset();
         document.getElementById("task_id").value = "";
         document.getElementById("task_working_update_log").value = "";
+        document.getElementById("taskFormTitle").innerHTML = '<i class="bi bi-activity me-2 text-primary"></i>Create / Manage Task';
+        document.getElementById("taskSubmitBtn").innerHTML = '<i class="bi bi-save me-2"></i>Save Task';
         document.getElementById("cancelTaskEditBtn").classList.add("d-none");
 
         refreshTasks();
+        refreshAuditLogs();
         alert("Task saved successfully.");
       } catch (err) {
         alert("Failed to save task: " + err.message);
@@ -3269,20 +3979,35 @@
 
     document.getElementById("requisitionForm").onsubmit = async (e) => {
       e.preventDefault();
+      const isEdit = !!document.getElementById("req_requisition_id").value;
+      const itemCategory = document.getElementById("req_item_category").value;
       try {
-        await addRequisition({
+        const savedId = await addRequisition({
+          requisition_id: document.getElementById("req_requisition_id").value || null,
           project_id: document.getElementById("req_project_id").value,
-          item_category: document.getElementById("req_item_category").value,
+          item_category: itemCategory,
           item_description: document.getElementById("req_item_description").value,
           qty_requested: document.getElementById("req_qty_requested").value,
           est_unit_cost: document.getElementById("req_est_unit_cost").value,
           dept_approval: document.getElementById("req_dept_approval").value,
           rejection_reason: document.getElementById("req_rejection_reason").value
         });
+        await addAuditLog({
+          user_email: currentUserEmail || "admin@example.com",
+          action_type: isEdit ? "UPDATE" : "CREATE",
+          collection_name: "tbl_requisitions",
+          record_id: savedId,
+          details: `${isEdit ? "Updated" : "Submitted"} requisition for "${itemCategory}"`
+        });
         document.getElementById("requisitionForm").reset();
+        document.getElementById("req_requisition_id").value = "";
+        document.getElementById("reqFormTitle").innerHTML = '<i class="bi bi-file-earmark-plus me-2 text-primary"></i>Create Requisition';
+        document.getElementById("reqSubmitBtn").innerHTML = '<i class="bi bi-send-plus me-2"></i>Submit Requisition';
+        document.getElementById("cancelReqEditBtn").classList.add("d-none");
         document.getElementById("req_rejection_reason_container").style.display = "none";
         calculateReqTotal();
         refreshRequisitions();
+        refreshAuditLogs();
         alert("Requisition submitted successfully.");
       } catch (err) {
         alert("Failed to save requisition: " + err.message);
@@ -3300,19 +4025,39 @@
         return;
       }
 
+      const isEdit = document.getElementById("po_number").readOnly;
+      const vendorName = document.getElementById("po_vendor_name").value;
+
       try {
-        await addPurchaseOrder({
+        const savedId = await addPurchaseOrder({
           po_number: document.getElementById("po_number").value.trim() || null,
           requisition_id: document.getElementById("po_requisition_id").value,
           project_id: document.getElementById("po_project_id").value,
-          vendor_name: document.getElementById("po_vendor_name").value,
+          vendor_name: vendorName,
           final_po_total: document.getElementById("po_final_po_total").value,
           payment_terms: document.getElementById("po_payment_terms").value,
           po_issue_date: document.getElementById("po_issue_date").value,
           po_status: document.getElementById("po_status").value
         });
+        await addAuditLog({
+          user_email: currentUserEmail || "admin@example.com",
+          action_type: isEdit ? "UPDATE" : "CREATE",
+          collection_name: "tbl_purchase_orders",
+          record_id: savedId,
+          details: `${isEdit ? "Updated" : "Logged"} purchase order with vendor "${vendorName}"`
+        });
         document.getElementById("purchaseForm").reset();
+        document.getElementById("po_number").readOnly = false;
+        document.getElementById("poFormTitle").innerHTML = '<i class="bi bi-cart-plus me-2 text-primary"></i>Create Purchase Order';
+        document.getElementById("poSubmitBtn").innerHTML = '<i class="bi bi-cart-check-fill me-2"></i>Save Purchase Order';
+        document.getElementById("cancelPoEditBtn").classList.add("d-none");
+        populateRequisitionDropdowns();
+        document.querySelectorAll('input[type="date"]').forEach(input => {
+          if (input.id === "exp_clearance_date" || input.id === "inv_date_received") return;
+          input.value = todayDateStr;
+        });
         refreshPurchaseOrders();
+        refreshAuditLogs();
         alert("Purchase Order logged successfully. Expense tracking logged automatically.");
       } catch (err) {
         alert("Failed to log purchase order: " + err.message);
@@ -3337,23 +4082,39 @@
         return;
       }
 
+      const isEdit = !!document.getElementById("exp_expense_id").value;
+      const vendorInvoiceNum = document.getElementById("exp_vendor_invoice_num").value;
+
       try {
-        await addExpense({
+        const savedId = await addExpense({
+          expense_id: document.getElementById("exp_expense_id").value || null,
           project_id: document.getElementById("exp_project_id").value,
           expense_routing_type: document.getElementById("exp_expense_routing_type").value,
           po_number_ref: document.getElementById("exp_po_number_ref").value || "",
-          vendor_invoice_num: document.getElementById("exp_vendor_invoice_num").value,
+          vendor_invoice_num: vendorInvoiceNum,
           invoice_amount: invoiceAmount,
           amount_paid: amountPaid,
           payment_status: status,
           payment_method: document.getElementById("exp_payment_method").value,
           clearance_date: clearanceDate
         });
+        await addAuditLog({
+          user_email: currentUserEmail || "admin@example.com",
+          action_type: isEdit ? "UPDATE" : "CREATE",
+          collection_name: "tbl_expenses",
+          record_id: savedId,
+          details: `${isEdit ? "Updated" : "Posted"} expense for invoice "${vendorInvoiceNum}" (Status: ${status})`
+        });
         document.getElementById("expenseForm").reset();
+        document.getElementById("exp_expense_id").value = "";
+        document.getElementById("expenseFormTitle").innerHTML = '<i class="bi bi-cash-coin me-2 text-primary"></i>Log Expense / Payment';
+        document.getElementById("expenseSubmitBtn").innerHTML = '<i class="bi bi-cash-coin me-2"></i>Post Expense Record';
+        document.getElementById("cancelExpenseEditBtn").classList.add("d-none");
         document.getElementById("exp_po_number_container").style.display = "none";
         document.getElementById("exp_clearance_date").disabled = true;
         document.getElementById("exp_clearance_date").classList.add("bg-light");
         refreshExpenses();
+        refreshAuditLogs();
         alert("Expense record posted successfully.");
       } catch (err) {
         alert("Failed to post expense: " + err.message);
@@ -3384,11 +4145,14 @@
         return;
       }
 
+      const isEdit = !!document.getElementById("inv_invoice_id").value;
+      const milestoneType = document.getElementById("inv_milestone_type").value;
+
       try {
-        await addClientPayment({
+        const savedId = await addClientPayment({
           invoice_id: document.getElementById("inv_invoice_id").value.trim() || null,
           project_id: document.getElementById("inv_project_id").value,
-          milestone_type: document.getElementById("inv_milestone_type").value,
+          milestone_type: milestoneType,
           invoice_date: invoiceDate,
           due_date: dueDate,
           invoiced_amount: invoicedAmt,
@@ -3396,6 +4160,13 @@
           payment_status: document.getElementById("inv_payment_status").value,
           date_received: dateReceived,
           transaction_ref: document.getElementById("inv_transaction_ref").value
+        });
+        await addAuditLog({
+          user_email: currentUserEmail || "admin@example.com",
+          action_type: isEdit ? "UPDATE" : "CREATE",
+          collection_name: "tbl_client_payments",
+          record_id: savedId,
+          details: `${isEdit ? "Updated" : "Logged"} invoice for milestone "${milestoneType}"`
         });
 
         document.getElementById("paymentForm").reset();
@@ -3415,6 +4186,7 @@
         }
         calculateInvoiceBalance();
         refreshPayments();
+        refreshAuditLogs();
         alert("Client invoice logged successfully.");
       } catch (err) {
         alert("Failed to log invoice: " + err.message);
@@ -3432,18 +4204,28 @@
         return;
       }
 
+      const isEdit = !!document.getElementById("ticket_id").value;
+      const ticketSubject = document.getElementById("ticket_subject").value;
+
       try {
-        await addSupportTicket({
+        const savedId = await addSupportTicket({
           ticket_id: document.getElementById("ticket_id").value.trim() || null,
           project_id: document.getElementById("ticket_project_id").value,
           asset_id: document.getElementById("ticket_asset_id").value || "",
           requester_id: document.getElementById("ticket_requester_id").value,
-          ticket_subject: document.getElementById("ticket_subject").value,
+          ticket_subject: ticketSubject,
           ticket_priority: document.getElementById("ticket_priority").value,
           ticket_status: status,
           assigned_to: document.getElementById("ticket_assigned_to").value || "",
           resolution_notes: resNotes,
           ticket_desc: document.getElementById("ticket_desc").value
+        });
+        await addAuditLog({
+          user_email: currentUserEmail || "admin@example.com",
+          action_type: isEdit ? "UPDATE" : "CREATE",
+          collection_name: "tbl_support_tickets",
+          record_id: savedId,
+          details: `${isEdit ? "Updated" : "Logged"} support ticket "${ticketSubject}" (Status: ${status})`
         });
 
         document.getElementById("ticketForm").reset();
@@ -3456,6 +4238,7 @@
         document.getElementById("ticket_resolution_notes").required = false;
 
         refreshTickets();
+        refreshAuditLogs();
         alert("Support ticket logged successfully.");
       } catch (err) {
         alert("Failed to log ticket: " + err.message);
@@ -3534,8 +4317,10 @@
         return;
       }
 
+      const isEdit = !!document.getElementById("host_asset_id").value;
+
       try {
-        await addDomainHosting({
+        const savedId = await addDomainHosting({
           asset_id: document.getElementById("host_asset_id").value || null,
           project_id: document.getElementById("host_project_id").value,
           package_name: document.getElementById("host_package").value || "",
@@ -3550,6 +4335,13 @@
           renewal_date: document.getElementById("host_renewal_date").value,
           asset_status: document.getElementById("host_asset_status").value
         });
+        await addAuditLog({
+          user_email: currentUserEmail || "admin@example.com",
+          action_type: isEdit ? "UPDATE" : "CREATE",
+          collection_name: "tbl_domain_hosting",
+          record_id: savedId,
+          details: `${isEdit ? "Updated" : "Saved"} domain/hosting asset for URL "${assetUrl}"`
+        });
 
         document.getElementById("hostingForm").reset();
         document.getElementById("host_asset_id").value = "";
@@ -3559,6 +4351,7 @@
         document.getElementById("host_reg_date").value = todayDateStr;
         calculateRenewalDate();
         refreshHosting();
+        refreshAuditLogs();
         alert("Domain & Hosting asset saved successfully.");
       } catch (err) {
         alert("Failed to save asset: " + err.message);
@@ -3587,7 +4380,7 @@
         const sell = Number(asset.selling_price) || 0;
         const pkgBadgeMap = { "Basic": "bg-info text-dark", "Plus": "bg-warning text-dark", "Business": "bg-success" };
         const pkgBadge = asset.package_name
-          ? `<span class="badge ${pkgBadgeMap[asset.package_name] || 'bg-secondary'}">${asset.package_name}</span>`
+          ? `<span class="badge ${pkgBadgeMap[asset.package_name] || 'bg-secondary'}>${asset.package_name}</span>`
           : '<span class="text-muted small">Custom</span>';
 
         return `
@@ -3657,8 +4450,20 @@
         btn.onclick = async () => {
           const id = btn.dataset.id;
           if (confirm(`Delete asset record ${id}?`)) {
-            await deleteDomainHosting(id);
-            refreshHosting();
+            try {
+              await deleteDomainHosting(id);
+              await addAuditLog({
+                user_email: currentUserEmail || "admin@example.com",
+                action_type: "DELETE",
+                collection_name: "tbl_domain_hosting",
+                record_id: id,
+                details: `Deleted domain & hosting asset with ID: ${id}`
+              });
+              refreshHosting();
+              refreshAuditLogs();
+            } catch (err) {
+              alert("Failed to delete domain & hosting asset: " + err.message);
+            }
           }
         };
       });
@@ -4071,11 +4876,13 @@
       const dashboardSection = document.getElementById("dashboardSection");
 
       if (user) {
+        currentUserEmail = user.email || "admin@example.com";
         loginSection.classList.add("d-none");
         dashboardSection.classList.remove("d-none");
         loadAllData();
         resetInactivityTimer();
       } else {
+        currentUserEmail = "";
         loginSection.classList.remove("d-none");
         dashboardSection.classList.add("d-none");
         clearTimeout(inactivityTimer);
@@ -4092,6 +4899,13 @@
 
       try {
         await loginAdmin(email, password);
+        await addAuditLog({
+          user_email: email,
+          action_type: "LOGIN",
+          collection_name: "N/A",
+          record_id: "N/A",
+          details: "Admin logged in successfully via login form"
+        });
       } catch (err) {
         errorDiv.innerText = "Login failed: " + err.message.replace("Firebase: ", "");
         errorDiv.classList.remove("d-none");
@@ -4100,12 +4914,23 @@
 
     // Logout Handler
     document.getElementById("logoutBtn").addEventListener("click", async function () {
+      const emailBeforeLogout = currentUserEmail || "admin@example.com";
       try {
+        await addAuditLog({
+          user_email: emailBeforeLogout,
+          action_type: "LOGOUT",
+          collection_name: "N/A",
+          record_id: "N/A",
+          details: "Admin logged out manually"
+        });
         await logoutAdmin();
       } catch (err) {
         alert("Logout failed: " + err.message);
       }
     });
+
+    document.getElementById("logs-tab")?.addEventListener("click", refreshAuditLogs);
+    document.getElementById("refreshLogsBtn")?.addEventListener("click", refreshAuditLogs);
 
     // Dynamic theme observer to update charts styling on the fly
     const themeObserver = new MutationObserver(() => {
