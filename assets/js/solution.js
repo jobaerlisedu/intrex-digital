@@ -1100,4 +1100,52 @@ export async function deleteDomainHosting(assetId) {
   }
 }
 
+// ==========================================
+// 14. AUDIT LOGS SYSTEM (tbl_audit_logs)
+// ==========================================
+export async function addAuditLog(logData) {
+  if (!checkConfiguration()) return;
+  const { user_email, action_type, collection_name, record_id, details } = logData;
+  if (!user_email || !action_type || !details) {
+    throw new Error("Missing required audit log fields");
+  }
+  try {
+    const id = await getNextSeqId("tbl_audit_logs", "LOG-", "log_id", 5);
+    const docRef = doc(db, "tbl_audit_logs", id);
+    await setDoc(docRef, {
+      log_id: id,
+      user_email: user_email,
+      action_type: action_type,
+      collection_name: collection_name || "N/A",
+      record_id: record_id || "N/A",
+      details: details,
+      local_time: new Date().toLocaleString(),
+      createdAt: serverTimestamp()
+    });
+    return id;
+  } catch (error) {
+    console.error("Error saving audit log: ", error);
+    throw error;
+  }
+}
+
+export async function getAllAuditLogs() {
+  if (!checkConfiguration()) return [];
+  try {
+    const querySnapshot = await getDocs(collection(db, "tbl_audit_logs"));
+    const logs = [];
+    querySnapshot.forEach((docSnap) => {
+      if (docSnap.exists()) {
+        logs.push(docSnap.data());
+      }
+    });
+    // Sort logs descending (newest first) by log_id
+    logs.sort((a, b) => b.log_id.localeCompare(a.log_id));
+    return logs;
+  } catch (error) {
+    console.error("Error fetching audit logs: ", error);
+    throw error;
+  }
+}
+
 
