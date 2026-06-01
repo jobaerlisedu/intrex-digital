@@ -23,32 +23,41 @@
       --primary-color: #215C5C;
       --primary-hover: #174242;
     }
-    .nav-pills .nav-link.active, .nav-pills .show>.nav-link {
+
+    .nav-pills .nav-link.active,
+    .nav-pills .show>.nav-link {
       background-color: var(--primary-color) !important;
     }
+
     .btn-primary {
       background-color: var(--primary-color) !important;
       border-color: var(--primary-color) !important;
     }
+
     .btn-primary:hover {
       background-color: var(--primary-hover) !important;
       border-color: var(--primary-hover) !important;
     }
+
     .text-primary {
       color: var(--primary-color) !important;
     }
+
     .badge-primary {
       background-color: var(--primary-color);
       color: white;
     }
+
     .qf-wrapper .btn {
       border-top-right-radius: 0.375rem !important;
       border-bottom-right-radius: 0.375rem !important;
     }
+
     .form-text {
       font-size: 0.775rem;
       opacity: 0.8;
     }
+
     /* Premium Detail View Cards CSS */
     .detail-card {
       background-color: var(--bs-body-bg);
@@ -56,13 +65,15 @@
       border-radius: 12px;
       padding: 12px 16px;
       height: 100%;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
       transition: border-color 0.2s, box-shadow 0.2s;
     }
+
     .detail-card:hover {
       border-color: var(--primary-color);
-      box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
     }
+
     .detail-card-label {
       font-size: 0.7rem;
       font-weight: 700;
@@ -71,6 +82,7 @@
       letter-spacing: 0.05em;
       margin-bottom: 4px;
     }
+
     .detail-card-value {
       font-size: 0.925rem;
       font-weight: 600;
@@ -109,7 +121,8 @@
               <form id="loginForm">
                 <div class="mb-3">
                   <label for="adminEmail" class="form-label small fw-semibold">Email Address</label>
-                  <input type="email" class="form-control" id="adminEmail" required placeholder="admin@intrex-digital.com">
+                  <input type="email" class="form-control" id="adminEmail" required
+                    placeholder="admin@intrex-digital.com">
                 </div>
                 <div class="mb-3">
                   <label for="adminPassword" class="form-label small fw-semibold">Password</label>
@@ -139,7 +152,8 @@
           <div class="row g-4 mt-2">
             <!-- Left Sidebar Tabs Navigation -->
             <div class="col-12 col-md-3 col-lg-2 border-end pe-md-4">
-              <div class="nav flex-column nav-pills gap-2" id="dashboardTabs" role="tablist" aria-orientation="vertical">
+              <div class="nav flex-column nav-pills gap-2" id="dashboardTabs" role="tablist"
+                aria-orientation="vertical">
                 <button class="nav-link active text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
                   id="overview-tab" data-bs-toggle="tab" data-bs-target="#overviewPanel" type="button" role="tab">
                   <i class="bi bi-bar-chart-line"></i> Overview
@@ -164,8 +178,8 @@
                   id="budget-tab" data-bs-toggle="tab" data-bs-target="#budgetPanel" type="button" role="tab">
                   <i class="bi bi-wallet2"></i> Budget Planner
                 </button>
-                <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
-                  id="tasks-tab" data-bs-toggle="tab" data-bs-target="#tasksPanel" type="button" role="tab">
+                <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2" id="tasks-tab"
+                  data-bs-toggle="tab" data-bs-target="#tasksPanel" type="button" role="tab">
                   <i class="bi bi-activity"></i> Project Tasks
                 </button>
                 <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
@@ -209,7 +223,7 @@
                             <span class="small fw-semibold opacity-75">Active Projects</span>
                             <i class="bi bi-kanban fs-4"></i>
                           </div>
-                          <div class="h2 fw-bold mb-0" id="kpiActiveProjects">—</div>
+                          <div class="h2 fw-bold mb-0" style="color: #ffffff !important;" id="kpiActiveProjects">—</div>
                         </div>
                       </div>
                     </div>
@@ -220,7 +234,7 @@
                             <span class="small fw-semibold opacity-75">Total Budget</span>
                             <i class="bi bi-cash-stack fs-4"></i>
                           </div>
-                          <div class="h3 fw-bold mb-0" id="kpiTotalBudget">—</div>
+                          <div class="h3 fw-bold mb-0" style="color: #ffffff !important;" id="kpiTotalBudget">—</div>
                         </div>
                       </div>
                     </div>
@@ -231,7 +245,7 @@
                             <span class="small fw-semibold opacity-75">Actual Expenses</span>
                             <i class="bi bi-wallet2 fs-4"></i>
                           </div>
-                          <div class="h3 fw-bold mb-0" id="kpiTotalExpenses">—</div>
+                          <div class="h3 fw-bold mb-0" style="color: #ffffff !important;" id="kpiTotalExpenses">—</div>
                         </div>
                       </div>
                     </div>
@@ -242,7 +256,7 @@
                             <span class="small fw-semibold opacity-75">Pending Requisitions</span>
                             <i class="bi bi-card-checklist fs-4"></i>
                           </div>
-                          <div class="h2 fw-bold mb-0" id="kpiPendingReqs">—</div>
+                          <div class="h2 fw-bold mb-0" style="color: #ffffff !important;" id="kpiPendingReqs">—</div>
                         </div>
                       </div>
                     </div>
@@ -252,7 +266,8 @@
                     <div class="col-md-6">
                       <div class="card border-0 rounded-4 shadow-sm h-100">
                         <div class="card-body p-4">
-                          <h6 class="fw-bold text-heading-color mb-3"><i class="bi bi-pie-chart-fill me-2 text-primary"></i>Project Status</h6>
+                          <h6 class="fw-bold text-heading-color mb-3"><i
+                              class="bi bi-pie-chart-fill me-2 text-primary"></i>Project Status</h6>
                           <div style="position:relative;height:240px;">
                             <canvas id="chartProjectStatus"></canvas>
                           </div>
@@ -262,7 +277,8 @@
                     <div class="col-md-6">
                       <div class="card border-0 rounded-4 shadow-sm h-100">
                         <div class="card-body p-4">
-                          <h6 class="fw-bold text-heading-color mb-3"><i class="bi bi-bar-chart-fill me-2 text-primary"></i>Budget vs Expense by Project</h6>
+                          <h6 class="fw-bold text-heading-color mb-3"><i
+                              class="bi bi-bar-chart-fill me-2 text-primary"></i>Budget vs Expense by Project</h6>
                           <div style="position:relative;height:240px;">
                             <canvas id="chartBudgetVsExpense"></canvas>
                           </div>
@@ -282,29 +298,37 @@
                     <form id="projectForm">
                       <div class="row g-3">
                         <div class="col-md-6">
-                          <label class="form-label small fw-semibold" for="project_id">Project ID <span class="text-muted">(Format: PRJ-YYYY-XXX, auto-generated if blank)</span></label>
+                          <label class="form-label small fw-semibold" for="project_id">Project ID <span
+                              class="text-muted">(Format: PRJ-YYYY-XXX, auto-generated if blank)</span></label>
                           <input class="form-control" id="project_id" type="text" placeholder="e.g. PRJ-2026-001">
                         </div>
                         <div class="col-md-6">
-                          <label class="form-label small fw-semibold" for="project_name">Project Name <span class="text-danger">*</span></label>
-                          <input class="form-control" id="project_name" type="text" placeholder="Project title" required maxlength="100">
+                          <label class="form-label small fw-semibold" for="project_name">Project Name <span
+                              class="text-danger">*</span></label>
+                          <input class="form-control" id="project_name" type="text" placeholder="Project title" required
+                            maxlength="100">
                         </div>
                         <div class="col-md-6">
-                          <label class="form-label small fw-semibold" for="client_sponsor">Client / Sponsor <span class="text-danger">*</span></label>
-                          <input class="form-control" id="client_sponsor" type="text" placeholder="Organization name" required>
+                          <label class="form-label small fw-semibold" for="client_sponsor">Client / Sponsor <span
+                              class="text-danger">*</span></label>
+                          <input class="form-control" id="client_sponsor" type="text" placeholder="Organization name"
+                            required>
                         </div>
                         <div class="col-md-6">
-                          <label class="form-label small fw-semibold" for="project_manager">Project Manager <span class="text-danger">*</span></label>
+                          <label class="form-label small fw-semibold" for="project_manager">Project Manager <span
+                              class="text-danger">*</span></label>
                           <select class="form-select" id="project_manager" required>
                             <option value="" disabled selected>Loading managers...</option>
                           </select>
                         </div>
                         <div class="col-md-4">
-                          <label class="form-label small fw-semibold" for="start_date">Start Date <span class="text-danger">*</span></label>
+                          <label class="form-label small fw-semibold" for="start_date">Start Date <span
+                              class="text-danger">*</span></label>
                           <input class="form-control" id="start_date" type="date" required>
                         </div>
                         <div class="col-md-4">
-                          <label class="form-label small fw-semibold" for="end_date">Target End Date <span class="text-danger">*</span></label>
+                          <label class="form-label small fw-semibold" for="end_date">Target End Date <span
+                              class="text-danger">*</span></label>
                           <input class="form-control" id="end_date" type="date" required>
                         </div>
                         <div class="col-md-4">
@@ -319,7 +343,8 @@
                         </div>
                         <div class="col-12">
                           <label class="form-label small fw-semibold" for="project_desc">Description</label>
-                          <textarea class="form-control" id="project_desc" rows="2" placeholder="Scope & objectives..."></textarea>
+                          <textarea class="form-control" id="project_desc" rows="2"
+                            placeholder="Scope & objectives..."></textarea>
                         </div>
                       </div>
                       <button type="submit" class="btn btn-primary fw-semibold py-2 px-4 mt-3">
@@ -365,11 +390,14 @@
                     <form id="employeeForm">
                       <div class="row g-3">
                         <div class="col-md-6">
-                          <label class="form-label small fw-semibold" for="emp_employee_name">Full Name <span class="text-danger">*</span></label>
-                          <input class="form-control" id="emp_employee_name" type="text" placeholder="e.g. John Doe" required maxlength="100">
+                          <label class="form-label small fw-semibold" for="emp_employee_name">Full Name <span
+                              class="text-danger">*</span></label>
+                          <input class="form-control" id="emp_employee_name" type="text" placeholder="e.g. John Doe"
+                            required maxlength="100">
                         </div>
                         <div class="col-md-6">
-                          <label class="form-label small fw-semibold" for="emp_designation">Designation <span class="text-danger">*</span></label>
+                          <label class="form-label small fw-semibold" for="emp_designation">Designation <span
+                              class="text-danger">*</span></label>
                           <select class="form-select" id="emp_designation" required>
                             <option value="" disabled selected>Select designation</option>
                             <option value="Project Manager">Project Manager</option>
@@ -382,7 +410,8 @@
                           </select>
                         </div>
                         <div class="col-md-4">
-                          <label class="form-label small fw-semibold" for="emp_department">Department <span class="text-danger">*</span></label>
+                          <label class="form-label small fw-semibold" for="emp_department">Department <span
+                              class="text-danger">*</span></label>
                           <select class="form-select" id="emp_department" required>
                             <option value="" disabled selected>Select department</option>
                             <option value="Engineering">Engineering</option>
@@ -395,7 +424,8 @@
                         </div>
                         <div class="col-md-4">
                           <label class="form-label small fw-semibold" for="emp_mobile_phone">Mobile Number</label>
-                          <input class="form-control" id="emp_mobile_phone" type="tel" placeholder="e.g. +88017XXXXXXXX">
+                          <input class="form-control" id="emp_mobile_phone" type="tel"
+                            placeholder="e.g. +88017XXXXXXXX">
                         </div>
                         <div class="col-md-4">
                           <label class="form-label small fw-semibold" for="emp_email">E-mail Address</label>
@@ -409,7 +439,8 @@
                           </select>
                         </div>
                         <div class="col-md-6">
-                          <label class="form-label small fw-semibold" for="emp_employee_id">Employee ID <span class="text-muted">(e.g. EMP-0001, auto-generated if blank)</span></label>
+                          <label class="form-label small fw-semibold" for="emp_employee_id">Employee ID <span
+                              class="text-muted">(e.g. EMP-0001, auto-generated if blank)</span></label>
                           <input class="form-control" id="emp_employee_id" type="text" placeholder="e.g. EMP-0001">
                         </div>
                       </div>
@@ -458,17 +489,22 @@
                       <input type="hidden" id="contact_id">
                       <div class="row g-3">
                         <div class="col-md-12">
-                          <label class="form-label small fw-semibold text-primary" for="contact_employee_import">Assign from Employee Database <span class="text-muted">(Optional - auto-fills details below)</span></label>
+                          <label class="form-label small fw-semibold text-primary" for="contact_employee_import">Assign
+                            from Employee Database <span class="text-muted">(Optional - auto-fills details
+                              below)</span></label>
                           <select class="form-select border-primary" id="contact_employee_import">
                             <option value="">-- Type Details Manually --</option>
                           </select>
                         </div>
                         <div class="col-md-6">
-                          <label class="form-label small fw-semibold" for="contact_name">Full Name <span class="text-danger">*</span></label>
-                          <input class="form-control" id="contact_name" type="text" placeholder="e.g. Jobaer Hossain" required maxlength="100">
+                          <label class="form-label small fw-semibold" for="contact_name">Full Name <span
+                              class="text-danger">*</span></label>
+                          <input class="form-control" id="contact_name" type="text" placeholder="e.g. Jobaer Hossain"
+                            required maxlength="100">
                         </div>
                         <div class="col-md-6">
-                          <label class="form-label small fw-semibold" for="contact_designation">Designation <span class="text-danger">*</span></label>
+                          <label class="form-label small fw-semibold" for="contact_designation">Designation <span
+                              class="text-danger">*</span></label>
                           <select class="form-select" id="contact_designation" required>
                             <option value="" disabled selected>Select designation</option>
                             <option value="Project Manager">Project Manager</option>
@@ -481,23 +517,30 @@
                           </select>
                         </div>
                         <div class="col-md-6">
-                          <label class="form-label small fw-semibold" for="contact_organization">Organization <span class="text-danger">*</span></label>
-                          <input class="form-control" id="contact_organization" type="text" placeholder="e.g. Intrex Digital" required>
+                          <label class="form-label small fw-semibold" for="contact_organization">Organization <span
+                              class="text-danger">*</span></label>
+                          <input class="form-control" id="contact_organization" type="text"
+                            placeholder="e.g. Intrex Digital" required>
                         </div>
                         <div class="col-md-6">
                           <label class="form-label small fw-semibold" for="contact_mobile_phone">Mobile Number</label>
-                          <input class="form-control" id="contact_mobile_phone" type="tel" placeholder="e.g. +88017XXXXXXXX">
+                          <input class="form-control" id="contact_mobile_phone" type="tel"
+                            placeholder="e.g. +88017XXXXXXXX">
                         </div>
                         <div class="col-md-6">
                           <label class="form-label small fw-semibold" for="contact_email">E-mail Address</label>
-                          <input class="form-control" id="contact_email" type="email" placeholder="e.g. name@domain.com">
+                          <input class="form-control" id="contact_email" type="email"
+                            placeholder="e.g. name@domain.com">
                         </div>
                         <div class="col-md-6">
-                          <label class="form-label small fw-semibold" for="contact_project_id">Link to Project(s) <span class="text-danger">*</span></label>
-                          <select class="form-select project-id-select" id="contact_project_id" multiple required style="min-height: 80px;">
+                          <label class="form-label small fw-semibold" for="contact_project_id">Link to Project(s) <span
+                              class="text-danger">*</span></label>
+                          <select class="form-select project-id-select" id="contact_project_id" multiple required
+                            style="min-height: 80px;">
                             <option value="" disabled>Loading projects...</option>
                           </select>
-                          <div class="form-text text-muted">Hold Ctrl (Windows) or Cmd (Mac) to select multiple projects.</div>
+                          <div class="form-text text-muted">Hold Ctrl (Windows) or Cmd (Mac) to select multiple
+                            projects.</div>
                         </div>
                       </div>
                       <button type="submit" class="btn btn-primary fw-semibold py-2 px-4 mt-3">
@@ -544,37 +587,47 @@
                     <form id="meetingForm">
                       <div class="row g-3">
                         <div class="col-md-6">
-                          <label class="form-label small fw-semibold" for="meet_project_id">Related Project <span class="text-danger">*</span></label>
+                          <label class="form-label small fw-semibold" for="meet_project_id">Related Project <span
+                              class="text-danger">*</span></label>
                           <select class="form-select project-id-select" id="meet_project_id" required>
                             <option value="" disabled selected>Loading projects...</option>
                           </select>
                         </div>
                         <div class="col-md-6">
-                          <label class="form-label small fw-semibold" for="meet_meeting_title">Meeting Title <span class="text-danger">*</span></label>
-                          <input class="form-control" id="meet_meeting_title" type="text" placeholder="e.g. Kickoff Session" required maxlength="150">
+                          <label class="form-label small fw-semibold" for="meet_meeting_title">Meeting Title <span
+                              class="text-danger">*</span></label>
+                          <input class="form-control" id="meet_meeting_title" type="text"
+                            placeholder="e.g. Kickoff Session" required maxlength="150">
                         </div>
                         <div class="col-md-6">
-                          <label class="form-label small fw-semibold" for="meeting_timestamp">Date & Time <span class="text-danger">*</span></label>
+                          <label class="form-label small fw-semibold" for="meeting_timestamp">Date & Time <span
+                              class="text-danger">*</span></label>
                           <input class="form-control" id="meeting_timestamp" type="datetime-local" required>
                         </div>
                         <div class="col-md-6">
-                          <label class="form-label small fw-semibold" for="meet_meeting_url">Meeting Link (https://) <span class="text-danger">*</span></label>
-                          <input class="form-control" id="meet_meeting_url" type="url" placeholder="Teams, Meet, or Zoom URL" required pattern="https://.*">
+                          <label class="form-label small fw-semibold" for="meet_meeting_url">Meeting Link (https://)
+                            <span class="text-danger">*</span></label>
+                          <input class="form-control" id="meet_meeting_url" type="url"
+                            placeholder="Teams, Meet, or Zoom URL" required pattern="https://.*">
                         </div>
                         <div class="col-md-6">
-                          <label class="form-label small fw-semibold" for="meet_attendees_list">Attendees <span class="text-danger">*</span></label>
-                          <select class="form-select" id="meet_attendees_list" multiple required style="min-height: 100px;">
+                          <label class="form-label small fw-semibold" for="meet_attendees_list">Attendees <span
+                              class="text-danger">*</span></label>
+                          <select class="form-select" id="meet_attendees_list" multiple required
+                            style="min-height: 100px;">
                             <option value="" disabled>Loading emails...</option>
                           </select>
                           <div class="form-text text-muted">Hold Ctrl or Cmd to select multiple attendee emails.</div>
                         </div>
                         <div class="col-md-6">
                           <label class="form-label small fw-semibold" for="meet_agenda">Agenda</label>
-                          <textarea class="form-control" id="meet_agenda" rows="4" placeholder="Talking points..."></textarea>
+                          <textarea class="form-control" id="meet_agenda" rows="4"
+                            placeholder="Talking points..."></textarea>
                         </div>
                         <div class="col-12">
                           <label class="form-label small fw-semibold" for="meet_meeting_minutes">Minutes (MOM)</label>
-                          <textarea class="form-control" id="meet_meeting_minutes" rows="2" placeholder="Post-meeting outcomes..."></textarea>
+                          <textarea class="form-control" id="meet_meeting_minutes" rows="2"
+                            placeholder="Post-meeting outcomes..."></textarea>
                         </div>
                       </div>
                       <button type="submit" class="btn btn-primary fw-semibold py-2 px-4 mt-3">
@@ -620,13 +673,15 @@
                     <form id="budgetForm">
                       <div class="row g-3">
                         <div class="col-md-6">
-                          <label class="form-label small fw-semibold" for="budg_project_id">Select Project <span class="text-danger">*</span></label>
+                          <label class="form-label small fw-semibold" for="budg_project_id">Select Project <span
+                              class="text-danger">*</span></label>
                           <select class="form-select project-id-select" id="budg_project_id" required>
                             <option value="" disabled selected>Loading projects...</option>
                           </select>
                         </div>
                         <div class="col-md-6">
-                          <label class="form-label small fw-semibold" for="budg_cost_category">Cost Category <span class="text-danger">*</span></label>
+                          <label class="form-label small fw-semibold" for="budg_cost_category">Cost Category <span
+                              class="text-danger">*</span></label>
                           <select class="form-select" id="budg_cost_category" required>
                             <option value="" disabled selected>Select category</option>
                             <option value="Human Resources">Human Resources</option>
@@ -637,15 +692,20 @@
                           </select>
                         </div>
                         <div class="col-md-6">
-                          <label class="form-label small fw-semibold" for="budg_line_description">Line Description <span class="text-danger">*</span></label>
-                          <input class="form-control" id="budg_line_description" type="text" placeholder="e.g. Cloud server licenses" required>
+                          <label class="form-label small fw-semibold" for="budg_line_description">Line Description <span
+                              class="text-danger">*</span></label>
+                          <input class="form-control" id="budg_line_description" type="text"
+                            placeholder="e.g. Cloud server licenses" required>
                         </div>
                         <div class="col-md-6">
-                          <label class="form-label small fw-semibold" for="budg_allocated_amount">Allocated Amount (BDT) <span class="text-danger">*</span></label>
-                          <input class="form-control" id="budg_allocated_amount" type="number" min="0" step="0.01" placeholder="e.g. 50000" required>
+                          <label class="form-label small fw-semibold" for="budg_allocated_amount">Allocated Amount (BDT)
+                            <span class="text-danger">*</span></label>
+                          <input class="form-control" id="budg_allocated_amount" type="number" min="0" step="0.01"
+                            placeholder="e.g. 50000" required>
                         </div>
                         <div class="col-md-12">
-                          <label class="form-label small fw-semibold" for="budg_approved_by">Approved By <span class="text-danger">*</span></label>
+                          <label class="form-label small fw-semibold" for="budg_approved_by">Approved By <span
+                              class="text-danger">*</span></label>
                           <select class="form-select" id="budg_approved_by" required>
                             <option value="" disabled selected>Loading contacts...</option>
                           </select>
@@ -696,36 +756,43 @@
                       <input type="hidden" id="task_id">
                       <div class="row g-3">
                         <div class="col-md-6">
-                          <label class="form-label small fw-semibold" for="task_project_id">Related Project <span class="text-danger">*</span></label>
+                          <label class="form-label small fw-semibold" for="task_project_id">Related Project <span
+                              class="text-danger">*</span></label>
                           <select class="form-select project-id-select" id="task_project_id" required>
                             <option value="" disabled selected>Loading projects...</option>
                           </select>
                         </div>
                         <div class="col-md-6">
-                          <label class="form-label small fw-semibold" for="task_wbs_code">WBS Code <span class="text-muted">(e.g. 1.1 or 1.2.3)</span></label>
+                          <label class="form-label small fw-semibold" for="task_wbs_code">WBS Code <span
+                              class="text-muted">(e.g. 1.1 or 1.2.3)</span></label>
                           <input class="form-control" id="task_wbs_code" type="text" placeholder="e.g. 1.1">
                         </div>
                         <div class="col-md-12">
-                          <label class="form-label small fw-semibold" for="task_name">Task Name <span class="text-danger">*</span></label>
+                          <label class="form-label small fw-semibold" for="task_name">Task Name <span
+                              class="text-danger">*</span></label>
                           <input class="form-control" id="task_name" type="text" placeholder="Short summary" required>
                         </div>
                         <div class="col-md-6">
-                          <label class="form-label small fw-semibold" for="task_startDate">Start Date <span class="text-danger">*</span></label>
+                          <label class="form-label small fw-semibold" for="task_startDate">Start Date <span
+                              class="text-danger">*</span></label>
                           <input class="form-control" id="task_startDate" type="date" required>
                         </div>
                         <div class="col-md-6">
-                          <label class="form-label small fw-semibold" for="task_endDate">End Date <span class="text-danger">*</span></label>
+                          <label class="form-label small fw-semibold" for="task_endDate">End Date <span
+                              class="text-danger">*</span></label>
                           <input class="form-control" id="task_endDate" type="date" required>
                         </div>
                         <div class="col-md-6">
-                          <label class="form-label small fw-semibold" for="task_assigned_to">Assigned To <span class="text-danger">*</span></label>
+                          <label class="form-label small fw-semibold" for="task_assigned_to">Assigned To <span
+                              class="text-danger">*</span></label>
                           <select class="form-select" id="task_assigned_to" required>
                             <option value="" disabled selected>Loading contacts...</option>
                           </select>
                         </div>
                         <div class="col-md-3">
                           <label class="form-label small fw-semibold" for="task_progress_percent">Progress (%)</label>
-                          <input class="form-control" id="task_progress_percent" type="number" min="0" max="100" value="0">
+                          <input class="form-control" id="task_progress_percent" type="number" min="0" max="100"
+                            value="0">
                         </div>
                         <div class="col-md-3">
                           <label class="form-label small fw-semibold" for="task_status">Status</label>
@@ -739,11 +806,14 @@
                         </div>
                         <div class="col-md-6">
                           <label class="form-label small fw-semibold">Working Update Log (Read-only)</label>
-                          <textarea class="form-control bg-light text-muted small" id="task_working_update_log" rows="4" readonly placeholder="No update notes posted yet."></textarea>
+                          <textarea class="form-control bg-light text-muted small" id="task_working_update_log" rows="4"
+                            readonly placeholder="No update notes posted yet."></textarea>
                         </div>
                         <div class="col-md-6">
-                          <label class="form-label small fw-semibold" for="task_working_update_new">Add Operational Note (Append-only)</label>
-                          <textarea class="form-control" id="task_working_update_new" rows="4" placeholder="Type new update details here..."></textarea>
+                          <label class="form-label small fw-semibold" for="task_working_update_new">Add Operational Note
+                            (Append-only)</label>
+                          <textarea class="form-control" id="task_working_update_new" rows="4"
+                            placeholder="Type new update details here..."></textarea>
                         </div>
                       </div>
                       <div class="d-flex gap-2 mt-3">
@@ -796,13 +866,15 @@
                     <form id="requisitionForm">
                       <div class="row g-3">
                         <div class="col-md-6">
-                          <label class="form-label small fw-semibold" for="req_project_id">Project ID <span class="text-danger">*</span></label>
+                          <label class="form-label small fw-semibold" for="req_project_id">Project ID <span
+                              class="text-danger">*</span></label>
                           <select class="form-select project-id-select" id="req_project_id" required>
                             <option value="" disabled selected>Loading projects...</option>
                           </select>
                         </div>
                         <div class="col-md-6">
-                          <label class="form-label small fw-semibold" for="req_item_category">Item Category <span class="text-danger">*</span></label>
+                          <label class="form-label small fw-semibold" for="req_item_category">Item Category <span
+                              class="text-danger">*</span></label>
                           <select class="form-select" id="req_item_category" required>
                             <option value="" disabled selected>Select Category</option>
                             <option value="Hardware">Hardware</option>
@@ -813,19 +885,26 @@
                           </select>
                         </div>
                         <div class="col-md-4">
-                          <label class="form-label small fw-semibold" for="req_qty_requested">Quantity Requested <span class="text-danger">*</span></label>
-                          <input class="form-control" id="req_qty_requested" type="number" min="1" step="1" value="1" required>
+                          <label class="form-label small fw-semibold" for="req_qty_requested">Quantity Requested <span
+                              class="text-danger">*</span></label>
+                          <input class="form-control" id="req_qty_requested" type="number" min="1" step="1" value="1"
+                            required>
                         </div>
                         <div class="col-md-4">
-                          <label class="form-label small fw-semibold" for="req_est_unit_cost">Estimated Unit Cost (BDT) <span class="text-danger">*</span></label>
-                          <input class="form-control" id="req_est_unit_cost" type="number" min="0.01" step="0.01" placeholder="0.00" required>
+                          <label class="form-label small fw-semibold" for="req_est_unit_cost">Estimated Unit Cost (BDT)
+                            <span class="text-danger">*</span></label>
+                          <input class="form-control" id="req_est_unit_cost" type="number" min="0.01" step="0.01"
+                            placeholder="0.00" required>
                         </div>
                         <div class="col-md-4">
-                          <label class="form-label small fw-semibold" for="req_est_total_cost">Estimated Total Cost (BDT)</label>
-                          <input class="form-control bg-light" id="req_est_total_cost" type="text" readonly value="0.00">
+                          <label class="form-label small fw-semibold" for="req_est_total_cost">Estimated Total Cost
+                            (BDT)</label>
+                          <input class="form-control bg-light" id="req_est_total_cost" type="text" readonly
+                            value="0.00">
                         </div>
                         <div class="col-md-6">
-                          <label class="form-label small fw-semibold" for="req_dept_approval">Department Head Approval Status <span class="text-danger">*</span></label>
+                          <label class="form-label small fw-semibold" for="req_dept_approval">Department Head Approval
+                            Status <span class="text-danger">*</span></label>
                           <select class="form-select" id="req_dept_approval" required>
                             <option value="Pending Review" selected>Pending Review</option>
                             <option value="Draft">Draft</option>
@@ -834,12 +913,17 @@
                           </select>
                         </div>
                         <div class="col-md-6" id="req_rejection_reason_container" style="display: none;">
-                          <label class="form-label small fw-semibold" for="req_rejection_reason">Rejection Reason <span class="text-danger">*</span></label>
-                          <input class="form-control" id="req_rejection_reason" type="text" placeholder="Specify why it was rejected">
+                          <label class="form-label small fw-semibold" for="req_rejection_reason">Rejection Reason <span
+                              class="text-danger">*</span></label>
+                          <input class="form-control" id="req_rejection_reason" type="text"
+                            placeholder="Specify why it was rejected">
                         </div>
                         <div class="col-12">
-                          <label class="form-label small fw-semibold" for="req_item_description">Item Description <span class="text-danger">*</span></label>
-                          <textarea class="form-control" id="req_item_description" rows="3" placeholder="Describe the item or service requested (minimum 10 characters)..." required minlength="10"></textarea>
+                          <label class="form-label small fw-semibold" for="req_item_description">Item Description <span
+                              class="text-danger">*</span></label>
+                          <textarea class="form-control" id="req_item_description" rows="3"
+                            placeholder="Describe the item or service requested (minimum 10 characters)..." required
+                            minlength="10"></textarea>
                         </div>
                       </div>
                       <button type="submit" class="btn btn-primary fw-semibold py-2 px-4 mt-3">
@@ -878,7 +962,7 @@
                   </div>
                 </div>
 
-        <!-- 7. PURCHASE ORDERS PANEL -->
+                <!-- 7. PURCHASE ORDERS PANEL -->
                 <div class="tab-pane fade" id="purchasesPanel" role="tabpanel">
                   <!-- Form -->
                   <div class="card p-4 rounded-4 shadow-sm border mb-4">
@@ -888,29 +972,38 @@
                     <form id="purchaseForm">
                       <div class="row g-3">
                         <div class="col-md-6">
-                          <label class="form-label small fw-semibold" for="po_requisition_id">Link Approved Requisition <span class="text-danger">*</span></label>
+                          <label class="form-label small fw-semibold" for="po_requisition_id">Link Approved Requisition
+                            <span class="text-danger">*</span></label>
                           <select class="form-select" id="po_requisition_id" required>
                             <option value="" disabled selected>Select Approved Requisition</option>
                           </select>
                         </div>
                         <div class="col-md-6">
-                          <label class="form-label small fw-semibold" for="po_project_id">Project ID <span class="text-muted">(Inherited from Requisition)</span></label>
-                          <input type="text" class="form-control bg-light" id="po_project_id" readonly placeholder="Auto-populated from Requisition" required>
+                          <label class="form-label small fw-semibold" for="po_project_id">Project ID <span
+                              class="text-muted">(Inherited from Requisition)</span></label>
+                          <input type="text" class="form-control bg-light" id="po_project_id" readonly
+                            placeholder="Auto-populated from Requisition" required>
                         </div>
                         <div class="col-md-6">
-                          <label class="form-label small fw-semibold" for="po_vendor_name">Vendor ID / Name <span class="text-danger">*</span></label>
-                          <input class="form-control" id="po_vendor_name" type="text" placeholder="Vendor ID or name" required>
+                          <label class="form-label small fw-semibold" for="po_vendor_name">Vendor ID / Name <span
+                              class="text-danger">*</span></label>
+                          <input class="form-control" id="po_vendor_name" type="text" placeholder="Vendor ID or name"
+                            required>
                         </div>
                         <div class="col-md-6">
-                          <label class="form-label small fw-semibold" for="po_number">PO Number <span class="text-muted">(e.g. PO-95401, auto-generated if blank)</span></label>
+                          <label class="form-label small fw-semibold" for="po_number">PO Number <span
+                              class="text-muted">(e.g. PO-95401, auto-generated if blank)</span></label>
                           <input class="form-control" id="po_number" type="text" placeholder="e.g. PO-95401">
                         </div>
                         <div class="col-md-6">
-                          <label class="form-label small fw-semibold" for="po_final_po_total">Final Contracted Total (BDT) <span class="text-danger">*</span></label>
-                          <input class="form-control" id="po_final_po_total" type="number" min="0" step="0.01" required placeholder="0.00">
+                          <label class="form-label small fw-semibold" for="po_final_po_total">Final Contracted Total
+                            (BDT) <span class="text-danger">*</span></label>
+                          <input class="form-control" id="po_final_po_total" type="number" min="0" step="0.01" required
+                            placeholder="0.00">
                         </div>
                         <div class="col-md-6">
-                          <label class="form-label small fw-semibold" for="po_payment_terms">Payment Terms <span class="text-danger">*</span></label>
+                          <label class="form-label small fw-semibold" for="po_payment_terms">Payment Terms <span
+                              class="text-danger">*</span></label>
                           <select class="form-select" id="po_payment_terms" required>
                             <option value="" disabled selected>Select terms</option>
                             <option value="Prepaid (Advance)">Prepaid (Advance)</option>
@@ -921,11 +1014,13 @@
                           </select>
                         </div>
                         <div class="col-md-6">
-                          <label class="form-label small fw-semibold" for="po_issue_date">PO Issue Date <span class="text-danger">*</span></label>
+                          <label class="form-label small fw-semibold" for="po_issue_date">PO Issue Date <span
+                              class="text-danger">*</span></label>
                           <input class="form-control" id="po_issue_date" type="date" required>
                         </div>
                         <div class="col-md-6">
-                          <label class="form-label small fw-semibold" for="po_status">Procurement Status <span class="text-danger">*</span></label>
+                          <label class="form-label small fw-semibold" for="po_status">Procurement Status <span
+                              class="text-danger">*</span></label>
                           <select class="form-select" id="po_status" required>
                             <option value="PO Issued" selected>PO Issued</option>
                             <option value="Vendor Acknowledged">Vendor Acknowledged</option>
@@ -980,13 +1075,15 @@
                     <form id="expenseForm">
                       <div class="row g-3">
                         <div class="col-md-6">
-                          <label class="form-label small fw-semibold" for="exp_project_id">Select Project <span class="text-danger">*</span></label>
+                          <label class="form-label small fw-semibold" for="exp_project_id">Select Project <span
+                              class="text-danger">*</span></label>
                           <select class="form-select project-id-select" id="exp_project_id" required>
                             <option value="" disabled selected>Loading projects...</option>
                           </select>
                         </div>
                         <div class="col-md-6">
-                          <label class="form-label small fw-semibold" for="exp_expense_routing_type">Expense Routing Type <span class="text-danger">*</span></label>
+                          <label class="form-label small fw-semibold" for="exp_expense_routing_type">Expense Routing
+                            Type <span class="text-danger">*</span></label>
                           <select class="form-select" id="exp_expense_routing_type" required>
                             <option value="" disabled selected>Select routing type</option>
                             <option value="PO-Backed">PO-Backed (mapping to a PO)</option>
@@ -994,25 +1091,33 @@
                           </select>
                         </div>
                         <div class="col-md-6" id="exp_po_number_container" style="display: none;">
-                          <label class="form-label small fw-semibold" for="exp_po_number_ref">PO Number Reference <span class="text-danger">*</span></label>
+                          <label class="form-label small fw-semibold" for="exp_po_number_ref">PO Number Reference <span
+                              class="text-danger">*</span></label>
                           <select class="form-select" id="exp_po_number_ref">
                             <option value="">Select PO</option>
                           </select>
                         </div>
                         <div class="col-md-6">
-                          <label class="form-label small fw-semibold" for="exp_vendor_invoice_num">Vendor Invoice Number <span class="text-danger">*</span></label>
-                          <input class="form-control" id="exp_vendor_invoice_num" type="text" placeholder="Invoice printed reference" required pattern="[a-zA-Z0-9\-_]+">
+                          <label class="form-label small fw-semibold" for="exp_vendor_invoice_num">Vendor Invoice Number
+                            <span class="text-danger">*</span></label>
+                          <input class="form-control" id="exp_vendor_invoice_num" type="text"
+                            placeholder="Invoice printed reference" required pattern="[a-zA-Z0-9\-_]+">
                         </div>
                         <div class="col-md-4">
-                          <label class="form-label small fw-semibold" for="exp_invoice_amount">Invoice Gross Amount (BDT) <span class="text-danger">*</span></label>
-                          <input class="form-control" id="exp_invoice_amount" type="number" min="0.01" step="0.01" placeholder="0.00" required>
+                          <label class="form-label small fw-semibold" for="exp_invoice_amount">Invoice Gross Amount
+                            (BDT) <span class="text-danger">*</span></label>
+                          <input class="form-control" id="exp_invoice_amount" type="number" min="0.01" step="0.01"
+                            placeholder="0.00" required>
                         </div>
                         <div class="col-md-4">
-                          <label class="form-label small fw-semibold" for="exp_amount_paid">Amount Paid To Date (BDT) <span class="text-danger">*</span></label>
-                          <input class="form-control" id="exp_amount_paid" type="number" min="0" step="0.01" placeholder="0.00" required>
+                          <label class="form-label small fw-semibold" for="exp_amount_paid">Amount Paid To Date (BDT)
+                            <span class="text-danger">*</span></label>
+                          <input class="form-control" id="exp_amount_paid" type="number" min="0" step="0.01"
+                            placeholder="0.00" required>
                         </div>
                         <div class="col-md-4">
-                          <label class="form-label small fw-semibold" for="exp_payment_status">Payment Status <span class="text-danger">*</span></label>
+                          <label class="form-label small fw-semibold" for="exp_payment_status">Payment Status <span
+                              class="text-danger">*</span></label>
                           <select class="form-select" id="exp_payment_status" required>
                             <option value="Unpaid / Awaiting Approval" selected>Unpaid / Awaiting Approval</option>
                             <option value="Partially Paid">Partially Paid</option>
@@ -1020,7 +1125,8 @@
                           </select>
                         </div>
                         <div class="col-md-6">
-                          <label class="form-label small fw-semibold" for="exp_payment_method">Payment Method <span class="text-danger">*</span></label>
+                          <label class="form-label small fw-semibold" for="exp_payment_method">Payment Method <span
+                              class="text-danger">*</span></label>
                           <select class="form-select" id="exp_payment_method" required>
                             <option value="ACH / Wire Transfer">ACH / Wire Transfer</option>
                             <option value="Corporate Credit Card">Corporate Credit Card</option>
@@ -1029,7 +1135,8 @@
                           </select>
                         </div>
                         <div class="col-md-6">
-                          <label class="form-label small fw-semibold" for="exp_clearance_date">Date of Payment (Clearance Date)</label>
+                          <label class="form-label small fw-semibold" for="exp_clearance_date">Date of Payment
+                            (Clearance Date)</label>
                           <input class="form-control bg-light" id="exp_clearance_date" type="date" disabled>
                         </div>
                       </div>
@@ -1075,9 +1182,11 @@
                   <div class="card p-4 rounded-4 shadow-sm border mb-4">
                     <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
                       <h3 class="h5 fw-bold mb-0 text-heading-color">
-                        <i class="bi bi-file-earmark-spreadsheet me-2 text-primary"></i><span id="paymentFormTitle">Log Client Invoice</span>
+                        <i class="bi bi-file-earmark-spreadsheet me-2 text-primary"></i><span id="paymentFormTitle">Log
+                          Client Invoice</span>
                       </h3>
-                      <button type="button" id="cancelPaymentEditBtn" class="btn btn-outline-secondary py-1 px-3 d-none">
+                      <button type="button" id="cancelPaymentEditBtn"
+                        class="btn btn-outline-secondary py-1 px-3 d-none">
                         Cancel Edit
                       </button>
                     </div>
@@ -1085,13 +1194,15 @@
                       <input type="hidden" id="inv_invoice_id" value="">
                       <div class="row g-3">
                         <div class="col-md-6">
-                          <label class="form-label small fw-semibold" for="inv_project_id">Select Project <span class="text-danger">*</span></label>
+                          <label class="form-label small fw-semibold" for="inv_project_id">Select Project <span
+                              class="text-danger">*</span></label>
                           <select class="form-select project-id-select" id="inv_project_id" required>
                             <option value="" disabled selected>Loading projects...</option>
                           </select>
                         </div>
                         <div class="col-md-6">
-                          <label class="form-label small fw-semibold" for="inv_milestone_type">Billing Milestone Type <span class="text-danger">*</span></label>
+                          <label class="form-label small fw-semibold" for="inv_milestone_type">Billing Milestone Type
+                            <span class="text-danger">*</span></label>
                           <select class="form-select" id="inv_milestone_type" required>
                             <option value="" disabled selected>Select Milestone</option>
                             <option value="Advance/Upfront Deposit">Advance/Upfront Deposit</option>
@@ -1101,15 +1212,18 @@
                           </select>
                         </div>
                         <div class="col-md-4">
-                          <label class="form-label small fw-semibold" for="inv_invoice_date">Invoice Issue Date <span class="text-danger">*</span></label>
+                          <label class="form-label small fw-semibold" for="inv_invoice_date">Invoice Issue Date <span
+                              class="text-danger">*</span></label>
                           <input class="form-control" id="inv_invoice_date" type="date" required>
                         </div>
                         <div class="col-md-4">
-                          <label class="form-label small fw-semibold" for="inv_due_date">Payment Due Date <span class="text-danger">*</span></label>
+                          <label class="form-label small fw-semibold" for="inv_due_date">Payment Due Date <span
+                              class="text-danger">*</span></label>
                           <input class="form-control" id="inv_due_date" type="date" required>
                         </div>
                         <div class="col-md-4">
-                          <label class="form-label small fw-semibold" for="inv_payment_status">Client Payment Status <span class="text-danger">*</span></label>
+                          <label class="form-label small fw-semibold" for="inv_payment_status">Client Payment Status
+                            <span class="text-danger">*</span></label>
                           <select class="form-select" id="inv_payment_status" required>
                             <option value="Draft" selected>Draft</option>
                             <option value="Awaiting Payment">Awaiting Payment</option>
@@ -1119,24 +1233,32 @@
                           </select>
                         </div>
                         <div class="col-md-4">
-                          <label class="form-label small fw-semibold" for="inv_invoiced_amount">Invoiced Gross Amount (BDT) <span class="text-danger">*</span></label>
-                          <input class="form-control" id="inv_invoiced_amount" type="number" min="0.01" step="0.01" placeholder="0.00" required>
+                          <label class="form-label small fw-semibold" for="inv_invoiced_amount">Invoiced Gross Amount
+                            (BDT) <span class="text-danger">*</span></label>
+                          <input class="form-control" id="inv_invoiced_amount" type="number" min="0.01" step="0.01"
+                            placeholder="0.00" required>
                         </div>
                         <div class="col-md-4">
-                          <label class="form-label small fw-semibold" for="inv_amount_received">Amount Received (BDT)</label>
-                          <input class="form-control" id="inv_amount_received" type="number" min="0" step="0.01" value="0.00">
+                          <label class="form-label small fw-semibold" for="inv_amount_received">Amount Received
+                            (BDT)</label>
+                          <input class="form-control" id="inv_amount_received" type="number" min="0" step="0.01"
+                            value="0.00">
                         </div>
                         <div class="col-md-4">
-                          <label class="form-label small fw-semibold" for="inv_outstanding_balance">Outstanding Balance (BDT)</label>
-                          <input class="form-control bg-light" id="inv_outstanding_balance" type="text" readonly value="0.00">
+                          <label class="form-label small fw-semibold" for="inv_outstanding_balance">Outstanding Balance
+                            (BDT)</label>
+                          <input class="form-control bg-light" id="inv_outstanding_balance" type="text" readonly
+                            value="0.00">
                         </div>
                         <div class="col-md-6">
                           <label class="form-label small fw-semibold" for="inv_date_received">Date Received</label>
                           <input class="form-control bg-light" id="inv_date_received" type="date" disabled>
                         </div>
                         <div class="col-md-6">
-                          <label class="form-label small fw-semibold" for="inv_transaction_ref">Transaction Reference / Check No.</label>
-                          <input class="form-control" id="inv_transaction_ref" type="text" placeholder="Check num, wire ref, or transaction ID">
+                          <label class="form-label small fw-semibold" for="inv_transaction_ref">Transaction Reference /
+                            Check No.</label>
+                          <input class="form-control" id="inv_transaction_ref" type="text"
+                            placeholder="Check num, wire ref, or transaction ID">
                         </div>
                       </div>
                       <button type="submit" class="btn btn-primary fw-semibold py-2 px-4 mt-3" id="paymentSubmitBtn">
@@ -1183,7 +1305,8 @@
                   <div class="card p-4 rounded-4 shadow-sm border mb-4">
                     <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
                       <h3 class="h5 fw-bold mb-0 text-heading-color">
-                        <i class="bi bi-ticket-detailed me-2 text-primary"></i><span id="ticketFormTitle">Log Support Ticket</span>
+                        <i class="bi bi-ticket-detailed me-2 text-primary"></i><span id="ticketFormTitle">Log Support
+                          Ticket</span>
                       </h3>
                       <button type="button" id="cancelTicketEditBtn" class="btn btn-outline-secondary py-1 px-3 d-none">
                         Cancel Edit
@@ -1193,29 +1316,35 @@
                       <input type="hidden" id="ticket_id" value="">
                       <div class="row g-3">
                         <div class="col-md-6">
-                          <label class="form-label small fw-semibold" for="ticket_project_id">Select Project <span class="text-danger">*</span></label>
+                          <label class="form-label small fw-semibold" for="ticket_project_id">Select Project <span
+                              class="text-danger">*</span></label>
                           <select class="form-select project-id-select" id="ticket_project_id" required>
                             <option value="" disabled selected>Loading projects...</option>
                           </select>
                         </div>
                         <div class="col-md-6">
-                          <label class="form-label small fw-semibold" for="ticket_asset_id">Linked Infrastructure Asset <span class="text-muted">(Optional for Domain/Hosting tickets)</span></label>
+                          <label class="form-label small fw-semibold" for="ticket_asset_id">Linked Infrastructure Asset
+                            <span class="text-muted">(Optional for Domain/Hosting tickets)</span></label>
                           <select class="form-select" id="ticket_asset_id">
                             <option value="">None / General Issue</option>
                           </select>
                         </div>
                         <div class="col-md-6">
-                          <label class="form-label small fw-semibold" for="ticket_requester_id">Requester Name (Client Contact) <span class="text-danger">*</span></label>
+                          <label class="form-label small fw-semibold" for="ticket_requester_id">Requester Name (Client
+                            Contact) <span class="text-danger">*</span></label>
                           <select class="form-select" id="ticket_requester_id" required>
                             <option value="" disabled selected>Select Requester</option>
                           </select>
                         </div>
                         <div class="col-md-6">
-                          <label class="form-label small fw-semibold" for="ticket_subject">Subject / Summary <span class="text-danger">*</span></label>
-                          <input class="form-control" id="ticket_subject" type="text" placeholder="Concise summary (max 150 chars)" required maxlength="150">
+                          <label class="form-label small fw-semibold" for="ticket_subject">Subject / Summary <span
+                              class="text-danger">*</span></label>
+                          <input class="form-control" id="ticket_subject" type="text"
+                            placeholder="Concise summary (max 150 chars)" required maxlength="150">
                         </div>
                         <div class="col-md-3">
-                          <label class="form-label small fw-semibold" for="ticket_priority">Priority Level <span class="text-danger">*</span></label>
+                          <label class="form-label small fw-semibold" for="ticket_priority">Priority Level <span
+                              class="text-danger">*</span></label>
                           <select class="form-select" id="ticket_priority" required>
                             <option value="Low">Low</option>
                             <option value="Medium" selected>Medium</option>
@@ -1224,7 +1353,8 @@
                           </select>
                         </div>
                         <div class="col-md-3">
-                          <label class="form-label small fw-semibold" for="ticket_status">Ticket Status <span class="text-danger">*</span></label>
+                          <label class="form-label small fw-semibold" for="ticket_status">Ticket Status <span
+                              class="text-danger">*</span></label>
                           <select class="form-select" id="ticket_status" required>
                             <option value="New" selected>New</option>
                             <option value="Assigned">Assigned</option>
@@ -1235,18 +1365,23 @@
                           </select>
                         </div>
                         <div class="col-md-6">
-                          <label class="form-label small fw-semibold" for="ticket_assigned_to">Assigned Engineer (Technical Staff)</label>
+                          <label class="form-label small fw-semibold" for="ticket_assigned_to">Assigned Engineer
+                            (Technical Staff)</label>
                           <select class="form-select" id="ticket_assigned_to">
                             <option value="">Unassigned</option>
                           </select>
                         </div>
                         <div class="col-md-6" id="ticket_resolution_container" style="display: none;">
-                          <label class="form-label small fw-semibold" for="ticket_resolution_notes">Resolution Notes <span class="text-danger">*</span></label>
-                          <textarea class="form-control" id="ticket_resolution_notes" rows="2" placeholder="Explain how the issue was resolved"></textarea>
+                          <label class="form-label small fw-semibold" for="ticket_resolution_notes">Resolution Notes
+                            <span class="text-danger">*</span></label>
+                          <textarea class="form-control" id="ticket_resolution_notes" rows="2"
+                            placeholder="Explain how the issue was resolved"></textarea>
                         </div>
                         <div class="col-12">
-                          <label class="form-label small fw-semibold" for="ticket_desc">Detailed Description <span class="text-danger">*</span></label>
-                          <textarea class="form-control" id="ticket_desc" rows="3" placeholder="Steps to reproduce or bug breakdown..." required></textarea>
+                          <label class="form-label small fw-semibold" for="ticket_desc">Detailed Description <span
+                              class="text-danger">*</span></label>
+                          <textarea class="form-control" id="ticket_desc" rows="3"
+                            placeholder="Steps to reproduce or bug breakdown..." required></textarea>
                         </div>
                       </div>
                       <button type="submit" class="btn btn-primary fw-semibold py-2 px-4 mt-3" id="ticketSubmitBtn">
@@ -1293,9 +1428,11 @@
                   <div class="card p-4 rounded-4 shadow-sm border mb-4">
                     <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
                       <h3 class="h5 fw-bold mb-0 text-heading-color">
-                        <i class="bi bi-server me-2 text-primary"></i><span id="hostingFormTitle">Add Domain & Hosting Asset</span>
+                        <i class="bi bi-server me-2 text-primary"></i><span id="hostingFormTitle">Add Domain & Hosting
+                          Asset</span>
                       </h3>
-                      <button type="button" id="cancelHostingEditBtn" class="btn btn-outline-secondary py-1 px-3 d-none">
+                      <button type="button" id="cancelHostingEditBtn"
+                        class="btn btn-outline-secondary py-1 px-3 d-none">
                         Cancel Edit
                       </button>
                     </div>
@@ -1303,27 +1440,35 @@
                       <input type="hidden" id="host_asset_id" value="">
                       <div class="row g-3">
                         <div class="col-md-6">
-                          <label class="form-label small fw-semibold" for="host_project_id">Select Project <span class="text-danger">*</span></label>
+                          <label class="form-label small fw-semibold" for="host_project_id">Select Project <span
+                              class="text-danger">*</span></label>
                           <select class="form-select project-id-select" id="host_project_id" required>
                             <option value="" disabled selected>Loading projects...</option>
                           </select>
                         </div>
                         <div class="col-md-6">
-                          <label class="form-label small fw-semibold" for="host_package">Hosting Package <span class="text-muted">(auto-fills capacity &amp; cost)</span></label>
+                          <label class="form-label small fw-semibold" for="host_package">Hosting Package <span
+                              class="text-muted">(auto-fills capacity &amp; cost)</span></label>
                           <select class="form-select" id="host_package">
                             <option value="">-- Custom / Not Applicable --</option>
-                            <option value="Basic" data-capacity="10 GB NVMe SSD" data-cost="1699">Basic — ৳1,699/yr — 10 GB Hosting + Free .com</option>
-                            <option value="Plus" data-capacity="20 GB NVMe SSD" data-cost="2199">Plus — ৳2,199/yr — 20 GB Hosting + Free .com</option>
-                            <option value="Business" data-capacity="Unlimited NVMe SSD" data-cost="2999">Business — ৳2,999/yr — Unlimited Hosting + Free .com</option>
+                            <option value="Basic" data-capacity="10 GB NVMe SSD" data-cost="1699">Basic — ৳1,699/yr — 10
+                              GB Hosting + Free .com</option>
+                            <option value="Plus" data-capacity="20 GB NVMe SSD" data-cost="2199">Plus — ৳2,199/yr — 20
+                              GB Hosting + Free .com</option>
+                            <option value="Business" data-capacity="Unlimited NVMe SSD" data-cost="2999">Business —
+                              ৳2,999/yr — Unlimited Hosting + Free .com</option>
                           </select>
                         </div>
                         <div class="col-md-6">
                           <label class="form-label small fw-semibold" for="host_capacity">Hosting Capacity</label>
-                          <input class="form-control" id="host_capacity" type="text" placeholder="e.g. 10 GB NVMe SSD or Unlimited">
-                          <div class="form-text text-muted">Auto-filled when a package is selected. Edit freely for custom setups.</div>
+                          <input class="form-control" id="host_capacity" type="text"
+                            placeholder="e.g. 10 GB NVMe SSD or Unlimited">
+                          <div class="form-text text-muted">Auto-filled when a package is selected. Edit freely for
+                            custom setups.</div>
                         </div>
                         <div class="col-md-6">
-                          <label class="form-label small fw-semibold" for="host_asset_type">Asset Type <span class="text-danger">*</span></label>
+                          <label class="form-label small fw-semibold" for="host_asset_type">Asset Type <span
+                              class="text-danger">*</span></label>
                           <select class="form-select" id="host_asset_type" required>
                             <option value="" disabled selected>Select Type</option>
                             <option value="Domain Name">Domain Name</option>
@@ -1334,11 +1479,14 @@
                           </select>
                         </div>
                         <div class="col-md-6">
-                          <label class="form-label small fw-semibold" for="host_asset_url">Domain / Server URL <span class="text-danger">*</span></label>
-                          <input class="form-control" id="host_asset_url" type="text" placeholder="e.g. clientapp.com or 192.168.1.1" required>
+                          <label class="form-label small fw-semibold" for="host_asset_url">Domain / Server URL <span
+                              class="text-danger">*</span></label>
+                          <input class="form-control" id="host_asset_url" type="text"
+                            placeholder="e.g. clientapp.com or 192.168.1.1" required>
                         </div>
                         <div class="col-md-6">
-                          <label class="form-label small fw-semibold" for="host_provider_name">Upstream Provider <span class="text-danger">*</span></label>
+                          <label class="form-label small fw-semibold" for="host_provider_name">Upstream Provider <span
+                              class="text-danger">*</span></label>
                           <select class="form-select" id="host_provider_name" required>
                             <option value="" disabled selected>Select Provider</option>
                             <option value="AWS">AWS</option>
@@ -1349,15 +1497,20 @@
                           </select>
                         </div>
                         <div class="col-md-4">
-                          <label class="form-label small fw-semibold" for="host_cost_price">Cost Price (Buy BDT) <span class="text-danger">*</span></label>
-                          <input class="form-control" id="host_cost_price" type="number" min="0" step="0.01" placeholder="0.00" required>
+                          <label class="form-label small fw-semibold" for="host_cost_price">Cost Price (Buy BDT) <span
+                              class="text-danger">*</span></label>
+                          <input class="form-control" id="host_cost_price" type="number" min="0" step="0.01"
+                            placeholder="0.00" required>
                         </div>
                         <div class="col-md-4">
-                          <label class="form-label small fw-semibold" for="host_selling_price">Selling Price (Sell BDT) <span class="text-danger">*</span></label>
-                          <input class="form-control" id="host_selling_price" type="number" min="0" step="0.01" placeholder="0.00" required>
+                          <label class="form-label small fw-semibold" for="host_selling_price">Selling Price (Sell BDT)
+                            <span class="text-danger">*</span></label>
+                          <input class="form-control" id="host_selling_price" type="number" min="0" step="0.01"
+                            placeholder="0.00" required>
                         </div>
                         <div class="col-md-4">
-                          <label class="form-label small fw-semibold" for="host_asset_status">Asset Status <span class="text-danger">*</span></label>
+                          <label class="form-label small fw-semibold" for="host_asset_status">Asset Status <span
+                              class="text-danger">*</span></label>
                           <select class="form-select" id="host_asset_status" required>
                             <option value="Active / Good Standing" selected>Active / Good Standing</option>
                             <option value="Expired / Action Required">Expired / Action Required</option>
@@ -1365,11 +1518,13 @@
                           </select>
                         </div>
                         <div class="col-md-4">
-                          <label class="form-label small fw-semibold" for="host_reg_date">Registration Date <span class="text-danger">*</span></label>
+                          <label class="form-label small fw-semibold" for="host_reg_date">Registration Date <span
+                              class="text-danger">*</span></label>
                           <input class="form-control" id="host_reg_date" type="date" required>
                         </div>
                         <div class="col-md-4">
-                          <label class="form-label small fw-semibold" for="host_billing_cycle">Billing Cycle <span class="text-danger">*</span></label>
+                          <label class="form-label small fw-semibold" for="host_billing_cycle">Billing Cycle <span
+                              class="text-danger">*</span></label>
                           <select class="form-select" id="host_billing_cycle" required>
                             <option value="" disabled selected>Select Cycle</option>
                             <option value="Monthly">Monthly</option>
@@ -1435,14 +1590,19 @@
   </div>
 
   <!-- Reusable Details View Modal -->
-  <div class="modal fade" id="detailsViewModal" tabindex="-1" aria-labelledby="detailsViewModalLabel" aria-hidden="true">
+  <div class="modal fade" id="detailsViewModal" tabindex="-1" aria-labelledby="detailsViewModalLabel"
+    aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered">
       <div class="modal-content rounded-4 border-0 shadow-lg overflow-hidden">
-        <div class="modal-header border-0 flex-column align-items-start p-4 text-white position-relative" style="background-color: var(--primary-color);">
-          <button type="button" class="btn-close btn-close-white position-absolute top-0 end-0 m-3" data-bs-dismiss="modal" aria-label="Close" style="font-size: 0.85rem; opacity: 0.8;"></button>
-          <span class="badge text-uppercase bg-white text-dark mb-2 px-3 py-2 fw-bold" id="detailsModalBadge" style="font-size: 0.725rem; letter-spacing: 0.05em; border-radius: 30px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">DETAILS</span>
-          <h4 class="modal-title fw-bold" id="detailsViewModalLabel">Record Details</h4>
-          <p class="mb-0 text-white-50 small mt-1" id="detailsModalSubtitle">Detailed registry information and audit fields.</p>
+        <div class="modal-header border-0 flex-column align-items-start p-4 text-white position-relative"
+          style="background-color: var(--primary-color);">
+          <button type="button" class="btn-close btn-close-white position-absolute top-0 end-0 m-3"
+            data-bs-dismiss="modal" aria-label="Close" style="font-size: 0.85rem; opacity: 0.8;"></button>
+          <span class="badge text-uppercase bg-white text-dark mb-2 px-3 py-2 fw-bold" id="detailsModalBadge"
+            style="font-size: 0.725rem; letter-spacing: 0.05em; border-radius: 30px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">DETAILS</span>
+          <h4 class="modal-title fw-bold text-white" id="detailsViewModalLabel">Record Details</h4>
+          <p class="mb-0 text-white-50 small mt-1" id="detailsModalSubtitle">Detailed registry information and audit
+            fields.</p>
         </div>
         <div class="modal-body p-4 bg-light-subtle" style="max-height: 70vh; overflow-y: auto;">
           <div class="row g-3" id="detailsViewModalBody">
@@ -1450,7 +1610,8 @@
           </div>
         </div>
         <div class="modal-footer border-top-0 p-3 bg-light-subtle rounded-bottom-4 justify-content-between">
-          <button type="button" class="btn btn-outline-secondary px-3 fw-semibold rounded-3" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-outline-secondary px-3 fw-semibold rounded-3"
+            data-bs-dismiss="modal">Close</button>
           <button type="button" class="btn btn-primary px-3 fw-semibold rounded-3" id="detailsPrintBtn">
             <i class="bi bi-printer me-2"></i>Print Details
           </button>
@@ -1529,7 +1690,7 @@
       if (!select) return;
       const selectedVal = select.value;
       select.innerHTML = '<option value="" disabled selected>Select Approved Requisition</option>';
-      
+
       // Filter requisitions where dept_approval is Approved and check if they aren't already linked to a PO
       const approvedReqs = allRequisitions.filter(r => r.dept_approval === "Approved");
       approvedReqs.forEach(r => {
@@ -1565,7 +1726,7 @@
       if (!select) return;
       const selectedVal = select.value;
       select.innerHTML = '<option value="" disabled selected>Select Project Manager</option>';
-      
+
       const pms = allEmployees.filter(e => e.designation === "Project Manager" && e.status === "Active");
       pms.forEach(pm => {
         const opt = document.createElement("option");
@@ -1703,10 +1864,10 @@
     function populateExpenseCategories(projId) {
       const catSelect = document.getElementById("exp_cost_category");
       if (!catSelect) return;
-      
+
       const projBudgets = allBudgets.filter(b => b.project_id === projId);
       const categories = [...new Set(projBudgets.map(b => b.cost_category))];
-      
+
       catSelect.innerHTML = '<option value="" disabled selected>Select Category</option>';
       if (categories.length === 0) {
         const opt = document.createElement("option");
@@ -1725,17 +1886,17 @@
     }
 
     // Event handler when project is selected in Expense form
-    document.getElementById("exp_project_id")?.addEventListener("change", function(e) {
+    document.getElementById("exp_project_id")?.addEventListener("change", function (e) {
       populateExpenseCategories(e.target.value);
     });
 
     // Event handler when project is selected in Ticket form
-    document.getElementById("ticket_project_id")?.addEventListener("change", function(e) {
+    document.getElementById("ticket_project_id")?.addEventListener("change", function (e) {
       populateTicketAssetDropdown(e.target.value);
     });
 
     // Event handler when Requisition is selected in Purchase Form
-    document.getElementById("po_requisition_id")?.addEventListener("change", function(e) {
+    document.getElementById("po_requisition_id")?.addEventListener("change", function (e) {
       const reqId = e.target.value;
       const projInput = document.getElementById("po_project_id");
       const costInput = document.getElementById("po_final_po_total");
@@ -1748,7 +1909,7 @@
     });
 
     // Event handler when Employee is selected in Contact form for auto-fill
-    document.getElementById("contact_employee_import")?.addEventListener("change", function(e) {
+    document.getElementById("contact_employee_import")?.addEventListener("change", function (e) {
       const empId = e.target.value;
       if (!empId) return;
       const emp = allEmployees.find(emp => emp.employee_id === empId);
@@ -1757,7 +1918,7 @@
         document.getElementById("contact_mobile_phone").value = emp.mobile_phone || "";
         document.getElementById("contact_email").value = emp.email || "";
         document.getElementById("contact_organization").value = emp.department;
-        
+
         const desigSelect = document.getElementById("contact_designation");
         let hasOption = false;
         for (let i = 0; i < desigSelect.options.length; i++) {
@@ -1777,7 +1938,7 @@
     });
 
     // Rejection reason conditional display
-    document.getElementById("req_dept_approval")?.addEventListener("change", function(e) {
+    document.getElementById("req_dept_approval")?.addEventListener("change", function (e) {
       const reasonContainer = document.getElementById("req_rejection_reason_container");
       const reasonInput = document.getElementById("req_rejection_reason");
       if (e.target.value === "Rejected") {
@@ -1791,7 +1952,7 @@
     });
 
     // Expense routing conditional display
-    document.getElementById("exp_expense_routing_type")?.addEventListener("change", function(e) {
+    document.getElementById("exp_expense_routing_type")?.addEventListener("change", function (e) {
       const poContainer = document.getElementById("exp_po_number_container");
       const poRef = document.getElementById("exp_po_number_ref");
       if (e.target.value === "PO-Backed") {
@@ -1805,7 +1966,7 @@
     });
 
     // Expense clearance date state logic
-    document.getElementById("exp_payment_status")?.addEventListener("change", function(e) {
+    document.getElementById("exp_payment_status")?.addEventListener("change", function (e) {
       const clearanceDateInput = document.getElementById("exp_clearance_date");
       if (e.target.value === "Unpaid / Awaiting Approval") {
         clearanceDateInput.disabled = true;
@@ -1833,7 +1994,7 @@
     }
 
     // Auto-calculate client invoice due date when issue date changes
-    document.getElementById("inv_invoice_date")?.addEventListener("change", function(e) {
+    document.getElementById("inv_invoice_date")?.addEventListener("change", function (e) {
       const invDate = new Date(e.target.value);
       if (!isNaN(invDate)) {
         invDate.setDate(invDate.getDate() + 30);
@@ -1851,7 +2012,7 @@
     document.getElementById("inv_amount_received")?.addEventListener("input", calculateInvoiceBalance);
 
     // Date received validation and toggle based on amount received
-    document.getElementById("inv_amount_received")?.addEventListener("input", function(e) {
+    document.getElementById("inv_amount_received")?.addEventListener("input", function (e) {
       const amt = Number(e.target.value) || 0;
       const dateRecInput = document.getElementById("inv_date_received");
       if (amt > 0) {
@@ -1870,7 +2031,7 @@
     });
 
     // Cancel Client Invoice Edit
-    document.getElementById("cancelPaymentEditBtn")?.addEventListener("click", function() {
+    document.getElementById("cancelPaymentEditBtn")?.addEventListener("click", function () {
       document.getElementById("paymentForm").reset();
       document.getElementById("inv_invoice_id").value = "";
       document.getElementById("paymentFormTitle").textContent = "Log Client Invoice";
@@ -1889,7 +2050,7 @@
     });
 
     // Ticket status resolution notes logic
-    document.getElementById("ticket_status")?.addEventListener("change", function(e) {
+    document.getElementById("ticket_status")?.addEventListener("change", function (e) {
       const resContainer = document.getElementById("ticket_resolution_container");
       const resNotes = document.getElementById("ticket_resolution_notes");
       if (e.target.value === "Resolved" || e.target.value === "Closed") {
@@ -1903,7 +2064,7 @@
     });
 
     // Cancel Ticket Edit
-    document.getElementById("cancelTicketEditBtn")?.addEventListener("click", function() {
+    document.getElementById("cancelTicketEditBtn")?.addEventListener("click", function () {
       document.getElementById("ticketForm").reset();
       document.getElementById("ticket_id").value = "";
       populateTicketAssetDropdown();
@@ -2061,6 +2222,164 @@
       }
     }
 
+    // Inactivity Auto-logout (3 minutes)
+    const INACTIVITY_TIMEOUT_MS = 3 * 60 * 1000; // 3 minutes
+    let inactivityTimer = null;
+
+    function resetInactivityTimer() {
+      clearTimeout(inactivityTimer);
+      // Only set timer if the user is currently logged in (dashboardSection is visible)
+      const dashboardSection = document.getElementById("dashboardSection");
+      if (dashboardSection && !dashboardSection.classList.contains("d-none")) {
+        inactivityTimer = setTimeout(async () => {
+          try {
+            await logoutAdmin();
+            alert("You have been logged out due to 3 minutes of inactivity.");
+          } catch (err) {
+            console.error("Auto-logout failed:", err);
+          }
+        }, INACTIVITY_TIMEOUT_MS);
+      }
+    }
+
+    // Monitor events to track activity
+    ['mousemove', 'keydown', 'click', 'scroll', 'touchstart', 'input'].forEach(evt => {
+      document.addEventListener(evt, resetInactivityTimer, { passive: true });
+    });
+
+    // Targeted Refreshes for Performance Optimization
+    async function refreshProjects() {
+      try {
+        allProjects = await getAllProjects();
+        populateProjectDropdowns();
+        renderProjects();
+        updateOverview();
+      } catch (err) {
+        console.error("refreshProjects failed:", err);
+      }
+    }
+
+    async function refreshContacts() {
+      try {
+        allContacts = await getAllContacts();
+        populateContactSelects();
+        populatePMDropdown();
+        populateTicketDropdowns();
+        renderContacts();
+        renderProjects();
+        renderBudgets();
+        renderTasks();
+        renderSupportTickets();
+      } catch (err) {
+        console.error("refreshContacts failed:", err);
+      }
+    }
+
+    async function refreshEmployees() {
+      try {
+        allEmployees = await getAllEmployees();
+        populatePMDropdown();
+        populateEmployeeImportDropdown();
+        renderEmployees();
+        renderProjects();
+      } catch (err) {
+        console.error("refreshEmployees failed:", err);
+      }
+    }
+
+    async function refreshMeetings() {
+      try {
+        allMeetings = await getAllMeetings();
+        renderMeetings();
+      } catch (err) {
+        console.error("refreshMeetings failed:", err);
+      }
+    }
+
+    async function refreshBudgets() {
+      try {
+        allBudgets = await getAllBudgets();
+        renderBudgets();
+        updateOverview();
+      } catch (err) {
+        console.error("refreshBudgets failed:", err);
+      }
+    }
+
+    async function refreshTasks() {
+      try {
+        allTasks = await getAllTasks();
+        renderTasks();
+      } catch (err) {
+        console.error("refreshTasks failed:", err);
+      }
+    }
+
+    async function refreshRequisitions() {
+      try {
+        allRequisitions = await getAllRequisitions();
+        populateRequisitionDropdowns();
+        renderRequisitions();
+      } catch (err) {
+        console.error("refreshRequisitions failed:", err);
+      }
+    }
+
+    async function refreshPurchaseOrders() {
+      try {
+        allPurchaseOrders = await getAllPurchaseOrders();
+        // cascading updates
+        allRequisitions = await getAllRequisitions();
+        allExpenses = await getAllExpenses();
+        populateRequisitionDropdowns();
+        populatePODropdowns();
+        renderPurchaseOrders();
+        renderRequisitions();
+        renderExpenses();
+        updateOverview();
+      } catch (err) {
+        console.error("refreshPurchaseOrders failed:", err);
+      }
+    }
+
+    async function refreshExpenses() {
+      try {
+        allExpenses = await getAllExpenses();
+        renderExpenses();
+        updateOverview();
+      } catch (err) {
+        console.error("refreshExpenses failed:", err);
+      }
+    }
+
+    async function refreshPayments() {
+      try {
+        allClientPayments = await getAllClientPayments();
+        renderClientPayments();
+      } catch (err) {
+        console.error("refreshPayments failed:", err);
+      }
+    }
+
+    async function refreshTickets() {
+      try {
+        allSupportTickets = await getAllSupportTickets();
+        renderSupportTickets();
+      } catch (err) {
+        console.error("refreshTickets failed:", err);
+      }
+    }
+
+    async function refreshHosting() {
+      try {
+        allDomainHosting = await getAllDomainHosting();
+        populateTicketAssetDropdown();
+        renderDomainHosting();
+      } catch (err) {
+        console.error("refreshHosting failed:", err);
+      }
+    }
+
     // Render lists
     function renderProjects() {
       const tbody = document.getElementById("projectsTableBody");
@@ -2102,7 +2421,7 @@
           const id = btn.dataset.id;
           if (confirm(`Delete project ${id}?`)) {
             await deleteProject(id);
-            loadAllData();
+            refreshProjects();
           }
         };
       });
@@ -2149,7 +2468,7 @@
           const id = btn.dataset.id;
           if (confirm(`Delete this contact?`)) {
             await deleteContact(id);
-            loadAllData();
+            refreshContacts();
           }
         };
       });
@@ -2194,7 +2513,7 @@
           if (confirm(`Delete employee ${id}?`)) {
             try {
               await deleteEmployee(id);
-              loadAllData();
+              refreshEmployees();
             } catch (err) {
               alert("Failed to delete employee: " + err.message);
             }
@@ -2246,7 +2565,7 @@
           const id = btn.dataset.id;
           if (confirm(`Cancel meeting ${id}?`)) {
             await deleteMeeting(id);
-            loadAllData();
+            refreshMeetings();
           }
         };
       });
@@ -2293,7 +2612,7 @@
           const id = btn.dataset.id;
           if (confirm(`Remove budget line ${id}?`)) {
             await deleteBudget(id);
-            loadAllData();
+            refreshBudgets();
           }
         };
       });
@@ -2364,7 +2683,7 @@
             document.getElementById("task_working_update_new").value = "";
 
             document.getElementById("cancelTaskEditBtn").classList.remove("d-none");
-            
+
             // Scroll smoothly to task form
             document.getElementById("taskForm").scrollIntoView({ behavior: 'smooth' });
           }
@@ -2383,7 +2702,7 @@
           const id = btn.dataset.id;
           if (confirm(`Delete task ${id}?`)) {
             await deleteTask(id);
-            loadAllData();
+            refreshTasks();
           }
         };
       });
@@ -2431,7 +2750,7 @@
           const id = btn.dataset.id;
           if (confirm(`Delete requisition ${id}?`)) {
             await deleteRequisition(id);
-            loadAllData();
+            refreshRequisitions();
           }
         };
       });
@@ -2476,7 +2795,7 @@
           const id = btn.dataset.id;
           if (confirm(`Delete purchase order ${id}?`)) {
             await deletePurchaseOrder(id);
-            loadAllData();
+            refreshPurchaseOrders();
           }
         };
       });
@@ -2522,7 +2841,7 @@
           const id = btn.dataset.id;
           if (confirm(`Delete expense record ${id}?`)) {
             await deleteExpense(id);
-            loadAllData();
+            refreshExpenses();
           }
         };
       });
@@ -2602,7 +2921,7 @@
             document.getElementById("ticket_status").value = t.ticket_status;
             document.getElementById("ticket_assigned_to").value = t.assigned_to || "";
             document.getElementById("ticket_desc").value = t.ticket_desc;
-            
+
             const isClosed = t.ticket_status === "Resolved" || t.ticket_status === "Closed";
             const resContainer = document.getElementById("ticket_resolution_container");
             const resNotes = document.getElementById("ticket_resolution_notes");
@@ -2619,7 +2938,7 @@
             document.getElementById("ticketFormTitle").textContent = "Edit Support Ticket";
             document.getElementById("ticketSubmitBtn").innerHTML = '<i class="bi bi-pencil-square me-2"></i>Update Ticket';
             document.getElementById("cancelTicketEditBtn").classList.remove("d-none");
-            
+
             document.getElementById("ticketForm").scrollIntoView({ behavior: 'smooth' });
           }
         };
@@ -2630,7 +2949,7 @@
           const id = btn.dataset.id;
           if (confirm(`Delete support ticket ${id}?`)) {
             await deleteSupportTicket(id);
-            loadAllData();
+            refreshTickets();
           }
         };
       });
@@ -2739,7 +3058,7 @@
           const id = btn.dataset.id;
           if (confirm(`Delete invoice ${id}?`)) {
             await deleteClientPayment(id);
-            loadAllData();
+            refreshPayments();
           }
         };
       });
@@ -2750,7 +3069,7 @@
     // ==========================================
     document.getElementById("projectForm").onsubmit = async (e) => {
       e.preventDefault();
-      
+
       const start = new Date(document.getElementById("start_date").value);
       const end = new Date(document.getElementById("end_date").value);
       if (end <= start) {
@@ -2770,7 +3089,7 @@
           project_manager: document.getElementById("project_manager").value
         });
         document.getElementById("projectForm").reset();
-        loadAllData();
+        refreshProjects();
         alert("Project saved successfully.");
       } catch (err) {
         alert("Failed to save project: " + err.message);
@@ -2798,7 +3117,7 @@
           status: document.getElementById("emp_status").value
         });
         document.getElementById("employeeForm").reset();
-        loadAllData();
+        refreshEmployees();
         alert("Employee saved successfully.");
       } catch (err) {
         alert("Failed to save employee: " + err.message);
@@ -2829,7 +3148,7 @@
           email: document.getElementById("contact_email").value
         });
         document.getElementById("contactForm").reset();
-        loadAllData();
+        refreshContacts();
         alert("Contact added successfully.");
       } catch (err) {
         alert("Failed to save contact: " + err.message);
@@ -2861,7 +3180,7 @@
           meeting_minutes: document.getElementById("meet_meeting_minutes").value
         });
         document.getElementById("meetingForm").reset();
-        loadAllData();
+        refreshMeetings();
         alert("Meeting scheduled successfully.");
       } catch (err) {
         alert("Failed to schedule meeting: " + err.message);
@@ -2879,7 +3198,7 @@
           approved_by: document.getElementById("budg_approved_by").value
         });
         document.getElementById("budgetForm").reset();
-        loadAllData();
+        refreshBudgets();
         alert("Budget allocation configured successfully.");
       } catch (err) {
         alert("Failed to configure budget: " + err.message);
@@ -2934,13 +3253,13 @@
           task_status: document.getElementById("task_status").value,
           working_update: workingUpdate
         });
-        
+
         document.getElementById("taskForm").reset();
         document.getElementById("task_id").value = "";
         document.getElementById("task_working_update_log").value = "";
         document.getElementById("cancelTaskEditBtn").classList.add("d-none");
-        
-        loadAllData();
+
+        refreshTasks();
         alert("Task saved successfully.");
       } catch (err) {
         alert("Failed to save task: " + err.message);
@@ -2962,7 +3281,7 @@
         document.getElementById("requisitionForm").reset();
         document.getElementById("req_rejection_reason_container").style.display = "none";
         calculateReqTotal();
-        loadAllData();
+        refreshRequisitions();
         alert("Requisition submitted successfully.");
       } catch (err) {
         alert("Failed to save requisition: " + err.message);
@@ -2992,7 +3311,7 @@
           po_status: document.getElementById("po_status").value
         });
         document.getElementById("purchaseForm").reset();
-        loadAllData();
+        refreshPurchaseOrders();
         alert("Purchase Order logged successfully. Expense tracking logged automatically.");
       } catch (err) {
         alert("Failed to log purchase order: " + err.message);
@@ -3033,7 +3352,7 @@
         document.getElementById("exp_po_number_container").style.display = "none";
         document.getElementById("exp_clearance_date").disabled = true;
         document.getElementById("exp_clearance_date").classList.add("bg-light");
-        loadAllData();
+        refreshExpenses();
         alert("Expense record posted successfully.");
       } catch (err) {
         alert("Failed to post expense: " + err.message);
@@ -3094,7 +3413,7 @@
           dueDateInput.value = d.toISOString().substring(0, 10);
         }
         calculateInvoiceBalance();
-        loadAllData();
+        refreshPayments();
         alert("Client invoice logged successfully.");
       } catch (err) {
         alert("Failed to log invoice: " + err.message);
@@ -3135,7 +3454,7 @@
         document.getElementById("ticket_resolution_container").style.display = "none";
         document.getElementById("ticket_resolution_notes").required = false;
 
-        loadAllData();
+        refreshTickets();
         alert("Support ticket logged successfully.");
       } catch (err) {
         alert("Failed to log ticket: " + err.message);
@@ -3173,7 +3492,7 @@
     document.getElementById("host_billing_cycle")?.addEventListener("change", calculateRenewalDate);
 
     // Auto-fill Capacity and Cost Price from Package selection
-    document.getElementById("host_package")?.addEventListener("change", function() {
+    document.getElementById("host_package")?.addEventListener("change", function () {
       const selected = this.options[this.selectedIndex];
       const capacity = selected.dataset.capacity || "";
       const cost = selected.dataset.cost || "";
@@ -3182,7 +3501,7 @@
     });
 
     // Cancel Domain & Hosting Edit
-    document.getElementById("cancelHostingEditBtn")?.addEventListener("click", function() {
+    document.getElementById("cancelHostingEditBtn")?.addEventListener("click", function () {
       document.getElementById("hostingForm").reset();
       document.getElementById("host_asset_id").value = "";
       document.getElementById("hostingFormTitle").textContent = "Add Domain & Hosting Asset";
@@ -3238,7 +3557,7 @@
         document.getElementById("cancelHostingEditBtn").classList.add("d-none");
         document.getElementById("host_reg_date").value = todayDateStr;
         calculateRenewalDate();
-        loadAllData();
+        refreshHosting();
         alert("Domain & Hosting asset saved successfully.");
       } catch (err) {
         alert("Failed to save asset: " + err.message);
@@ -3338,7 +3657,7 @@
           const id = btn.dataset.id;
           if (confirm(`Delete asset record ${id}?`)) {
             await deleteDomainHosting(id);
-            loadAllData();
+            refreshHosting();
           }
         };
       });
@@ -3568,7 +3887,7 @@
       // Populate Modal Headers
       document.getElementById("detailsModalBadge").textContent = cfg.badge;
       document.getElementById("detailsViewModalLabel").textContent = `${cfg.title} - ${id}`;
-      
+
       let subtitleText = "Detailed registry information and audit fields.";
       if (type === "project") subtitleText = record.project_name;
       else if (type === "contact") subtitleText = record.contact_name;
@@ -3598,7 +3917,7 @@
       const gridBody = document.getElementById("detailsViewModalBody");
       gridBody.innerHTML = cfg.fields.map(f => {
         let val = record[f.key];
-        
+
         // Handle calculated outstanding balance
         if (f.type === "currency_calc" && f.key === "outstanding") {
           const invoiced = Number(record.invoiced_amount) || 0;
@@ -3611,7 +3930,7 @@
         if (val === undefined || val === null || val === '') {
           displayHtml = '<span class="text-muted small"><em>— Not Specified —</em></span>';
         } else {
-          switch(f.type) {
+          switch (f.type) {
             case 'code':
               displayHtml = `<code class="text-dark font-monospace fw-bold px-2 py-1 bg-light rounded border" style="font-size: 0.85rem;">${val}</code>`;
               break;
@@ -3621,8 +3940,8 @@
             case 'pm':
             case 'contact':
               const match = allEmployees.find(e => e.employee_id === val) || allContacts.find(c => c.contact_id === val);
-              displayHtml = match 
-                ? `<strong class="text-heading-color">${match.employee_name || match.contact_name}</strong> <span class="text-muted font-monospace small">(${val})</span>` 
+              displayHtml = match
+                ? `<strong class="text-heading-color">${match.employee_name || match.contact_name}</strong> <span class="text-muted font-monospace small">(${val})</span>`
                 : `<strong class="text-heading-color">${val}</strong>`;
               break;
             case 'date':
@@ -3696,7 +4015,7 @@
       const modalTitle = document.getElementById("detailsViewModalLabel").textContent;
       const modalBadge = document.getElementById("detailsModalBadge").textContent;
       const modalSubtitle = document.getElementById("detailsModalSubtitle").textContent;
-      
+
       const printWindow = window.open('', '_blank');
       const printHTML = [
         '<html><head>',
@@ -3732,7 +4051,7 @@
         '<\/body><\/html>'
       ].join('\n');
       printWindow.document.write(printHTML);
-      
+
       // Inject print script safely via DOM to avoid HTML parser script tag nesting bugs
       const script = printWindow.document.createElement("script");
       script.textContent = `
@@ -3754,9 +4073,11 @@
         loginSection.classList.add("d-none");
         dashboardSection.classList.remove("d-none");
         loadAllData();
+        resetInactivityTimer();
       } else {
         loginSection.classList.remove("d-none");
         dashboardSection.classList.add("d-none");
+        clearTimeout(inactivityTimer);
       }
     });
 
