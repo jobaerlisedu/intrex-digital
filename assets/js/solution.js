@@ -1026,7 +1026,8 @@ export async function addDomainHosting(assetData) {
   if (!checkConfiguration()) return;
   const {
     asset_id, project_id, asset_type, asset_url, provider_name,
-    cost_price, selling_price, reg_date, billing_cycle, renewal_date, asset_status
+    cost_price, selling_price, reg_date, billing_cycle, renewal_date, asset_status,
+    package_name, hosting_capacity
   } = assetData;
 
   if (!project_id || !asset_type || !asset_url || !provider_name || cost_price === undefined || selling_price === undefined || !reg_date || !billing_cycle || !renewal_date || !asset_status) {
@@ -1052,6 +1053,8 @@ export async function addDomainHosting(assetData) {
     await setDoc(docRef, {
       asset_id: id,
       project_id: project_id.trim().toUpperCase(),
+      package_name: package_name ? package_name.trim() : "",
+      hosting_capacity: hosting_capacity ? hosting_capacity.trim() : "",
       asset_type: asset_type,
       asset_url: asset_url.trim(),
       provider_name: provider_name,
