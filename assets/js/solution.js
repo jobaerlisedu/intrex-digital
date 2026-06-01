@@ -457,27 +457,58 @@ export async function deleteTask(taskId) {
 // ==========================================
 // 7. PURCHASE REQUISITIONS (tbl_requisitions)
 // ==========================================
+// Requisition ID custom generator REQ-YYYY-XXXX
+async function generateRequisitionId() {
+  const year = new Date().getFullYear();
+  const prefix = `REQ-${year}-`;
+  return await getNextSeqId("tbl_requisitions", prefix, "requisition_id", 4);
+}
+
+// ==========================================
+// 7. PURCHASE REQUISITIONS (tbl_requisitions)
+// ==========================================
 export async function addRequisition(reqData) {
   if (!checkConfiguration()) return;
-  const { requisition_id, project_id, requested_item, quantity, estimated_unit_cost, justification, requested_by, approval_status } = reqData;
-  if (!project_id || !requested_item || !quantity || estimated_unit_cost === undefined || !justification || !requested_by) {
+  const { requisition_id, project_id, item_category, item_description, qty_requested, est_unit_cost, dept_approval, rejection_reason } = reqData;
+  if (!project_id || !item_category || !item_description || qty_requested === undefined || est_unit_cost === undefined || !dept_approval) {
     throw new Error("Missing required requisition fields");
   }
+
+  // Validate item description length >= 10
+  if (item_description.trim().length < 10) {
+    throw new Error("Item Description must be at least 10 characters long.");
+  }
+
+  // Validate quantity >= 1
+  if (Number(qty_requested) < 1 || !Number.isInteger(Number(qty_requested))) {
+    throw new Error("Quantity Requested must be a positive whole number >= 1.");
+  }
+
+  // Validate unit cost > 0
+  if (Number(est_unit_cost) <= 0) {
+    throw new Error("Estimated Unit Cost must be greater than 0.00.");
+  }
+
+  // Validate rejection reason if rejected
+  if (dept_approval === "Rejected" && (!rejection_reason || !rejection_reason.trim())) {
+    throw new Error("Rejection Reason is required when approval status is Rejected.");
+  }
+
   try {
-    const id = requisition_id || await getNextSeqId("tbl_requisitions", "PRQ-", "requisition_id", 4);
+    const id = requisition_id || await generateRequisitionId();
     const docRef = doc(db, "tbl_requisitions", id);
-    const total = Number(quantity) * Number(estimated_unit_cost);
+    const total = Number(qty_requested) * Number(est_unit_cost);
     
     await setDoc(docRef, {
       requisition_id: id,
       project_id: project_id.trim().toUpperCase(),
-      requested_item: requested_item.trim(),
-      quantity: Number(quantity) || 1,
-      estimated_unit_cost: Number(estimated_unit_cost) || 0,
-      estimated_total: total, // Calculated Formula Field
-      justification: justification.trim(),
-      requested_by: requested_by,
-      approval_status: approval_status || "Pending Review",
+      item_category: item_category,
+      item_description: item_description.trim(),
+      qty_requested: Number(qty_requested),
+      est_unit_cost: Number(est_unit_cost),
+      est_total_cost: Number(total.toFixed(2)), // Calculated field
+      dept_approval: dept_approval || "Pending Review",
+      rejection_reason: dept_approval === "Rejected" ? rejection_reason.trim() : "",
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp()
     });
@@ -521,9 +552,17 @@ export async function deleteRequisition(requisitionId) {
 // ==========================================
 export async function addPurchaseOrder(poData) {
   if (!checkConfiguration()) return;
-  const { po_number, requisition_id, project_id, vendor_name, final_total, po_date, delivery_date, order_status } = poData;
-  if (!requisition_id || !project_id || !vendor_name || final_total === undefined || !po_date || !delivery_date) {
+  const { po_number, requisition_id, project_id, vendor_name, final_po_total, payment_terms, po_issue_date, po_status } = poData;
+  if (!requisition_id || !project_id || !vendor_name || final_po_total === undefined || !payment_terms || !po_issue_date || !po_status) {
     throw new Error("Missing required purchase order fields");
+  }
+
+  // Validate PO Issue Date is not in future
+  const issueDate = new Date(po_issue_date);
+  const today = new Date();
+  today.setHours(23, 59, 59, 999);
+  if (issueDate > today) {
+    throw new Error("PO Issue Date cannot be in the future.");
   }
 
   // Check unique requisition_id
@@ -547,10 +586,10 @@ export async function addPurchaseOrder(poData) {
       requisition_id: requisition_id,
       project_id: project_id.trim().toUpperCase(),
       vendor_name: vendor_name.trim(),
-      final_total: Number(final_total) || 0,
-      po_date: po_date,
-      delivery_date: delivery_date,
-      order_status: order_status || "Issued",
+      final_po_total: Number(final_po_total) || 0,
+      payment_terms: payment_terms,
+      po_issue_date: po_issue_date,
+      po_status: po_status || "PO Issued",
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp()
     });
@@ -559,7 +598,7 @@ export async function addPurchaseOrder(poData) {
     const reqRef = doc(db, "tbl_requisitions", requisition_id);
     const reqSnap = await getDoc(reqRef);
     if (reqSnap.exists()) {
-      await setDoc(reqRef, { approval_status: "Approved", updatedAt: serverTimestamp() }, { merge: true });
+      await setDoc(reqRef, { dept_approval: "Approved", updatedAt: serverTimestamp() }, { merge: true });
     }
 
     // Cascade add to Expense tracker automatically (ledger of truth)
@@ -568,12 +607,14 @@ export async function addPurchaseOrder(poData) {
     await setDoc(expRef, {
       expense_id: expenseId,
       project_id: project_id.trim().toUpperCase(),
-      po_number: id,
-      invoice_number: "INV-PO-" + id,
-      payment_date: po_date,
-      amount_paid: Number(final_total) || 0,
-      cost_category: "Hardware Procurement",
-      receipt_url: "",
+      expense_routing_type: "PO-Backed",
+      po_number_ref: id,
+      vendor_invoice_num: "INV-PO-" + id,
+      invoice_amount: Number(final_po_total) || 0,
+      amount_paid: 0,
+      payment_status: "Unpaid / Awaiting Approval",
+      payment_method: "ACH / Wire Transfer",
+      clearance_date: "",
       createdAt: serverTimestamp()
     });
 
@@ -617,22 +658,42 @@ export async function deletePurchaseOrder(poNumber) {
 // ==========================================
 export async function addExpense(expenseData) {
   if (!checkConfiguration()) return;
-  const { expense_id, project_id, po_number, invoice_number, payment_date, amount_paid, cost_category, receipt_url } = expenseData;
-  if (!project_id || !invoice_number || !payment_date || amount_paid === undefined || !cost_category) {
+  let { expense_id, project_id, expense_routing_type, po_number_ref, vendor_invoice_num, invoice_amount, amount_paid, payment_status, payment_method, clearance_date } = expenseData;
+  if (!project_id || !expense_routing_type || !vendor_invoice_num || invoice_amount === undefined || amount_paid === undefined || !payment_status || !payment_method) {
     throw new Error("Missing required expense fields");
   }
+
+  // Validate PO reference for PO-Backed routing
+  if (expense_routing_type === "PO-Backed" && (!po_number_ref || !po_number_ref.trim())) {
+    throw new Error("PO Number Reference is required for PO-Backed expenses.");
+  }
+
+  // Validate paid amount does not exceed invoice amount
+  if (Number(amount_paid) > Number(invoice_amount)) {
+    throw new Error("Amount Paid To Date cannot exceed Invoice Gross Amount.");
+  }
+
+  // Validate clearance date based on payment status
+  if (payment_status === "Unpaid / Awaiting Approval") {
+    clearance_date = "";
+  } else if ((payment_status === "Partially Paid" || payment_status === "Fully Settled") && !clearance_date) {
+    throw new Error("Clearance Date is required when status is Partial or Fully Settled.");
+  }
+
   try {
-    const id = expense_id || await getNextSeqId("tbl_expenses", "EXP-", "expense_id", 4);
+    const id = expense_id || await getNextSeqId("tbl_expenses", "EXP-", "expense_id", 5);
     const docRef = doc(db, "tbl_expenses", id);
     await setDoc(docRef, {
       expense_id: id,
       project_id: project_id.trim().toUpperCase(),
-      po_number: po_number || "",
-      invoice_number: invoice_number.trim(),
-      payment_date: payment_date,
+      expense_routing_type: expense_routing_type,
+      po_number_ref: expense_routing_type === "PO-Backed" ? po_number_ref : "",
+      vendor_invoice_num: vendor_invoice_num.trim(),
+      invoice_amount: Number(invoice_amount) || 0,
       amount_paid: Number(amount_paid) || 0,
-      cost_category: cost_category.trim(),
-      receipt_url: receipt_url ? receipt_url.trim() : "",
+      payment_status: payment_status,
+      payment_method: payment_method,
+      clearance_date: clearance_date || "",
       createdAt: serverTimestamp()
     });
     return id;
@@ -669,3 +730,283 @@ export async function deleteExpense(expenseId) {
     throw error;
   }
 }
+
+// ==========================================
+// 10. EMPLOYEE INFORMATION DATABASE (tbl_employees)
+// ==========================================
+export async function addEmployee(employeeData) {
+  if (!checkConfiguration()) return;
+  const { employee_id, employee_name, designation, department, mobile_phone, email, status } = employeeData;
+  if (!employee_name || !designation || !department || !status) {
+    throw new Error("Missing required employee fields");
+  }
+
+  // Check email uniqueness if provided
+  if (email) {
+    const querySnapshot = await getDocs(collection(db, "tbl_employees"));
+    let emailExists = false;
+    querySnapshot.forEach(docSnap => {
+      const data = docSnap.data();
+      if (data.email && data.email.toLowerCase() === email.toLowerCase() && data.employee_id !== employee_id) {
+        emailExists = true;
+      }
+    });
+    if (emailExists) {
+      throw new Error(`Email ${email} is already in use by another employee.`);
+    }
+  }
+
+  try {
+    const id = employee_id || await getNextSeqId("tbl_employees", "EMP-", "employee_id", 4);
+    const docRef = doc(db, "tbl_employees", id);
+    await setDoc(docRef, {
+      employee_id: id,
+      employee_name: employee_name.trim(),
+      designation: designation.trim(),
+      department: department.trim(),
+      mobile_phone: mobile_phone ? mobile_phone.trim() : "",
+      email: email ? email.trim() : "",
+      status: status || "Active",
+      createdAt: serverTimestamp(),
+      updatedAt: serverTimestamp()
+    });
+    return id;
+  } catch (error) {
+    console.error("Error saving employee: ", error);
+    throw error;
+  }
+}
+
+export async function getAllEmployees() {
+  if (!checkConfiguration()) return [];
+  try {
+    const querySnapshot = await getDocs(collection(db, "tbl_employees"));
+    const employees = [];
+    querySnapshot.forEach((docSnap) => {
+      if (docSnap.exists()) {
+        employees.push(docSnap.data());
+      }
+    });
+    return employees;
+  } catch (error) {
+    console.error("Error fetching employees: ", error);
+    throw error;
+  }
+}
+
+export async function deleteEmployee(employeeId) {
+  if (!checkConfiguration()) return;
+  try {
+    const docRef = doc(db, "tbl_employees", employeeId);
+    await deleteDoc(docRef);
+  } catch (error) {
+    console.error("Error deleting employee: ", error);
+    throw error;
+  }
+}
+
+// ==========================================
+// 11. SUPPORT TICKETING & SLA (tbl_support_tickets)
+// ==========================================
+export async function addSupportTicket(ticketData) {
+  if (!checkConfiguration()) return;
+  const {
+    ticket_id, project_id, requester_id, ticket_subject,
+    ticket_desc, priority, assigned_to, ticket_status, resolution_notes
+  } = ticketData;
+
+  if (!project_id || !requester_id || !ticket_subject || !ticket_desc || !priority || !ticket_status) {
+    throw new Error("Missing required ticket fields");
+  }
+
+  if (ticket_subject.trim().length > 150) {
+    throw new Error("Subject/Summary cannot exceed 150 characters.");
+  }
+
+  // Validate resolution notes before resolving/closing
+  const isClosedStatus = ticket_status === "Resolved" || ticket_status === "Closed";
+  if (isClosedStatus && (!resolution_notes || !resolution_notes.trim())) {
+    throw new Error("Resolution Notes are required before resolving or closing a ticket.");
+  }
+
+  try {
+    const id = ticket_id || await getNextSeqId("tbl_support_tickets", "TCK-", "ticket_id", 4);
+    const docRef = doc(db, "tbl_support_tickets", id);
+
+    let createdAt = new Date().toISOString();
+    let closedAt = "";
+
+    if (ticket_id) {
+      // Fetch existing ticket to preserve created_at and handle status transitions
+      const snap = await getDoc(docRef);
+      if (snap.exists()) {
+        const data = snap.data();
+        createdAt = data.created_at || createdAt;
+        
+        const origWasClosed = data.ticket_status === "Resolved" || data.ticket_status === "Closed";
+        if (isClosedStatus) {
+          closedAt = origWasClosed ? (data.closed_at || new Date().toISOString()) : new Date().toISOString();
+        } else {
+          closedAt = "";
+        }
+      }
+    } else {
+      // New ticket
+      if (isClosedStatus) {
+        closedAt = new Date().toISOString();
+      }
+    }
+
+    // SLA Deadline calculation
+    const baseDate = new Date(createdAt);
+    let hoursToAdd = 72; // Default Medium
+    if (priority === "Low") hoursToAdd = 168;
+    else if (priority === "High") hoursToAdd = 24;
+    else if (priority === "Critical") hoursToAdd = 4;
+    
+    baseDate.setHours(baseDate.getHours() + hoursToAdd);
+    const slaDeadline = baseDate.toISOString();
+
+    await setDoc(docRef, {
+      ticket_id: id,
+      project_id: project_id.trim().toUpperCase(),
+      requester_id: requester_id,
+      ticket_subject: ticket_subject.trim(),
+      ticket_desc: ticket_desc.trim(),
+      priority: priority,
+      assigned_to: assigned_to || "",
+      ticket_status: ticket_status,
+      resolution_notes: isClosedStatus ? resolution_notes.trim() : "",
+      created_at: createdAt,
+      closed_at: closedAt,
+      sla_deadline: slaDeadline,
+      updated_at: serverTimestamp()
+    });
+
+    return id;
+  } catch (error) {
+    console.error("Error saving support ticket: ", error);
+    throw error;
+  }
+}
+
+export async function getAllSupportTickets() {
+  if (!checkConfiguration()) return [];
+  try {
+    const querySnapshot = await getDocs(collection(db, "tbl_support_tickets"));
+    const tickets = [];
+    querySnapshot.forEach((docSnap) => {
+      if (docSnap.exists()) {
+        tickets.push(docSnap.data());
+      }
+    });
+    return tickets;
+  } catch (error) {
+    console.error("Error fetching support tickets: ", error);
+    throw error;
+  }
+}
+
+export async function deleteSupportTicket(ticketId) {
+  if (!checkConfiguration()) return;
+  try {
+    const docRef = doc(db, "tbl_support_tickets", ticketId);
+    await deleteDoc(docRef);
+  } catch (error) {
+    console.error("Error deleting support ticket: ", error);
+    throw error;
+  }
+}
+
+// ==========================================
+// 12. CLIENT INVOICING & REVENUE (tbl_client_payments)
+// ==========================================
+async function generateInvoiceId() {
+  const year = new Date().getFullYear();
+  const prefix = `INV-${year}-`;
+  return await getNextSeqId("tbl_client_payments", prefix, "invoice_id", 3);
+}
+
+export async function addClientPayment(paymentData) {
+  if (!checkConfiguration()) return;
+  const {
+    invoice_id, project_id, milestone_type, invoice_date,
+    due_date, invoiced_amount, amount_received, payment_status,
+    date_received, transaction_ref
+  } = paymentData;
+
+  if (!project_id || !milestone_type || !invoice_date || !due_date || invoiced_amount === undefined || !payment_status) {
+    throw new Error("Missing required client payment fields");
+  }
+
+  if (Number(invoiced_amount) <= 0) {
+    throw new Error("Invoiced Amount must be greater than 0.00.");
+  }
+
+  const invDate = new Date(invoice_date);
+  const dueDate = new Date(due_date);
+  if (dueDate <= invDate) {
+    throw new Error("Payment Due Date must be greater than Invoice Issue Date.");
+  }
+
+  const amtReceived = Number(amount_received) || 0;
+  if (amtReceived > 0 && (!date_received || !date_received.trim())) {
+    throw new Error("Date Received is required when Amount Received is greater than 0.00.");
+  }
+
+  try {
+    const id = invoice_id || await generateInvoiceId();
+    const docRef = doc(db, "tbl_client_payments", id);
+    const outstanding = Number(invoiced_amount) - amtReceived;
+
+    await setDoc(docRef, {
+      invoice_id: id,
+      project_id: project_id.trim().toUpperCase(),
+      milestone_type: milestone_type,
+      invoice_date: invoice_date,
+      due_date: due_date,
+      invoiced_amount: Number(invoiced_amount),
+      amount_received: amtReceived,
+      outstanding_balance: Number(outstanding.toFixed(2)),
+      payment_status: payment_status,
+      date_received: amtReceived > 0 ? date_received : "",
+      transaction_ref: transaction_ref ? transaction_ref.trim() : "",
+      createdAt: serverTimestamp(),
+      updatedAt: serverTimestamp()
+    }, { merge: true });
+
+    return id;
+  } catch (error) {
+    console.error("Error saving client payment invoice: ", error);
+    throw error;
+  }
+}
+
+export async function getAllClientPayments() {
+  if (!checkConfiguration()) return [];
+  try {
+    const querySnapshot = await getDocs(collection(db, "tbl_client_payments"));
+    const payments = [];
+    querySnapshot.forEach((docSnap) => {
+      if (docSnap.exists()) {
+        payments.push(docSnap.data());
+      }
+    });
+    return payments;
+  } catch (error) {
+    console.error("Error fetching client payments: ", error);
+    throw error;
+  }
+}
+
+export async function deleteClientPayment(invoiceId) {
+  if (!checkConfiguration()) return;
+  try {
+    const docRef = doc(db, "tbl_client_payments", invoiceId);
+    await deleteDoc(docRef);
+  } catch (error) {
+    console.error("Error deleting client payment record: ", error);
+    throw error;
+  }
+}
+
