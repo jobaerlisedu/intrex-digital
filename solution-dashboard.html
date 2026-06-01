@@ -23,6 +23,32 @@
       --primary-color: #215C5C;
       --primary-hover: #174242;
     }
+    .nav-pills .nav-link.active, .nav-pills .show>.nav-link {
+      background-color: var(--primary-color) !important;
+    }
+    .btn-primary {
+      background-color: var(--primary-color) !important;
+      border-color: var(--primary-color) !important;
+    }
+    .btn-primary:hover {
+      background-color: var(--primary-hover) !important;
+      border-color: var(--primary-hover) !important;
+    }
+    .text-primary {
+      color: var(--primary-color) !important;
+    }
+    .badge-primary {
+      background-color: var(--primary-color);
+      color: white;
+    }
+    .qf-wrapper .btn {
+      border-top-right-radius: 0.375rem !important;
+      border-bottom-right-radius: 0.375rem !important;
+    }
+    .form-text {
+      font-size: 0.775rem;
+      opacity: 0.8;
+    }
   </style>
   <script>
     (function () {
@@ -55,8 +81,7 @@
               <form id="loginForm">
                 <div class="mb-3">
                   <label for="adminEmail" class="form-label small fw-semibold">Email Address</label>
-                  <input type="email" class="form-control" id="adminEmail" required
-                    placeholder="admin@intrex-digital.com">
+                  <input type="email" class="form-control" id="adminEmail" required placeholder="admin@intrex-digital.com">
                 </div>
                 <div class="mb-3">
                   <label for="adminPassword" class="form-label small fw-semibold">Password</label>
@@ -86,8 +111,7 @@
           <div class="row g-4 mt-2">
             <!-- Left Sidebar Tabs Navigation -->
             <div class="col-12 col-md-3 col-lg-2 border-end pe-md-4">
-              <div class="nav flex-column nav-pills gap-2" id="dashboardTabs" role="tablist"
-                aria-orientation="vertical">
+              <div class="nav flex-column nav-pills gap-2" id="dashboardTabs" role="tablist" aria-orientation="vertical">
                 <button class="nav-link active text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
                   id="overview-tab" data-bs-toggle="tab" data-bs-target="#overviewPanel" type="button" role="tab">
                   <i class="bi bi-bar-chart-line"></i> Overview
@@ -109,8 +133,8 @@
                   <i class="bi bi-wallet2"></i> Budget Planner
                 </button>
                 <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
-                  id="updates-tab" data-bs-toggle="tab" data-bs-target="#updatesPanel" type="button" role="tab">
-                  <i class="bi bi-activity"></i> Progress Updates
+                  id="tasks-tab" data-bs-toggle="tab" data-bs-target="#tasksPanel" type="button" role="tab">
+                  <i class="bi bi-activity"></i> Project Tasks
                 </button>
                 <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
                   id="requisition-tab" data-bs-toggle="tab" data-bs-target="#requisitionPanel" type="button" role="tab">
@@ -118,11 +142,11 @@
                 </button>
                 <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
                   id="purchases-tab" data-bs-toggle="tab" data-bs-target="#purchasesPanel" type="button" role="tab">
-                  <i class="bi bi-cart-check"></i> Purchases
+                  <i class="bi bi-cart-check"></i> Purchase Orders
                 </button>
                 <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
                   id="expenses-tab" data-bs-toggle="tab" data-bs-target="#expensesPanel" type="button" role="tab">
-                  <i class="bi bi-cash-coin"></i> Expense Management
+                  <i class="bi bi-cash-coin"></i> Expense Tracker
                 </button>
               </div>
             </div>
@@ -149,7 +173,7 @@
                       <div class="card border-0 rounded-4 shadow-sm h-100 bg-primary text-white">
                         <div class="card-body p-3">
                           <div class="d-flex align-items-center justify-content-between mb-2">
-                            <span class="small fw-semibold opacity-75">Total Budget Allocated</span>
+                            <span class="small fw-semibold opacity-75">Total Budget</span>
                             <i class="bi bi-cash-stack fs-4"></i>
                           </div>
                           <div class="h3 fw-bold mb-0" id="kpiTotalBudget">—</div>
@@ -206,7 +230,6 @@
 
                 <!-- 1. PROJECT CREATOR PANEL -->
                 <div class="tab-pane fade" id="projectsPanel" role="tabpanel">
-                  <!-- Sub-tabs Navigation -->
                   <ul class="nav nav-pills gap-2 mb-4 border-bottom pb-3" id="projectsSubTabs" role="tablist">
                     <li class="nav-item" role="presentation">
                       <button class="nav-link active fw-semibold py-2 px-3" id="projectsForm-tab" data-bs-toggle="tab" data-bs-target="#projectsFormPanel" type="button" role="tab" aria-selected="true">
@@ -221,60 +244,64 @@
                   </ul>
 
                   <div class="tab-content" id="projectsSubTabContent">
-                    <!-- Form Pane -->
+                    <!-- Form -->
                     <div class="tab-pane fade show active" id="projectsFormPanel" role="tabpanel" aria-labelledby="projectsForm-tab">
-                      <div class="card p-4 rounded-4 shadow-sm border mx-auto" style="max-width: 600px;">
+                      <div class="card p-4 rounded-4 shadow-sm border mx-auto" style="max-width: 650px;">
                         <h3 id="projFormTitle" class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
                           <i class="bi bi-kanban me-2 text-primary"></i>Create Project
                         </h3>
                         <form id="projectForm">
                           <div class="mb-3">
-                            <label class="form-label small fw-semibold" for="projId">Project ID <span class="text-danger">*</span></label>
-                            <input class="form-control" id="projId" type="text" placeholder="e.g. PRJ-2026-A" required>
+                            <label class="form-label small fw-semibold" for="project_id">Project ID <span class="text-muted">(Format: PRJ-YYYY-XXX, auto-generated if blank)</span></label>
+                            <input class="form-control" id="project_id" type="text" placeholder="e.g. PRJ-2026-001">
                           </div>
                           <div class="mb-3">
-                            <label class="form-label small fw-semibold" for="projName">Project Name <span class="text-danger">*</span></label>
-                            <input class="form-control" id="projName" type="text" placeholder="e.g. Cloud Migration Phase 1" required>
+                            <label class="form-label small fw-semibold" for="project_name">Project Name <span class="text-danger">*</span></label>
+                            <input class="form-control" id="project_name" type="text" placeholder="Project title" required maxlength="100">
                           </div>
                           <div class="mb-3">
-                            <label class="form-label small fw-semibold" for="projClient">Client Name <span class="text-danger">*</span></label>
-                            <input class="form-control" id="projClient" type="text" placeholder="e.g. Global Tech Corp" required>
+                            <label class="form-label small fw-semibold" for="client_sponsor">Client / Sponsor <span class="text-danger">*</span></label>
+                            <input class="form-control" id="client_sponsor" type="text" placeholder="Organization name" required>
                           </div>
                           <div class="mb-3">
-                            <label class="form-label small fw-semibold" for="projDesc">Description</label>
-                            <textarea class="form-control" id="projDesc" rows="3" placeholder="Brief outline..."></textarea>
+                            <label class="form-label small fw-semibold" for="project_desc">Description</label>
+                            <textarea class="form-control" id="project_desc" rows="3" placeholder="Scope & objectives..."></textarea>
                           </div>
                           <div class="row g-2 mb-3">
                             <div class="col-md-6">
-                              <label class="form-label small fw-semibold" for="projStart">Start Date</label>
-                              <input class="form-control" id="projStart" type="date">
+                              <label class="form-label small fw-semibold" for="start_date">Start Date <span class="text-danger">*</span></label>
+                              <input class="form-control" id="start_date" type="date" required>
                             </div>
                             <div class="col-md-6">
-                              <label class="form-label small fw-semibold" for="projEnd">End Date</label>
-                              <input class="form-control" id="projEnd" type="date">
+                              <label class="form-label small fw-semibold" for="end_date">Target End Date <span class="text-danger">*</span></label>
+                              <input class="form-control" id="end_date" type="date" required>
                             </div>
                           </div>
-                          <div class="mb-4">
-                            <label class="form-label small fw-semibold" for="projStatus">Initial Status</label>
-                            <select class="form-select" id="projStatus">
-                              <option value="Planned" selected>Planned</option>
-                              <option value="Active">Active</option>
-                              <option value="On Hold">On Hold</option>
-                              <option value="Completed">Completed</option>
-                            </select>
+                          <div class="row g-2 mb-4">
+                            <div class="col-md-6">
+                              <label class="form-label small fw-semibold" for="project_status">Project Status</label>
+                              <select class="form-select" id="project_status">
+                                <option value="Pipeline" selected>Pipeline</option>
+                                <option value="Active">Active</option>
+                                <option value="On Hold">On Hold</option>
+                                <option value="Completed">Completed</option>
+                                <option value="Cancelled">Cancelled</option>
+                              </select>
+                            </div>
+                            <div class="col-md-6">
+                              <label class="form-label small fw-semibold" for="project_manager">Project Manager <span class="text-danger">*</span></label>
+                              <select class="form-select" id="project_manager" required>
+                                <option value="" disabled selected>Loading managers...</option>
+                              </select>
+                            </div>
                           </div>
-                          <div class="d-flex gap-2">
-                            <button type="submit" id="submitProjBtn" class="btn btn-primary w-100 fw-semibold py-2">
-                              <i class="bi bi-save me-2"></i>Save Project
-                            </button>
-                            <button type="button" id="cancelProjEditBtn" class="btn btn-outline-secondary w-50 py-2 d-none">
-                              Cancel
-                            </button>
-                          </div>
+                          <button type="submit" class="btn btn-primary w-100 fw-semibold py-2">
+                            <i class="bi bi-save me-2"></i>Save Project
+                          </button>
                         </form>
                       </div>
                     </div>
-                    <!-- List Pane -->
+                    <!-- Directory -->
                     <div class="tab-pane fade" id="projectsListPanel" role="tabpanel" aria-labelledby="projectsList-tab">
                       <div class="card p-4 rounded-4 shadow-sm border">
                         <h3 class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
@@ -286,7 +313,8 @@
                               <tr>
                                 <th>Project ID</th>
                                 <th>Project Name</th>
-                                <th>Client</th>
+                                <th>Client / Sponsor</th>
+                                <th>Manager</th>
                                 <th>Timeline</th>
                                 <th>Status</th>
                                 <th class="text-center">Actions</th>
@@ -294,7 +322,7 @@
                             </thead>
                             <tbody id="projectsTableBody">
                               <tr>
-                                <td colspan="6" class="text-center py-4 text-muted">Loading projects...</td>
+                                <td colspan="7" class="text-center py-4 text-muted">Loading projects...</td>
                               </tr>
                             </tbody>
                           </table>
@@ -306,7 +334,6 @@
 
                 <!-- 2. CONTACT DIRECTORY PANEL -->
                 <div class="tab-pane fade" id="contactsPanel" role="tabpanel">
-                  <!-- Sub-tabs Navigation -->
                   <ul class="nav nav-pills gap-2 mb-4 border-bottom pb-3" id="contactsSubTabs" role="tablist">
                     <li class="nav-item" role="presentation">
                       <button class="nav-link active fw-semibold py-2 px-3" id="contactsForm-tab" data-bs-toggle="tab" data-bs-target="#contactsFormPanel" type="button" role="tab" aria-selected="true">
@@ -321,52 +348,59 @@
                   </ul>
 
                   <div class="tab-content" id="contactsSubTabContent">
-                    <!-- Form Pane -->
+                    <!-- Form -->
                     <div class="tab-pane fade show active" id="contactsFormPanel" role="tabpanel" aria-labelledby="contactsForm-tab">
-                      <div class="card p-4 rounded-4 shadow-sm border mx-auto" style="max-width: 600px;">
-                        <h3 id="contactFormTitle" class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
+                      <div class="card p-4 rounded-4 shadow-sm border mx-auto" style="max-width: 650px;">
+                        <h3 class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
                           <i class="bi bi-telephone-plus me-2 text-primary"></i>Add Contact
                         </h3>
                         <form id="contactForm">
-                          <input type="hidden" id="contactId">
+                          <input type="hidden" id="contact_id">
                           <div class="mb-3">
-                            <label class="form-label small fw-semibold" for="contactProjId">Project Relationship <span class="text-danger">*</span></label>
-                            <select class="form-select project-id-select" id="contactProjId" required>
-                              <option value="" disabled selected>Loading projects...</option>
+                            <label class="form-label small fw-semibold" for="contact_project_id">Link to Project(s) <span class="text-danger">*</span></label>
+                            <select class="form-select project-id-select" id="contact_project_id" multiple required style="min-height: 100px;">
+                              <option value="" disabled>Loading projects...</option>
                             </select>
+                            <div class="form-text text-muted">Hold Ctrl (Windows) or Cmd (Mac) to select multiple projects.</div>
                           </div>
                           <div class="mb-3">
-                            <label class="form-label small fw-semibold" for="contactName">Full Name <span class="text-danger">*</span></label>
-                            <input class="form-control" id="contactName" type="text" placeholder="e.g. Jobaer Hossain" required>
+                            <label class="form-label small fw-semibold" for="contact_name">Full Name <span class="text-danger">*</span></label>
+                            <input class="form-control" id="contact_name" type="text" placeholder="e.g. Jobaer Hossain" required maxlength="100">
                           </div>
-                          <div class="mb-3">
-                            <label class="form-label small fw-semibold" for="contactDesig">Designation</label>
-                            <input class="form-control" id="contactDesig" type="text" placeholder="e.g. Lead Network Engineer">
+                          <div class="row g-2 mb-3">
+                            <div class="col-md-6">
+                              <label class="form-label small fw-semibold" for="contact_designation">Designation <span class="text-danger">*</span></label>
+                              <select class="form-select" id="contact_designation" required>
+                                <option value="" disabled selected>Select designation</option>
+                                <option value="Project Manager">Project Manager</option>
+                                <option value="Developer">Developer</option>
+                                <option value="Sponsor">Sponsor</option>
+                                <option value="Vendor Lead">Vendor Lead</option>
+                                <option value="Procurement Officer">Procurement Officer</option>
+                              </select>
+                            </div>
+                            <div class="col-md-6">
+                              <label class="form-label small fw-semibold" for="contact_organization">Organization <span class="text-danger">*</span></label>
+                              <input class="form-control" id="contact_organization" type="text" placeholder="e.g. Intrex Digital" required>
+                            </div>
                           </div>
-                          <div class="mb-3">
-                            <label class="form-label small fw-semibold" for="contactOrg">Organization</label>
-                            <input class="form-control" id="contactOrg" type="text" placeholder="e.g. Intrex Digital Hub">
+                          <div class="row g-2 mb-4">
+                            <div class="col-md-6">
+                              <label class="form-label small fw-semibold" for="contact_mobile_phone">Mobile Number</label>
+                              <input class="form-control" id="contact_mobile_phone" type="tel" placeholder="e.g. +88017XXXXXXXX">
+                            </div>
+                            <div class="col-md-6">
+                              <label class="form-label small fw-semibold" for="contact_email">E-mail Address</label>
+                              <input class="form-control" id="contact_email" type="email" placeholder="e.g. name@domain.com">
+                            </div>
                           </div>
-                          <div class="mb-3">
-                            <label class="form-label small fw-semibold" for="contactMobile">Mobile Number</label>
-                            <input class="form-control" id="contactMobile" type="tel" placeholder="e.g. +88017XXXXXXXX">
-                          </div>
-                          <div class="mb-4">
-                            <label class="form-label small fw-semibold" for="contactEmail">Email Address</label>
-                            <input class="form-control" id="contactEmail" type="email" placeholder="e.g. name@domain.com">
-                          </div>
-                          <div class="d-flex gap-2">
-                            <button type="submit" id="submitContactBtn" class="btn btn-primary w-100 fw-semibold py-2">
-                              <i class="bi bi-save me-2"></i>Save Contact
-                            </button>
-                            <button type="button" id="cancelContactEditBtn" class="btn btn-outline-secondary w-50 py-2 d-none">
-                              Cancel
-                            </button>
-                          </div>
+                          <button type="submit" class="btn btn-primary w-100 fw-semibold py-2">
+                            <i class="bi bi-save me-2"></i>Save Contact
+                          </button>
                         </form>
                       </div>
                     </div>
-                    <!-- List Pane -->
+                    <!-- Directory -->
                     <div class="tab-pane fade" id="contactsListPanel" role="tabpanel" aria-labelledby="contactsList-tab">
                       <div class="card p-4 rounded-4 shadow-sm border">
                         <h3 class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
@@ -376,17 +410,19 @@
                           <table class="table table-hover align-middle mb-0" id="contactsTable">
                             <thead class="table-light">
                               <tr>
+                                <th>Contact ID</th>
                                 <th>Name</th>
-                                <th>Designation / Org</th>
+                                <th>Designation</th>
+                                <th>Organization</th>
                                 <th>Mobile</th>
                                 <th>Email</th>
-                                <th>Project ID</th>
+                                <th>Project IDs</th>
                                 <th class="text-center">Actions</th>
                               </tr>
                             </thead>
                             <tbody id="contactsTableBody">
                               <tr>
-                                <td colspan="6" class="text-center py-4 text-muted">Loading contacts...</td>
+                                <td colspan="8" class="text-center py-4 text-muted">Loading contacts...</td>
                               </tr>
                             </tbody>
                           </table>
@@ -398,7 +434,6 @@
 
                 <!-- 3. MEETING SCHEDULER PANEL -->
                 <div class="tab-pane fade" id="meetingsPanel" role="tabpanel">
-                  <!-- Sub-tabs Navigation -->
                   <ul class="nav nav-pills gap-2 mb-4 border-bottom pb-3" id="meetingsSubTabs" role="tablist">
                     <li class="nav-item" role="presentation">
                       <button class="nav-link active fw-semibold py-2 px-3" id="meetingsForm-tab" data-bs-toggle="tab" data-bs-target="#meetingsFormPanel" type="button" role="tab" aria-selected="true">
@@ -413,40 +448,47 @@
                   </ul>
 
                   <div class="tab-content" id="meetingsSubTabContent">
-                    <!-- Form Pane -->
+                    <!-- Form -->
                     <div class="tab-pane fade show active" id="meetingsFormPanel" role="tabpanel" aria-labelledby="meetingsForm-tab">
-                      <div class="card p-4 rounded-4 shadow-sm border mx-auto" style="max-width: 600px;">
+                      <div class="card p-4 rounded-4 shadow-sm border mx-auto" style="max-width: 650px;">
                         <h3 class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
                           <i class="bi bi-calendar-plus me-2 text-primary"></i>Schedule Meeting
                         </h3>
                         <form id="meetingForm">
                           <div class="mb-3">
-                            <label class="form-label small fw-semibold" for="meetProjId">Related Project <span class="text-danger">*</span></label>
-                            <select class="form-select project-id-select" id="meetProjId" required>
+                            <label class="form-label small fw-semibold" for="meet_project_id">Related Project <span class="text-danger">*</span></label>
+                            <select class="form-select project-id-select" id="meet_project_id" required>
                               <option value="" disabled selected>Loading projects...</option>
                             </select>
                           </div>
                           <div class="mb-3">
-                            <label class="form-label small fw-semibold" for="meetTitle">Meeting Title <span class="text-danger">*</span></label>
-                            <input class="form-control" id="meetTitle" type="text" placeholder="e.g. Kickoff Session" required>
+                            <label class="form-label small fw-semibold" for="meet_meeting_title">Meeting Title <span class="text-danger">*</span></label>
+                            <input class="form-control" id="meet_meeting_title" type="text" placeholder="e.g. Kickoff Session" required maxlength="150">
                           </div>
                           <div class="row g-2 mb-3">
                             <div class="col-md-6">
-                              <label class="form-label small fw-semibold" for="meetDate">Date <span class="text-danger">*</span></label>
-                              <input class="form-control" id="meetDate" type="date" required>
+                              <label class="form-label small fw-semibold" for="meeting_timestamp">Date & Time <span class="text-danger">*</span></label>
+                              <input class="form-control" id="meeting_timestamp" type="datetime-local" required>
                             </div>
                             <div class="col-md-6">
-                              <label class="form-label small fw-semibold" for="meetTime">Time <span class="text-danger">*</span></label>
-                              <input class="form-control" id="meetTime" type="time" required>
+                              <label class="form-label small fw-semibold" for="meet_meeting_url">Meeting Link (https://) <span class="text-danger">*</span></label>
+                              <input class="form-control" id="meet_meeting_url" type="url" placeholder="Teams, Meet, or Zoom URL" required pattern="https://.*">
                             </div>
                           </div>
                           <div class="mb-3">
-                            <label class="form-label small fw-semibold" for="meetDur">Duration</label>
-                            <input class="form-control" id="meetDur" type="text" placeholder="e.g. 1 hour" value="30 mins">
+                            <label class="form-label small fw-semibold" for="meet_attendees_list">Attendees <span class="text-danger">*</span></label>
+                            <select class="form-select" id="meet_attendees_list" multiple required style="min-height: 100px;">
+                              <option value="" disabled>Loading emails...</option>
+                            </select>
+                            <div class="form-text text-muted">Hold Ctrl or Cmd to select multiple attendee emails.</div>
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label small fw-semibold" for="meet_agenda">Agenda</label>
+                            <textarea class="form-control" id="meet_agenda" rows="3" placeholder="Talking points..."></textarea>
                           </div>
                           <div class="mb-4">
-                            <label class="form-label small fw-semibold" for="meetAgenda">Agenda / Notes</label>
-                            <textarea class="form-control" id="meetAgenda" rows="3" placeholder="Core objectives..."></textarea>
+                            <label class="form-label small fw-semibold" for="meet_meeting_minutes">Minutes (MOM)</label>
+                            <textarea class="form-control" id="meet_meeting_minutes" rows="3" placeholder="Post-meeting outcomes..."></textarea>
                           </div>
                           <button type="submit" class="btn btn-primary w-100 fw-semibold py-2">
                             <i class="bi bi-clock-history me-2"></i>Schedule Meeting
@@ -454,27 +496,28 @@
                         </form>
                       </div>
                     </div>
-                    <!-- List Pane -->
+                    <!-- Directory -->
                     <div class="tab-pane fade" id="meetingsListPanel" role="tabpanel" aria-labelledby="meetingsList-tab">
                       <div class="card p-4 rounded-4 shadow-sm border">
                         <h3 class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
-                          <i class="bi bi-calendar3 me-2 text-primary"></i>Scheduled Meetings
+                          <i class="bi bi-calendar3 me-2 text-primary"></i>Meetings Log
                         </h3>
                         <div class="table-responsive">
                           <table class="table table-hover align-middle mb-0" id="meetingsTable">
                             <thead class="table-light">
                               <tr>
-                                <th>Meeting Title</th>
+                                <th>Meeting ID</th>
+                                <th>Title</th>
                                 <th>Date & Time</th>
-                                <th>Duration</th>
                                 <th>Project ID</th>
-                                <th>Agenda</th>
+                                <th>Attendees</th>
+                                <th>Link</th>
                                 <th class="text-center">Actions</th>
                               </tr>
                             </thead>
                             <tbody id="meetingsTableBody">
                               <tr>
-                                <td colspan="6" class="text-center py-4 text-muted">Loading meetings...</td>
+                                <td colspan="7" class="text-center py-4 text-muted">Loading meetings...</td>
                               </tr>
                             </tbody>
                           </table>
@@ -486,7 +529,6 @@
 
                 <!-- 4. BUDGET PLANNER PANEL -->
                 <div class="tab-pane fade" id="budgetPanel" role="tabpanel">
-                  <!-- Sub-tabs Navigation -->
                   <ul class="nav nav-pills gap-2 mb-4 border-bottom pb-3" id="budgetSubTabs" role="tablist">
                     <li class="nav-item" role="presentation">
                       <button class="nav-link active fw-semibold py-2 px-3" id="budgetForm-tab" data-bs-toggle="tab" data-bs-target="#budgetFormPanel" type="button" role="tab" aria-selected="true">
@@ -501,43 +543,53 @@
                   </ul>
 
                   <div class="tab-content" id="budgetSubTabContent">
-                    <!-- Form Pane -->
+                    <!-- Form -->
                     <div class="tab-pane fade show active" id="budgetFormPanel" role="tabpanel" aria-labelledby="budgetForm-tab">
-                      <div class="card p-4 rounded-4 shadow-sm border mx-auto" style="max-width: 600px;">
+                      <div class="card p-4 rounded-4 shadow-sm border mx-auto" style="max-width: 650px;">
                         <h3 class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
-                          <i class="bi bi-cash-stack me-2 text-primary"></i>Allocate Budget
+                          <i class="bi bi-cash-stack me-2 text-primary"></i>Allocate Budget Line
                         </h3>
                         <form id="budgetForm">
                           <div class="mb-3">
-                            <label class="form-label small fw-semibold" for="budgProjId">Select Project <span class="text-danger">*</span></label>
-                            <select class="form-select project-id-select" id="budgProjId" required>
+                            <label class="form-label small fw-semibold" for="budg_project_id">Select Project <span class="text-danger">*</span></label>
+                            <select class="form-select project-id-select" id="budg_project_id" required>
                               <option value="" disabled selected>Loading projects...</option>
                             </select>
                           </div>
-                          <div class="mb-3">
-                            <label class="form-label small fw-semibold" for="budgAmount">Estimated Budget (BDT) <span class="text-danger">*</span></label>
-                            <input class="form-control" id="budgAmount" type="number" min="0" placeholder="e.g. 500000" required>
+                          <div class="row g-2 mb-3">
+                            <div class="col-md-6">
+                              <label class="form-label small fw-semibold" for="budg_cost_category">Cost Category <span class="text-danger">*</span></label>
+                              <select class="form-select" id="budg_cost_category" required>
+                                <option value="" disabled selected>Select category</option>
+                                <option value="Human Resources">Human Resources</option>
+                                <option value="Hardware Procurement">Hardware Procurement</option>
+                                <option value="Software Licensing">Software Licensing</option>
+                                <option value="Travel & Lodging">Travel &amp; Lodging</option>
+                                <option value="Contingency">Contingency</option>
+                              </select>
+                            </div>
+                            <div class="col-md-6">
+                              <label class="form-label small fw-semibold" for="budg_allocated_amount">Allocated Amount (BDT) <span class="text-danger">*</span></label>
+                              <input class="form-control" id="budg_allocated_amount" type="number" min="0" step="0.01" placeholder="e.g. 50000" required>
+                            </div>
                           </div>
                           <div class="mb-3">
-                            <label class="form-label small fw-semibold" for="budgStatus">Budget Status</label>
-                            <select class="form-select" id="budgStatus">
-                              <option value="Draft" selected>Draft</option>
-                              <option value="Under Review">Under Review</option>
-                              <option value="Approved">Approved</option>
-                              <option value="Rejected">Rejected</option>
-                            </select>
+                            <label class="form-label small fw-semibold" for="budg_line_description">Line Description <span class="text-danger">*</span></label>
+                            <input class="form-control" id="budg_line_description" type="text" placeholder="e.g. Cloud server licenses" required>
                           </div>
                           <div class="mb-4">
-                            <label class="form-label small fw-semibold" for="budgNotes">Allocation Breakdown & Notes</label>
-                            <textarea class="form-control" id="budgNotes" rows="3" placeholder="Allocation strategy..."></textarea>
+                            <label class="form-label small fw-semibold" for="budg_approved_by">Approved By <span class="text-danger">*</span></label>
+                            <select class="form-select" id="budg_approved_by" required>
+                              <option value="" disabled selected>Loading contacts...</option>
+                            </select>
                           </div>
                           <button type="submit" class="btn btn-primary w-100 fw-semibold py-2">
-                            <i class="bi bi-plus-circle me-2"></i>Save Budget Configuration
+                            <i class="bi bi-plus-circle me-2"></i>Save Budget Line
                           </button>
                         </form>
                       </div>
                     </div>
-                    <!-- List Pane -->
+                    <!-- Directory -->
                     <div class="tab-pane fade" id="budgetListPanel" role="tabpanel" aria-labelledby="budgetList-tab">
                       <div class="card p-4 rounded-4 shadow-sm border">
                         <h3 class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
@@ -547,17 +599,19 @@
                           <table class="table table-hover align-middle mb-0" id="budgetTable">
                             <thead class="table-light">
                               <tr>
+                                <th>Budget Line ID</th>
                                 <th>Project ID</th>
-                                <th>Project Name</th>
-                                <th>Estimated Budget</th>
-                                <th>Allocations Notes</th>
-                                <th>Status</th>
+                                <th>Cost Category</th>
+                                <th>Description</th>
+                                <th>Allocated Amount</th>
+                                <th>Approved By</th>
+                                <th>Last Updated</th>
                                 <th class="text-center">Actions</th>
                               </tr>
                             </thead>
                             <tbody id="budgetTableBody">
                               <tr>
-                                <td colspan="6" class="text-center py-4 text-muted">Loading budgets...</td>
+                                <td colspan="8" class="text-center py-4 text-muted">Loading budgets...</td>
                               </tr>
                             </tbody>
                           </table>
@@ -567,83 +621,121 @@
                   </div>
                 </div>
 
-                <!-- 5. WORKING PROGRESS UPDATES PANEL -->
-                <div class="tab-pane fade" id="updatesPanel" role="tabpanel">
-                  <!-- Sub-tabs Navigation -->
-                  <ul class="nav nav-pills gap-2 mb-4 border-bottom pb-3" id="updatesSubTabs" role="tablist">
+                <!-- 5. PROJECT TASKS PANEL -->
+                <div class="tab-pane fade" id="tasksPanel" role="tabpanel">
+                  <ul class="nav nav-pills gap-2 mb-4 border-bottom pb-3" id="tasksSubTabs" role="tablist">
                     <li class="nav-item" role="presentation">
-                      <button class="nav-link active fw-semibold py-2 px-3" id="updatesForm-tab" data-bs-toggle="tab" data-bs-target="#updatesFormPanel" type="button" role="tab" aria-selected="true">
-                        <i class="bi bi-activity me-1"></i> Update Form
+                      <button class="nav-link active fw-semibold py-2 px-3" id="tasksForm-tab" data-bs-toggle="tab" data-bs-target="#tasksFormPanel" type="button" role="tab" aria-selected="true">
+                        <i class="bi bi-activity me-1"></i> Task Form
                       </button>
                     </li>
                     <li class="nav-item" role="presentation">
-                      <button class="nav-link fw-semibold py-2 px-3" id="updatesList-tab" data-bs-toggle="tab" data-bs-target="#updatesListPanel" type="button" role="tab" aria-selected="false">
-                        <i class="bi bi-list-stars me-1"></i> Updates History
+                      <button class="nav-link fw-semibold py-2 px-3" id="tasksList-tab" data-bs-toggle="tab" data-bs-target="#tasksListPanel" type="button" role="tab" aria-selected="false">
+                        <i class="bi bi-list-stars me-1"></i> Tasks Directory
                       </button>
                     </li>
                   </ul>
 
-                  <div class="tab-content" id="updatesSubTabContent">
-                    <!-- Form Pane -->
-                    <div class="tab-pane fade show active" id="updatesFormPanel" role="tabpanel" aria-labelledby="updatesForm-tab">
-                      <div class="card p-4 rounded-4 shadow-sm border mx-auto" style="max-width: 600px;">
+                  <div class="tab-content" id="tasksSubTabContent">
+                    <!-- Form -->
+                    <div class="tab-pane fade show active" id="tasksFormPanel" role="tabpanel" aria-labelledby="tasksForm-tab">
+                      <div class="card p-4 rounded-4 shadow-sm border mx-auto" style="max-width: 650px;">
                         <h3 class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
-                          <i class="bi bi-activity me-2 text-primary"></i>Log Work Update
+                          <i class="bi bi-activity me-2 text-primary"></i>Create / Manage Task
                         </h3>
-                        <form id="updateForm">
-                          <div class="mb-3">
-                            <label class="form-label small fw-semibold" for="updProjId">Related Project <span class="text-danger">*</span></label>
-                            <select class="form-select project-id-select" id="updProjId" required>
-                              <option value="" disabled selected>Loading projects...</option>
-                            </select>
+                        <form id="taskForm">
+                          <input type="hidden" id="task_id">
+                          <div class="row g-2 mb-3">
+                            <div class="col-md-6">
+                              <label class="form-label small fw-semibold" for="task_project_id">Related Project <span class="text-danger">*</span></label>
+                              <select class="form-select project-id-select" id="task_project_id" required>
+                                <option value="" disabled selected>Loading projects...</option>
+                              </select>
+                            </div>
+                            <div class="col-md-6">
+                              <label class="form-label small fw-semibold" for="task_wbs_code">WBS Code <span class="text-muted">(e.g. 1.1 or 1.2.3)</span></label>
+                              <input class="form-control" id="task_wbs_code" type="text" placeholder="e.g. 1.1">
+                            </div>
                           </div>
                           <div class="mb-3">
-                            <label class="form-label small fw-semibold" for="updDate">Update Date <span class="text-danger">*</span></label>
-                            <input class="form-control" id="updDate" type="date" required>
+                            <label class="form-label small fw-semibold" for="task_name">Task Name <span class="text-danger">*</span></label>
+                            <input class="form-control" id="task_name" type="text" placeholder="Short summary" required>
+                          </div>
+                          <div class="row g-2 mb-3">
+                            <div class="col-md-6">
+                              <label class="form-label small fw-semibold" for="task_startDate">Start Date <span class="text-danger">*</span></label>
+                              <input class="form-control" id="task_startDate" type="date" required>
+                            </div>
+                            <div class="col-md-6">
+                              <label class="form-label small fw-semibold" for="task_endDate">End Date <span class="text-danger">*</span></label>
+                              <input class="form-control" id="task_endDate" type="date" required>
+                            </div>
+                          </div>
+                          <div class="row g-2 mb-3">
+                            <div class="col-md-6">
+                              <label class="form-label small fw-semibold" for="task_assigned_to">Assigned To <span class="text-danger">*</span></label>
+                              <select class="form-select" id="task_assigned_to" required>
+                                <option value="" disabled selected>Loading contacts...</option>
+                              </select>
+                            </div>
+                            <div class="col-md-3">
+                              <label class="form-label small fw-semibold" for="task_progress_percent">Progress (%)</label>
+                              <input class="form-control" id="task_progress_percent" type="number" min="0" max="100" value="0">
+                            </div>
+                            <div class="col-md-3">
+                              <label class="form-label small fw-semibold" for="task_status">Status</label>
+                              <select class="form-select" id="task_status">
+                                <option value="Not Started" selected>Not Started</option>
+                                <option value="In Progress">In Progress</option>
+                                <option value="Under Review">Under Review</option>
+                                <option value="Blocked">Blocked</option>
+                                <option value="Completed">Completed</option>
+                              </select>
+                            </div>
                           </div>
                           <div class="mb-3">
-                            <label class="form-label small fw-semibold" for="updProgress">Work Progress (%) <span class="text-danger">*</span></label>
-                            <input class="form-control" id="updProgress" type="number" min="0" max="100" placeholder="e.g. 45" required>
-                          </div>
-                          <div class="mb-3">
-                            <label class="form-label small fw-semibold" for="updStatus">Update Project Status</label>
-                            <select class="form-select" id="updStatus">
-                              <option value="Active" selected>Active</option>
-                              <option value="On Hold">On Hold</option>
-                              <option value="Completed">Completed</option>
-                            </select>
+                            <label class="form-label small fw-semibold">Working Update Log (Read-only)</label>
+                            <textarea class="form-control bg-light text-muted small" id="task_working_update_log" rows="3" readonly placeholder="No update notes posted yet."></textarea>
                           </div>
                           <div class="mb-4">
-                            <label class="form-label small fw-semibold" for="updNotes">Accomplishments & Status Notes</label>
-                            <textarea class="form-control" id="updNotes" rows="3" placeholder="Detail tasks completed..."></textarea>
+                            <label class="form-label small fw-semibold" for="task_working_update_new">Add Operational Note (Append-only)</label>
+                            <textarea class="form-control" id="task_working_update_new" rows="2" placeholder="Type new update details here..."></textarea>
                           </div>
-                          <button type="submit" class="btn btn-primary w-100 fw-semibold py-2">
-                            <i class="bi bi-save2 me-2"></i>Post Progress Update
-                          </button>
+                          <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-primary w-100 fw-semibold py-2">
+                              <i class="bi bi-save me-2"></i>Save Task
+                            </button>
+                            <button type="button" id="cancelTaskEditBtn" class="btn btn-outline-secondary w-50 py-2 d-none">
+                              Cancel Edit
+                            </button>
+                          </div>
                         </form>
                       </div>
                     </div>
-                    <!-- List Pane -->
-                    <div class="tab-pane fade" id="updatesListPanel" role="tabpanel" aria-labelledby="updatesList-tab">
+                    <!-- Directory -->
+                    <div class="tab-pane fade" id="tasksListPanel" role="tabpanel" aria-labelledby="tasksList-tab">
                       <div class="card p-4 rounded-4 shadow-sm border">
                         <h3 class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
-                          <i class="bi bi-list-stars me-2 text-primary"></i>Work Updates History
+                          <i class="bi bi-list-stars me-2 text-primary"></i>Tasks Directory
                         </h3>
                         <div class="table-responsive">
-                          <table class="table table-hover align-middle mb-0" id="updatesTable">
+                          <table class="table table-hover align-middle mb-0" id="tasksTable">
                             <thead class="table-light">
                               <tr>
+                                <th>Task ID</th>
+                                <th>WBS</th>
+                                <th>Task Name</th>
                                 <th>Project ID</th>
-                                <th>Update Date</th>
-                                <th>Progress (%)</th>
-                                <th>Details</th>
+                                <th>Assigned To</th>
+                                <th>Progress</th>
+                                <th>Timeline</th>
                                 <th>Status</th>
                                 <th class="text-center">Actions</th>
                               </tr>
                             </thead>
-                            <tbody id="updatesTableBody">
+                            <tbody id="tasksTableBody">
                               <tr>
-                                <td colspan="6" class="text-center py-4 text-muted">Loading updates...</td>
+                                <td colspan="9" class="text-center py-4 text-muted">Loading tasks...</td>
                               </tr>
                             </tbody>
                           </table>
@@ -653,9 +745,8 @@
                   </div>
                 </div>
 
-                <!-- 6. PURCHASE REQUISITION PANEL -->
+                <!-- 6. REQUISITIONS PANEL -->
                 <div class="tab-pane fade" id="requisitionPanel" role="tabpanel">
-                  <!-- Sub-tabs Navigation -->
                   <ul class="nav nav-pills gap-2 mb-4 border-bottom pb-3" id="requisitionSubTabs" role="tablist">
                     <li class="nav-item" role="presentation">
                       <button class="nav-link active fw-semibold py-2 px-3" id="requisitionForm-tab" data-bs-toggle="tab" data-bs-target="#requisitionFormPanel" type="button" role="tab" aria-selected="true">
@@ -670,40 +761,56 @@
                   </ul>
 
                   <div class="tab-content" id="requisitionSubTabContent">
-                    <!-- Form Pane -->
+                    <!-- Form -->
                     <div class="tab-pane fade show active" id="requisitionFormPanel" role="tabpanel" aria-labelledby="requisitionForm-tab">
-                      <div class="card p-4 rounded-4 shadow-sm border mx-auto" style="max-width: 600px;">
+                      <div class="card p-4 rounded-4 shadow-sm border mx-auto" style="max-width: 650px;">
                         <h3 class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
                           <i class="bi bi-file-earmark-plus me-2 text-primary"></i>Create Requisition
                         </h3>
                         <form id="requisitionForm">
                           <div class="mb-3">
-                            <label class="form-label small fw-semibold" for="reqProjId">Project Relationship <span class="text-danger">*</span></label>
-                            <select class="form-select project-id-select" id="reqProjId" required>
+                            <label class="form-label small fw-semibold" for="req_project_id">Project Relationship <span class="text-danger">*</span></label>
+                            <select class="form-select project-id-select" id="req_project_id" required>
                               <option value="" disabled selected>Loading projects...</option>
                             </select>
                           </div>
                           <div class="mb-3">
-                            <label class="form-label small fw-semibold" for="reqItem">Item Name / Description <span class="text-danger">*</span></label>
-                            <input class="form-control" id="reqItem" type="text" placeholder="e.g. Cisco Catalyst 9200 Switch" required>
+                            <label class="form-label small fw-semibold" for="req_requested_item">Requested Item <span class="text-danger">*</span></label>
+                            <input class="form-control" id="req_requested_item" type="text" placeholder="e.g. Development Servers" required>
                           </div>
                           <div class="row g-2 mb-3">
-                            <div class="col-md-6">
-                              <label class="form-label small fw-semibold" for="reqQty">Quantity <span class="text-danger">*</span></label>
-                              <input class="form-control" id="reqQty" type="number" min="1" value="1" required>
+                            <div class="col-md-4">
+                              <label class="form-label small fw-semibold" for="req_quantity">Quantity <span class="text-danger">*</span></label>
+                              <input class="form-control" id="req_quantity" type="number" min="1" value="1" required>
                             </div>
-                            <div class="col-md-6">
-                              <label class="form-label small fw-semibold" for="reqCost">Estimated Cost (BDT) <span class="text-danger">*</span></label>
-                              <input class="form-control" id="reqCost" type="number" min="0" placeholder="e.g. 150000" required>
+                            <div class="col-md-4">
+                              <label class="form-label small fw-semibold" for="req_estimated_unit_cost">Est. Unit Cost (BDT) <span class="text-danger">*</span></label>
+                              <input class="form-control" id="req_estimated_unit_cost" type="number" min="0.01" step="0.01" placeholder="0.00" required>
+                            </div>
+                            <div class="col-md-4">
+                              <label class="form-label small fw-semibold" for="req_estimated_total">Est. Total Cost (BDT)</label>
+                              <input class="form-control bg-light" id="req_estimated_total" type="text" readonly value="0.00">
                             </div>
                           </div>
-                          <div class="mb-4">
-                            <label class="form-label small fw-semibold" for="reqStatus">Requisition Status</label>
-                            <select class="form-select" id="reqStatus">
-                              <option value="Pending" selected>Pending</option>
-                              <option value="Approved">Approved</option>
-                              <option value="Rejected">Rejected</option>
-                            </select>
+                          <div class="mb-3">
+                            <label class="form-label small fw-semibold" for="req_justification">Justification <span class="text-danger">*</span></label>
+                            <textarea class="form-control" id="req_justification" rows="2" placeholder="Why is this purchase required?" required></textarea>
+                          </div>
+                          <div class="row g-2 mb-4">
+                            <div class="col-md-6">
+                              <label class="form-label small fw-semibold" for="req_requested_by">Requested By <span class="text-danger">*</span></label>
+                              <select class="form-select" id="req_requested_by" required>
+                                <option value="" disabled selected>Loading contacts...</option>
+                              </select>
+                            </div>
+                            <div class="col-md-6">
+                              <label class="form-label small fw-semibold" for="req_approval_status">Approval Status</label>
+                              <select class="form-select" id="req_approval_status">
+                                <option value="Pending Review" selected>Pending Review</option>
+                                <option value="Approved">Approved</option>
+                                <option value="Rejected">Rejected</option>
+                              </select>
+                            </div>
                           </div>
                           <button type="submit" class="btn btn-primary w-100 fw-semibold py-2">
                             <i class="bi bi-send-plus me-2"></i>Submit Requisition
@@ -711,7 +818,7 @@
                         </form>
                       </div>
                     </div>
-                    <!-- List Pane -->
+                    <!-- Directory -->
                     <div class="tab-pane fade" id="requisitionListPanel" role="tabpanel" aria-labelledby="requisitionList-tab">
                       <div class="card p-4 rounded-4 shadow-sm border">
                         <h3 class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
@@ -721,18 +828,20 @@
                           <table class="table table-hover align-middle mb-0" id="requisitionsTable">
                             <thead class="table-light">
                               <tr>
-                                <th>Req ID</th>
-                                <th>Item Details</th>
-                                <th>Qty</th>
-                                <th>Est. Cost</th>
+                                <th>Requisition ID</th>
+                                <th>Item</th>
+                                <th>Quantity</th>
+                                <th>Est. Unit Cost</th>
+                                <th>Est. Total</th>
                                 <th>Project ID</th>
+                                <th>Requested By</th>
                                 <th>Status</th>
                                 <th class="text-center">Actions</th>
                               </tr>
                             </thead>
                             <tbody id="requisitionsTableBody">
                               <tr>
-                                <td colspan="7" class="text-center py-4 text-muted">Loading requisitions...</td>
+                                <td colspan="9" class="text-center py-4 text-muted">Loading requisitions...</td>
                               </tr>
                             </tbody>
                           </table>
@@ -742,9 +851,8 @@
                   </div>
                 </div>
 
-                <!-- 7. PURCHASE MANAGEMENT PANEL -->
+                <!-- 7. PURCHASE ORDERS PANEL -->
                 <div class="tab-pane fade" id="purchasesPanel" role="tabpanel">
-                  <!-- Sub-tabs Navigation -->
                   <ul class="nav nav-pills gap-2 mb-4 border-bottom pb-3" id="purchasesSubTabs" role="tablist">
                     <li class="nav-item" role="presentation">
                       <button class="nav-link active fw-semibold py-2 px-3" id="purchasesForm-tab" data-bs-toggle="tab" data-bs-target="#purchasesFormPanel" type="button" role="tab" aria-selected="true">
@@ -759,52 +867,66 @@
                   </ul>
 
                   <div class="tab-content" id="purchasesSubTabContent">
-                    <!-- Form Pane -->
+                    <!-- Form -->
                     <div class="tab-pane fade show active" id="purchasesFormPanel" role="tabpanel" aria-labelledby="purchasesForm-tab">
-                      <div class="card p-4 rounded-4 shadow-sm border mx-auto" style="max-width: 600px;">
+                      <div class="card p-4 rounded-4 shadow-sm border mx-auto" style="max-width: 650px;">
                         <h3 class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
-                          <i class="bi bi-cart-plus me-2 text-primary"></i>Log Purchase Record
+                          <i class="bi bi-cart-plus me-2 text-primary"></i>Create Purchase Order
                         </h3>
                         <form id="purchaseForm">
                           <div class="mb-3">
-                            <label class="form-label small fw-semibold" for="purRequisitionId">Link Requisition</label>
-                            <select class="form-select" id="purRequisitionId">
-                              <option value="Direct">Direct Purchase (No Requisition)</option>
+                            <label class="form-label small fw-semibold" for="po_requisition_id">Link Approved Requisition <span class="text-danger">*</span></label>
+                            <select class="form-select" id="po_requisition_id" required>
+                              <option value="" disabled selected>Select Approved Requisition</option>
                             </select>
                           </div>
                           <div class="mb-3">
-                            <label class="form-label small fw-semibold" for="purProjId">Select Project <span class="text-danger">*</span></label>
-                            <select class="form-select project-id-select" id="purProjId" required>
-                              <option value="" disabled selected>Loading projects...</option>
+                            <label class="form-label small fw-semibold" for="po_project_id">Project ID <span class="text-muted">(Inherited from Requisition)</span></label>
+                            <select class="form-select project-id-select bg-light" id="po_project_id" required disabled>
+                              <option value="" disabled selected>Select Project</option>
                             </select>
                           </div>
                           <div class="mb-3">
-                            <label class="form-label small fw-semibold" for="purItemName">Item Purchased <span class="text-danger">*</span></label>
-                            <input class="form-control" id="purItemName" type="text" placeholder="e.g. Cisco Catalyst 9200 Switch" required>
+                            <label class="form-label small fw-semibold" for="po_vendor_name">Vendor Name <span class="text-danger">*</span></label>
+                            <input class="form-control" id="po_vendor_name" type="text" placeholder="Vendor organization" required>
                           </div>
-                          <div class="mb-3">
-                            <label class="form-label small fw-semibold" for="purSupplier">Supplier</label>
-                            <input class="form-control" id="purSupplier" type="text" placeholder="e.g. Cisco Systems BD">
+                          <div class="row g-2 mb-3">
+                            <div class="col-md-6">
+                              <label class="form-label small fw-semibold" for="po_final_total">Final Total Cost (BDT) <span class="text-danger">*</span></label>
+                              <input class="form-control" id="po_final_total" type="number" min="0" step="0.01" required>
+                            </div>
+                            <div class="col-md-6">
+                              <label class="form-label small fw-semibold" for="po_number">PO Number <span class="text-muted">(e.g. PO-00001, auto-generated if blank)</span></label>
+                              <input class="form-control" id="po_number" type="text" placeholder="e.g. PO-00001">
+                            </div>
                           </div>
-                          <div class="mb-3">
-                            <label class="form-label small fw-semibold" for="purCost">Final Cost (BDT) <span class="text-danger">*</span></label>
-                            <input class="form-control" id="purCost" type="number" min="0" placeholder="e.g. 145000" required>
+                          <div class="row g-2 mb-4">
+                            <div class="col-md-6">
+                              <label class="form-label small fw-semibold" for="po_date">PO Issue Date <span class="text-danger">*</span></label>
+                              <input class="form-control" id="po_date" type="date" required>
+                            </div>
+                            <div class="col-md-6">
+                              <label class="form-label small fw-semibold" for="po_delivery_date">Est. Delivery Date <span class="text-danger">*</span></label>
+                              <input class="form-control" id="po_delivery_date" type="date" required>
+                            </div>
                           </div>
                           <div class="mb-4">
-                            <label class="form-label small fw-semibold" for="purStatus">Purchase Status</label>
-                            <select class="form-select" id="purStatus">
-                              <option value="Ordered" selected>Ordered</option>
-                              <option value="Received">Received</option>
-                              <option value="Paid">Paid</option>
+                            <label class="form-label small fw-semibold" for="po_order_status">Order Status</label>
+                            <select class="form-select" id="po_order_status">
+                              <option value="Issued" selected>Issued</option>
+                              <option value="In Transit">In Transit</option>
+                              <option value="Delivered">Delivered</option>
+                              <option value="Backordered">Backordered</option>
+                              <option value="Cancelled">Cancelled</option>
                             </select>
                           </div>
                           <button type="submit" class="btn btn-primary w-100 fw-semibold py-2">
-                            <i class="bi bi-cart-check-fill me-2"></i>Save Purchase Ledger
+                            <i class="bi bi-cart-check-fill me-2"></i>Save Purchase Order
                           </button>
                         </form>
                       </div>
                     </div>
-                    <!-- List Pane -->
+                    <!-- Directory -->
                     <div class="tab-pane fade" id="purchasesListPanel" role="tabpanel" aria-labelledby="purchasesList-tab">
                       <div class="card p-4 rounded-4 shadow-sm border">
                         <h3 class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
@@ -814,18 +936,20 @@
                           <table class="table table-hover align-middle mb-0" id="purchasesTable">
                             <thead class="table-light">
                               <tr>
-                                <th>Purchase ID</th>
-                                <th>Item</th>
-                                <th>Supplier</th>
-                                <th>Final Cost</th>
+                                <th>PO Number</th>
+                                <th>Requisition ID</th>
                                 <th>Project ID</th>
+                                <th>Vendor Name</th>
+                                <th>Final Total</th>
+                                <th>Issue Date</th>
+                                <th>Delivery Date</th>
                                 <th>Status</th>
                                 <th class="text-center">Actions</th>
                               </tr>
                             </thead>
                             <tbody id="purchasesTableBody">
                               <tr>
-                                <td colspan="7" class="text-center py-4 text-muted">Loading purchases...</td>
+                                <td colspan="9" class="text-center py-4 text-muted">Loading purchase orders...</td>
                               </tr>
                             </tbody>
                           </table>
@@ -835,9 +959,8 @@
                   </div>
                 </div>
 
-                <!-- 8. COST/EXPENSE PANEL -->
+                <!-- 8. COST / EXPENSE PANEL -->
                 <div class="tab-pane fade" id="expensesPanel" role="tabpanel">
-                  <!-- Sub-tabs Navigation -->
                   <ul class="nav nav-pills gap-2 mb-4 border-bottom pb-3" id="expensesSubTabs" role="tablist">
                     <li class="nav-item" role="presentation">
                       <button class="nav-link active fw-semibold py-2 px-3" id="expensesForm-tab" data-bs-toggle="tab" data-bs-target="#expensesFormPanel" type="button" role="tab" aria-selected="true">
@@ -852,43 +975,51 @@
                   </ul>
 
                   <div class="tab-content" id="expensesSubTabContent">
-                    <!-- Form Pane -->
+                    <!-- Form -->
                     <div class="tab-pane fade show active" id="expensesFormPanel" role="tabpanel" aria-labelledby="expensesForm-tab">
-                      <div class="card p-4 rounded-4 shadow-sm border mx-auto" style="max-width: 600px;">
+                      <div class="card p-4 rounded-4 shadow-sm border mx-auto" style="max-width: 650px;">
                         <h3 class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
-                          <i class="bi bi-cash-coin me-2 text-primary"></i>Log Operational Expense
+                          <i class="bi bi-cash-coin me-2 text-primary"></i>Log Expense / Payment
                         </h3>
                         <form id="expenseForm">
                           <div class="mb-3">
-                            <label class="form-label small fw-semibold" for="expProjId">Select Project <span class="text-danger">*</span></label>
-                            <select class="form-select project-id-select" id="expProjId" required>
+                            <label class="form-label small fw-semibold" for="exp_project_id">Select Project <span class="text-danger">*</span></label>
+                            <select class="form-select project-id-select" id="exp_project_id" required>
                               <option value="" disabled selected>Loading projects...</option>
-                            </select>
-                          </div>
-                          <div class="mb-3">
-                            <label class="form-label small fw-semibold" for="expCategory">Category <span class="text-danger">*</span></label>
-                            <select class="form-select" id="expCategory" required>
-                              <option value="" disabled selected>Select category</option>
-                              <option value="Consulting & Labor">Consulting & Labor</option>
-                              <option value="Equipment & Supplies">Equipment & Supplies</option>
-                              <option value="Software & Licensing">Software &amp; Licensing</option>
-                              <option value="Travel & Logistics">Travel &amp; Logistics</option>
-                              <option value="Operational Overhead">Operational Overhead</option>
                             </select>
                           </div>
                           <div class="row g-2 mb-3">
                             <div class="col-md-6">
-                              <label class="form-label small fw-semibold" for="expAmount">Amount (BDT) <span class="text-danger">*</span></label>
-                              <input class="form-control" id="expAmount" type="number" min="0" placeholder="e.g. 25000" required>
+                              <label class="form-label small fw-semibold" for="exp_po_number">PO Number <span class="text-muted">(Optional)</span></label>
+                              <select class="form-select" id="exp_po_number">
+                                <option value="">None (Direct Expense)</option>
+                              </select>
                             </div>
                             <div class="col-md-6">
-                              <label class="form-label small fw-semibold" for="expDate">Date <span class="text-danger">*</span></label>
-                              <input class="form-control" id="expDate" type="date" required>
+                              <label class="form-label small fw-semibold" for="exp_invoice_number">Invoice Number <span class="text-danger">*</span></label>
+                              <input class="form-control" id="exp_invoice_number" type="text" placeholder="Supplier reference" required>
                             </div>
                           </div>
+                          <div class="row g-2 mb-3">
+                            <div class="col-md-6">
+                              <label class="form-label small fw-semibold" for="exp_amount_paid">Amount Paid (BDT) <span class="text-danger">*</span></label>
+                              <input class="form-control" id="exp_amount_paid" type="number" min="0.01" step="0.01" placeholder="0.00" required>
+                            </div>
+                            <div class="col-md-6">
+                              <label class="form-label small fw-semibold" for="exp_payment_date">Payment Date <span class="text-danger">*</span></label>
+                              <input class="form-control" id="exp_payment_date" type="date" required>
+                            </div>
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label small fw-semibold" for="exp_cost_category">Cost Category <span class="text-danger">*</span></label>
+                            <select class="form-select" id="exp_cost_category" required>
+                              <option value="" disabled selected>Select Project first</option>
+                            </select>
+                            <div class="form-text text-muted">Cost Category options are loaded dynamically from the selected Project's Budget rules.</div>
+                          </div>
                           <div class="mb-4">
-                            <label class="form-label small fw-semibold" for="expDesc">Description</label>
-                            <textarea class="form-control" id="expDesc" rows="3" placeholder="Expense description..."></textarea>
+                            <label class="form-label small fw-semibold" for="exp_receipt_url">Receipt Asset URL</label>
+                            <input class="form-control" id="exp_receipt_url" type="url" placeholder="https://link-to-receipt-file">
                           </div>
                           <button type="submit" class="btn btn-primary w-100 fw-semibold py-2">
                             <i class="bi bi-plus-lg me-2"></i>Post Expense Record
@@ -896,7 +1027,7 @@
                         </form>
                       </div>
                     </div>
-                    <!-- List Pane -->
+                    <!-- Directory -->
                     <div class="tab-pane fade" id="expensesListPanel" role="tabpanel" aria-labelledby="expensesList-tab">
                       <div class="card p-4 rounded-4 shadow-sm border">
                         <h3 class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
@@ -906,17 +1037,20 @@
                           <table class="table table-hover align-middle mb-0" id="expensesTable">
                             <thead class="table-light">
                               <tr>
-                                <th>Category</th>
-                                <th>Amount</th>
-                                <th>Date</th>
+                                <th>Expense ID</th>
                                 <th>Project ID</th>
-                                <th>Description</th>
+                                <th>PO Number</th>
+                                <th>Invoice</th>
+                                <th>Payment Date</th>
+                                <th>Amount Paid</th>
+                                <th>Category</th>
+                                <th>Receipt</th>
                                 <th class="text-center">Actions</th>
                               </tr>
                             </thead>
                             <tbody id="expensesTableBody">
                               <tr>
-                                <td colspan="6" class="text-center py-4 text-muted">Loading expenses...</td>
+                                <td colspan="9" class="text-center py-4 text-muted">Loading expenses...</td>
                               </tr>
                             </tbody>
                           </table>
@@ -946,13 +1080,13 @@
       addContact, getAllContacts, deleteContact,
       addMeeting, getAllMeetings, deleteMeeting,
       addBudget, getAllBudgets, deleteBudget,
-      addProjectUpdate, getAllProjectUpdates, deleteProjectUpdate,
+      addTask, getAllTasks, deleteTask,
       addRequisition, getAllRequisitions, deleteRequisition,
-      addPurchase, getAllPurchases, deletePurchase,
+      addPurchaseOrder, getAllPurchaseOrders, deletePurchaseOrder,
       addExpense, getAllExpenses, deleteExpense
     } from "./assets/js/solution.js";
 
-    // Set today's dates
+    // Set today's dates as default
     document.querySelectorAll('input[type="date"]').forEach(input => {
       input.value = new Date().toISOString().substring(0, 10);
     });
@@ -961,9 +1095,9 @@
     let allContacts = [];
     let allMeetings = [];
     let allBudgets = [];
-    let allUpdates = [];
+    let allTasks = [];
     let allRequisitions = [];
-    let allPurchases = [];
+    let allPurchaseOrders = [];
     let allExpenses = [];
 
     let chartProjectStatusInstance = null;
@@ -974,74 +1108,196 @@
       const selects = document.querySelectorAll(".project-id-select");
       selects.forEach(select => {
         const selectedVal = select.value;
-        select.innerHTML = '<option value="" disabled selected>Select Project</option>';
+        const defaultText = select.id === "po_project_id" ? "Select Project" : "Select Project";
+        select.innerHTML = `<option value="" disabled selected>${defaultText}</option>`;
         allProjects.forEach(p => {
           const opt = document.createElement("option");
-          opt.value = p.projectId;
-          opt.textContent = `${p.projectId} - ${p.projectName}`;
+          opt.value = p.project_id;
+          opt.textContent = `${p.project_id} - ${p.project_name}`;
           select.appendChild(opt);
         });
-        if (selectedVal && allProjects.some(p => p.projectId === selectedVal)) {
+        if (selectedVal && allProjects.some(p => p.project_id === selectedVal)) {
           select.value = selectedVal;
         }
       });
     }
 
-    // Populate Requisition ID in Purchase log
+    // Populate Requisition ID in Purchase order log
     function populateRequisitionDropdowns() {
-      const select = document.getElementById("purRequisitionId");
+      const select = document.getElementById("po_requisition_id");
       if (!select) return;
       const selectedVal = select.value;
-      select.innerHTML = '<option value="Direct">Direct Purchase (No Requisition)</option>';
-      allRequisitions.filter(r => r.status === "Pending" || r.status === "Approved").forEach(r => {
-        const opt = document.createElement("optgroup");
-        opt.label = `Project: ${r.projectId}`;
-        const itemOpt = document.createElement("option");
-        itemOpt.value = r.requisitionId;
-        itemOpt.textContent = `${r.requisitionId} - ${r.itemName} (${r.quantity} qty)`;
-        opt.appendChild(itemOpt);
-        select.appendChild(opt);
+      select.innerHTML = '<option value="" disabled selected>Select Approved Requisition</option>';
+      
+      // Filter requisitions where approval_status is Approved and check if they aren't already linked to a PO
+      const approvedReqs = allRequisitions.filter(r => r.approval_status === "Approved");
+      approvedReqs.forEach(r => {
+        // Uniqueness check: check if it's already linked to a PO (excluding the current one being edited, if any)
+        const isAlreadyOrdered = allPurchaseOrders.some(po => po.requisition_id === r.requisition_id);
+        if (!isAlreadyOrdered || r.requisition_id === selectedVal) {
+          const opt = document.createElement("option");
+          opt.value = r.requisition_id;
+          opt.textContent = `${r.requisition_id} - ${r.requested_item} (Total: ${r.estimated_total} BDT)`;
+          select.appendChild(opt);
+        }
       });
-      select.value = selectedVal || "Direct";
+      if (selectedVal) select.value = selectedVal;
     }
 
-    // Auto-fill logic when requisition is selected in Purchase Form
-    document.getElementById("purRequisitionId")?.addEventListener("change", function(e) {
-      const reqId = e.target.value;
-      const projSelect = document.getElementById("purProjId");
-      const itemInput = document.getElementById("purItemName");
-      const costInput = document.getElementById("purCost");
+    // Populate PO Number dropdown in Expenses Form
+    function populatePODropdowns() {
+      const select = document.getElementById("exp_po_number");
+      if (!select) return;
+      const selectedVal = select.value;
+      select.innerHTML = '<option value="">None (Direct Expense)</option>';
+      allPurchaseOrders.forEach(po => {
+        const opt = document.createElement("option");
+        opt.value = po.po_number;
+        opt.textContent = `${po.po_number} - ${po.vendor_name} (Total: ${po.final_total} BDT)`;
+        select.appendChild(opt);
+      });
+      select.value = selectedVal || "";
+    }
 
-      if (reqId === "Direct") {
-        projSelect.disabled = false;
-        itemInput.disabled = false;
-        itemInput.value = "";
-        projSelect.value = "";
-        costInput.value = "";
+    // Populate PM Dropdown (Designation = 'Project Manager')
+    function populatePMDropdown() {
+      const select = document.getElementById("project_manager");
+      if (!select) return;
+      const selectedVal = select.value;
+      select.innerHTML = '<option value="" disabled selected>Select Project Manager</option>';
+      
+      const pms = allContacts.filter(c => c.designation === "Project Manager");
+      pms.forEach(pm => {
+        const opt = document.createElement("option");
+        opt.value = pm.contact_id;
+        opt.textContent = pm.contact_name;
+        select.appendChild(opt);
+      });
+      if (selectedVal && pms.some(pm => pm.contact_id === selectedVal)) {
+        select.value = selectedVal;
+      }
+    }
+
+    // Populate Contact Selects (Approved By, Assigned To, Requested By)
+    function populateContactSelects() {
+      const approvesSelect = document.getElementById("budg_approved_by");
+      if (approvesSelect) {
+        const val = approvesSelect.value;
+        approvesSelect.innerHTML = '<option value="" disabled selected>Select Approver</option>';
+        allContacts.forEach(c => {
+          const opt = document.createElement("option");
+          opt.value = c.contact_id;
+          opt.textContent = `${c.contact_name} (${c.designation})`;
+          approvesSelect.appendChild(opt);
+        });
+        if (val) approvesSelect.value = val;
+      }
+
+      const assignedSelect = document.getElementById("task_assigned_to");
+      if (assignedSelect) {
+        const val = assignedSelect.value;
+        assignedSelect.innerHTML = '<option value="" disabled selected>Select Assignee</option>';
+        allContacts.forEach(c => {
+          const opt = document.createElement("option");
+          opt.value = c.contact_id;
+          opt.textContent = `${c.contact_name} (${c.designation})`;
+          assignedSelect.appendChild(opt);
+        });
+        if (val) assignedSelect.value = val;
+      }
+
+      const requestedSelect = document.getElementById("req_requested_by");
+      if (requestedSelect) {
+        const val = requestedSelect.value;
+        requestedSelect.innerHTML = '<option value="" disabled selected>Select Requester</option>';
+        allContacts.forEach(c => {
+          const opt = document.createElement("option");
+          opt.value = c.contact_id;
+          opt.textContent = `${c.contact_name} (${c.designation})`;
+          requestedSelect.appendChild(opt);
+        });
+        if (val) requestedSelect.value = val;
+      }
+
+      // Attendees List in Meetings
+      const attendeesSelect = document.getElementById("meet_attendees_list");
+      if (attendeesSelect) {
+        attendeesSelect.innerHTML = '';
+        allContacts.forEach(c => {
+          if (c.email) {
+            const opt = document.createElement("option");
+            opt.value = c.email;
+            opt.textContent = `${c.contact_name} (${c.email})`;
+            attendeesSelect.appendChild(opt);
+          }
+        });
+      }
+    }
+
+    // Auto-populate Category options based on project budget setup
+    function populateExpenseCategories(projId) {
+      const catSelect = document.getElementById("exp_cost_category");
+      if (!catSelect) return;
+      
+      const projBudgets = allBudgets.filter(b => b.project_id === projId);
+      const categories = [...new Set(projBudgets.map(b => b.cost_category))];
+      
+      catSelect.innerHTML = '<option value="" disabled selected>Select Category</option>';
+      if (categories.length === 0) {
+        const opt = document.createElement("option");
+        opt.value = "";
+        opt.disabled = true;
+        opt.textContent = "No categories allocated (Set project budget first)";
+        catSelect.appendChild(opt);
       } else {
-        const req = allRequisitions.find(r => r.requisitionId === reqId);
-        if (req) {
-          projSelect.value = req.projectId;
-          itemInput.value = req.itemName;
-          costInput.value = req.estimatedCost;
-          projSelect.disabled = true;
-          itemInput.disabled = true;
-        }
+        categories.forEach(cat => {
+          const opt = document.createElement("option");
+          opt.value = cat;
+          opt.textContent = cat;
+          catSelect.appendChild(opt);
+        });
+      }
+    }
+
+    // Event handler when project is selected in Expense form
+    document.getElementById("exp_project_id")?.addEventListener("change", function(e) {
+      populateExpenseCategories(e.target.value);
+    });
+
+    // Event handler when Requisition is selected in Purchase Form
+    document.getElementById("po_requisition_id")?.addEventListener("change", function(e) {
+      const reqId = e.target.value;
+      const projSelect = document.getElementById("po_project_id");
+      const costInput = document.getElementById("po_final_total");
+
+      const req = allRequisitions.find(r => r.requisition_id === reqId);
+      if (req) {
+        projSelect.value = req.project_id;
+        costInput.value = req.estimated_total;
       }
     });
 
+    // Live Requisition Total calculation
+    function calculateReqTotal() {
+      const qty = Number(document.getElementById("req_quantity").value) || 0;
+      const unitCost = Number(document.getElementById("req_estimated_unit_cost").value) || 0;
+      document.getElementById("req_estimated_total").value = (qty * unitCost).toFixed(2);
+    }
+    document.getElementById("req_quantity")?.addEventListener("input", calculateReqTotal);
+    document.getElementById("req_estimated_unit_cost")?.addEventListener("input", calculateReqTotal);
+
     // Overview Update and Rendering
     function updateOverview() {
-      const activeProjCount = allProjects.filter(p => p.status === "Active").length;
+      const activeProjCount = allProjects.filter(p => p.project_status === "Active").length;
       document.getElementById("kpiActiveProjects").textContent = activeProjCount;
 
-      const totalBudgetSum = allBudgets.reduce((sum, b) => sum + (Number(b.estimatedBudget) || 0), 0);
+      const totalBudgetSum = allBudgets.reduce((sum, b) => sum + (Number(b.allocated_amount) || 0), 0);
       document.getElementById("kpiTotalBudget").textContent = `${totalBudgetSum.toLocaleString()} BDT`;
 
-      const totalExpensesSum = allExpenses.reduce((sum, e) => sum + (Number(e.amount) || 0), 0);
+      const totalExpensesSum = allExpenses.reduce((sum, e) => sum + (Number(e.amount_paid) || 0), 0);
       document.getElementById("kpiTotalExpenses").textContent = `${totalExpensesSum.toLocaleString()} BDT`;
 
-      const pendingReqsCount = allRequisitions.filter(r => r.status === "Pending").length;
+      const pendingReqsCount = allRequisitions.filter(r => r.approval_status === "Pending Review").length;
       document.getElementById("kpiPendingReqs").textContent = pendingReqsCount;
 
       // Render Charts
@@ -1052,10 +1308,11 @@
       const gridColor = isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.05)';
 
       // 1. Project Status Chart
-      const planned = allProjects.filter(p => p.status === "Planned").length;
-      const active = allProjects.filter(p => p.status === "Active").length;
-      const onhold = allProjects.filter(p => p.status === "On Hold").length;
-      const completed = allProjects.filter(p => p.status === "Completed").length;
+      const pipeline = allProjects.filter(p => p.project_status === "Pipeline").length;
+      const active = allProjects.filter(p => p.project_status === "Active").length;
+      const onhold = allProjects.filter(p => p.project_status === "On Hold").length;
+      const completed = allProjects.filter(p => p.project_status === "Completed").length;
+      const cancelled = allProjects.filter(p => p.project_status === "Cancelled").length;
 
       const ctxStatus = document.getElementById("chartProjectStatus")?.getContext("2d");
       if (ctxStatus) {
@@ -1063,10 +1320,10 @@
         chartProjectStatusInstance = new Chart(ctxStatus, {
           type: 'doughnut',
           data: {
-            labels: ['Planned', 'Active', 'On Hold', 'Completed'],
+            labels: ['Pipeline', 'Active', 'On Hold', 'Completed', 'Cancelled'],
             datasets: [{
-              data: [planned, active, onhold, completed],
-              backgroundColor: ['#6c757d', '#28a745', '#ffc107', '#215C5C'],
+              data: [pipeline, active, onhold, completed, cancelled],
+              backgroundColor: ['#6c757d', '#28a745', '#ffc107', '#215C5C', '#dc3545'],
               borderWidth: isDark ? 2 : 1,
               borderColor: isDark ? '#212529' : '#fff'
             }]
@@ -1085,14 +1342,14 @@
       }
 
       // 2. Budget vs Expense Chart
-      const projectLabels = allProjects.map(p => p.projectId);
+      const projectLabels = allProjects.map(p => p.project_id);
       const budgetData = allProjects.map(p => {
-        const b = allBudgets.find(budg => budg.projectId === p.projectId);
-        return b ? Number(b.estimatedBudget) : 0;
+        const projBudgets = allBudgets.filter(budg => budg.project_id === p.project_id);
+        return projBudgets.reduce((sum, b) => sum + Number(b.allocated_amount), 0);
       });
       const expenseData = allProjects.map(p => {
-        const projsExpenses = allExpenses.filter(e => e.projectId === p.projectId);
-        return projsExpenses.reduce((sum, e) => sum + Number(e.amount), 0);
+        const projsExpenses = allExpenses.filter(e => e.project_id === p.project_id);
+        return projsExpenses.reduce((sum, e) => sum + Number(e.amount_paid), 0);
       });
 
       const ctxBudget = document.getElementById("chartBudgetVsExpense")?.getContext("2d");
@@ -1103,7 +1360,7 @@
           data: {
             labels: projectLabels,
             datasets: [
-              { label: 'Budget', data: budgetData, backgroundColor: '#215C5C', borderRadius: 4 },
+              { label: 'Budget Ceiling', data: budgetData, backgroundColor: '#215C5C', borderRadius: 4 },
               { label: 'Actual Expenses', data: expenseData, backgroundColor: '#dc3545', borderRadius: 4 }
             ]
           },
@@ -1129,21 +1386,24 @@
         allContacts = await getAllContacts();
         allMeetings = await getAllMeetings();
         allBudgets = await getAllBudgets();
-        allUpdates = await getAllProjectUpdates();
+        allTasks = await getAllTasks();
         allRequisitions = await getAllRequisitions();
-        allPurchases = await getAllPurchases();
+        allPurchaseOrders = await getAllPurchaseOrders();
         allExpenses = await getAllExpenses();
 
         populateProjectDropdowns();
+        populateContactSelects();
+        populatePMDropdown();
         populateRequisitionDropdowns();
+        populatePODropdowns();
 
         renderProjects();
         renderContacts();
         renderMeetings();
         renderBudgets();
-        renderUpdates();
+        renderTasks();
         renderRequisitions();
-        renderPurchases();
+        renderPurchaseOrders();
         renderExpenses();
 
         updateOverview();
@@ -1152,28 +1412,32 @@
       }
     }
 
-    // Render lists in tables
+    // Render lists
     function renderProjects() {
       const tbody = document.getElementById("projectsTableBody");
       if (!tbody) return;
       if (allProjects.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="6" class="text-center py-3 text-muted">No projects found.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="7" class="text-center py-3 text-muted">No projects found.</td></tr>';
         return;
       }
-      tbody.innerHTML = allProjects.map(p => `
-        <tr>
-          <td><code class="text-dark fw-bold font-monospace">${p.projectId}</code></td>
-          <td><strong>${p.projectName}</strong></td>
-          <td>${p.clientName}</td>
-          <td><span class="small">${p.startDate || 'N/A'} to ${p.endDate || 'N/A'}</span></td>
-          <td><span class="badge bg-secondary text-dark">${p.status}</span></td>
-          <td class="text-center">
-            <button class="btn btn-sm btn-outline-danger delete-proj-btn" data-id="${p.projectId}">
-              <i class="bi bi-trash"></i>
-            </button>
-          </td>
-        </tr>
-      `).join('');
+      tbody.innerHTML = allProjects.map(p => {
+        const pm = allContacts.find(c => c.contact_id === p.project_manager);
+        return `
+          <tr>
+            <td><code class="text-dark fw-bold font-monospace">${p.project_id}</code></td>
+            <td><strong>${p.project_name}</strong></td>
+            <td>${p.client_sponsor}</td>
+            <td>${pm ? pm.contact_name : 'Unknown Manager'}</td>
+            <td><span class="small">${p.start_date} to ${p.end_date}</span></td>
+            <td><span class="badge bg-secondary text-dark">${p.project_status}</span></td>
+            <td class="text-center">
+              <button class="btn btn-sm btn-outline-danger delete-proj-btn" data-id="${p.project_id}">
+                <i class="bi bi-trash"></i>
+              </button>
+            </td>
+          </tr>
+        `;
+      }).join('');
 
       document.querySelectorAll(".delete-proj-btn").forEach(btn => {
         btn.onclick = async () => {
@@ -1190,23 +1454,28 @@
       const tbody = document.getElementById("contactsTableBody");
       if (!tbody) return;
       if (allContacts.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="6" class="text-center py-3 text-muted">No contacts found.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="8" class="text-center py-3 text-muted">No contacts found.</td></tr>';
         return;
       }
-      tbody.innerHTML = allContacts.map(c => `
-        <tr>
-          <td><strong>${c.fullName}</strong></td>
-          <td><span class="small">${c.designation || 'N/A'} at ${c.organization || 'N/A'}</span></td>
-          <td>${c.mobile || 'N/A'}</td>
-          <td>${c.email || 'N/A'}</td>
-          <td><code class="text-dark font-monospace">${c.projectId}</code></td>
-          <td class="text-center">
-            <button class="btn btn-sm btn-outline-danger delete-contact-btn" data-id="${c.contactId}">
-              <i class="bi bi-trash"></i>
-            </button>
-          </td>
-        </tr>
-      `).join('');
+      tbody.innerHTML = allContacts.map(c => {
+        const linkedProjs = Array.isArray(c.project_id) ? c.project_id.join(', ') : c.project_id;
+        return `
+          <tr>
+            <td><code class="text-dark font-monospace">${c.contact_id}</code></td>
+            <td><strong>${c.contact_name}</strong></td>
+            <td>${c.designation}</td>
+            <td>${c.organization}</td>
+            <td>${c.mobile_phone || 'N/A'}</td>
+            <td>${c.email || 'N/A'}</td>
+            <td><span class="small text-muted font-monospace">${linkedProjs}</span></td>
+            <td class="text-center">
+              <button class="btn btn-sm btn-outline-danger delete-contact-btn" data-id="${c.contact_id}">
+                <i class="bi bi-trash"></i>
+              </button>
+            </td>
+          </tr>
+        `;
+      }).join('');
 
       document.querySelectorAll(".delete-contact-btn").forEach(btn => {
         btn.onclick = async () => {
@@ -1223,28 +1492,33 @@
       const tbody = document.getElementById("meetingsTableBody");
       if (!tbody) return;
       if (allMeetings.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="6" class="text-center py-3 text-muted">No meetings scheduled.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="7" class="text-center py-3 text-muted">No meetings scheduled.</td></tr>';
         return;
       }
-      tbody.innerHTML = allMeetings.map(m => `
-        <tr>
-          <td><strong>${m.title}</strong></td>
-          <td><span class="small">${m.date} at ${m.time}</span></td>
-          <td>${m.duration}</td>
-          <td><code class="text-dark font-monospace">${m.projectId}</code></td>
-          <td><span class="small text-muted">${m.agenda || 'N/A'}</span></td>
-          <td class="text-center">
-            <button class="btn btn-sm btn-outline-danger delete-meeting-btn" data-id="${m.meetingId}">
-              <i class="bi bi-trash"></i>
-            </button>
-          </td>
-        </tr>
-      `).join('');
+      tbody.innerHTML = allMeetings.map(m => {
+        const timestamp = m.meeting_timestamp ? m.meeting_timestamp.replace('T', ' ') : 'N/A';
+        const attendees = Array.isArray(m.attendees_list) ? m.attendees_list.join(', ') : m.attendees_list;
+        return `
+          <tr>
+            <td><code class="text-dark font-monospace">${m.meeting_id}</code></td>
+            <td><strong>${m.meeting_title}</strong></td>
+            <td><span class="small">${timestamp}</span></td>
+            <td><code class="text-dark font-monospace">${m.project_id}</code></td>
+            <td><span class="small text-muted">${attendees}</span></td>
+            <td><a href="${m.meeting_url}" target="_blank" class="small"><i class="bi bi-link-45deg"></i> Join Meeting</a></td>
+            <td class="text-center">
+              <button class="btn btn-sm btn-outline-danger delete-meeting-btn" data-id="${m.meeting_id}">
+                <i class="bi bi-trash"></i>
+              </button>
+            </td>
+          </tr>
+        `;
+      }).join('');
 
       document.querySelectorAll(".delete-meeting-btn").forEach(btn => {
         btn.onclick = async () => {
           const id = btn.dataset.id;
-          if (confirm(`Cancel meeting?`)) {
+          if (confirm(`Cancel meeting ${id}?`)) {
             await deleteMeeting(id);
             loadAllData();
           }
@@ -1256,20 +1530,22 @@
       const tbody = document.getElementById("budgetTableBody");
       if (!tbody) return;
       if (allBudgets.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="6" class="text-center py-3 text-muted">No project budgets configured.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="8" class="text-center py-3 text-muted">No budgets configured.</td></tr>';
         return;
       }
       tbody.innerHTML = allBudgets.map(b => {
-        const proj = allProjects.find(p => p.projectId === b.projectId);
+        const approver = allContacts.find(c => c.contact_id === b.approved_by);
         return `
           <tr>
-            <td><code class="text-dark fw-bold font-monospace">${b.projectId}</code></td>
-            <td><strong>${proj ? proj.projectName : 'Unknown Project'}</strong></td>
-            <td><strong>${Number(b.estimatedBudget).toLocaleString()} BDT</strong></td>
-            <td><span class="small text-muted">${b.notes || 'N/A'}</span></td>
-            <td><span class="badge bg-secondary text-dark">${b.status}</span></td>
+            <td><code class="text-dark font-monospace">${b.budget_line_id}</code></td>
+            <td><code class="text-dark font-monospace">${b.project_id}</code></td>
+            <td><span class="badge bg-light text-dark border">${b.cost_category}</span></td>
+            <td>${b.line_description}</td>
+            <td><strong>${Number(b.allocated_amount).toLocaleString()} BDT</strong></td>
+            <td>${approver ? approver.contact_name : 'Unknown Approver'}</td>
+            <td><span class="small">${b.last_updated}</span></td>
             <td class="text-center">
-              <button class="btn btn-sm btn-outline-danger delete-budget-btn" data-id="${b.projectId}">
+              <button class="btn btn-sm btn-outline-danger delete-budget-btn" data-id="${b.budget_line_id}">
                 <i class="bi bi-trash"></i>
               </button>
             </td>
@@ -1280,7 +1556,7 @@
       document.querySelectorAll(".delete-budget-btn").forEach(btn => {
         btn.onclick = async () => {
           const id = btn.dataset.id;
-          if (confirm(`Remove budget data for project ${id}?`)) {
+          if (confirm(`Remove budget line ${id}?`)) {
             await deleteBudget(id);
             loadAllData();
           }
@@ -1288,40 +1564,82 @@
       });
     }
 
-    function renderUpdates() {
-      const tbody = document.getElementById("updatesTableBody");
+    function renderTasks() {
+      const tbody = document.getElementById("tasksTableBody");
       if (!tbody) return;
-      if (allUpdates.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="6" class="text-center py-3 text-muted">No progress updates logged.</td></tr>';
+      if (allTasks.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="9" class="text-center py-3 text-muted">No tasks found.</td></tr>';
         return;
       }
-      tbody.innerHTML = allUpdates.map(u => `
-        <tr>
-          <td><code class="text-dark fw-bold font-monospace">${u.projectId}</code></td>
-          <td>${u.date}</td>
-          <td>
-            <div class="d-flex align-items-center gap-2">
-              <div class="progress flex-grow-1" style="height: 6px;">
-                <div class="progress-bar bg-success" role="progressbar" style="width: ${u.progressPercent}%"></div>
+      tbody.innerHTML = allTasks.map(t => {
+        const assignee = allContacts.find(c => c.contact_id === t.assigned_to);
+        return `
+          <tr>
+            <td><code class="text-dark font-monospace">${t.task_id}</code></td>
+            <td><span class="small font-monospace">${t.wbs_code}</span></td>
+            <td><strong>${t.task_name}</strong></td>
+            <td><code class="text-dark font-monospace">${t.project_id}</code></td>
+            <td>${assignee ? assignee.contact_name : 'Unknown'}</td>
+            <td>
+              <div class="d-flex align-items-center gap-2">
+                <div class="progress flex-grow-1" style="height: 6px;">
+                  <div class="progress-bar bg-success" role="progressbar" style="width: ${t.progress_percent}%"></div>
+                </div>
+                <span class="small fw-semibold">${t.progress_percent}%</span>
               </div>
-              <span class="small fw-semibold">${u.progressPercent}%</span>
-            </div>
-          </td>
-          <td><span class="small text-muted">${u.updateNotes || 'N/A'}</span></td>
-          <td><span class="badge bg-secondary text-dark">${u.status}</span></td>
-          <td class="text-center">
-            <button class="btn btn-sm btn-outline-danger delete-update-btn" data-id="${u.updateId}">
-              <i class="bi bi-trash"></i>
-            </button>
-          </td>
-        </tr>
-      `).join('');
+            </td>
+            <td><span class="small">${t.task_startDate} to ${t.task_endDate}</span></td>
+            <td><span class="badge bg-secondary text-dark">${t.task_status}</span></td>
+            <td class="text-center">
+              <button class="btn btn-sm btn-outline-primary edit-task-btn" data-id="${t.task_id}">
+                <i class="bi bi-pencil"></i>
+              </button>
+              <button class="btn btn-sm btn-outline-danger delete-task-btn" data-id="${t.task_id}">
+                <i class="bi bi-trash"></i>
+              </button>
+            </td>
+          </tr>
+        `;
+      }).join('');
 
-      document.querySelectorAll(".delete-update-btn").forEach(btn => {
+      document.querySelectorAll(".edit-task-btn").forEach(btn => {
+        btn.onclick = () => {
+          const id = btn.dataset.id;
+          const t = allTasks.find(task => task.task_id === id);
+          if (t) {
+            document.getElementById("task_id").value = t.task_id;
+            document.getElementById("task_project_id").value = t.project_id;
+            document.getElementById("task_wbs_code").value = t.wbs_code;
+            document.getElementById("task_name").value = t.task_name;
+            document.getElementById("task_startDate").value = t.task_startDate;
+            document.getElementById("task_endDate").value = t.task_endDate;
+            document.getElementById("task_assigned_to").value = t.assigned_to;
+            document.getElementById("task_progress_percent").value = t.progress_percent;
+            document.getElementById("task_status").value = t.task_status;
+            document.getElementById("task_working_update_log").value = t.working_update || "";
+            document.getElementById("task_working_update_new").value = "";
+
+            document.getElementById("cancelTaskEditBtn").classList.remove("d-none");
+            
+            // Switch to form tab
+            const formTab = new bootstrap.Tab(document.getElementById('tasksForm-tab'));
+            formTab.show();
+          }
+        };
+      });
+
+      document.getElementById("cancelTaskEditBtn").onclick = () => {
+        document.getElementById("taskForm").reset();
+        document.getElementById("task_id").value = "";
+        document.getElementById("task_working_update_log").value = "";
+        document.getElementById("cancelTaskEditBtn").classList.add("d-none");
+      };
+
+      document.querySelectorAll(".delete-task-btn").forEach(btn => {
         btn.onclick = async () => {
           const id = btn.dataset.id;
-          if (confirm(`Delete this update entry?`)) {
-            await deleteProjectUpdate(id);
+          if (confirm(`Delete task ${id}?`)) {
+            await deleteTask(id);
             loadAllData();
           }
         };
@@ -1332,24 +1650,29 @@
       const tbody = document.getElementById("requisitionsTableBody");
       if (!tbody) return;
       if (allRequisitions.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="7" class="text-center py-3 text-muted">No requisitions created.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="9" class="text-center py-3 text-muted">No requisitions found.</td></tr>';
         return;
       }
-      tbody.innerHTML = allRequisitions.map(r => `
-        <tr>
-          <td><code class="text-dark font-monospace">${r.requisitionId}</code></td>
-          <td><strong>${r.itemName}</strong></td>
-          <td>${r.quantity}</td>
-          <td>${Number(r.estimatedCost).toLocaleString()} BDT</td>
-          <td><code class="text-dark font-monospace">${r.projectId}</code></td>
-          <td><span class="badge bg-secondary text-dark">${r.status}</span></td>
-          <td class="text-center">
-            <button class="btn btn-sm btn-outline-danger delete-req-btn" data-id="${r.requisitionId}">
-              <i class="bi bi-trash"></i>
-            </button>
-          </td>
-        </tr>
-      `).join('');
+      tbody.innerHTML = allRequisitions.map(r => {
+        const requester = allContacts.find(c => c.contact_id === r.requested_by);
+        return `
+          <tr>
+            <td><code class="text-dark font-monospace">${r.requisition_id}</code></td>
+            <td><strong>${r.requested_item}</strong></td>
+            <td>${r.quantity}</td>
+            <td>${Number(r.estimated_unit_cost).toLocaleString()} BDT</td>
+            <td><strong>${Number(r.estimated_total).toLocaleString()} BDT</strong></td>
+            <td><code class="text-dark font-monospace">${r.project_id}</code></td>
+            <td>${requester ? requester.contact_name : 'Unknown'}</td>
+            <td><span class="badge bg-secondary text-dark">${r.approval_status}</span></td>
+            <td class="text-center">
+              <button class="btn btn-sm btn-outline-danger delete-req-btn" data-id="${r.requisition_id}">
+                <i class="bi bi-trash"></i>
+              </button>
+            </td>
+          </tr>
+        `;
+      }).join('');
 
       document.querySelectorAll(".delete-req-btn").forEach(btn => {
         btn.onclick = async () => {
@@ -1362,34 +1685,36 @@
       });
     }
 
-    function renderPurchases() {
+    function renderPurchaseOrders() {
       const tbody = document.getElementById("purchasesTableBody");
       if (!tbody) return;
-      if (allPurchases.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="7" class="text-center py-3 text-muted">No purchases logged.</td></tr>';
+      if (allPurchaseOrders.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="9" class="text-center py-3 text-muted">No purchase orders found.</td></tr>';
         return;
       }
-      tbody.innerHTML = allPurchases.map(p => `
+      tbody.innerHTML = allPurchaseOrders.map(po => `
         <tr>
-          <td><code class="text-dark font-monospace">${p.purchaseId}</code></td>
-          <td><strong>${p.itemName}</strong> <span class="small text-muted">(${p.requisitionId === 'Direct' ? 'Direct' : 'Linked'})</span></td>
-          <td>${p.supplier || 'N/A'}</td>
-          <td><strong>${Number(p.finalCost).toLocaleString()} BDT</strong></td>
-          <td><code class="text-dark font-monospace">${p.projectId}</code></td>
-          <td><span class="badge bg-secondary text-dark">${p.status}</span></td>
+          <td><code class="text-dark font-monospace">${po.po_number}</code></td>
+          <td><code class="text-dark font-monospace">${po.requisition_id}</code></td>
+          <td><code class="text-dark font-monospace">${po.project_id}</code></td>
+          <td><strong>${po.vendor_name}</strong></td>
+          <td><strong>${Number(po.final_total).toLocaleString()} BDT</strong></td>
+          <td><span class="small">${po.po_date}</span></td>
+          <td><span class="small">${po.delivery_date}</span></td>
+          <td><span class="badge bg-secondary text-dark">${po.order_status}</span></td>
           <td class="text-center">
-            <button class="btn btn-sm btn-outline-danger delete-pur-btn" data-id="${p.purchaseId}">
+            <button class="btn btn-sm btn-outline-danger delete-po-btn" data-id="${po.po_number}">
               <i class="bi bi-trash"></i>
             </button>
           </td>
         </tr>
       `).join('');
 
-      document.querySelectorAll(".delete-pur-btn").forEach(btn => {
+      document.querySelectorAll(".delete-po-btn").forEach(btn => {
         btn.onclick = async () => {
           const id = btn.dataset.id;
-          if (confirm(`Delete purchase record ${id}?`)) {
-            await deletePurchase(id);
+          if (confirm(`Delete purchase order ${id}?`)) {
+            await deletePurchaseOrder(id);
             loadAllData();
           }
         };
@@ -1400,18 +1725,21 @@
       const tbody = document.getElementById("expensesTableBody");
       if (!tbody) return;
       if (allExpenses.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="6" class="text-center py-3 text-muted">No operational expenses logged.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="9" class="text-center py-3 text-muted">No expenses logged.</td></tr>';
         return;
       }
       tbody.innerHTML = allExpenses.map(e => `
         <tr>
-          <td><span class="badge bg-light text-dark border">${e.category}</span></td>
-          <td><strong>${Number(e.amount).toLocaleString()} BDT</strong></td>
-          <td>${e.date}</td>
-          <td><code class="text-dark font-monospace">${e.projectId}</code></td>
-          <td><span class="small text-muted">${e.description || 'N/A'}</span></td>
+          <td><code class="text-dark font-monospace">${e.expense_id}</code></td>
+          <td><code class="text-dark font-monospace">${e.project_id}</code></td>
+          <td><code class="text-dark font-monospace">${e.po_number || 'N/A'}</code></td>
+          <td>${e.invoice_number}</td>
+          <td><span class="small">${e.payment_date}</span></td>
+          <td><strong>${Number(e.amount_paid).toLocaleString()} BDT</strong></td>
+          <td><span class="badge bg-light text-dark border">${e.cost_category}</span></td>
+          <td>${e.receipt_url ? `<a href="${e.receipt_url}" target="_blank" class="small"><i class="bi bi-file-earmark-image"></i> View Receipt</a>` : 'N/A'}</td>
           <td class="text-center">
-            <button class="btn btn-sm btn-outline-danger delete-exp-btn" data-id="${e.expenseId}">
+            <button class="btn btn-sm btn-outline-danger delete-exp-btn" data-id="${e.expense_id}">
               <i class="bi bi-trash"></i>
             </button>
           </td>
@@ -1421,7 +1749,7 @@
       document.querySelectorAll(".delete-exp-btn").forEach(btn => {
         btn.onclick = async () => {
           const id = btn.dataset.id;
-          if (confirm(`Remove this expense record?`)) {
+          if (confirm(`Delete expense record ${id}?`)) {
             await deleteExpense(id);
             loadAllData();
           }
@@ -1429,21 +1757,33 @@
       });
     }
 
+    // ==========================================
     // FORM SUBMISSIONS
+    // ==========================================
     document.getElementById("projectForm").onsubmit = async (e) => {
       e.preventDefault();
+      
+      const start = new Date(document.getElementById("start_date").value);
+      const end = new Date(document.getElementById("end_date").value);
+      if (end <= start) {
+        alert("Target End Date must be greater than Start Date.");
+        return;
+      }
+
       try {
         await addProject({
-          projectId: document.getElementById("projId").value,
-          projectName: document.getElementById("projName").value,
-          clientName: document.getElementById("projClient").value,
-          description: document.getElementById("projDesc").value,
-          startDate: document.getElementById("projStart").value,
-          endDate: document.getElementById("projEnd").value,
-          status: document.getElementById("projStatus").value
+          project_id: document.getElementById("project_id").value || null,
+          project_name: document.getElementById("project_name").value,
+          client_sponsor: document.getElementById("client_sponsor").value,
+          project_desc: document.getElementById("project_desc").value,
+          start_date: document.getElementById("start_date").value,
+          end_date: document.getElementById("end_date").value,
+          project_status: document.getElementById("project_status").value,
+          project_manager: document.getElementById("project_manager").value
         });
         document.getElementById("projectForm").reset();
         loadAllData();
+        alert("Project saved successfully.");
       } catch (err) {
         alert("Failed to save project: " + err.message);
       }
@@ -1451,18 +1791,31 @@
 
     document.getElementById("contactForm").onsubmit = async (e) => {
       e.preventDefault();
+
+      const mobile = document.getElementById("contact_mobile_phone").value.trim();
+      const mobileRegex = /^\+?[1-9]\d{1,14}$/;
+      if (mobile && !mobileRegex.test(mobile)) {
+        alert("Invalid mobile number format. Please use international format (e.g. +88017XXXXXXXX).");
+        return;
+      }
+
+      // Collect multiple project IDs
+      const projSelect = document.getElementById("contact_project_id");
+      const selectedProjIds = Array.from(projSelect.selectedOptions).map(opt => opt.value);
+
       try {
         await addContact({
-          contactId: document.getElementById("contactId").value || null,
-          projectId: document.getElementById("contactProjId").value,
-          fullName: document.getElementById("contactName").value,
-          designation: document.getElementById("contactDesig").value,
-          organization: document.getElementById("contactOrg").value,
-          mobile: document.getElementById("contactMobile").value,
-          email: document.getElementById("contactEmail").value
+          contact_id: document.getElementById("contact_id").value || null,
+          project_id: selectedProjIds,
+          contact_name: document.getElementById("contact_name").value,
+          designation: document.getElementById("contact_designation").value,
+          organization: document.getElementById("contact_organization").value,
+          mobile_phone: mobile,
+          email: document.getElementById("contact_email").value
         });
         document.getElementById("contactForm").reset();
         loadAllData();
+        alert("Contact added successfully.");
       } catch (err) {
         alert("Failed to save contact: " + err.message);
       }
@@ -1470,17 +1823,29 @@
 
     document.getElementById("meetingForm").onsubmit = async (e) => {
       e.preventDefault();
+
+      const timestamp = new Date(document.getElementById("meeting_timestamp").value);
+      if (timestamp <= new Date()) {
+        alert("Meeting Date & Time must be in the future.");
+        return;
+      }
+
+      const attendeesSelect = document.getElementById("meet_attendees_list");
+      const selectedEmails = Array.from(attendeesSelect.selectedOptions).map(opt => opt.value);
+
       try {
         await addMeeting({
-          projectId: document.getElementById("meetProjId").value,
-          title: document.getElementById("meetTitle").value,
-          date: document.getElementById("meetDate").value,
-          time: document.getElementById("meetTime").value,
-          duration: document.getElementById("meetDur").value,
-          agenda: document.getElementById("meetAgenda").value
+          project_id: document.getElementById("meet_project_id").value,
+          meeting_title: document.getElementById("meet_meeting_title").value,
+          meeting_timestamp: document.getElementById("meeting_timestamp").value,
+          agenda: document.getElementById("meet_agenda").value,
+          attendees_list: selectedEmails,
+          meeting_url: document.getElementById("meet_meeting_url").value,
+          meeting_minutes: document.getElementById("meet_meeting_minutes").value
         });
         document.getElementById("meetingForm").reset();
         loadAllData();
+        alert("Meeting scheduled successfully.");
       } catch (err) {
         alert("Failed to schedule meeting: " + err.message);
       }
@@ -1490,32 +1855,80 @@
       e.preventDefault();
       try {
         await addBudget({
-          projectId: document.getElementById("budgProjId").value,
-          estimatedBudget: document.getElementById("budgAmount").value,
-          status: document.getElementById("budgStatus").value,
-          notes: document.getElementById("budgNotes").value
+          project_id: document.getElementById("budg_project_id").value,
+          cost_category: document.getElementById("budg_cost_category").value,
+          line_description: document.getElementById("budg_line_description").value,
+          allocated_amount: document.getElementById("budg_allocated_amount").value,
+          approved_by: document.getElementById("budg_approved_by").value
         });
         document.getElementById("budgetForm").reset();
         loadAllData();
+        alert("Budget allocation configured successfully.");
       } catch (err) {
         alert("Failed to configure budget: " + err.message);
       }
     };
 
-    document.getElementById("updateForm").onsubmit = async (e) => {
+    document.getElementById("taskForm").onsubmit = async (e) => {
       e.preventDefault();
+
+      const wbsCode = document.getElementById("task_wbs_code").value.trim();
+      const wbsRegex = /^\d+(\.\d+)*$/;
+      if (wbsCode && !wbsRegex.test(wbsCode)) {
+        alert("Invalid WBS Code format. Must be numbers separated by dots (e.g. 1.1 or 1.1.2).");
+        return;
+      }
+
+      // Date constraints verification
+      const projId = document.getElementById("task_project_id").value;
+      const proj = allProjects.find(p => p.project_id === projId);
+      if (proj) {
+        const projStart = new Date(proj.start_date);
+        const taskStart = new Date(document.getElementById("task_startDate").value);
+        if (taskStart < projStart) {
+          alert(`Task Start Date cannot be before the Project Start Date (${proj.start_date}).`);
+          return;
+        }
+      }
+
+      const taskStart = new Date(document.getElementById("task_startDate").value);
+      const taskEnd = new Date(document.getElementById("task_endDate").value);
+      if (taskEnd < taskStart) {
+        alert("Task End Date cannot be before Task Start Date.");
+        return;
+      }
+
+      // Collect updates
+      const newNote = document.getElementById("task_working_update_new").value.trim();
+      let workingUpdate = "";
+      if (newNote) {
+        const timestamp = new Date().toLocaleString('en-US', { hour12: true });
+        workingUpdate = `[${timestamp}] ${newNote}`;
+      }
+
       try {
-        await addProjectUpdate({
-          projectId: document.getElementById("updProjId").value,
-          date: document.getElementById("updDate").value,
-          progressPercent: document.getElementById("updProgress").value,
-          status: document.getElementById("updStatus").value,
-          updateNotes: document.getElementById("updNotes").value
+        await addTask({
+          task_id: document.getElementById("task_id").value || null,
+          project_id: projId,
+          wbs_code: wbsCode,
+          task_name: document.getElementById("task_name").value,
+          assigned_to: document.getElementById("task_assigned_to").value,
+          task_startDate: document.getElementById("task_startDate").value,
+          task_endDate: document.getElementById("task_endDate").value,
+          progress_percent: document.getElementById("task_progress_percent").value,
+          task_status: document.getElementById("task_status").value,
+          working_update: workingUpdate
         });
-        document.getElementById("updateForm").reset();
+        
+        document.getElementById("taskForm").reset();
+        document.getElementById("task_id").value = "";
+        document.getElementById("task_working_update_log").value = "";
+        document.getElementById("cancelTaskEditBtn").classList.add("d-none");
+        
         loadAllData();
+        alert("Task saved successfully.");
       } catch (err) {
-        alert("Failed to post progress update: " + err.message);
+        alert("Failed to save task: " + err.message);
       }
     };
 
@@ -1523,14 +1936,18 @@
       e.preventDefault();
       try {
         await addRequisition({
-          projectId: document.getElementById("reqProjId").value,
-          itemName: document.getElementById("reqItem").value,
-          quantity: document.getElementById("reqQty").value,
-          estimatedCost: document.getElementById("reqCost").value,
-          status: document.getElementById("reqStatus").value
+          project_id: document.getElementById("req_project_id").value,
+          requested_item: document.getElementById("req_requested_item").value,
+          quantity: document.getElementById("req_quantity").value,
+          estimated_unit_cost: document.getElementById("req_estimated_unit_cost").value,
+          justification: document.getElementById("req_justification").value,
+          requested_by: document.getElementById("req_requested_by").value,
+          approval_status: document.getElementById("req_approval_status").value
         });
         document.getElementById("requisitionForm").reset();
+        calculateReqTotal();
         loadAllData();
+        alert("Requisition submitted successfully.");
       } catch (err) {
         alert("Failed to save requisition: " + err.message);
       }
@@ -1538,37 +1955,63 @@
 
     document.getElementById("purchaseForm").onsubmit = async (e) => {
       e.preventDefault();
+
+      const poDate = new Date(document.getElementById("po_date").value);
+      const delDate = new Date(document.getElementById("po_delivery_date").value);
+      if (delDate < poDate) {
+        alert("Delivery Date cannot be before PO Issue Date.");
+        return;
+      }
+
+      // Re-enable project id to capture its value on submit
+      const projSelect = document.getElementById("po_project_id");
+      projSelect.disabled = false;
+      const projId = projSelect.value;
+      projSelect.disabled = true;
+
       try {
-        await addPurchase({
-          requisitionId: document.getElementById("purRequisitionId").value,
-          projectId: document.getElementById("purProjId").value,
-          itemName: document.getElementById("purItemName").value,
-          supplier: document.getElementById("purSupplier").value,
-          finalCost: document.getElementById("purCost").value,
-          status: document.getElementById("purStatus").value
+        await addPurchaseOrder({
+          po_number: document.getElementById("po_number").value || null,
+          requisition_id: document.getElementById("po_requisition_id").value,
+          project_id: projId,
+          vendor_name: document.getElementById("po_vendor_name").value,
+          final_total: document.getElementById("po_final_total").value,
+          po_date: document.getElementById("po_date").value,
+          delivery_date: document.getElementById("po_delivery_date").value,
+          order_status: document.getElementById("po_order_status").value
         });
         document.getElementById("purchaseForm").reset();
-        // Enable back inputs that might have been disabled by auto-fill
-        document.getElementById("purProjId").disabled = false;
-        document.getElementById("purItemName").disabled = false;
         loadAllData();
+        alert("Purchase Order logged successfully. Expense tracking logged automatically.");
       } catch (err) {
-        alert("Failed to log purchase: " + err.message);
+        alert("Failed to log purchase order: " + err.message);
       }
     };
 
     document.getElementById("expenseForm").onsubmit = async (e) => {
       e.preventDefault();
+
+      const payDate = new Date(document.getElementById("exp_payment_date").value);
+      const today = new Date();
+      today.setHours(23, 59, 59, 999);
+      if (payDate > today) {
+        alert("Payment Date cannot be in the future.");
+        return;
+      }
+
       try {
         await addExpense({
-          projectId: document.getElementById("expProjId").value,
-          category: document.getElementById("expCategory").value,
-          amount: document.getElementById("expAmount").value,
-          date: document.getElementById("expDate").value,
-          description: document.getElementById("expDesc").value
+          project_id: document.getElementById("exp_project_id").value,
+          po_number: document.getElementById("exp_po_number").value || null,
+          invoice_number: document.getElementById("exp_invoice_number").value,
+          payment_date: document.getElementById("exp_payment_date").value,
+          amount_paid: document.getElementById("exp_amount_paid").value,
+          cost_category: document.getElementById("exp_cost_category").value,
+          receipt_url: document.getElementById("exp_receipt_url").value
         });
         document.getElementById("expenseForm").reset();
         loadAllData();
+        alert("Expense record posted successfully.");
       } catch (err) {
         alert("Failed to post expense: " + err.message);
       }
