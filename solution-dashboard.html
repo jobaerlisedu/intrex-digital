@@ -125,6 +125,10 @@
                   <i class="bi bi-telephone-inbound"></i> Contact Directory
                 </button>
                 <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
+                  id="managers-tab" data-bs-toggle="tab" data-bs-target="#managersPanel" type="button" role="tab">
+                  <i class="bi bi-person-badge"></i> Project Managers
+                </button>
+                <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
                   id="meetings-tab" data-bs-toggle="tab" data-bs-target="#meetingsPanel" type="button" role="tab">
                   <i class="bi bi-calendar-event"></i> Meeting Scheduler
                 </button>
@@ -383,6 +387,72 @@
                         <tbody id="contactsTableBody">
                           <tr>
                             <td colspan="8" class="text-center py-4 text-muted">Loading contacts...</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- 2B. PROJECT MANAGERS PANEL -->
+                <div class="tab-pane fade" id="managersPanel" role="tabpanel">
+                  <!-- Form -->
+                  <div class="card p-4 rounded-4 shadow-sm border mb-4">
+                    <h3 class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
+                      <i class="bi bi-person-badge-fill me-2 text-primary"></i>Add Project Manager
+                    </h3>
+                    <form id="managerForm">
+                      <div class="row g-3">
+                        <div class="col-md-6">
+                          <label class="form-label small fw-semibold" for="mgr_contact_name">Full Name <span class="text-danger">*</span></label>
+                          <input class="form-control" id="mgr_contact_name" type="text" placeholder="e.g. Jane Doe" required maxlength="100">
+                        </div>
+                        <div class="col-md-6">
+                          <label class="form-label small fw-semibold" for="mgr_organization">Organization <span class="text-danger">*</span></label>
+                          <input class="form-control" id="mgr_organization" type="text" placeholder="e.g. Intrex Digital" required>
+                        </div>
+                        <div class="col-md-6">
+                          <label class="form-label small fw-semibold" for="mgr_mobile_phone">Mobile Number</label>
+                          <input class="form-control" id="mgr_mobile_phone" type="tel" placeholder="e.g. +88017XXXXXXXX">
+                        </div>
+                        <div class="col-md-6">
+                          <label class="form-label small fw-semibold" for="mgr_email">E-mail Address</label>
+                          <input class="form-control" id="mgr_email" type="email" placeholder="e.g. jane@domain.com">
+                        </div>
+                        <div class="col-12">
+                          <label class="form-label small fw-semibold" for="mgr_project_id">Link to Project(s) <span class="text-danger">*</span></label>
+                          <select class="form-select project-id-select" id="mgr_project_id" multiple required style="min-height: 80px;">
+                            <option value="" disabled>Loading projects...</option>
+                          </select>
+                          <div class="form-text text-muted">Hold Ctrl (Windows) or Cmd (Mac) to select multiple projects.</div>
+                        </div>
+                      </div>
+                      <button type="submit" class="btn btn-primary fw-semibold py-2 px-4 mt-3">
+                        <i class="bi bi-save me-2"></i>Save Project Manager
+                      </button>
+                    </form>
+                  </div>
+                  <!-- Directory -->
+                  <div class="card p-4 rounded-4 shadow-sm border">
+                    <h3 class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
+                      <i class="bi bi-shield-check me-2 text-primary"></i>Project Managers Directory
+                    </h3>
+                    <div class="table-responsive">
+                      <table class="table table-hover align-middle mb-0" id="managersTable">
+                        <thead class="table-light">
+                          <tr>
+                            <th>Contact ID</th>
+                            <th>Name</th>
+                            <th>Organization</th>
+                            <th>Mobile</th>
+                            <th>Email</th>
+                            <th>Project IDs</th>
+                            <th class="text-center">Actions</th>
+                          </tr>
+                        </thead>
+                        <tbody id="managersTableBody">
+                          <tr>
+                            <td colspan="7" class="text-center py-4 text-muted">Loading project managers...</td>
                           </tr>
                         </tbody>
                       </table>
@@ -1232,6 +1302,7 @@
 
         renderProjects();
         renderContacts();
+        renderManagers();
         renderMeetings();
         renderBudgets();
         renderTasks();
@@ -1314,6 +1385,44 @@
         btn.onclick = async () => {
           const id = btn.dataset.id;
           if (confirm(`Delete this contact?`)) {
+            await deleteContact(id);
+            loadAllData();
+          }
+        };
+      });
+    }
+
+    function renderManagers() {
+      const tbody = document.getElementById("managersTableBody");
+      if (!tbody) return;
+      const pms = allContacts.filter(c => c.designation === "Project Manager");
+      if (pms.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="7" class="text-center py-3 text-muted">No project managers found.</td></tr>';
+        return;
+      }
+      tbody.innerHTML = pms.map(m => {
+        const linkedProjs = Array.isArray(m.project_id) ? m.project_id.join(', ') : m.project_id;
+        return `
+          <tr>
+            <td><code class="text-dark font-monospace">${m.contact_id}</code></td>
+            <td><strong>${m.contact_name}</strong></td>
+            <td>${m.organization}</td>
+            <td>${m.mobile_phone || 'N/A'}</td>
+            <td>${m.email || 'N/A'}</td>
+            <td><span class="small text-muted font-monospace">${linkedProjs}</span></td>
+            <td class="text-center">
+              <button class="btn btn-sm btn-outline-danger delete-manager-btn" data-id="${m.contact_id}">
+                <i class="bi bi-trash"></i>
+              </button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+
+      document.querySelectorAll(".delete-manager-btn").forEach(btn => {
+        btn.onclick = async () => {
+          const id = btn.dataset.id;
+          if (confirm(`Delete project manager ${id}?`)) {
             await deleteContact(id);
             loadAllData();
           }
@@ -1649,6 +1758,37 @@
         alert("Contact added successfully.");
       } catch (err) {
         alert("Failed to save contact: " + err.message);
+      }
+    };
+
+    document.getElementById("managerForm").onsubmit = async (e) => {
+      e.preventDefault();
+
+      const mobile = document.getElementById("mgr_mobile_phone").value.trim();
+      const mobileRegex = /^\+?[1-9]\d{1,14}$/;
+      if (mobile && !mobileRegex.test(mobile)) {
+        alert("Invalid mobile number format. Please use international format (e.g. +88017XXXXXXXX).");
+        return;
+      }
+
+      const projSelect = document.getElementById("mgr_project_id");
+      const selectedProjIds = Array.from(projSelect.selectedOptions).map(opt => opt.value);
+
+      try {
+        await addContact({
+          contact_id: null,
+          project_id: selectedProjIds,
+          contact_name: document.getElementById("mgr_contact_name").value,
+          designation: "Project Manager",
+          organization: document.getElementById("mgr_organization").value,
+          mobile_phone: mobile,
+          email: document.getElementById("mgr_email").value
+        });
+        document.getElementById("managerForm").reset();
+        loadAllData();
+        alert("Project Manager added successfully.");
+      } catch (err) {
+        alert("Failed to save project manager: " + err.message);
       }
     };
 
