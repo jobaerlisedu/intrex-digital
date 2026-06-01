@@ -812,7 +812,8 @@ export async function addSupportTicket(ticketData) {
   if (!checkConfiguration()) return;
   const {
     ticket_id, project_id, requester_id, ticket_subject,
-    ticket_desc, priority, assigned_to, ticket_status, resolution_notes
+    ticket_desc, priority, assigned_to, ticket_status, resolution_notes,
+    asset_id
   } = ticketData;
 
   if (!project_id || !requester_id || !ticket_subject || !ticket_desc || !priority || !ticket_status) {
@@ -880,6 +881,7 @@ export async function addSupportTicket(ticketData) {
       created_at: createdAt,
       closed_at: closedAt,
       sla_deadline: slaDeadline,
+      asset_id: asset_id || "",
       updated_at: serverTimestamp()
     });
 
@@ -1009,4 +1011,90 @@ export async function deleteClientPayment(invoiceId) {
     throw error;
   }
 }
+
+// ==========================================
+// 13. DOMAIN & HOSTING SALES TRACKER (tbl_domain_hosting_sales)
+// ==========================================
+async function generateAssetId() {
+  return await getNextSeqId("tbl_domain_hosting_sales", "AST-", "asset_id", 4);
+}
+
+export async function addDomainHosting(assetData) {
+  if (!checkConfiguration()) return;
+  const {
+    asset_id, project_id, asset_type, asset_url, provider_name,
+    cost_price, selling_price, reg_date, billing_cycle, renewal_date, asset_status
+  } = assetData;
+
+  if (!project_id || !asset_type || !asset_url || !provider_name || cost_price === undefined || selling_price === undefined || !reg_date || !billing_cycle || !renewal_date || !asset_status) {
+    throw new Error("Missing required domain & hosting fields");
+  }
+
+  if (Number(cost_price) < 0) {
+    throw new Error("Cost Price cannot be negative.");
+  }
+
+  if (Number(selling_price) <= Number(cost_price)) {
+    throw new Error("Selling Price must be strictly greater than Cost Price.");
+  }
+
+  if (!asset_url.trim()) {
+    throw new Error("Domain/Server URL is required.");
+  }
+
+  try {
+    const id = asset_id || await generateAssetId();
+    const docRef = doc(db, "tbl_domain_hosting_sales", id);
+
+    await setDoc(docRef, {
+      asset_id: id,
+      project_id: project_id.trim().toUpperCase(),
+      asset_type: asset_type,
+      asset_url: asset_url.trim(),
+      provider_name: provider_name,
+      cost_price: Number(cost_price),
+      selling_price: Number(selling_price),
+      reg_date: reg_date,
+      billing_cycle: billing_cycle,
+      renewal_date: renewal_date,
+      asset_status: asset_status,
+      createdAt: serverTimestamp(),
+      updatedAt: serverTimestamp()
+    }, { merge: true });
+
+    return id;
+  } catch (error) {
+    console.error("Error saving domain & hosting asset: ", error);
+    throw error;
+  }
+}
+
+export async function getAllDomainHosting() {
+  if (!checkConfiguration()) return [];
+  try {
+    const querySnapshot = await getDocs(collection(db, "tbl_domain_hosting_sales"));
+    const assets = [];
+    querySnapshot.forEach((docSnap) => {
+      if (docSnap.exists()) {
+        assets.push(docSnap.data());
+      }
+    });
+    return assets;
+  } catch (error) {
+    console.error("Error fetching domain & hosting assets: ", error);
+    throw error;
+  }
+}
+
+export async function deleteDomainHosting(assetId) {
+  if (!checkConfiguration()) return;
+  try {
+    const docRef = doc(db, "tbl_domain_hosting_sales", assetId);
+    await deleteDoc(docRef);
+  } catch (error) {
+    console.error("Error deleting domain & hosting asset: ", error);
+    throw error;
+  }
+}
+
 

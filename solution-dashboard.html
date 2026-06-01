@@ -49,6 +49,34 @@
       font-size: 0.775rem;
       opacity: 0.8;
     }
+    /* Premium Detail View Cards CSS */
+    .detail-card {
+      background-color: var(--bs-body-bg);
+      border: 1px solid var(--bs-border-color);
+      border-radius: 12px;
+      padding: 12px 16px;
+      height: 100%;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .detail-card:hover {
+      border-color: var(--primary-color);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+    }
+    .detail-card-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: var(--bs-secondary-color);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 4px;
+    }
+    .detail-card-value {
+      font-size: 0.925rem;
+      font-weight: 600;
+      color: var(--bs-heading-color);
+      word-break: break-word;
+    }
   </style>
   <script>
     (function () {
@@ -159,6 +187,10 @@
                 <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
                   id="tickets-tab" data-bs-toggle="tab" data-bs-target="#ticketsPanel" type="button" role="tab">
                   <i class="bi bi-headset"></i> Support Ticketing
+                </button>
+                <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
+                  id="hosting-tab" data-bs-toggle="tab" data-bs-target="#hostingPanel" type="button" role="tab">
+                  <i class="bi bi-server"></i> Domain & Hosting
                 </button>
               </div>
             </div>
@@ -1167,6 +1199,12 @@
                           </select>
                         </div>
                         <div class="col-md-6">
+                          <label class="form-label small fw-semibold" for="ticket_asset_id">Linked Infrastructure Asset <span class="text-muted">(Optional for Domain/Hosting tickets)</span></label>
+                          <select class="form-select" id="ticket_asset_id">
+                            <option value="">None / General Issue</option>
+                          </select>
+                        </div>
+                        <div class="col-md-6">
                           <label class="form-label small fw-semibold" for="ticket_requester_id">Requester Name (Client Contact) <span class="text-danger">*</span></label>
                           <select class="form-select" id="ticket_requester_id" required>
                             <option value="" disabled selected>Select Requester</option>
@@ -1227,6 +1265,7 @@
                           <tr>
                             <th>Ticket ID</th>
                             <th>Project</th>
+                            <th>Asset ID</th>
                             <th>Requester</th>
                             <th>Subject</th>
                             <th>Priority</th>
@@ -1248,6 +1287,143 @@
                   </div>
                 </div>
 
+                <!-- 10. DOMAIN & HOSTING SALES PANEL -->
+                <div class="tab-pane fade" id="hostingPanel" role="tabpanel">
+                  <!-- Form -->
+                  <div class="card p-4 rounded-4 shadow-sm border mb-4">
+                    <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
+                      <h3 class="h5 fw-bold mb-0 text-heading-color">
+                        <i class="bi bi-server me-2 text-primary"></i><span id="hostingFormTitle">Add Domain & Hosting Asset</span>
+                      </h3>
+                      <button type="button" id="cancelHostingEditBtn" class="btn btn-outline-secondary py-1 px-3 d-none">
+                        Cancel Edit
+                      </button>
+                    </div>
+                    <form id="hostingForm">
+                      <input type="hidden" id="host_asset_id" value="">
+                      <div class="row g-3">
+                        <div class="col-md-6">
+                          <label class="form-label small fw-semibold" for="host_project_id">Select Project <span class="text-danger">*</span></label>
+                          <select class="form-select project-id-select" id="host_project_id" required>
+                            <option value="" disabled selected>Loading projects...</option>
+                          </select>
+                        </div>
+                        <div class="col-md-6">
+                          <label class="form-label small fw-semibold" for="host_package">Hosting Package <span class="text-muted">(auto-fills capacity &amp; cost)</span></label>
+                          <select class="form-select" id="host_package">
+                            <option value="">-- Custom / Not Applicable --</option>
+                            <option value="Basic" data-capacity="10 GB NVMe SSD" data-cost="1699">Basic — ৳1,699/yr — 10 GB Hosting + Free .com</option>
+                            <option value="Plus" data-capacity="20 GB NVMe SSD" data-cost="2199">Plus — ৳2,199/yr — 20 GB Hosting + Free .com</option>
+                            <option value="Business" data-capacity="Unlimited NVMe SSD" data-cost="2999">Business — ৳2,999/yr — Unlimited Hosting + Free .com</option>
+                          </select>
+                        </div>
+                        <div class="col-md-6">
+                          <label class="form-label small fw-semibold" for="host_capacity">Hosting Capacity</label>
+                          <input class="form-control" id="host_capacity" type="text" placeholder="e.g. 10 GB NVMe SSD or Unlimited">
+                          <div class="form-text text-muted">Auto-filled when a package is selected. Edit freely for custom setups.</div>
+                        </div>
+                        <div class="col-md-6">
+                          <label class="form-label small fw-semibold" for="host_asset_type">Asset Type <span class="text-danger">*</span></label>
+                          <select class="form-select" id="host_asset_type" required>
+                            <option value="" disabled selected>Select Type</option>
+                            <option value="Domain Name">Domain Name</option>
+                            <option value="Shared Hosting">Shared Hosting</option>
+                            <option value="VPS / Cloud Server">VPS / Cloud Server</option>
+                            <option value="SSL Certificate">SSL Certificate</option>
+                            <option value="Dedicated IP">Dedicated IP</option>
+                          </select>
+                        </div>
+                        <div class="col-md-6">
+                          <label class="form-label small fw-semibold" for="host_asset_url">Domain / Server URL <span class="text-danger">*</span></label>
+                          <input class="form-control" id="host_asset_url" type="text" placeholder="e.g. clientapp.com or 192.168.1.1" required>
+                        </div>
+                        <div class="col-md-6">
+                          <label class="form-label small fw-semibold" for="host_provider_name">Upstream Provider <span class="text-danger">*</span></label>
+                          <select class="form-select" id="host_provider_name" required>
+                            <option value="" disabled selected>Select Provider</option>
+                            <option value="AWS">AWS</option>
+                            <option value="GoDaddy">GoDaddy</option>
+                            <option value="Namecheap">Namecheap</option>
+                            <option value="DigitalOcean">DigitalOcean</option>
+                            <option value="Cloudflare">Cloudflare</option>
+                          </select>
+                        </div>
+                        <div class="col-md-4">
+                          <label class="form-label small fw-semibold" for="host_cost_price">Cost Price (Buy BDT) <span class="text-danger">*</span></label>
+                          <input class="form-control" id="host_cost_price" type="number" min="0" step="0.01" placeholder="0.00" required>
+                        </div>
+                        <div class="col-md-4">
+                          <label class="form-label small fw-semibold" for="host_selling_price">Selling Price (Sell BDT) <span class="text-danger">*</span></label>
+                          <input class="form-control" id="host_selling_price" type="number" min="0" step="0.01" placeholder="0.00" required>
+                        </div>
+                        <div class="col-md-4">
+                          <label class="form-label small fw-semibold" for="host_asset_status">Asset Status <span class="text-danger">*</span></label>
+                          <select class="form-select" id="host_asset_status" required>
+                            <option value="Active / Good Standing" selected>Active / Good Standing</option>
+                            <option value="Expired / Action Required">Expired / Action Required</option>
+                            <option value="Suspended / Terminated">Suspended / Terminated</option>
+                          </select>
+                        </div>
+                        <div class="col-md-4">
+                          <label class="form-label small fw-semibold" for="host_reg_date">Registration Date <span class="text-danger">*</span></label>
+                          <input class="form-control" id="host_reg_date" type="date" required>
+                        </div>
+                        <div class="col-md-4">
+                          <label class="form-label small fw-semibold" for="host_billing_cycle">Billing Cycle <span class="text-danger">*</span></label>
+                          <select class="form-select" id="host_billing_cycle" required>
+                            <option value="" disabled selected>Select Cycle</option>
+                            <option value="Monthly">Monthly</option>
+                            <option value="Quarterly">Quarterly</option>
+                            <option value="Annually" selected>Annually</option>
+                            <option value="Multi-Year (2 Years)">Multi-Year (2 Years)</option>
+                            <option value="Multi-Year (3 Years)">Multi-Year (3 Years)</option>
+                          </select>
+                        </div>
+                        <div class="col-md-4">
+                          <label class="form-label small fw-semibold" for="host_renewal_date">Next Renewal Date</label>
+                          <input class="form-control bg-light" id="host_renewal_date" type="date" readonly required>
+                        </div>
+                      </div>
+                      <button type="submit" class="btn btn-primary fw-semibold py-2 px-4 mt-3" id="hostingSubmitBtn">
+                        <i class="bi bi-save me-2"></i>Save Asset
+                      </button>
+                    </form>
+                  </div>
+                  <!-- Directory -->
+                  <div class="card p-4 rounded-4 shadow-sm border">
+                    <h3 class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
+                      <i class="bi bi-check2-circle me-2 text-primary"></i>Domain & Hosting Assets
+                    </h3>
+                    <div class="table-responsive">
+                      <table class="table table-hover align-middle mb-0" id="hostingTable">
+                        <thead class="table-light">
+                          <tr>
+                            <th>Asset ID</th>
+                            <th>Project ID</th>
+                            <th>Package</th>
+                            <th>Capacity</th>
+                            <th>Asset Type</th>
+                            <th>URL / Server</th>
+                            <th>Provider</th>
+                            <th>Cost Price</th>
+                            <th>Selling Price</th>
+                            <th>Reg. Date</th>
+                            <th>Cycle</th>
+                            <th>Renewal Date</th>
+                            <th>Status</th>
+                            <th class="text-center">Actions</th>
+                          </tr>
+                        </thead>
+                        <tbody id="hostingTableBody">
+                          <tr>
+                            <td colspan="14" class="text-center py-4 text-muted">Loading assets...</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+
               </div>
             </div>
           </div>
@@ -1256,6 +1432,31 @@
       </div>
     </section>
 
+  </div>
+
+  <!-- Reusable Details View Modal -->
+  <div class="modal fade" id="detailsViewModal" tabindex="-1" aria-labelledby="detailsViewModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content rounded-4 border-0 shadow-lg overflow-hidden">
+        <div class="modal-header border-0 flex-column align-items-start p-4 text-white position-relative" style="background-color: var(--primary-color);">
+          <button type="button" class="btn-close btn-close-white position-absolute top-0 end-0 m-3" data-bs-dismiss="modal" aria-label="Close" style="font-size: 0.85rem; opacity: 0.8;"></button>
+          <span class="badge text-uppercase bg-white text-dark mb-2 px-3 py-2 fw-bold" id="detailsModalBadge" style="font-size: 0.725rem; letter-spacing: 0.05em; border-radius: 30px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">DETAILS</span>
+          <h4 class="modal-title fw-bold" id="detailsViewModalLabel">Record Details</h4>
+          <p class="mb-0 text-white-50 small mt-1" id="detailsModalSubtitle">Detailed registry information and audit fields.</p>
+        </div>
+        <div class="modal-body p-4 bg-light-subtle" style="max-height: 70vh; overflow-y: auto;">
+          <div class="row g-3" id="detailsViewModalBody">
+            <!-- Dynamic contents go here -->
+          </div>
+        </div>
+        <div class="modal-footer border-top-0 p-3 bg-light-subtle rounded-bottom-4 justify-content-between">
+          <button type="button" class="btn btn-outline-secondary px-3 fw-semibold rounded-3" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary px-3 fw-semibold rounded-3" id="detailsPrintBtn">
+            <i class="bi bi-printer me-2"></i>Print Details
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- ======= Javascripts =======-->
@@ -1274,7 +1475,8 @@
       addExpense, getAllExpenses, deleteExpense,
       addEmployee, getAllEmployees, deleteEmployee,
       addSupportTicket, getAllSupportTickets, deleteSupportTicket,
-      addClientPayment, getAllClientPayments, deleteClientPayment
+      addClientPayment, getAllClientPayments, deleteClientPayment,
+      addDomainHosting, getAllDomainHosting, deleteDomainHosting
     } from "./assets/js/solution.js";
 
     // Set today's dates as default (except clearance date & client payment received date)
@@ -1298,6 +1500,7 @@
     let allEmployees = [];
     let allSupportTickets = [];
     let allClientPayments = [];
+    let allDomainHosting = [];
 
     let chartProjectStatusInstance = null;
     let chartBudgetVsExpenseInstance = null;
@@ -1481,6 +1684,21 @@
       }
     }
 
+    function populateTicketAssetDropdown(projId = "") {
+      const select = document.getElementById("ticket_asset_id");
+      if (!select) return;
+      const selectedVal = select.value;
+      select.innerHTML = '<option value="">None / General Issue</option>';
+      const filtered = projId ? allDomainHosting.filter(a => a.project_id === projId) : allDomainHosting;
+      filtered.forEach(asset => {
+        const opt = document.createElement("option");
+        opt.value = asset.asset_id;
+        opt.textContent = `${asset.asset_id} - ${asset.asset_url} (${asset.asset_type})`;
+        select.appendChild(opt);
+      });
+      select.value = selectedVal || "";
+    }
+
     // Auto-populate Category options based on project budget setup
     function populateExpenseCategories(projId) {
       const catSelect = document.getElementById("exp_cost_category");
@@ -1509,6 +1727,11 @@
     // Event handler when project is selected in Expense form
     document.getElementById("exp_project_id")?.addEventListener("change", function(e) {
       populateExpenseCategories(e.target.value);
+    });
+
+    // Event handler when project is selected in Ticket form
+    document.getElementById("ticket_project_id")?.addEventListener("change", function(e) {
+      populateTicketAssetDropdown(e.target.value);
     });
 
     // Event handler when Requisition is selected in Purchase Form
@@ -1683,6 +1906,7 @@
     document.getElementById("cancelTicketEditBtn")?.addEventListener("click", function() {
       document.getElementById("ticketForm").reset();
       document.getElementById("ticket_id").value = "";
+      populateTicketAssetDropdown();
       document.getElementById("ticketFormTitle").textContent = "Log Support Ticket";
       document.getElementById("ticketSubmitBtn").innerHTML = '<i class="bi bi-send-plus me-2"></i>Log Ticket';
       document.getElementById("cancelTicketEditBtn").classList.add("d-none");
@@ -1807,6 +2031,7 @@
         allEmployees = await getAllEmployees();
         allSupportTickets = await getAllSupportTickets();
         allClientPayments = await getAllClientPayments();
+        allDomainHosting = await getAllDomainHosting();
 
         populateProjectDropdowns();
         populateContactSelects();
@@ -1815,6 +2040,7 @@
         populatePODropdowns();
         populateEmployeeImportDropdown();
         populateTicketDropdowns();
+        populateTicketAssetDropdown();
 
         renderProjects();
         renderContacts();
@@ -1827,6 +2053,7 @@
         renderExpenses();
         renderClientPayments();
         renderSupportTickets();
+        renderDomainHosting();
 
         updateOverview();
       } catch (err) {
@@ -1853,6 +2080,9 @@
             <td><span class="small">${p.start_date} to ${p.end_date}</span></td>
             <td><span class="badge bg-secondary text-dark">${p.project_status}</span></td>
             <td class="text-center">
+              <button class="btn btn-sm btn-outline-success view-proj-btn me-1" data-id="${p.project_id}" title="View Details">
+                <i class="bi bi-eye"></i>
+              </button>
               <button class="btn btn-sm btn-outline-danger delete-proj-btn" data-id="${p.project_id}">
                 <i class="bi bi-trash"></i>
               </button>
@@ -1860,6 +2090,12 @@
           </tr>
         `;
       }).join('');
+
+      document.querySelectorAll(".view-proj-btn").forEach(btn => {
+        btn.onclick = () => {
+          showRecordDetails("project", btn.dataset.id);
+        };
+      });
 
       document.querySelectorAll(".delete-proj-btn").forEach(btn => {
         btn.onclick = async () => {
@@ -1891,6 +2127,9 @@
             <td>${c.email || 'N/A'}</td>
             <td><span class="small text-muted font-monospace">${linkedProjs}</span></td>
             <td class="text-center">
+              <button class="btn btn-sm btn-outline-success view-contact-btn me-1" data-id="${c.contact_id}" title="View Details">
+                <i class="bi bi-eye"></i>
+              </button>
               <button class="btn btn-sm btn-outline-danger delete-contact-btn" data-id="${c.contact_id}">
                 <i class="bi bi-trash"></i>
               </button>
@@ -1898,6 +2137,12 @@
           </tr>
         `;
       }).join('');
+
+      document.querySelectorAll(".view-contact-btn").forEach(btn => {
+        btn.onclick = () => {
+          showRecordDetails("contact", btn.dataset.id);
+        };
+      });
 
       document.querySelectorAll(".delete-contact-btn").forEach(btn => {
         btn.onclick = async () => {
@@ -1927,12 +2172,21 @@
           <td>${e.email || 'N/A'}</td>
           <td><span class="badge bg-secondary text-dark">${e.status}</span></td>
           <td class="text-center">
+            <button class="btn btn-sm btn-outline-success view-emp-btn me-1" data-id="${e.employee_id}" title="View Details">
+              <i class="bi bi-eye"></i>
+            </button>
             <button class="btn btn-sm btn-outline-danger delete-emp-btn" data-id="${e.employee_id}">
               <i class="bi bi-trash"></i>
             </button>
           </td>
         </tr>
       `).join('');
+
+      document.querySelectorAll(".view-emp-btn").forEach(btn => {
+        btn.onclick = () => {
+          showRecordDetails("employee", btn.dataset.id);
+        };
+      });
 
       document.querySelectorAll(".delete-emp-btn").forEach(btn => {
         btn.onclick = async () => {
@@ -1970,6 +2224,9 @@
             <td><span class="small text-muted">${attendees}</span></td>
             <td><a href="${m.meeting_url}" target="_blank" class="small"><i class="bi bi-link-45deg"></i> Join Meeting</a></td>
             <td class="text-center">
+              <button class="btn btn-sm btn-outline-success view-meeting-btn me-1" data-id="${m.meeting_id}" title="View Details">
+                <i class="bi bi-eye"></i>
+              </button>
               <button class="btn btn-sm btn-outline-danger delete-meeting-btn" data-id="${m.meeting_id}">
                 <i class="bi bi-trash"></i>
               </button>
@@ -1977,6 +2234,12 @@
           </tr>
         `;
       }).join('');
+
+      document.querySelectorAll(".view-meeting-btn").forEach(btn => {
+        btn.onclick = () => {
+          showRecordDetails("meeting", btn.dataset.id);
+        };
+      });
 
       document.querySelectorAll(".delete-meeting-btn").forEach(btn => {
         btn.onclick = async () => {
@@ -2008,6 +2271,9 @@
             <td>${approver ? approver.contact_name : 'Unknown Approver'}</td>
             <td><span class="small">${b.last_updated}</span></td>
             <td class="text-center">
+              <button class="btn btn-sm btn-outline-success view-budget-btn me-1" data-id="${b.budget_line_id}" title="View Details">
+                <i class="bi bi-eye"></i>
+              </button>
               <button class="btn btn-sm btn-outline-danger delete-budget-btn" data-id="${b.budget_line_id}">
                 <i class="bi bi-trash"></i>
               </button>
@@ -2015,6 +2281,12 @@
           </tr>
         `;
       }).join('');
+
+      document.querySelectorAll(".view-budget-btn").forEach(btn => {
+        btn.onclick = () => {
+          showRecordDetails("budget", btn.dataset.id);
+        };
+      });
 
       document.querySelectorAll(".delete-budget-btn").forEach(btn => {
         btn.onclick = async () => {
@@ -2054,7 +2326,10 @@
             <td><span class="small">${t.task_startDate} to ${t.task_endDate}</span></td>
             <td><span class="badge bg-secondary text-dark">${t.task_status}</span></td>
             <td class="text-center">
-              <button class="btn btn-sm btn-outline-primary edit-task-btn" data-id="${t.task_id}">
+              <button class="btn btn-sm btn-outline-success view-task-btn me-1" data-id="${t.task_id}" title="View Details">
+                <i class="bi bi-eye"></i>
+              </button>
+              <button class="btn btn-sm btn-outline-primary edit-task-btn me-1" data-id="${t.task_id}">
                 <i class="bi bi-pencil"></i>
               </button>
               <button class="btn btn-sm btn-outline-danger delete-task-btn" data-id="${t.task_id}">
@@ -2064,6 +2339,12 @@
           </tr>
         `;
       }).join('');
+
+      document.querySelectorAll(".view-task-btn").forEach(btn => {
+        btn.onclick = () => {
+          showRecordDetails("task", btn.dataset.id);
+        };
+      });
 
       document.querySelectorAll(".edit-task-btn").forEach(btn => {
         btn.onclick = () => {
@@ -2128,6 +2409,9 @@
             <td><span class="badge bg-secondary text-dark">${r.dept_approval}</span></td>
             <td><span class="small text-muted">${r.rejection_reason || '—'}</span></td>
             <td class="text-center">
+              <button class="btn btn-sm btn-outline-success view-req-btn me-1" data-id="${r.requisition_id}" title="View Details">
+                <i class="bi bi-eye"></i>
+              </button>
               <button class="btn btn-sm btn-outline-danger delete-req-btn" data-id="${r.requisition_id}">
                 <i class="bi bi-trash"></i>
               </button>
@@ -2135,6 +2419,12 @@
           </tr>
         `;
       }).join('');
+
+      document.querySelectorAll(".view-req-btn").forEach(btn => {
+        btn.onclick = () => {
+          showRecordDetails("requisition", btn.dataset.id);
+        };
+      });
 
       document.querySelectorAll(".delete-req-btn").forEach(btn => {
         btn.onclick = async () => {
@@ -2165,12 +2455,21 @@
           <td><span class="small">${po.po_issue_date}</span></td>
           <td><span class="badge bg-secondary text-dark">${po.po_status}</span></td>
           <td class="text-center">
+            <button class="btn btn-sm btn-outline-success view-po-btn me-1" data-id="${po.po_number}" title="View Details">
+              <i class="bi bi-eye"></i>
+            </button>
             <button class="btn btn-sm btn-outline-danger delete-po-btn" data-id="${po.po_number}">
               <i class="bi bi-trash"></i>
             </button>
           </td>
         </tr>
       `).join('');
+
+      document.querySelectorAll(".view-po-btn").forEach(btn => {
+        btn.onclick = () => {
+          showRecordDetails("purchase", btn.dataset.id);
+        };
+      });
 
       document.querySelectorAll(".delete-po-btn").forEach(btn => {
         btn.onclick = async () => {
@@ -2202,12 +2501,21 @@
           <td><span class="badge bg-secondary text-dark">${e.payment_status}</span></td>
           <td><span class="small">${e.clearance_date || '—'}</span></td>
           <td class="text-center">
+            <button class="btn btn-sm btn-outline-success view-exp-btn me-1" data-id="${e.expense_id}" title="View Details">
+              <i class="bi bi-eye"></i>
+            </button>
             <button class="btn btn-sm btn-outline-danger delete-exp-btn" data-id="${e.expense_id}">
               <i class="bi bi-trash"></i>
             </button>
           </td>
         </tr>
       `).join('');
+
+      document.querySelectorAll(".view-exp-btn").forEach(btn => {
+        btn.onclick = () => {
+          showRecordDetails("expense", btn.dataset.id);
+        };
+      });
 
       document.querySelectorAll(".delete-exp-btn").forEach(btn => {
         btn.onclick = async () => {
@@ -2224,7 +2532,7 @@
       const tbody = document.getElementById("ticketsTableBody");
       if (!tbody) return;
       if (allSupportTickets.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="11" class="text-center py-3 text-muted">No support tickets logged.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="12" class="text-center py-3 text-muted">No support tickets logged.</td></tr>';
         return;
       }
 
@@ -2249,6 +2557,7 @@
           <tr>
             <td><code class="text-dark font-monospace">${t.ticket_id}</code></td>
             <td><code class="text-dark font-monospace">${t.project_id}</code></td>
+            <td>${t.asset_id ? `<span class="badge bg-dark text-light">${t.asset_id}</span>` : '<span class="text-muted small">None</span>'}</td>
             <td>${req ? req.contact_name : 'Unknown'}</td>
             <td><strong>${t.ticket_subject}</strong></td>
             <td><span class="badge ${t.priority === 'Critical' ? 'bg-danger' : t.priority === 'High' ? 'bg-warning text-dark' : t.priority === 'Medium' ? 'bg-primary' : 'bg-secondary'}">${t.priority}</span></td>
@@ -2258,7 +2567,10 @@
             <td><span class="small text-muted">${formatDateTime(t.created_at)}</span></td>
             <td><span class="small text-muted">${formatDateTime(t.closed_at)}</span></td>
             <td class="text-center">
-              <button class="btn btn-sm btn-outline-primary edit-ticket-btn" data-id="${t.ticket_id}">
+              <button class="btn btn-sm btn-outline-success view-ticket-btn me-1" data-id="${t.ticket_id}" title="View Details">
+                <i class="bi bi-eye"></i>
+              </button>
+              <button class="btn btn-sm btn-outline-primary edit-ticket-btn me-1" data-id="${t.ticket_id}">
                 <i class="bi bi-pencil"></i>
               </button>
               <button class="btn btn-sm btn-outline-danger delete-ticket-btn" data-id="${t.ticket_id}">
@@ -2269,6 +2581,12 @@
         `;
       }).join('');
 
+      document.querySelectorAll(".view-ticket-btn").forEach(btn => {
+        btn.onclick = () => {
+          showRecordDetails("ticket", btn.dataset.id);
+        };
+      });
+
       document.querySelectorAll(".edit-ticket-btn").forEach(btn => {
         btn.onclick = () => {
           const id = btn.dataset.id;
@@ -2276,6 +2594,8 @@
           if (t) {
             document.getElementById("ticket_id").value = t.ticket_id;
             document.getElementById("ticket_project_id").value = t.project_id;
+            populateTicketAssetDropdown(t.project_id);
+            document.getElementById("ticket_asset_id").value = t.asset_id || "";
             document.getElementById("ticket_requester_id").value = t.requester_id;
             document.getElementById("ticket_subject").value = t.ticket_subject;
             document.getElementById("ticket_priority").value = t.priority;
@@ -2357,6 +2677,9 @@
             <td>${inv.date_received || '—'}</td>
             <td>${inv.transaction_ref || '—'}</td>
             <td class="text-center">
+              <button class="btn btn-sm btn-outline-success view-payment-btn me-1" data-id="${inv.invoice_id}" title="View Details">
+                <i class="bi bi-eye"></i>
+              </button>
               <button class="btn btn-sm btn-outline-primary edit-payment-btn me-1" data-id="${inv.invoice_id}">
                 <i class="bi bi-pencil"></i>
               </button>
@@ -2367,6 +2690,12 @@
           </tr>
         `;
       }).join('');
+
+      document.querySelectorAll(".view-payment-btn").forEach(btn => {
+        btn.onclick = () => {
+          showRecordDetails("payment", btn.dataset.id);
+        };
+      });
 
       document.querySelectorAll(".edit-payment-btn").forEach(btn => {
         btn.onclick = () => {
@@ -2787,6 +3116,7 @@
         await addSupportTicket({
           ticket_id: document.getElementById("ticket_id").value.trim() || null,
           project_id: document.getElementById("ticket_project_id").value,
+          asset_id: document.getElementById("ticket_asset_id").value || "",
           requester_id: document.getElementById("ticket_requester_id").value,
           ticket_subject: document.getElementById("ticket_subject").value,
           ticket_priority: document.getElementById("ticket_priority").value,
@@ -2798,6 +3128,7 @@
 
         document.getElementById("ticketForm").reset();
         document.getElementById("ticket_id").value = "";
+        populateTicketAssetDropdown();
         document.getElementById("ticketFormTitle").textContent = "Log Support Ticket";
         document.getElementById("ticketSubmitBtn").innerHTML = '<i class="bi bi-send-plus me-2"></i>Log Ticket';
         document.getElementById("cancelTicketEditBtn").classList.add("d-none");
@@ -2809,6 +3140,617 @@
       } catch (err) {
         alert("Failed to log ticket: " + err.message);
       }
+    };
+
+    // ==========================================
+    // DOMAIN & HOSTING LOGIC
+    // ==========================================
+    function calculateRenewalDate() {
+      const regDateVal = document.getElementById("host_reg_date").value;
+      const cycle = document.getElementById("host_billing_cycle").value;
+      const renewalInput = document.getElementById("host_renewal_date");
+      if (!regDateVal || !cycle || !renewalInput) return;
+
+      const date = new Date(regDateVal);
+      if (isNaN(date.getTime())) return;
+
+      if (cycle === "Monthly") {
+        date.setMonth(date.getMonth() + 1);
+      } else if (cycle === "Quarterly") {
+        date.setMonth(date.getMonth() + 3);
+      } else if (cycle === "Annually") {
+        date.setFullYear(date.getFullYear() + 1);
+      } else if (cycle === "Multi-Year (2 Years)") {
+        date.setFullYear(date.getFullYear() + 2);
+      } else if (cycle === "Multi-Year (3 Years)") {
+        date.setFullYear(date.getFullYear() + 3);
+      }
+
+      renewalInput.value = date.toISOString().substring(0, 10);
+    }
+
+    document.getElementById("host_reg_date")?.addEventListener("change", calculateRenewalDate);
+    document.getElementById("host_billing_cycle")?.addEventListener("change", calculateRenewalDate);
+
+    // Auto-fill Capacity and Cost Price from Package selection
+    document.getElementById("host_package")?.addEventListener("change", function() {
+      const selected = this.options[this.selectedIndex];
+      const capacity = selected.dataset.capacity || "";
+      const cost = selected.dataset.cost || "";
+      document.getElementById("host_capacity").value = capacity;
+      if (cost) document.getElementById("host_cost_price").value = cost;
+    });
+
+    // Cancel Domain & Hosting Edit
+    document.getElementById("cancelHostingEditBtn")?.addEventListener("click", function() {
+      document.getElementById("hostingForm").reset();
+      document.getElementById("host_asset_id").value = "";
+      document.getElementById("hostingFormTitle").textContent = "Add Domain & Hosting Asset";
+      document.getElementById("hostingSubmitBtn").innerHTML = '<i class="bi bi-save me-2"></i>Save Asset';
+      document.getElementById("cancelHostingEditBtn").classList.add("d-none");
+      document.getElementById("host_reg_date").value = todayDateStr;
+      calculateRenewalDate();
+    });
+
+    document.getElementById("hostingForm").onsubmit = async (e) => {
+      e.preventDefault();
+
+      const cost = Number(document.getElementById("host_cost_price").value);
+      const sell = Number(document.getElementById("host_selling_price").value);
+
+      if (cost < 0) {
+        alert("Cost Price cannot be negative.");
+        return;
+      }
+
+      if (sell <= cost) {
+        alert("Selling Price must be strictly greater than Cost Price.");
+        return;
+      }
+
+      const assetUrl = document.getElementById("host_asset_url").value.trim();
+      if (!assetUrl) {
+        alert("Domain/Server URL is required.");
+        return;
+      }
+
+      try {
+        await addDomainHosting({
+          asset_id: document.getElementById("host_asset_id").value || null,
+          project_id: document.getElementById("host_project_id").value,
+          package_name: document.getElementById("host_package").value || "",
+          hosting_capacity: document.getElementById("host_capacity").value || "",
+          asset_type: document.getElementById("host_asset_type").value,
+          asset_url: assetUrl,
+          provider_name: document.getElementById("host_provider_name").value,
+          cost_price: cost,
+          selling_price: sell,
+          reg_date: document.getElementById("host_reg_date").value,
+          billing_cycle: document.getElementById("host_billing_cycle").value,
+          renewal_date: document.getElementById("host_renewal_date").value,
+          asset_status: document.getElementById("host_asset_status").value
+        });
+
+        document.getElementById("hostingForm").reset();
+        document.getElementById("host_asset_id").value = "";
+        document.getElementById("hostingFormTitle").textContent = "Add Domain & Hosting Asset";
+        document.getElementById("hostingSubmitBtn").innerHTML = '<i class="bi bi-save me-2"></i>Save Asset';
+        document.getElementById("cancelHostingEditBtn").classList.add("d-none");
+        document.getElementById("host_reg_date").value = todayDateStr;
+        calculateRenewalDate();
+        loadAllData();
+        alert("Domain & Hosting asset saved successfully.");
+      } catch (err) {
+        alert("Failed to save asset: " + err.message);
+      }
+    };
+
+    function renderDomainHosting() {
+      const tbody = document.getElementById("hostingTableBody");
+      if (!tbody) return;
+      if (allDomainHosting.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="14" class="text-center py-3 text-muted">No domain & hosting assets found.</td></tr>';
+        return;
+      }
+
+      function statusBadge(status) {
+        const map = {
+          "Active / Good Standing": "bg-success",
+          "Expired / Action Required": "bg-danger",
+          "Suspended / Terminated": "bg-secondary text-dark"
+        };
+        return `<span class="badge ${map[status] || 'bg-secondary'}">${status}</span>`;
+      }
+
+      tbody.innerHTML = allDomainHosting.map(asset => {
+        const cost = Number(asset.cost_price) || 0;
+        const sell = Number(asset.selling_price) || 0;
+        const pkgBadgeMap = { "Basic": "bg-info text-dark", "Plus": "bg-warning text-dark", "Business": "bg-success" };
+        const pkgBadge = asset.package_name
+          ? `<span class="badge ${pkgBadgeMap[asset.package_name] || 'bg-secondary'}">${asset.package_name}</span>`
+          : '<span class="text-muted small">Custom</span>';
+
+        return `
+          <tr>
+            <td><code class="text-dark font-monospace">${asset.asset_id}</code></td>
+            <td><code class="text-dark font-monospace">${asset.project_id}</code></td>
+            <td>${pkgBadge}</td>
+            <td><span class="small">${asset.hosting_capacity || '—'}</span></td>
+            <td><span class="small">${asset.asset_type}</span></td>
+            <td><strong>${asset.asset_url}</strong></td>
+            <td>${asset.provider_name}</td>
+            <td>${cost.toLocaleString()} BDT</td>
+            <td class="fw-semibold text-success">${sell.toLocaleString()} BDT</td>
+            <td>${asset.reg_date}</td>
+            <td><span class="small">${asset.billing_cycle}</span></td>
+            <td class="fw-semibold">${asset.renewal_date}</td>
+            <td>${statusBadge(asset.asset_status)}</td>
+            <td class="text-center">
+              <button class="btn btn-sm btn-outline-success view-hosting-btn me-1" data-id="${asset.asset_id}" title="View Details">
+                <i class="bi bi-eye"></i>
+              </button>
+              <button class="btn btn-sm btn-outline-primary edit-hosting-btn me-1" data-id="${asset.asset_id}">
+                <i class="bi bi-pencil"></i>
+              </button>
+              <button class="btn btn-sm btn-outline-danger delete-hosting-btn" data-id="${asset.asset_id}">
+                <i class="bi bi-trash"></i>
+              </button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+
+      document.querySelectorAll(".view-hosting-btn").forEach(btn => {
+        btn.onclick = () => {
+          showRecordDetails("hosting", btn.dataset.id);
+        };
+      });
+
+      document.querySelectorAll(".edit-hosting-btn").forEach(btn => {
+        btn.onclick = () => {
+          const id = btn.dataset.id;
+          const asset = allDomainHosting.find(a => a.asset_id === id);
+          if (asset) {
+            document.getElementById("host_asset_id").value = asset.asset_id;
+            document.getElementById("host_project_id").value = asset.project_id;
+            document.getElementById("host_package").value = asset.package_name || "";
+            document.getElementById("host_capacity").value = asset.hosting_capacity || "";
+            document.getElementById("host_asset_type").value = asset.asset_type;
+            document.getElementById("host_asset_url").value = asset.asset_url;
+            document.getElementById("host_provider_name").value = asset.provider_name;
+            document.getElementById("host_cost_price").value = asset.cost_price;
+            document.getElementById("host_selling_price").value = asset.selling_price;
+            document.getElementById("host_reg_date").value = asset.reg_date;
+            document.getElementById("host_billing_cycle").value = asset.billing_cycle;
+            document.getElementById("host_renewal_date").value = asset.renewal_date;
+            document.getElementById("host_asset_status").value = asset.asset_status;
+
+            document.getElementById("hostingFormTitle").textContent = "Edit Domain & Hosting Asset";
+            document.getElementById("hostingSubmitBtn").innerHTML = '<i class="bi bi-pencil-square me-2"></i>Update Asset';
+            document.getElementById("cancelHostingEditBtn").classList.remove("d-none");
+            document.getElementById("hostingForm").scrollIntoView({ behavior: 'smooth' });
+          }
+        };
+      });
+
+      document.querySelectorAll(".delete-hosting-btn").forEach(btn => {
+        btn.onclick = async () => {
+          const id = btn.dataset.id;
+          if (confirm(`Delete asset record ${id}?`)) {
+            await deleteDomainHosting(id);
+            loadAllData();
+          }
+        };
+      });
+    }
+
+    // ==========================================
+    // PREMIUM RECORD DETAILS VIEW POPUP SYSTEM
+    // ==========================================
+    function showRecordDetails(type, id) {
+      const typeConfigs = {
+        project: {
+          title: "Project Registry Details",
+          badge: "Project File",
+          getRecords: () => allProjects,
+          idField: "project_id",
+          fields: [
+            { label: "Project ID", key: "project_id", type: "code", cols: 6 },
+            { label: "Project Status", key: "project_status", type: "badge", cols: 6 },
+            { label: "Project Name", key: "project_name", type: "text", cols: 12 },
+            { label: "Client / Sponsor", key: "client_sponsor", type: "text", cols: 6 },
+            { label: "Project Manager", key: "project_manager", type: "pm", cols: 6 },
+            { label: "Start Date", key: "start_date", type: "date", cols: 6 },
+            { label: "Target End Date", key: "end_date", type: "date", cols: 6 },
+            { label: "Project Description", key: "project_desc", type: "textarea", cols: 12 }
+          ]
+        },
+        contact: {
+          title: "External Contact Details",
+          badge: "Contact Info",
+          getRecords: () => allContacts,
+          idField: "contact_id",
+          fields: [
+            { label: "Contact ID", key: "contact_id", type: "code", cols: 6 },
+            { label: "Designation", key: "designation", type: "text", cols: 6 },
+            { label: "Full Name", key: "contact_name", type: "text", cols: 6 },
+            { label: "Organization", key: "organization", type: "text", cols: 6 },
+            { label: "Mobile Phone", key: "mobile_phone", type: "phone", cols: 6 },
+            { label: "Email Address", key: "email", type: "email", cols: 6 },
+            { label: "Linked Projects", key: "project_id", type: "array", cols: 12 }
+          ]
+        },
+        employee: {
+          title: "Internal Employee Details",
+          badge: "Personnel Record",
+          getRecords: () => allEmployees,
+          idField: "employee_id",
+          fields: [
+            { label: "Employee ID", key: "employee_id", type: "code", cols: 6 },
+            { label: "Status", key: "status", type: "badge", cols: 6 },
+            { label: "Full Name", key: "employee_name", type: "text", cols: 6 },
+            { label: "Designation", key: "designation", type: "text", cols: 6 },
+            { label: "Department", key: "department", type: "text", cols: 6 },
+            { label: "Mobile Phone", key: "mobile_phone", type: "phone", cols: 6 },
+            { label: "Email Address", key: "email", type: "email", cols: 12 }
+          ]
+        },
+        meeting: {
+          title: "Meeting Registry Details",
+          badge: "Calendar & Agenda",
+          getRecords: () => allMeetings,
+          idField: "meeting_id",
+          fields: [
+            { label: "Meeting ID", key: "meeting_id", type: "code", cols: 6 },
+            { label: "Project ID", key: "project_id", type: "code", cols: 6 },
+            { label: "Meeting Title", key: "meeting_title", type: "text", cols: 12 },
+            { label: "Date & Time", key: "meeting_timestamp", type: "datetime", cols: 6 },
+            { label: "Meeting Link", key: "meeting_url", type: "url", cols: 6 },
+            { label: "Attendees List", key: "attendees_list", type: "array", cols: 12 },
+            { label: "Meeting Minutes / Summary", key: "meeting_minutes", type: "textarea", cols: 12 }
+          ]
+        },
+        budget: {
+          title: "Budget Allocation Details",
+          badge: "Financial Directive",
+          getRecords: () => allBudgets,
+          idField: "budget_line_id",
+          fields: [
+            { label: "Budget Line ID", key: "budget_line_id", type: "code", cols: 6 },
+            { label: "Project ID", key: "project_id", type: "code", cols: 6 },
+            { label: "Cost Category", key: "cost_category", type: "badge", cols: 6 },
+            { label: "Approved By", key: "approved_by", type: "contact", cols: 6 },
+            { label: "Allocated Amount", key: "allocated_amount", type: "currency", cols: 6 },
+            { label: "Last Updated", key: "last_updated", type: "datetime", cols: 6 },
+            { label: "Line Item Description", key: "line_description", type: "textarea", cols: 12 }
+          ]
+        },
+        task: {
+          title: "Project Task Execution Record",
+          badge: "Work Breakdown Structure",
+          getRecords: () => allTasks,
+          idField: "task_id",
+          fields: [
+            { label: "Task ID", key: "task_id", type: "code", cols: 6 },
+            { label: "WBS Code", key: "wbs_code", type: "code", cols: 6 },
+            { label: "Project ID", key: "project_id", type: "code", cols: 6 },
+            { label: "Task Status", key: "task_status", type: "badge", cols: 6 },
+            { label: "Task Name", key: "task_name", type: "text", cols: 12 },
+            { label: "Assigned To", key: "assigned_to", type: "contact", cols: 6 },
+            { label: "Progress Percent", key: "progress_percent", type: "progress", cols: 6 },
+            { label: "Start Date", key: "task_startDate", type: "date", cols: 6 },
+            { label: "End Date", key: "task_endDate", type: "date", cols: 6 },
+            { label: "Working Updates Log", key: "working_update", type: "textarea", cols: 12 }
+          ]
+        },
+        requisition: {
+          title: "Operational Requisition Details",
+          badge: "Material Request",
+          getRecords: () => allRequisitions,
+          idField: "requisition_id",
+          fields: [
+            { label: "Requisition ID", key: "requisition_id", type: "code", cols: 6 },
+            { label: "Project ID", key: "project_id", type: "code", cols: 6 },
+            { label: "Item Category", key: "item_category", type: "badge", cols: 6 },
+            { label: "Department Approval", key: "dept_approval", type: "badge", cols: 6 },
+            { label: "Quantity Requested", key: "qty_requested", type: "text", cols: 4 },
+            { label: "Estimated Unit Cost", key: "est_unit_cost", type: "currency", cols: 4 },
+            { label: "Estimated Total Cost", key: "est_total_cost", type: "currency", cols: 4 },
+            { label: "Item / Service Description", key: "item_description", type: "text", cols: 12 },
+            { label: "Rejection Reason (if any)", key: "rejection_reason", type: "textarea", cols: 12 }
+          ]
+        },
+        purchase: {
+          title: "Purchase Order Details",
+          badge: "Procurement Record",
+          getRecords: () => allPurchaseOrders,
+          idField: "po_number",
+          fields: [
+            { label: "PO Number", key: "po_number", type: "code", cols: 6 },
+            { label: "Requisition ID", key: "requisition_id", type: "code", cols: 6 },
+            { label: "Project ID", key: "project_id", type: "code", cols: 6 },
+            { label: "PO Status", key: "po_status", type: "badge", cols: 6 },
+            { label: "Vendor Name", key: "vendor_name", type: "text", cols: 6 },
+            { label: "Payment Terms", key: "payment_terms", type: "text", cols: 6 },
+            { label: "Final PO Total", key: "final_po_total", type: "currency", cols: 6 },
+            { label: "PO Issue Date", key: "po_issue_date", type: "date", cols: 6 }
+          ]
+        },
+        expense: {
+          title: "Company Expense Log Details",
+          badge: "Financial Expense",
+          getRecords: () => allExpenses,
+          idField: "expense_id",
+          fields: [
+            { label: "Expense ID", key: "expense_id", type: "code", cols: 6 },
+            { label: "Project ID", key: "project_id", type: "code", cols: 6 },
+            { label: "Expense Routing Type", key: "expense_routing_type", type: "text", cols: 6 },
+            { label: "Payment Status", key: "payment_status", type: "badge", cols: 6 },
+            { label: "PO Reference ID", key: "po_number_ref", type: "code", cols: 6 },
+            { label: "Vendor Invoice Number", key: "vendor_invoice_num", type: "text", cols: 6 },
+            { label: "Invoice Gross Amount", key: "invoice_amount", type: "currency", cols: 6 },
+            { label: "Amount Paid", key: "amount_paid", type: "currency", cols: 6 },
+            { label: "Clearance Date", key: "clearance_date", type: "date", cols: 12 }
+          ]
+        },
+        ticket: {
+          title: "Support Ticket Registry Details",
+          badge: "Helpdesk Resolution",
+          getRecords: () => allSupportTickets,
+          idField: "ticket_id",
+          fields: [
+            { label: "Ticket ID", key: "ticket_id", type: "code", cols: 6 },
+            { label: "Project ID", key: "project_id", type: "code", cols: 6 },
+            { label: "Asset ID Reference", key: "asset_id", type: "code", cols: 6 },
+            { label: "Ticket Status", key: "ticket_status", type: "badge", cols: 6 },
+            { label: "Requester Name", key: "requester_id", type: "contact", cols: 6 },
+            { label: "Assigned Engineer", key: "assigned_to", type: "contact", cols: 6 },
+            { label: "Ticket Priority", key: "priority", type: "badge", cols: 6 },
+            { label: "SLA Deadline", key: "sla_deadline", type: "datetime", cols: 6 },
+            { label: "Ticket Subject", key: "ticket_subject", type: "text", cols: 12 },
+            { label: "Description of Issue", key: "ticket_desc", type: "textarea", cols: 12 },
+            { label: "Logged Timestamp", key: "created_at", type: "datetime", cols: 6 },
+            { label: "Closed Timestamp", key: "closed_at", type: "datetime", cols: 6 },
+            { label: "Resolution Notes", key: "resolution_notes", type: "textarea", cols: 12 }
+          ]
+        },
+        payment: {
+          title: "Client Payment & Invoice Details",
+          badge: "Billing Record",
+          getRecords: () => allClientPayments,
+          idField: "invoice_id",
+          fields: [
+            { label: "Invoice / Receipt ID", key: "invoice_id", type: "code", cols: 6 },
+            { label: "Project ID", key: "project_id", type: "code", cols: 6 },
+            { label: "Billing Milestone Type", key: "milestone_type", type: "text", cols: 6 },
+            { label: "Payment Status", key: "payment_status", type: "badge", cols: 6 },
+            { label: "Invoiced Amount", key: "invoiced_amount", type: "currency", cols: 6 },
+            { label: "Amount Received", key: "amount_received", type: "currency", cols: 6 },
+            { label: "Outstanding Balance", key: "outstanding", type: "currency_calc", cols: 6 },
+            { label: "Invoice Issue Date", key: "invoice_date", type: "date", cols: 6 },
+            { label: "Payment Due Date", key: "due_date", type: "date", cols: 6 },
+            { label: "Actual Clearance Date", key: "date_received", type: "date", cols: 6 },
+            { label: "Bank Transaction Ref", key: "transaction_ref", type: "text", cols: 6 }
+          ]
+        },
+        hosting: {
+          title: "Domain & Hosting Asset Details",
+          badge: "Infrastructure Asset",
+          getRecords: () => allDomainHosting,
+          idField: "asset_id",
+          fields: [
+            { label: "Asset ID", key: "asset_id", type: "code", cols: 6 },
+            { label: "Project ID", key: "project_id", type: "code", cols: 6 },
+            { label: "Hosting Package", key: "package_name", type: "package", cols: 6 },
+            { label: "Hosting Capacity", key: "hosting_capacity", type: "text", cols: 6 },
+            { label: "Asset Type", key: "asset_type", type: "text", cols: 6 },
+            { label: "Upstream Provider", key: "provider_name", type: "text", cols: 6 },
+            { label: "Domain / Server URL", key: "asset_url", type: "url", cols: 12 },
+            { label: "Cost Price (BDT)", key: "cost_price", type: "currency", cols: 6 },
+            { label: "Selling Price (BDT)", key: "selling_price", type: "currency", cols: 6 },
+            { label: "Billing Cycle", key: "billing_cycle", type: "text", cols: 6 },
+            { label: "Asset Status", key: "asset_status", type: "badge", cols: 6 },
+            { label: "Registration Date", key: "reg_date", type: "date", cols: 6 },
+            { label: "Next Renewal Date", key: "renewal_date", type: "date", cols: 6 }
+          ]
+        }
+      };
+
+      const cfg = typeConfigs[type];
+      if (!cfg) return;
+
+      const record = cfg.getRecords().find(r => r[cfg.idField] === id);
+      if (!record) {
+        alert("Record not found in current view dataset.");
+        return;
+      }
+
+      // Populate Modal Headers
+      document.getElementById("detailsModalBadge").textContent = cfg.badge;
+      document.getElementById("detailsViewModalLabel").textContent = `${cfg.title} - ${id}`;
+      
+      let subtitleText = "Detailed registry information and audit fields.";
+      if (type === "project") subtitleText = record.project_name;
+      else if (type === "contact") subtitleText = record.contact_name;
+      else if (type === "employee") subtitleText = record.employee_name;
+      else if (type === "ticket") subtitleText = record.ticket_subject;
+      else if (type === "meeting") subtitleText = record.meeting_title;
+      else if (type === "hosting") subtitleText = record.asset_url;
+      document.getElementById("detailsModalSubtitle").textContent = subtitleText;
+
+      // Status Badge Style Resolver
+      function getBadgeClass(val) {
+        if (!val) return 'bg-secondary';
+        const clean = val.toString().trim().toLowerCase();
+        if (['active', 'active / good standing', 'active', 'good', 'approved', 'resolved', 'closed', 'fully paid', 'completed', 'success'].includes(clean)) {
+          return 'bg-success text-white';
+        }
+        if (['pending', 'awaiting payment', 'partially paid', 'draft', 'medium', 'in progress', 'warning'].includes(clean)) {
+          return 'bg-warning text-dark';
+        }
+        if (['expired', 'expired / action required', 'suspended', 'suspended / terminated', 'overdue', 'failed', 'rejected', 'high', 'critical', 'danger'].includes(clean)) {
+          return 'bg-danger text-white';
+        }
+        return 'bg-secondary text-white';
+      }
+
+      // Generate HTML Grid fields
+      const gridBody = document.getElementById("detailsViewModalBody");
+      gridBody.innerHTML = cfg.fields.map(f => {
+        let val = record[f.key];
+        
+        // Handle calculated outstanding balance
+        if (f.type === "currency_calc" && f.key === "outstanding") {
+          const invoiced = Number(record.invoiced_amount) || 0;
+          const received = Number(record.amount_received) || 0;
+          val = invoiced - received;
+        }
+
+        let displayHtml = '';
+
+        if (val === undefined || val === null || val === '') {
+          displayHtml = '<span class="text-muted small"><em>— Not Specified —</em></span>';
+        } else {
+          switch(f.type) {
+            case 'code':
+              displayHtml = `<code class="text-dark font-monospace fw-bold px-2 py-1 bg-light rounded border" style="font-size: 0.85rem;">${val}</code>`;
+              break;
+            case 'badge':
+              displayHtml = `<span class="badge ${getBadgeClass(val)} px-3 py-2 fw-semibold" style="font-size: 0.8rem;">${val}</span>`;
+              break;
+            case 'pm':
+            case 'contact':
+              const match = allEmployees.find(e => e.employee_id === val) || allContacts.find(c => c.contact_id === val);
+              displayHtml = match 
+                ? `<strong class="text-heading-color">${match.employee_name || match.contact_name}</strong> <span class="text-muted font-monospace small">(${val})</span>` 
+                : `<strong class="text-heading-color">${val}</strong>`;
+              break;
+            case 'date':
+              displayHtml = `<i class="bi bi-calendar-event me-2 text-primary"></i>${val}`;
+              break;
+            case 'datetime':
+              displayHtml = `<i class="bi bi-clock me-2 text-primary"></i>${val.replace('T', ' ')}`;
+              break;
+            case 'phone':
+              displayHtml = `<a href="tel:${val}" class="text-decoration-none text-heading-color fw-semibold"><i class="bi bi-telephone me-2 text-primary"></i>${val}</a>`;
+              break;
+            case 'email':
+              displayHtml = `<a href="mailto:${val}" class="text-decoration-none text-heading-color fw-semibold"><i class="bi bi-envelope me-2 text-primary"></i>${val}</a>`;
+              break;
+            case 'url':
+              displayHtml = `<a href="${val}" target="_blank" class="text-decoration-none fw-semibold"><i class="bi bi-box-arrow-up-right me-2"></i>Open Target Link</a>`;
+              break;
+            case 'currency':
+            case 'currency_calc':
+              const num = Number(val) || 0;
+              const textClass = num > 0 ? 'text-success fw-bold' : 'text-dark fw-bold';
+              displayHtml = `<span class="${textClass}" style="font-size: 1rem;"><i class="bi bi-currency-bangladeshi me-1"></i>${num.toLocaleString()} BDT</span>`;
+              break;
+            case 'array':
+              const arrStr = Array.isArray(val) ? val.join(', ') : val;
+              displayHtml = `<span class="small font-monospace">${arrStr}</span>`;
+              break;
+            case 'progress':
+              displayHtml = `
+                <div class="d-flex align-items-center gap-3 w-100 mt-1">
+                  <div class="progress flex-grow-1" style="height: 10px; border-radius: 5px;">
+                    <div class="progress-bar bg-success progress-bar-striped progress-bar-animated" role="progressbar" style="width: ${val}%"></div>
+                  </div>
+                  <strong class="text-heading-color">${val}%</strong>
+                </div>
+              `;
+              break;
+            case 'package':
+              const pkgColorMap = { "Basic": "bg-info text-dark", "Plus": "bg-warning text-dark", "Business": "bg-success text-white" };
+              displayHtml = `<span class="badge ${pkgColorMap[val] || 'bg-secondary'} px-3 py-2 fw-semibold">${val}</span>`;
+              break;
+            case 'textarea':
+              displayHtml = `<div class="p-3 bg-light rounded-3 border" style="font-size: 0.9rem; font-weight: 500; white-space: pre-wrap; line-height: 1.5; min-height: 80px; max-height: 250px; overflow-y: auto;">${val}</div>`;
+              break;
+            default:
+              displayHtml = val;
+          }
+        }
+
+        // Return column container wrapper matching Bootstrap grid
+        const isFullWidth = f.cols === 12 || f.type === 'textarea';
+        const cardStyle = f.type === 'textarea' ? 'background: #fdfdfd; border-color: rgba(33,92,92,0.1);' : '';
+        return `
+          <div class="col-${isFullWidth ? '12' : f.cols || '6'}">
+            <div class="detail-card" style="${cardStyle}">
+              <div class="detail-card-label">${f.label}</div>
+              <div class="detail-card-value">${displayHtml}</div>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      // Launch Modal
+      const modalInst = new bootstrap.Modal(document.getElementById('detailsViewModal'));
+      modalInst.show();
+    }
+
+    // Modal print event
+    document.getElementById("detailsPrintBtn").onclick = () => {
+      const modalBody = document.getElementById("detailsViewModalBody").innerHTML;
+      const modalTitle = document.getElementById("detailsViewModalLabel").textContent;
+      const modalBadge = document.getElementById("detailsModalBadge").textContent;
+      const modalSubtitle = document.getElementById("detailsModalSubtitle").textContent;
+      
+      const printWindow = window.open('', '_blank');
+      printWindow.document.write(`
+        <html>
+          <head>
+            <title>Print - ${modalTitle}</title>
+            <link href="assets/vendors/bootstrap/bootstrap.min.css" rel="stylesheet">
+            <link href="assets/vendors/bootstrap-icons/font/bootstrap-icons.min.css" rel="stylesheet">
+            <style>
+              body { font-family: 'Inter', sans-serif; padding: 40px; color: #333; }
+              .print-header { border-bottom: 2px solid #215C5C; padding-bottom: 20px; margin-bottom: 30px; }
+              .detail-card { background: #f8f9fa; border: 1px solid #dee2e6; border-radius: 8px; padding: 12px 16px; margin-bottom: 15px; page-break-inside: avoid; }
+              .detail-card-label { font-size: 0.7rem; font-weight: 700; color: #6c757d; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
+              .detail-card-value { font-size: 0.925rem; font-weight: 600; color: #212529; word-break: break-word; }
+              .badge { display: inline-block; padding: 0.35em 0.65em; font-size: 0.75em; font-weight: 700; border-radius: 0.25rem; }
+              .text-success { color: #198754 !important; }
+              .text-primary { color: #215C5C !important; }
+              @media print {
+                .btn { display: none; }
+                body { padding: 0; }
+              }
+            </style>
+          </head>
+          <body>
+            <div class="print-header d-flex justify-content-between align-items-center">
+              <div>
+                <span class="badge bg-secondary text-uppercase mb-2">${modalBadge}</span>
+                <h2 class="fw-bold text-primary mb-1">${modalTitle}</h2>
+                <p class="text-muted small mb-0">${modalSubtitle}</p>
+              </div>
+              <div class="text-end">
+                <h4 class="fw-bold text-primary m-0">INTREX DIGITAL</h4>
+                <p class="small text-muted mt-1 mb-0">Registry Audit Log Export</p>
+              </div>
+            </div>
+            <div class="row g-3">
+              ${modalBody}
+            </div>
+            <div class="mt-5 text-center text-muted small border-top pt-3">
+              Printed on ${new Date().toLocaleString()} | Intrex Digital Hub Solutions Portal
+            </div>
+          </body>
+        </html>
+      `);
+      
+      // Inject print script safely via DOM to avoid HTML parser script tag nesting bugs
+      const script = printWindow.document.createElement("script");
+      script.textContent = `
+        window.onload = function() {
+          window.print();
+          setTimeout(function() { window.close(); }, 500);
+        };
+      `;
+      printWindow.document.body.appendChild(script);
+      printWindow.document.close();
     };
 
     // Firebase Auth State listener
