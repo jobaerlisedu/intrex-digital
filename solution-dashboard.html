@@ -4,6 +4,9 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
   <title>Solutions Management Dashboard | Intrex Digital Hub</title>
   <link rel="icon" href="assets/images/logo/intrex-favicon.svg" type="image/svg+xml">
   <meta name="robots" content="noindex, nofollow">
@@ -207,6 +210,10 @@
                   <i class="bi bi-server"></i> Domain & Hosting
                 </button>
                 <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
+                  id="reports-tab" data-bs-toggle="tab" data-bs-target="#reportsPanel" type="button" role="tab">
+                  <i class="bi bi-file-earmark-bar-graph"></i> Project Report Generator
+                </button>
+                <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
                   id="logs-tab" data-bs-toggle="tab" data-bs-target="#logsPanel" type="button" role="tab">
                   <i class="bi bi-shield-check"></i> System Audit Logs
                 </button>
@@ -315,8 +322,9 @@
                         <div class="col-md-6">
                           <label class="form-label small fw-semibold" for="client_sponsor">Client / Sponsor <span
                               class="text-danger">*</span></label>
-                          <input class="form-control" id="client_sponsor" type="text" placeholder="Organization name"
-                            required>
+                          <select class="form-select" id="client_sponsor" required>
+                            <option value="" disabled selected>Select Client / Sponsor</option>
+                          </select>
                         </div>
                         <div class="col-md-6">
                           <label class="form-label small fw-semibold" for="project_manager">Project Manager <span
@@ -407,16 +415,7 @@
                         <div class="col-md-6">
                           <label class="form-label small fw-semibold" for="emp_designation">Designation <span
                               class="text-danger">*</span></label>
-                          <select class="form-select" id="emp_designation" required>
-                            <option value="" disabled selected>Select designation</option>
-                            <option value="Project Manager">Project Manager</option>
-                            <option value="Developer">Developer</option>
-                            <option value="Sponsor">Sponsor</option>
-                            <option value="Vendor Lead">Vendor Lead</option>
-                            <option value="Procurement Officer">Procurement Officer</option>
-                            <option value="HR Specialist">HR Specialist</option>
-                            <option value="Finance Associate">Finance Associate</option>
-                          </select>
+                          <input class="form-control" id="emp_designation" type="text" placeholder="e.g. Project Manager" required maxlength="100">
                         </div>
                         <div class="col-md-4">
                           <label class="form-label small fw-semibold" for="emp_department">Department <span
@@ -519,16 +518,7 @@
                         <div class="col-md-6">
                           <label class="form-label small fw-semibold" for="contact_designation">Designation <span
                               class="text-danger">*</span></label>
-                          <select class="form-select" id="contact_designation" required>
-                            <option value="" disabled selected>Select designation</option>
-                            <option value="Project Manager">Project Manager</option>
-                            <option value="Developer">Developer</option>
-                            <option value="Sponsor">Sponsor</option>
-                            <option value="Vendor Lead">Vendor Lead</option>
-                            <option value="Procurement Officer">Procurement Officer</option>
-                            <option value="HR Specialist">HR Specialist</option>
-                            <option value="Finance Associate">Finance Associate</option>
-                          </select>
+                          <input class="form-control" id="contact_designation" type="text" placeholder="e.g. Project Manager" required maxlength="100">
                         </div>
                         <div class="col-md-6">
                           <label class="form-label small fw-semibold" for="contact_organization">Organization <span
@@ -545,16 +535,6 @@
                           <label class="form-label small fw-semibold" for="contact_email">E-mail Address</label>
                           <input class="form-control" id="contact_email" type="email"
                             placeholder="e.g. name@domain.com">
-                        </div>
-                        <div class="col-md-6">
-                          <label class="form-label small fw-semibold" for="contact_project_id">Link to Project(s) <span
-                              class="text-danger">*</span></label>
-                          <select class="form-select project-id-select" id="contact_project_id" multiple required
-                            style="min-height: 80px;">
-                            <option value="" disabled>Loading projects...</option>
-                          </select>
-                          <div class="form-text text-muted">Hold Ctrl (Windows) or Cmd (Mac) to select multiple
-                            projects.</div>
                         </div>
                       </div>
                       <div class="d-flex gap-2 mt-3">
@@ -979,7 +959,6 @@
                           <tr>
                             <th>Requisition ID</th>
                             <th>Category</th>
-                            <th>Description</th>
                             <th>Quantity</th>
                             <th>Est. Unit Cost</th>
                             <th>Est. Total</th>
@@ -991,7 +970,7 @@
                         </thead>
                         <tbody id="requisitionsTableBody">
                           <tr>
-                            <td colspan="10" class="text-center py-4 text-muted">Loading requisitions...</td>
+                            <td colspan="9" class="text-center py-4 text-muted">Loading requisitions...</td>
                           </tr>
                         </tbody>
                       </table>
@@ -1496,23 +1475,15 @@
                         </div>
                         <div class="col-md-6">
                           <label class="form-label small fw-semibold" for="host_package">Hosting Package <span
-                              class="text-muted">(auto-fills capacity &amp; cost)</span></label>
-                          <select class="form-select" id="host_package">
-                            <option value="">-- Custom / Not Applicable --</option>
-                            <option value="Basic" data-capacity="10 GB NVMe SSD" data-cost="1699">Basic — ৳1,699/yr — 10
-                              GB Hosting + Free .com</option>
-                            <option value="Plus" data-capacity="20 GB NVMe SSD" data-cost="2199">Plus — ৳2,199/yr — 20
-                              GB Hosting + Free .com</option>
-                            <option value="Business" data-capacity="Unlimited NVMe SSD" data-cost="2999">Business —
-                              ৳2,999/yr — Unlimited Hosting + Free .com</option>
-                          </select>
+                              class="text-danger">*</span></label>
+                          <input class="form-control" id="host_package" type="text"
+                            placeholder="e.g. Basic or Enterprise" required>
                         </div>
                         <div class="col-md-6">
-                          <label class="form-label small fw-semibold" for="host_capacity">Hosting Capacity</label>
+                          <label class="form-label small fw-semibold" for="host_capacity">Hosting Capacity <span
+                              class="text-danger">*</span></label>
                           <input class="form-control" id="host_capacity" type="text"
-                            placeholder="e.g. 10 GB NVMe SSD or Unlimited">
-                          <div class="form-text text-muted">Auto-filled when a package is selected. Edit freely for
-                            custom setups.</div>
+                            placeholder="e.g. 10 GB NVMe SSD or Unlimited" required>
                         </div>
                         <div class="col-md-6">
                           <label class="form-label small fw-semibold" for="host_asset_type">Asset Type <span
@@ -1524,6 +1495,7 @@
                             <option value="VPS / Cloud Server">VPS / Cloud Server</option>
                             <option value="SSL Certificate">SSL Certificate</option>
                             <option value="Dedicated IP">Dedicated IP</option>
+                            <option value="Domain & Hosting">Domain & Hosting</option>
                           </select>
                         </div>
                         <div class="col-md-6">
@@ -1607,8 +1579,6 @@
                             <th>Package</th>
                             <th>Capacity</th>
                             <th>Asset Type</th>
-                            <th>URL / Server</th>
-                            <th>Provider</th>
                             <th>Cost Price</th>
                             <th>Selling Price</th>
                             <th>Reg. Date</th>
@@ -1620,11 +1590,237 @@
                         </thead>
                         <tbody id="hostingTableBody">
                           <tr>
-                            <td colspan="14" class="text-center py-4 text-muted">Loading assets...</td>
+                            <td colspan="12" class="text-center py-4 text-muted">Loading assets...</td>
                           </tr>
                         </tbody>
                       </table>
                     </div>
+                  </div>
+                </div>
+
+                <!-- PROJECT REPORT GENERATOR PANEL -->
+                <div class="tab-pane fade" id="reportsPanel" role="tabpanel">
+                  <div class="card p-4 rounded-4 shadow-sm border mb-4">
+                    <h3 class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
+                      <i class="bi bi-file-earmark-bar-graph me-2 text-primary"></i>Project Report Generator
+                    </h3>
+                    <div class="row g-3 align-items-end mb-4">
+                      <div class="col-md-6">
+                        <label class="form-label small fw-semibold" for="report_project_id">Select Project <span class="text-danger">*</span></label>
+                        <select class="form-select project-id-select" id="report_project_id" required>
+                          <option value="" disabled selected>Select Project</option>
+                        </select>
+                      </div>
+                      <div class="col-md-6 d-flex gap-2">
+                        <button type="button" class="btn btn-primary fw-semibold py-2 px-4" id="generateReportBtn">
+                          <i class="bi bi-gear me-2"></i>Generate Report
+                        </button>
+                        <button type="button" class="btn btn-outline-secondary fw-semibold py-2 px-3 d-none" id="printReportBtn">
+                          <i class="bi bi-printer me-2"></i>Print Report
+                        </button>
+                      </div>
+                    </div>
+
+                    <!-- Report Output Area -->
+                    <div id="reportOutput" class="d-none border rounded-4 p-4 bg-white shadow-sm">
+                      <!-- Report Header -->
+                      <div class="d-flex justify-content-between align-items-start border-bottom pb-4 mb-4">
+                        <div>
+                          <h2 class="h3 fw-bold text-heading-color mb-1" id="repProjName">Project Name</h2>
+                          <p class="text-muted mb-0 font-monospace" id="repProjId">PRJ-XXXX-XXX</p>
+                        </div>
+                        <div class="text-end">
+                          <span class="badge bg-success px-3 py-2 fw-semibold" id="repProjStatus">Status</span>
+                        </div>
+                      </div>
+
+                      <!-- KPI Metrics Row -->
+                      <div class="row g-3 mb-4">
+                        <div class="col-md-3 col-6">
+                          <div class="border rounded-3 p-3 bg-light text-center h-100">
+                            <span class="text-muted small fw-semibold">Total Budget Allocated</span>
+                            <h4 class="fw-bold mt-1 mb-0 text-dark" id="repTotalBudget">0 BDT</h4>
+                          </div>
+                        </div>
+                        <div class="col-md-3 col-6">
+                          <div class="border rounded-3 p-3 bg-light text-center h-100">
+                            <span class="text-muted small fw-semibold">Total Expenses Posted</span>
+                            <h4 class="fw-bold mt-1 mb-0 text-danger" id="repTotalExpenses">0 BDT</h4>
+                          </div>
+                        </div>
+                        <div class="col-md-3 col-6">
+                          <div class="border rounded-3 p-3 bg-light text-center h-100">
+                            <span class="text-muted small fw-semibold">Total Invoiced Gross</span>
+                            <h4 class="fw-bold mt-1 mb-0 text-primary" id="repTotalInvoiced">0 BDT</h4>
+                          </div>
+                        </div>
+                        <div class="col-md-3 col-6">
+                          <div class="border rounded-3 p-3 bg-light text-center h-100">
+                            <span class="text-muted small fw-semibold">Total Revenue Collected</span>
+                            <h4 class="fw-bold mt-1 mb-0 text-success" id="repTotalCollected">0 BDT</h4>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- Main sections stacked blocks -->
+                      <div class="vstack gap-4">
+                        
+                        <!-- 1. PROJECT METADATA CARD -->
+                        <div class="report-section border rounded-3 p-3">
+                          <h4 class="h6 fw-bold mb-3 text-heading-color border-bottom pb-2">
+                            <i class="bi bi-info-circle-fill me-2 text-primary"></i>Project Information
+                          </h4>
+                          <div class="row g-3">
+                            <div class="col-md-4 col-6">
+                              <span class="text-muted small">Project Manager</span>
+                              <p class="fw-semibold mb-0" id="repProjManager">—</p>
+                            </div>
+                            <div class="col-md-4 col-6">
+                              <span class="text-muted small">Client / Sponsor</span>
+                              <p class="fw-semibold mb-0" id="repProjClient">—</p>
+                            </div>
+                            <div class="col-md-4 col-6">
+                              <span class="text-muted small">Timeline</span>
+                              <p class="fw-semibold mb-0" id="repProjTimeline">—</p>
+                            </div>
+                            <div class="col-12">
+                              <span class="text-muted small">Description / Scope</span>
+                              <p class="text-muted small mb-0" style="white-space: pre-wrap;" id="repProjDesc">—</p>
+                            </div>
+                          </div>
+                        </div>
+
+                        <!-- 2. BUDGET ALLOCATIONS TABLE -->
+                        <div class="report-section border rounded-3 p-3">
+                          <h4 class="h6 fw-bold mb-3 text-heading-color border-bottom pb-2">
+                            <i class="bi bi-wallet2 me-2 text-primary"></i>Budget Lines & Categories
+                          </h4>
+                          <div class="table-responsive">
+                            <table class="table table-hover align-middle mb-0" id="repBudgetTable">
+                              <thead class="table-light">
+                                <tr>
+                                  <th>Line ID</th>
+                                  <th>Category</th>
+                                  <th>Description</th>
+                                  <th>Approved By</th>
+                                  <th class="text-end">Allocated Amount</th>
+                                </tr>
+                              </thead>
+                              <tbody id="repBudgetBody">
+                                <tr><td colspan="5" class="text-center text-muted py-3">No budget records found.</td></tr>
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+
+                        <!-- 3. REQUISITIONS & PURCHASE ORDERS -->
+                        <div class="report-section border rounded-3 p-3">
+                          <h4 class="h6 fw-bold mb-3 text-heading-color border-bottom pb-2">
+                            <i class="bi bi-cart-check me-2 text-primary"></i>Requisitions & Purchase Orders
+                          </h4>
+                          <div class="table-responsive">
+                            <table class="table table-hover align-middle mb-0" id="repReqPOTable">
+                              <thead class="table-light">
+                                <tr>
+                                  <th>Requisition ID</th>
+                                  <th>Category</th>
+                                  <th>Item Description</th>
+                                  <th>Qty x Cost</th>
+                                  <th>Requisition Total</th>
+                                  <th>Approval Status</th>
+                                  <th>Purchase Order Ref</th>
+                                </tr>
+                              </thead>
+                              <tbody id="repReqPOBody">
+                                <tr><td colspan="7" class="text-center text-muted py-3">No requisition records found.</td></tr>
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+
+                        <!-- 4. EXPENSE / PAYMENTS LEDGER -->
+                        <div class="report-section border rounded-3 p-3">
+                          <h4 class="h6 fw-bold mb-3 text-heading-color border-bottom pb-2">
+                            <i class="bi bi-cash-coin me-2 text-primary"></i>Expense Ledger (Payments Made)
+                          </h4>
+                          <div class="table-responsive">
+                            <table class="table table-hover align-middle mb-0" id="repExpenseTable">
+                              <thead class="table-light">
+                                <tr>
+                                  <th>Expense ID</th>
+                                  <th>Routing Type</th>
+                                  <th>PO / Invoice Ref</th>
+                                  <th>Payment Method</th>
+                                  <th>Clearance Date</th>
+                                  <th>Payment Status</th>
+                                  <th class="text-end">Invoice Amount</th>
+                                  <th class="text-end">Amount Paid</th>
+                                </tr>
+                              </thead>
+                              <tbody id="repExpenseBody">
+                                <tr><td colspan="8" class="text-center text-muted py-3">No expense records logged.</td></tr>
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+
+                        <!-- 5. CLIENT INVOICING & REVENUE -->
+                        <div class="report-section border rounded-3 p-3">
+                          <h4 class="h6 fw-bold mb-3 text-heading-color border-bottom pb-2">
+                            <i class="bi bi-cash-stack me-2 text-primary"></i>Client Invoices & Revenue Collected
+                          </h4>
+                          <div class="table-responsive">
+                            <table class="table table-hover align-middle mb-0" id="repInvoiceTable">
+                              <thead class="table-light">
+                                <tr>
+                                  <th>Invoice ID</th>
+                                  <th>Milestone Type</th>
+                                  <th>Issue / Due Date</th>
+                                  <th>Payment Status</th>
+                                  <th>Clearance Date</th>
+                                  <th class="text-end">Invoiced Amount</th>
+                                  <th class="text-end">Amount Received</th>
+                                  <th class="text-end">Outstanding Balance</th>
+                                </tr>
+                              </thead>
+                              <tbody id="repInvoiceBody">
+                                <tr><td colspan="8" class="text-center text-muted py-3">No client invoice records found.</td></tr>
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+
+                        <!-- 6. DOMAIN & HOSTING ASSETS -->
+                        <div class="report-section border rounded-3 p-3">
+                          <h4 class="h6 fw-bold mb-3 text-heading-color border-bottom pb-2">
+                            <i class="bi bi-server me-2 text-primary"></i>Associated Domain & Hosting Assets
+                          </h4>
+                          <div class="table-responsive">
+                            <table class="table table-hover align-middle mb-0" id="repHostingTable">
+                              <thead class="table-light">
+                                <tr>
+                                  <th>Asset ID</th>
+                                  <th>Package</th>
+                                  <th>Capacity</th>
+                                  <th>Asset Type</th>
+                                  <th>URL / Server</th>
+                                  <th>Provider</th>
+                                  <th>Cost Price</th>
+                                  <th>Selling Price</th>
+                                  <th>Renewal Date</th>
+                                  <th>Status</th>
+                                </tr>
+                              </thead>
+                              <tbody id="repHostingBody">
+                                <tr><td colspan="10" class="text-center text-muted py-3">No hosting assets allocated.</td></tr>
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+
+                      </div>
+                    </div>
+
                   </div>
                 </div>
 
@@ -1733,6 +1929,7 @@
         input.max = todayDateStr;
       }
     });
+    calculateRenewalDate();
 
     let currentUserEmail = "";
     let allAuditLogs = [];
@@ -1826,6 +2023,39 @@
       }
     }
 
+    // Populate Client Sponsor Dropdown from Contacts
+    function populateClientSponsorDropdown() {
+      const select = document.getElementById("client_sponsor");
+      if (!select) return;
+      const selectedVal = select.value;
+      select.innerHTML = '<option value="" disabled selected>Select Client / Sponsor</option>';
+
+      allContacts.forEach(c => {
+        const opt = document.createElement("option");
+        opt.value = c.contact_id;
+        opt.textContent = `${c.contact_name} (${c.organization || 'No Organization'})`;
+        select.appendChild(opt);
+      });
+
+      if (selectedVal) {
+        const exists = allContacts.some(c => c.contact_id === selectedVal);
+        if (!exists) {
+          const contactByName = allContacts.find(c => c.contact_name === selectedVal);
+          if (contactByName) {
+            select.value = contactByName.contact_id;
+            return;
+          }
+          const opt = document.createElement("option");
+          opt.value = selectedVal;
+          opt.textContent = selectedVal;
+          select.appendChild(opt);
+          select.value = selectedVal;
+        } else {
+          select.value = selectedVal;
+        }
+      }
+    }
+
     // Populate Employee Import Dropdown in Contact Form
     function populateEmployeeImportDropdown() {
       const select = document.getElementById("contact_employee_import");
@@ -1847,26 +2077,60 @@
       if (approvesSelect) {
         const val = approvesSelect.value;
         approvesSelect.innerHTML = '<option value="" disabled selected>Select Approver</option>';
-        allContacts.forEach(c => {
+        allEmployees.filter(e => e.status === "Active").forEach(emp => {
           const opt = document.createElement("option");
-          opt.value = c.contact_id;
-          opt.textContent = `${c.contact_name} (${c.designation})`;
+          opt.value = emp.employee_id;
+          opt.textContent = `${emp.employee_name} (${emp.designation})`;
           approvesSelect.appendChild(opt);
         });
-        if (val) approvesSelect.value = val;
+        if (val) {
+          const exists = allEmployees.some(e => e.employee_id === val && e.status === "Active");
+          if (!exists) {
+            const fallbackEmp = allEmployees.find(e => e.employee_id === val);
+            const fallbackContact = allContacts.find(c => c.contact_id === val);
+            const opt = document.createElement("option");
+            opt.value = val;
+            if (fallbackEmp) {
+              opt.textContent = `${fallbackEmp.employee_name} (${fallbackEmp.designation} - Inactive)`;
+            } else if (fallbackContact) {
+              opt.textContent = `${fallbackContact.contact_name} (${fallbackContact.designation})`;
+            } else {
+              opt.textContent = val;
+            }
+            approvesSelect.appendChild(opt);
+          }
+          approvesSelect.value = val;
+        }
       }
 
       const assignedSelect = document.getElementById("task_assigned_to");
       if (assignedSelect) {
         const val = assignedSelect.value;
         assignedSelect.innerHTML = '<option value="" disabled selected>Select Assignee</option>';
-        allContacts.forEach(c => {
+        allEmployees.filter(e => e.status === "Active").forEach(emp => {
           const opt = document.createElement("option");
-          opt.value = c.contact_id;
-          opt.textContent = `${c.contact_name} (${c.designation})`;
+          opt.value = emp.employee_id;
+          opt.textContent = `${emp.employee_name} (${emp.designation})`;
           assignedSelect.appendChild(opt);
         });
-        if (val) assignedSelect.value = val;
+        if (val) {
+          const exists = allEmployees.some(e => e.employee_id === val && e.status === "Active");
+          if (!exists) {
+            const fallbackEmp = allEmployees.find(e => e.employee_id === val);
+            const fallbackContact = allContacts.find(c => c.contact_id === val);
+            const opt = document.createElement("option");
+            opt.value = val;
+            if (fallbackEmp) {
+              opt.textContent = `${fallbackEmp.employee_name} (${fallbackEmp.designation} - Inactive)`;
+            } else if (fallbackContact) {
+              opt.textContent = `${fallbackContact.contact_name} (${fallbackContact.designation})`;
+            } else {
+              opt.textContent = val;
+            }
+            assignedSelect.appendChild(opt);
+          }
+          assignedSelect.value = val;
+        }
       }
 
       const requestedSelect = document.getElementById("req_requested_by");
@@ -1919,14 +2183,28 @@
       if (assignedSelect) {
         const val = assignedSelect.value;
         assignedSelect.innerHTML = '<option value="">Unassigned</option>';
-        const techStaff = allContacts.filter(c => c.designation === "Developer" || c.designation === "Project Manager");
-        techStaff.forEach(c => {
+        allEmployees.filter(e => e.status === "Active").forEach(emp => {
           const opt = document.createElement("option");
-          opt.value = c.contact_id;
-          opt.textContent = `${c.contact_name} (${c.designation})`;
+          opt.value = emp.employee_id;
+          opt.textContent = `${emp.employee_name} (${emp.designation})`;
           assignedSelect.appendChild(opt);
         });
-        if (val && techStaff.some(c => c.contact_id === val)) {
+        if (val) {
+          const exists = allEmployees.some(e => e.employee_id === val && e.status === "Active");
+          if (!exists) {
+            const fallbackEmp = allEmployees.find(e => e.employee_id === val);
+            const fallbackContact = allContacts.find(c => c.contact_id === val);
+            const opt = document.createElement("option");
+            opt.value = val;
+            if (fallbackEmp) {
+              opt.textContent = `${fallbackEmp.employee_name} (${fallbackEmp.designation} - Inactive)`;
+            } else if (fallbackContact) {
+              opt.textContent = `${fallbackContact.contact_name} (${fallbackContact.designation})`;
+            } else {
+              opt.textContent = val;
+            }
+            assignedSelect.appendChild(opt);
+          }
           assignedSelect.value = val;
         }
       }
@@ -2006,21 +2284,7 @@
         document.getElementById("contact_email").value = emp.email || "";
         document.getElementById("contact_organization").value = emp.department;
 
-        const desigSelect = document.getElementById("contact_designation");
-        let hasOption = false;
-        for (let i = 0; i < desigSelect.options.length; i++) {
-          if (desigSelect.options[i].value === emp.designation) {
-            hasOption = true;
-            break;
-          }
-        }
-        if (!hasOption) {
-          const opt = document.createElement("option");
-          opt.value = emp.designation;
-          opt.textContent = emp.designation;
-          desigSelect.appendChild(opt);
-        }
-        desigSelect.value = emp.designation;
+        document.getElementById("contact_designation").value = emp.designation || "";
       }
     });
 
@@ -2167,6 +2431,7 @@
     document.getElementById("cancelProjEditBtn")?.addEventListener("click", function () {
       document.getElementById("projectForm").reset();
       document.getElementById("project_id").readOnly = false;
+      populateClientSponsorDropdown();
       document.getElementById("projFormTitle").innerHTML = '<i class="bi bi-kanban me-2 text-primary"></i>Create Project';
       document.getElementById("projSubmitBtn").innerHTML = '<i class="bi bi-save me-2"></i>Save Project';
       document.getElementById("cancelProjEditBtn").classList.add("d-none");
@@ -2375,6 +2640,7 @@
         populateProjectDropdowns();
         populateContactSelects();
         populatePMDropdown();
+        populateClientSponsorDropdown();
         populateRequisitionDropdowns();
         populatePODropdowns();
         populateEmployeeImportDropdown();
@@ -2499,6 +2765,7 @@
         allContacts = await getAllContacts();
         populateContactSelects();
         populatePMDropdown();
+        populateClientSponsorDropdown();
         populateTicketDropdowns();
         renderContacts();
         renderProjects();
@@ -2515,6 +2782,7 @@
         allEmployees = await getAllEmployees();
         populatePMDropdown();
         populateEmployeeImportDropdown();
+        populateContactSelects();
         renderEmployees();
         renderProjects();
       } catch (err) {
@@ -2625,11 +2893,13 @@
       }
       tbody.innerHTML = allProjects.map(p => {
         const pm = allEmployees.find(e => e.employee_id === p.project_manager) || allContacts.find(c => c.contact_id === p.project_manager);
+        const clientContact = allContacts.find(c => c.contact_id === p.client_sponsor);
+        const clientName = clientContact ? clientContact.contact_name : p.client_sponsor;
         return `
           <tr>
             <td><code class="text-dark fw-bold font-monospace">${p.project_id}</code></td>
             <td><strong>${p.project_name}</strong></td>
-            <td>${p.client_sponsor}</td>
+            <td>${clientName}</td>
             <td>${pm ? (pm.employee_name || pm.contact_name) : 'Unknown Manager'}</td>
             <td><span class="small">${p.start_date} to ${p.end_date}</span></td>
             <td><span class="badge bg-secondary text-dark">${p.project_status}</span></td>
@@ -2662,7 +2932,22 @@
             document.getElementById("project_id").value = p.project_id;
             document.getElementById("project_id").readOnly = true;
             document.getElementById("project_name").value = p.project_name;
-            document.getElementById("client_sponsor").value = p.client_sponsor;
+
+            populateClientSponsorDropdown();
+            const clientSelect = document.getElementById("client_sponsor");
+            if (p.client_sponsor) {
+              const exists = allContacts.some(c => c.contact_id === p.client_sponsor) || Array.from(clientSelect.options).some(opt => opt.value === p.client_sponsor);
+              if (!exists) {
+                const opt = document.createElement("option");
+                opt.value = p.client_sponsor;
+                opt.textContent = p.client_sponsor;
+                clientSelect.appendChild(opt);
+              }
+              clientSelect.value = p.client_sponsor;
+            } else {
+              clientSelect.value = "";
+            }
+
             document.getElementById("project_manager").value = p.project_manager;
             document.getElementById("start_date").value = p.start_date;
             document.getElementById("end_date").value = p.end_date;
@@ -2708,7 +2993,8 @@
         return;
       }
       tbody.innerHTML = allContacts.map(c => {
-        const linkedProjs = Array.isArray(c.project_id) ? c.project_id.join(', ') : c.project_id;
+        const matchingProjects = allProjects.filter(p => p.client_sponsor === c.contact_id || p.client_sponsor === c.contact_name);
+        const linkedProjs = matchingProjects.length > 0 ? matchingProjects.map(p => p.project_id).join(', ') : 'None';
         return `
           <tr>
             <td><code class="text-dark font-monospace">${c.contact_id}</code></td>
@@ -2750,12 +3036,6 @@
             document.getElementById("contact_organization").value = c.organization;
             document.getElementById("contact_mobile_phone").value = c.mobile_phone || "";
             document.getElementById("contact_email").value = c.email || "";
-
-            const projSelect = document.getElementById("contact_project_id");
-            const linkedArr = Array.isArray(c.project_id) ? c.project_id : [c.project_id];
-            for (let i = 0; i < projSelect.options.length; i++) {
-              projSelect.options[i].selected = linkedArr.includes(projSelect.options[i].value);
-            }
 
             document.getElementById("contactFormTitle").innerHTML = '<i class="bi bi-telephone-plus me-2 text-primary"></i>Edit Contact';
             document.getElementById("contactSubmitBtn").innerHTML = '<i class="bi bi-pencil-square me-2"></i>Update Contact';
@@ -2879,6 +3159,10 @@
       tbody.innerHTML = allMeetings.map(m => {
         const timestamp = m.meeting_timestamp ? m.meeting_timestamp.replace('T', ' ') : 'N/A';
         const attendees = Array.isArray(m.attendees_list) ? m.attendees_list.join(', ') : m.attendees_list;
+        let url = m.meeting_url ? m.meeting_url.trim() : "";
+        if (url && !/^https?:\/\//i.test(url) && !/^\/\//.test(url)) {
+          url = 'https://' + url;
+        }
         return `
           <tr>
             <td><code class="text-dark font-monospace">${m.meeting_id}</code></td>
@@ -2886,7 +3170,7 @@
             <td><span class="small">${timestamp}</span></td>
             <td><code class="text-dark font-monospace">${m.project_id}</code></td>
             <td><span class="small text-muted">${attendees}</span></td>
-            <td><a href="${m.meeting_url}" target="_blank" class="small"><i class="bi bi-link-45deg"></i> Join Meeting</a></td>
+            <td><a href="${url}" target="_blank" class="small"><i class="bi bi-link-45deg"></i> Join Meeting</a></td>
             <td class="text-center">
               <button class="btn btn-sm btn-outline-success view-meeting-btn me-1" data-id="${m.meeting_id}" title="View Details">
                 <i class="bi bi-eye"></i>
@@ -2966,7 +3250,7 @@
         return;
       }
       tbody.innerHTML = allBudgets.map(b => {
-        const approver = allContacts.find(c => c.contact_id === b.approved_by);
+        const approver = allEmployees.find(e => e.employee_id === b.approved_by) || allContacts.find(c => c.contact_id === b.approved_by);
         return `
           <tr>
             <td><code class="text-dark font-monospace">${b.budget_line_id}</code></td>
@@ -2974,7 +3258,7 @@
             <td><span class="badge bg-light text-dark border">${b.cost_category}</span></td>
             <td>${b.line_description}</td>
             <td><strong>${Number(b.allocated_amount).toLocaleString()} BDT</strong></td>
-            <td>${approver ? approver.contact_name : 'Unknown Approver'}</td>
+            <td>${approver ? (approver.employee_name || approver.contact_name) : 'Unknown Approver'}</td>
             <td><span class="small">${b.last_updated}</span></td>
             <td class="text-center">
               <button class="btn btn-sm btn-outline-success view-budget-btn me-1" data-id="${b.budget_line_id}" title="View Details">
@@ -3048,14 +3332,14 @@
         return;
       }
       tbody.innerHTML = allTasks.map(t => {
-        const assignee = allContacts.find(c => c.contact_id === t.assigned_to);
+        const assignee = allEmployees.find(e => e.employee_id === t.assigned_to) || allContacts.find(c => c.contact_id === t.assigned_to);
         return `
           <tr>
             <td><code class="text-dark font-monospace">${t.task_id}</code></td>
             <td><span class="small font-monospace">${t.wbs_code}</span></td>
             <td><strong>${t.task_name}</strong></td>
             <td><code class="text-dark font-monospace">${t.project_id}</code></td>
-            <td>${assignee ? assignee.contact_name : 'Unknown'}</td>
+            <td>${assignee ? (assignee.employee_name || assignee.contact_name) : 'Unknown'}</td>
             <td>
               <div class="d-flex align-items-center gap-2">
                 <div class="progress flex-grow-1" style="height: 6px;">
@@ -3150,7 +3434,7 @@
       const tbody = document.getElementById("requisitionsTableBody");
       if (!tbody) return;
       if (allRequisitions.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="10" class="text-center py-3 text-muted">No requisitions found.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="9" class="text-center py-3 text-muted">No requisitions found.</td></tr>';
         return;
       }
       tbody.innerHTML = allRequisitions.map(r => {
@@ -3158,7 +3442,6 @@
           <tr>
             <td><code class="text-dark font-monospace">${r.requisition_id}</code></td>
             <td><strong>${r.item_category}</strong></td>
-            <td><span class="small text-wrap">${r.item_description}</span></td>
             <td>${r.qty_requested}</td>
             <td>${Number(r.est_unit_cost).toLocaleString()} BDT</td>
             <td><strong>${Number(r.est_total_cost).toLocaleString()} BDT</strong></td>
@@ -3460,7 +3743,7 @@
 
       tbody.innerHTML = allSupportTickets.map(t => {
         const req = allContacts.find(c => c.contact_id === t.requester_id);
-        const eng = allContacts.find(c => c.contact_id === t.assigned_to);
+        const eng = allEmployees.find(e => e.employee_id === t.assigned_to) || allContacts.find(c => c.contact_id === t.assigned_to);
         const deadlineDate = new Date(t.sla_deadline);
         const isOverdue = new Date() > deadlineDate && t.ticket_status !== "Resolved" && t.ticket_status !== "Closed";
         const badgeColor = isOverdue ? "bg-danger text-white" : "bg-info text-dark";
@@ -3474,7 +3757,7 @@
             <td><strong>${t.ticket_subject}</strong></td>
             <td><span class="badge ${t.priority === 'Critical' ? 'bg-danger' : t.priority === 'High' ? 'bg-warning text-dark' : t.priority === 'Medium' ? 'bg-primary' : 'bg-secondary'}">${t.priority}</span></td>
             <td><span class="badge ${badgeColor}">${formatDateTime(t.sla_deadline)}</span></td>
-            <td>${eng ? eng.contact_name : 'Unassigned'}</td>
+            <td>${eng ? (eng.employee_name || eng.contact_name) : 'Unassigned'}</td>
             <td><span class="badge bg-secondary text-dark">${t.ticket_status}</span></td>
             <td><span class="small text-muted">${formatDateTime(t.created_at)}</span></td>
             <td><span class="small text-muted">${formatDateTime(t.closed_at)}</span></td>
@@ -3785,15 +4068,13 @@
         return;
       }
 
-      const projSelect = document.getElementById("contact_project_id");
-      const selectedProjIds = Array.from(projSelect.selectedOptions).map(opt => opt.value);
       const isEdit = !!document.getElementById("contact_id").value;
       const contactName = document.getElementById("contact_name").value;
 
       try {
         const savedId = await addContact({
           contact_id: document.getElementById("contact_id").value || null,
-          project_id: selectedProjIds,
+          project_id: [],
           contact_name: contactName,
           designation: document.getElementById("contact_designation").value,
           organization: document.getElementById("contact_organization").value,
@@ -4275,14 +4556,7 @@
     document.getElementById("host_reg_date")?.addEventListener("change", calculateRenewalDate);
     document.getElementById("host_billing_cycle")?.addEventListener("change", calculateRenewalDate);
 
-    // Auto-fill Capacity and Cost Price from Package selection
-    document.getElementById("host_package")?.addEventListener("change", function () {
-      const selected = this.options[this.selectedIndex];
-      const capacity = selected.dataset.capacity || "";
-      const cost = selected.dataset.cost || "";
-      document.getElementById("host_capacity").value = capacity;
-      if (cost) document.getElementById("host_cost_price").value = cost;
-    });
+
 
     // Cancel Domain & Hosting Edit
     document.getElementById("cancelHostingEditBtn")?.addEventListener("click", function () {
@@ -4362,7 +4636,7 @@
       const tbody = document.getElementById("hostingTableBody");
       if (!tbody) return;
       if (allDomainHosting.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="14" class="text-center py-3 text-muted">No domain & hosting assets found.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="12" class="text-center py-3 text-muted">No domain & hosting assets found.</td></tr>';
         return;
       }
 
@@ -4380,8 +4654,8 @@
         const sell = Number(asset.selling_price) || 0;
         const pkgBadgeMap = { "Basic": "bg-info text-dark", "Plus": "bg-warning text-dark", "Business": "bg-success" };
         const pkgBadge = asset.package_name
-          ? `<span class="badge ${pkgBadgeMap[asset.package_name] || 'bg-secondary'}>${asset.package_name}</span>`
-          : '<span class="text-muted small">Custom</span>';
+          ? `<span class="badge ${pkgBadgeMap[asset.package_name] || 'bg-secondary'}">${asset.package_name}</span>`
+          : '<span class="text-muted small">—</span>';
 
         return `
           <tr>
@@ -4390,8 +4664,6 @@
             <td>${pkgBadge}</td>
             <td><span class="small">${asset.hosting_capacity || '—'}</span></td>
             <td><span class="small">${asset.asset_type}</span></td>
-            <td><strong>${asset.asset_url}</strong></td>
-            <td>${asset.provider_name}</td>
             <td>${cost.toLocaleString()} BDT</td>
             <td class="fw-semibold text-success">${sell.toLocaleString()} BDT</td>
             <td>${asset.reg_date}</td>
@@ -4483,7 +4755,7 @@
             { label: "Project ID", key: "project_id", type: "code", cols: 6 },
             { label: "Project Status", key: "project_status", type: "badge", cols: 6 },
             { label: "Project Name", key: "project_name", type: "text", cols: 12 },
-            { label: "Client / Sponsor", key: "client_sponsor", type: "text", cols: 6 },
+            { label: "Client / Sponsor", key: "client_sponsor", type: "contact", cols: 6 },
             { label: "Project Manager", key: "project_manager", type: "pm", cols: 6 },
             { label: "Start Date", key: "start_date", type: "date", cols: 6 },
             { label: "Target End Date", key: "end_date", type: "date", cols: 6 },
@@ -4731,6 +5003,12 @@
           val = invoiced - received;
         }
 
+        // Handle calculated linked projects for contact
+        if (type === "contact" && f.key === "project_id") {
+          const matchingProjects = allProjects.filter(p => p.client_sponsor === record.contact_id || p.client_sponsor === record.contact_name);
+          val = matchingProjects.map(p => p.project_id);
+        }
+
         let displayHtml = '';
 
         if (val === undefined || val === null || val === '') {
@@ -4763,7 +5041,11 @@
               displayHtml = `<a href="mailto:${val}" class="text-decoration-none text-heading-color fw-semibold"><i class="bi bi-envelope me-2 text-primary"></i>${val}</a>`;
               break;
             case 'url':
-              displayHtml = `<a href="${val}" target="_blank" class="text-decoration-none fw-semibold"><i class="bi bi-box-arrow-up-right me-2"></i>Open Target Link</a>`;
+              let targetUrl = val.trim();
+              if (targetUrl && !/^https?:\/\//i.test(targetUrl) && !/^\/\//.test(targetUrl)) {
+                targetUrl = 'https://' + targetUrl;
+              }
+              displayHtml = `<a href="${targetUrl}" target="_blank" class="text-decoration-none fw-semibold"><i class="bi bi-box-arrow-up-right me-2"></i>Open Target Link</a>`;
               break;
             case 'currency':
             case 'currency_calc':
@@ -4927,6 +5209,248 @@
       } catch (err) {
         alert("Logout failed: " + err.message);
       }
+    });
+
+    // Project Report Generator Logic
+    document.getElementById("generateReportBtn")?.addEventListener("click", () => {
+      const projId = document.getElementById("report_project_id").value;
+      if (!projId) {
+        alert("Please select a project first.");
+        return;
+      }
+      
+      const project = allProjects.find(p => p.project_id === projId);
+      if (!project) {
+        alert("Selected project not found.");
+        return;
+      }
+      
+      // Show report container, show print button
+      document.getElementById("reportOutput").classList.remove("d-none");
+      document.getElementById("printReportBtn").classList.remove("d-none");
+      
+      // 0. Project Overview
+      document.getElementById("repProjName").textContent = project.project_name;
+      document.getElementById("repProjId").textContent = project.project_id;
+      document.getElementById("repProjStatus").textContent = project.project_status;
+      
+      // Set status badge style
+      const statusBadge = document.getElementById("repProjStatus");
+      statusBadge.className = "badge px-3 py-2 fw-semibold";
+      if (project.project_status === "Active" || project.project_status === "Completed") {
+        statusBadge.classList.add("bg-success", "text-white");
+      } else if (project.project_status === "Pipeline" || project.project_status === "On Hold") {
+        statusBadge.classList.add("bg-warning", "text-dark");
+      } else {
+        statusBadge.classList.add("bg-danger", "text-white");
+      }
+      
+      // Project Metadata
+      // Resolve PM Name
+      const pm = allEmployees.find(e => e.employee_id === project.project_manager);
+      document.getElementById("repProjManager").textContent = pm ? pm.employee_name : (project.project_manager || "—");
+      
+      // Resolve Client Name
+      const client = allContacts.find(c => c.contact_id === project.client_sponsor);
+      document.getElementById("repProjClient").textContent = client ? client.contact_name : (project.client_sponsor || "—");
+      
+      document.getElementById("repProjTimeline").textContent = `${project.start_date} to ${project.end_date}`;
+      document.getElementById("repProjDesc").textContent = project.project_desc || "No description provided.";
+      
+      // 1. Filter related data
+      const projBudgets = allBudgets.filter(b => b.project_id === projId);
+      const projReqs = allRequisitions.filter(r => r.project_id === projId);
+      const projPOs = allPurchaseOrders.filter(po => po.project_id === projId);
+      const projExpenses = allExpenses.filter(e => e.project_id === projId);
+      const projInvoices = allClientPayments.filter(inv => inv.project_id === projId);
+      const projHosting = allDomainHosting.filter(a => a.project_id === projId);
+      
+      // 2. Calculations
+      const totalBudget = projBudgets.reduce((sum, b) => sum + (Number(b.allocated_amount) || 0), 0);
+      const totalExpenses = projExpenses.reduce((sum, e) => sum + (Number(e.amount_paid) || 0), 0);
+      const totalInvoiced = projInvoices.reduce((sum, inv) => sum + (Number(inv.invoiced_amount) || 0), 0);
+      const totalCollected = projInvoices.reduce((sum, inv) => sum + (Number(inv.amount_received) || 0), 0);
+      
+      document.getElementById("repTotalBudget").textContent = `${totalBudget.toLocaleString()} BDT`;
+      document.getElementById("repTotalExpenses").textContent = `${totalExpenses.toLocaleString()} BDT`;
+      document.getElementById("repTotalInvoiced").textContent = `${totalInvoiced.toLocaleString()} BDT`;
+      document.getElementById("repTotalCollected").textContent = `${totalCollected.toLocaleString()} BDT`;
+      
+      // 3. Render Budget Table
+      const budgetBody = document.getElementById("repBudgetBody");
+      if (projBudgets.length === 0) {
+        budgetBody.innerHTML = '<tr><td colspan="5" class="text-center text-muted py-3">No budget records found.</td></tr>';
+      } else {
+        budgetBody.innerHTML = projBudgets.map(b => {
+          const approver = allContacts.find(c => c.contact_id === b.approved_by) || allEmployees.find(e => e.employee_id === b.approved_by);
+          const appName = approver ? (approver.contact_name || approver.employee_name) : (b.approved_by || "—");
+          return `
+            <tr>
+              <td><code class="text-dark font-monospace">${b.budget_line_id}</code></td>
+              <td><span class="badge bg-secondary text-white">${b.cost_category}</span></td>
+              <td class="small">${b.line_description || '—'}</td>
+              <td>${appName}</td>
+              <td class="text-end fw-semibold text-dark">${(Number(b.allocated_amount) || 0).toLocaleString()} BDT</td>
+            </tr>
+          `;
+        }).join('');
+      }
+      
+      // 4. Render Requisitions & POs
+      const reqPOBody = document.getElementById("repReqPOBody");
+      if (projReqs.length === 0) {
+        reqPOBody.innerHTML = '<tr><td colspan="7" class="text-center text-muted py-3">No requisition records found.</td></tr>';
+      } else {
+        reqPOBody.innerHTML = projReqs.map(r => {
+          const matchingPO = projPOs.find(po => po.requisition_id === r.requisition_id);
+          const poCell = matchingPO 
+            ? `<code class="text-dark font-monospace">${matchingPO.po_number}</code> <span class="small text-muted">(${matchingPO.vendor_name})</span>`
+            : '<span class="text-muted small"><em>No PO Generated</em></span>';
+          
+          let approvalBadgeClass = 'bg-secondary';
+          if (r.dept_approval === 'Approved') approvalBadgeClass = 'bg-success';
+          else if (r.dept_approval === 'Pending Review') approvalBadgeClass = 'bg-warning text-dark';
+          else if (r.dept_approval === 'Rejected') approvalBadgeClass = 'bg-danger';
+          
+          return `
+            <tr>
+              <td><code class="text-dark font-monospace">${r.requisition_id}</code></td>
+              <td><span class="badge bg-light text-dark border">${r.item_category}</span></td>
+              <td class="small">${r.item_description}</td>
+              <td class="small font-monospace">${r.qty_requested} x ${(Number(r.est_unit_cost) || 0).toLocaleString()}</td>
+              <td class="fw-semibold text-dark">${(Number(r.est_total_cost) || 0).toLocaleString()} BDT</td>
+              <td><span class="badge ${approvalBadgeClass}">${r.dept_approval}</span></td>
+              <td>${poCell}</td>
+            </tr>
+          `;
+        }).join('');
+      }
+      
+      // 5. Render Expense Table
+      const expenseBody = document.getElementById("repExpenseBody");
+      if (projExpenses.length === 0) {
+        expenseBody.innerHTML = '<tr><td colspan="8" class="text-center text-muted py-3">No expense records logged.</td></tr>';
+      } else {
+        expenseBody.innerHTML = projExpenses.map(e => {
+          let statusClass = 'bg-secondary';
+          if (e.payment_status === 'Fully Settled' || e.payment_status === 'Fully Paid') statusClass = 'bg-success';
+          else if (e.payment_status === 'Partially Paid') statusClass = 'bg-warning text-dark';
+          else if (e.payment_status === 'Unpaid / Awaiting Approval') statusClass = 'bg-danger';
+          
+          return `
+            <tr>
+              <td><code class="text-dark font-monospace">${e.expense_id}</code></td>
+              <td><span class="small">${e.expense_routing_type}</span></td>
+              <td><code class="text-dark font-monospace">${e.po_number_ref || e.vendor_invoice_num}</code></td>
+              <td><span class="small">${e.payment_method}</span></td>
+              <td><span class="small">${e.clearance_date || '—'}</span></td>
+              <td><span class="badge ${statusClass}">${e.payment_status}</span></td>
+              <td class="text-end small">${(Number(e.invoice_amount) || 0).toLocaleString()} BDT</td>
+              <td class="text-end fw-semibold text-danger">${(Number(e.amount_paid) || 0).toLocaleString()} BDT</td>
+            </tr>
+          `;
+        }).join('');
+      }
+      
+      // 6. Render Client Invoices
+      const invoiceBody = document.getElementById("repInvoiceBody");
+      if (projInvoices.length === 0) {
+        invoiceBody.innerHTML = '<tr><td colspan="8" class="text-center text-muted py-3">No client invoice records found.</td></tr>';
+      } else {
+        invoiceBody.innerHTML = projInvoices.map(inv => {
+          let statusClass = 'bg-secondary';
+          if (inv.payment_status === 'Fully Paid') statusClass = 'bg-success';
+          else if (inv.payment_status === 'Partially Paid') statusClass = 'bg-warning text-dark';
+          else if (inv.payment_status === 'Awaiting Payment') statusClass = 'bg-danger';
+          
+          return `
+            <tr>
+              <td><code class="text-dark font-monospace">${inv.invoice_id}</code></td>
+              <td><span class="small font-semibold">${inv.milestone_type}</span></td>
+              <td><span class="small">${inv.invoice_date} to ${inv.due_date}</span></td>
+              <td><span class="badge ${statusClass}">${inv.payment_status}</span></td>
+              <td><span class="small">${inv.date_received || '—'}</span></td>
+              <td class="text-end small">${(Number(inv.invoiced_amount) || 0).toLocaleString()} BDT</td>
+              <td class="text-end fw-semibold text-success">${(Number(inv.amount_received) || 0).toLocaleString()} BDT</td>
+              <td class="text-end fw-bold text-dark">${(Number(inv.outstanding_balance) || 0).toLocaleString()} BDT</td>
+            </tr>
+          `;
+        }).join('');
+      }
+      
+      // 7. Render Domain & Hosting Assets
+      const hostingBody = document.getElementById("repHostingBody");
+      if (projHosting.length === 0) {
+        hostingBody.innerHTML = '<tr><td colspan="10" class="text-center text-muted py-3">No hosting assets allocated.</td></tr>';
+      } else {
+        hostingBody.innerHTML = projHosting.map(a => {
+          const pkgBadgeMap = { "Basic": "bg-info text-dark", "Plus": "bg-warning text-dark", "Business": "bg-success" };
+          const pkgBadge = a.package_name
+            ? `<span class="badge ${pkgBadgeMap[a.package_name] || 'bg-secondary'}">${a.package_name}</span>`
+            : '<span class="text-muted small">—</span>';
+          
+          let statusClass = 'bg-secondary';
+          if (a.asset_status === 'Active / Good Standing') statusClass = 'bg-success';
+          else if (a.asset_status === 'Expired / Action Required') statusClass = 'bg-danger';
+          else if (a.asset_status === 'Suspended / Terminated') statusClass = 'bg-dark text-white';
+          
+          return `
+            <tr>
+              <td><code class="text-dark font-monospace">${a.asset_id}</code></td>
+              <td>${pkgBadge}</td>
+              <td><span class="small">${a.hosting_capacity || '—'}</span></td>
+              <td><span class="small">${a.asset_type}</span></td>
+              <td><a href="${a.asset_url.startsWith('http') ? a.asset_url : 'https://' + a.asset_url}" target="_blank" class="small fw-semibold text-decoration-none">${a.asset_url}</a></td>
+              <td><span class="small">${a.provider_name}</span></td>
+              <td class="text-end small">${(Number(a.cost_price) || 0).toLocaleString()} BDT</td>
+              <td class="text-end fw-semibold text-success">${(Number(a.selling_price) || 0).toLocaleString()} BDT</td>
+              <td class="fw-semibold small">${a.renewal_date}</td>
+              <td><span class="badge ${statusClass}">${a.asset_status}</span></td>
+            </tr>
+          `;
+        }).join('');
+      }
+    });
+
+    // Print Report Button Handler
+    document.getElementById("printReportBtn")?.addEventListener("click", () => {
+      const printContents = document.getElementById("reportOutput").innerHTML;
+      const win = window.open("", "_blank");
+      win.document.write(`
+        <html>
+        <head>
+          <title>Project Report - ${document.getElementById("repProjId").textContent}</title>
+          <link href="assets/vendors/bootstrap/bootstrap.min.css" rel="stylesheet">
+          <style>
+            body { font-family: sans-serif; padding: 40px; background: white; color: black; }
+            .badge { border: 1px solid #ddd; padding: 4px 8px; border-radius: 4px; font-size: 0.85em; }
+            .bg-success { background-color: #d4edda !important; color: #155724 !important; }
+            .bg-warning { background-color: #fff3cd !important; color: #856404 !important; }
+            .bg-danger { background-color: #f8d7da !important; color: #721c24 !important; }
+            .bg-secondary { background-color: #e2e3e5 !important; color: #383d41 !important; }
+            .table-light { background-color: #f8f9fa !important; }
+            code { font-family: monospace; }
+            @media print {
+              body { padding: 0; }
+              .no-print { display: none; }
+            }
+          </style>
+        </head>
+        <body>
+          ${printContents}
+        </body>
+        </html>
+      `);
+      
+      const script = win.document.createElement("script");
+      script.textContent = `
+        window.onload = function() {
+          window.print();
+          setTimeout(function() { window.close(); }, 500);
+        };
+      `;
+      win.document.body.appendChild(script);
+      win.document.close();
     });
 
     document.getElementById("logs-tab")?.addEventListener("click", refreshAuditLogs);
