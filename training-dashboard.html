@@ -24,6 +24,12 @@
       position: relative;
     }
 
+    /* Round the right corners of the search button in input-groups containing the dropdown */
+    .qf-wrapper .btn {
+      border-top-right-radius: var(--bs-border-radius, 0.375rem) !important;
+      border-bottom-right-radius: var(--bs-border-radius, 0.375rem) !important;
+    }
+
     .qf-dropdown {
       position: absolute;
       top: calc(100% + 4px);
@@ -180,7 +186,7 @@
                 <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
                   id="records-tab" data-bs-toggle="tab" data-bs-target="#recordsPanel" type="button" role="tab"
                   aria-controls="recordsPanel" aria-selected="false">
-                  <i class="bi bi-award"></i> Student list by Batch
+                  <i class="bi bi-award"></i> Issued Certificates
                 </button>
               </div>
             </div>
@@ -814,7 +820,7 @@
                         <div
                           class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom flex-wrap gap-2">
                           <h3 class="h5 fw-bold text-heading-color mb-0">
-                            <i class="bi bi-award me-2 text-primary"></i>Student list by Batch
+                            <i class="bi bi-award me-2 text-primary"></i>Issued Certificates
                           </h3>
                           <div class="d-flex align-items-center gap-2 flex-wrap">
                             <div class="input-group qf-wrapper" style="width: auto; max-width: 260px;">
