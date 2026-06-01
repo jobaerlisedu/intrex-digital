@@ -206,9 +206,24 @@
 
                 <!-- 1. PROJECT CREATOR PANEL -->
                 <div class="tab-pane fade" id="projectsPanel" role="tabpanel">
-                  <div class="row g-4">
-                    <div class="col-md-4">
-                      <div class="card p-4 rounded-4 shadow-sm border">
+                  <!-- Sub-tabs Navigation -->
+                  <ul class="nav nav-pills gap-2 mb-4 border-bottom pb-3" id="projectsSubTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                      <button class="nav-link active fw-semibold py-2 px-3" id="projectsForm-tab" data-bs-toggle="tab" data-bs-target="#projectsFormPanel" type="button" role="tab" aria-selected="true">
+                        <i class="bi bi-kanban me-1"></i> Project Form
+                      </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                      <button class="nav-link fw-semibold py-2 px-3" id="projectsList-tab" data-bs-toggle="tab" data-bs-target="#projectsListPanel" type="button" role="tab" aria-selected="false">
+                        <i class="bi bi-list-task me-1"></i> Projects Directory
+                      </button>
+                    </li>
+                  </ul>
+
+                  <div class="tab-content" id="projectsSubTabContent">
+                    <!-- Form Pane -->
+                    <div class="tab-pane fade show active" id="projectsFormPanel" role="tabpanel" aria-labelledby="projectsForm-tab">
+                      <div class="card p-4 rounded-4 shadow-sm border mx-auto" style="max-width: 600px;">
                         <h3 id="projFormTitle" class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
                           <i class="bi bi-kanban me-2 text-primary"></i>Create Project
                         </h3>
@@ -259,8 +274,9 @@
                         </form>
                       </div>
                     </div>
-                    <div class="col-md-8">
-                      <div class="card p-4 rounded-4 shadow-sm border h-100">
+                    <!-- List Pane -->
+                    <div class="tab-pane fade" id="projectsListPanel" role="tabpanel" aria-labelledby="projectsList-tab">
+                      <div class="card p-4 rounded-4 shadow-sm border">
                         <h3 class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
                           <i class="bi bi-list-task me-2 text-primary"></i>Projects Directory
                         </h3>
@@ -290,9 +306,24 @@
 
                 <!-- 2. CONTACT DIRECTORY PANEL -->
                 <div class="tab-pane fade" id="contactsPanel" role="tabpanel">
-                  <div class="row g-4">
-                    <div class="col-md-4">
-                      <div class="card p-4 rounded-4 shadow-sm border">
+                  <!-- Sub-tabs Navigation -->
+                  <ul class="nav nav-pills gap-2 mb-4 border-bottom pb-3" id="contactsSubTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                      <button class="nav-link active fw-semibold py-2 px-3" id="contactsForm-tab" data-bs-toggle="tab" data-bs-target="#contactsFormPanel" type="button" role="tab" aria-selected="true">
+                        <i class="bi bi-telephone-plus me-1"></i> Contact Form
+                      </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                      <button class="nav-link fw-semibold py-2 px-3" id="contactsList-tab" data-bs-toggle="tab" data-bs-target="#contactsListPanel" type="button" role="tab" aria-selected="false">
+                        <i class="bi bi-journals me-1"></i> Contact Directory
+                      </button>
+                    </li>
+                  </ul>
+
+                  <div class="tab-content" id="contactsSubTabContent">
+                    <!-- Form Pane -->
+                    <div class="tab-pane fade show active" id="contactsFormPanel" role="tabpanel" aria-labelledby="contactsForm-tab">
+                      <div class="card p-4 rounded-4 shadow-sm border mx-auto" style="max-width: 600px;">
                         <h3 id="contactFormTitle" class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
                           <i class="bi bi-telephone-plus me-2 text-primary"></i>Add Contact
                         </h3>
@@ -335,10 +366,11 @@
                         </form>
                       </div>
                     </div>
-                    <div class="col-md-8">
-                      <div class="card p-4 rounded-4 shadow-sm border h-100">
+                    <!-- List Pane -->
+                    <div class="tab-pane fade" id="contactsListPanel" role="tabpanel" aria-labelledby="contactsList-tab">
+                      <div class="card p-4 rounded-4 shadow-sm border">
                         <h3 class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
-                          <i class="bi bi-journals me-2 text-primary"></i>Contacts List
+                          <i class="bi bi-journals me-2 text-primary"></i>Contact Directory
                         </h3>
                         <div class="table-responsive">
                           <table class="table table-hover align-middle mb-0" id="contactsTable">
@@ -366,9 +398,24 @@
 
                 <!-- 3. MEETING SCHEDULER PANEL -->
                 <div class="tab-pane fade" id="meetingsPanel" role="tabpanel">
-                  <div class="row g-4">
-                    <div class="col-md-4">
-                      <div class="card p-4 rounded-4 shadow-sm border">
+                  <!-- Sub-tabs Navigation -->
+                  <ul class="nav nav-pills gap-2 mb-4 border-bottom pb-3" id="meetingsSubTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                      <button class="nav-link active fw-semibold py-2 px-3" id="meetingsForm-tab" data-bs-toggle="tab" data-bs-target="#meetingsFormPanel" type="button" role="tab" aria-selected="true">
+                        <i class="bi bi-calendar-plus me-1"></i> Meeting Form
+                      </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                      <button class="nav-link fw-semibold py-2 px-3" id="meetingsList-tab" data-bs-toggle="tab" data-bs-target="#meetingsListPanel" type="button" role="tab" aria-selected="false">
+                        <i class="bi bi-calendar3 me-1"></i> Scheduled Meetings
+                      </button>
+                    </li>
+                  </ul>
+
+                  <div class="tab-content" id="meetingsSubTabContent">
+                    <!-- Form Pane -->
+                    <div class="tab-pane fade show active" id="meetingsFormPanel" role="tabpanel" aria-labelledby="meetingsForm-tab">
+                      <div class="card p-4 rounded-4 shadow-sm border mx-auto" style="max-width: 600px;">
                         <h3 class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
                           <i class="bi bi-calendar-plus me-2 text-primary"></i>Schedule Meeting
                         </h3>
@@ -407,8 +454,9 @@
                         </form>
                       </div>
                     </div>
-                    <div class="col-md-8">
-                      <div class="card p-4 rounded-4 shadow-sm border h-100">
+                    <!-- List Pane -->
+                    <div class="tab-pane fade" id="meetingsListPanel" role="tabpanel" aria-labelledby="meetingsList-tab">
+                      <div class="card p-4 rounded-4 shadow-sm border">
                         <h3 class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
                           <i class="bi bi-calendar3 me-2 text-primary"></i>Scheduled Meetings
                         </h3>
@@ -438,9 +486,24 @@
 
                 <!-- 4. BUDGET PLANNER PANEL -->
                 <div class="tab-pane fade" id="budgetPanel" role="tabpanel">
-                  <div class="row g-4">
-                    <div class="col-md-4">
-                      <div class="card p-4 rounded-4 shadow-sm border">
+                  <!-- Sub-tabs Navigation -->
+                  <ul class="nav nav-pills gap-2 mb-4 border-bottom pb-3" id="budgetSubTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                      <button class="nav-link active fw-semibold py-2 px-3" id="budgetForm-tab" data-bs-toggle="tab" data-bs-target="#budgetFormPanel" type="button" role="tab" aria-selected="true">
+                        <i class="bi bi-cash-stack me-1"></i> Budget Form
+                      </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                      <button class="nav-link fw-semibold py-2 px-3" id="budgetList-tab" data-bs-toggle="tab" data-bs-target="#budgetListPanel" type="button" role="tab" aria-selected="false">
+                        <i class="bi bi-wallet-fill me-1"></i> Budget Overview
+                      </button>
+                    </li>
+                  </ul>
+
+                  <div class="tab-content" id="budgetSubTabContent">
+                    <!-- Form Pane -->
+                    <div class="tab-pane fade show active" id="budgetFormPanel" role="tabpanel" aria-labelledby="budgetForm-tab">
+                      <div class="card p-4 rounded-4 shadow-sm border mx-auto" style="max-width: 600px;">
                         <h3 class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
                           <i class="bi bi-cash-stack me-2 text-primary"></i>Allocate Budget
                         </h3>
@@ -474,8 +537,9 @@
                         </form>
                       </div>
                     </div>
-                    <div class="col-md-8">
-                      <div class="card p-4 rounded-4 shadow-sm border h-100">
+                    <!-- List Pane -->
+                    <div class="tab-pane fade" id="budgetListPanel" role="tabpanel" aria-labelledby="budgetList-tab">
+                      <div class="card p-4 rounded-4 shadow-sm border">
                         <h3 class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
                           <i class="bi bi-wallet-fill me-2 text-primary"></i>Budget Overview
                         </h3>
@@ -505,9 +569,24 @@
 
                 <!-- 5. WORKING PROGRESS UPDATES PANEL -->
                 <div class="tab-pane fade" id="updatesPanel" role="tabpanel">
-                  <div class="row g-4">
-                    <div class="col-md-4">
-                      <div class="card p-4 rounded-4 shadow-sm border">
+                  <!-- Sub-tabs Navigation -->
+                  <ul class="nav nav-pills gap-2 mb-4 border-bottom pb-3" id="updatesSubTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                      <button class="nav-link active fw-semibold py-2 px-3" id="updatesForm-tab" data-bs-toggle="tab" data-bs-target="#updatesFormPanel" type="button" role="tab" aria-selected="true">
+                        <i class="bi bi-activity me-1"></i> Update Form
+                      </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                      <button class="nav-link fw-semibold py-2 px-3" id="updatesList-tab" data-bs-toggle="tab" data-bs-target="#updatesListPanel" type="button" role="tab" aria-selected="false">
+                        <i class="bi bi-list-stars me-1"></i> Updates History
+                      </button>
+                    </li>
+                  </ul>
+
+                  <div class="tab-content" id="updatesSubTabContent">
+                    <!-- Form Pane -->
+                    <div class="tab-pane fade show active" id="updatesFormPanel" role="tabpanel" aria-labelledby="updatesForm-tab">
+                      <div class="card p-4 rounded-4 shadow-sm border mx-auto" style="max-width: 600px;">
                         <h3 class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
                           <i class="bi bi-activity me-2 text-primary"></i>Log Work Update
                         </h3>
@@ -544,8 +623,9 @@
                         </form>
                       </div>
                     </div>
-                    <div class="col-md-8">
-                      <div class="card p-4 rounded-4 shadow-sm border h-100">
+                    <!-- List Pane -->
+                    <div class="tab-pane fade" id="updatesListPanel" role="tabpanel" aria-labelledby="updatesList-tab">
+                      <div class="card p-4 rounded-4 shadow-sm border">
                         <h3 class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
                           <i class="bi bi-list-stars me-2 text-primary"></i>Work Updates History
                         </h3>
@@ -575,9 +655,24 @@
 
                 <!-- 6. PURCHASE REQUISITION PANEL -->
                 <div class="tab-pane fade" id="requisitionPanel" role="tabpanel">
-                  <div class="row g-4">
-                    <div class="col-md-4">
-                      <div class="card p-4 rounded-4 shadow-sm border">
+                  <!-- Sub-tabs Navigation -->
+                  <ul class="nav nav-pills gap-2 mb-4 border-bottom pb-3" id="requisitionSubTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                      <button class="nav-link active fw-semibold py-2 px-3" id="requisitionForm-tab" data-bs-toggle="tab" data-bs-target="#requisitionFormPanel" type="button" role="tab" aria-selected="true">
+                        <i class="bi bi-file-earmark-plus me-1"></i> Requisition Form
+                      </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                      <button class="nav-link fw-semibold py-2 px-3" id="requisitionList-tab" data-bs-toggle="tab" data-bs-target="#requisitionListPanel" type="button" role="tab" aria-selected="false">
+                        <i class="bi bi-file-earmark-spreadsheet me-1"></i> Requisitions Directory
+                      </button>
+                    </li>
+                  </ul>
+
+                  <div class="tab-content" id="requisitionSubTabContent">
+                    <!-- Form Pane -->
+                    <div class="tab-pane fade show active" id="requisitionFormPanel" role="tabpanel" aria-labelledby="requisitionForm-tab">
+                      <div class="card p-4 rounded-4 shadow-sm border mx-auto" style="max-width: 600px;">
                         <h3 class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
                           <i class="bi bi-file-earmark-plus me-2 text-primary"></i>Create Requisition
                         </h3>
@@ -616,8 +711,9 @@
                         </form>
                       </div>
                     </div>
-                    <div class="col-md-8">
-                      <div class="card p-4 rounded-4 shadow-sm border h-100">
+                    <!-- List Pane -->
+                    <div class="tab-pane fade" id="requisitionListPanel" role="tabpanel" aria-labelledby="requisitionList-tab">
+                      <div class="card p-4 rounded-4 shadow-sm border">
                         <h3 class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
                           <i class="bi bi-file-earmark-spreadsheet me-2 text-primary"></i>Requisitions Directory
                         </h3>
@@ -648,9 +744,24 @@
 
                 <!-- 7. PURCHASE MANAGEMENT PANEL -->
                 <div class="tab-pane fade" id="purchasesPanel" role="tabpanel">
-                  <div class="row g-4">
-                    <div class="col-md-4">
-                      <div class="card p-4 rounded-4 shadow-sm border">
+                  <!-- Sub-tabs Navigation -->
+                  <ul class="nav nav-pills gap-2 mb-4 border-bottom pb-3" id="purchasesSubTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                      <button class="nav-link active fw-semibold py-2 px-3" id="purchasesForm-tab" data-bs-toggle="tab" data-bs-target="#purchasesFormPanel" type="button" role="tab" aria-selected="true">
+                        <i class="bi bi-cart-plus me-1"></i> Purchase Form
+                      </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                      <button class="nav-link fw-semibold py-2 px-3" id="purchasesList-tab" data-bs-toggle="tab" data-bs-target="#purchasesListPanel" type="button" role="tab" aria-selected="false">
+                        <i class="bi bi-receipt-cutoff me-1"></i> Purchase Ledger
+                      </button>
+                    </li>
+                  </ul>
+
+                  <div class="tab-content" id="purchasesSubTabContent">
+                    <!-- Form Pane -->
+                    <div class="tab-pane fade show active" id="purchasesFormPanel" role="tabpanel" aria-labelledby="purchasesForm-tab">
+                      <div class="card p-4 rounded-4 shadow-sm border mx-auto" style="max-width: 600px;">
                         <h3 class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
                           <i class="bi bi-cart-plus me-2 text-primary"></i>Log Purchase Record
                         </h3>
@@ -693,8 +804,9 @@
                         </form>
                       </div>
                     </div>
-                    <div class="col-md-8">
-                      <div class="card p-4 rounded-4 shadow-sm border h-100">
+                    <!-- List Pane -->
+                    <div class="tab-pane fade" id="purchasesListPanel" role="tabpanel" aria-labelledby="purchasesList-tab">
+                      <div class="card p-4 rounded-4 shadow-sm border">
                         <h3 class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
                           <i class="bi bi-receipt-cutoff me-2 text-primary"></i>Purchase Ledger
                         </h3>
@@ -725,9 +837,24 @@
 
                 <!-- 8. COST/EXPENSE PANEL -->
                 <div class="tab-pane fade" id="expensesPanel" role="tabpanel">
-                  <div class="row g-4">
-                    <div class="col-md-4">
-                      <div class="card p-4 rounded-4 shadow-sm border">
+                  <!-- Sub-tabs Navigation -->
+                  <ul class="nav nav-pills gap-2 mb-4 border-bottom pb-3" id="expensesSubTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                      <button class="nav-link active fw-semibold py-2 px-3" id="expensesForm-tab" data-bs-toggle="tab" data-bs-target="#expensesFormPanel" type="button" role="tab" aria-selected="true">
+                        <i class="bi bi-cash-coin me-1"></i> Expense Form
+                      </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                      <button class="nav-link fw-semibold py-2 px-3" id="expensesList-tab" data-bs-toggle="tab" data-bs-target="#expensesListPanel" type="button" role="tab" aria-selected="false">
+                        <i class="bi bi-clipboard-data me-1"></i> Expenses Ledger
+                      </button>
+                    </li>
+                  </ul>
+
+                  <div class="tab-content" id="expensesSubTabContent">
+                    <!-- Form Pane -->
+                    <div class="tab-pane fade show active" id="expensesFormPanel" role="tabpanel" aria-labelledby="expensesForm-tab">
+                      <div class="card p-4 rounded-4 shadow-sm border mx-auto" style="max-width: 600px;">
                         <h3 class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
                           <i class="bi bi-cash-coin me-2 text-primary"></i>Log Operational Expense
                         </h3>
@@ -769,8 +896,9 @@
                         </form>
                       </div>
                     </div>
-                    <div class="col-md-8">
-                      <div class="card p-4 rounded-4 shadow-sm border h-100">
+                    <!-- List Pane -->
+                    <div class="tab-pane fade" id="expensesListPanel" role="tabpanel" aria-labelledby="expensesList-tab">
+                      <div class="card p-4 rounded-4 shadow-sm border">
                         <h3 class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
                           <i class="bi bi-clipboard-data me-2 text-primary"></i>Operational Expenses Ledger
                         </h3>
@@ -1328,7 +1456,7 @@
           contactId: document.getElementById("contactId").value || null,
           projectId: document.getElementById("contactProjId").value,
           fullName: document.getElementById("contactName").value,
-          designation: document.getElementById("contactName").value ? document.getElementById("contactDesig").value : "",
+          designation: document.getElementById("contactDesig").value,
           organization: document.getElementById("contactOrg").value,
           mobile: document.getElementById("contactMobile").value,
           email: document.getElementById("contactEmail").value
