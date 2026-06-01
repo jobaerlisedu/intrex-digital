@@ -159,46 +159,22 @@ export async function deleteCertificate(certificateId) {
 
 // Internal helper to generate student ID
 function generateStudentId(courseName, batchName, registrationsList) {
-  let shortCourse = "COURSE";
-  const cName = courseName.toUpperCase();
-  if (cName.includes("A+")) shortCourse = "COMPTIAA";
-  else if (cName.includes("NETWORK+")) shortCourse = "COMPTIANET";
-  else if (cName.includes("CCNA")) shortCourse = "CCNA";
-  else if (cName.includes("MTCNA")) shortCourse = "MTCNA";
-  else if (cName.includes("RHCSA")) shortCourse = "RHCSA";
-  else if (cName.includes("SECURITY+")) shortCourse = "COMPTIASEC";
-  else {
-    shortCourse = courseName.replace(/[^A-Za-z0-9]/g, "").toUpperCase();
-  }
-
-  // Extract digits from batch name (e.g. "Batch-01" -> "01", "Batch 5" -> "05")
-  const matchDigits = batchName.match(/\d+/);
-  const shortBatch = matchDigits ? matchDigits[0].padStart(2, "0") : batchName.replace(/[^A-Za-z0-9]/g, "").toUpperCase();
-
-  const matching = registrationsList.filter(r => {
-    const rCourse = r.course || "";
-    const rBatch = r.batch || "";
-    
-    let rShortCourse = "";
-    const rc = rCourse.toUpperCase();
-    if (rc.includes("A+")) rShortCourse = "COMPTIAA";
-    else if (rc.includes("NETWORK+")) rShortCourse = "COMPTIANET";
-    else if (rc.includes("CCNA")) rShortCourse = "CCNA";
-    else if (rc.includes("MTCNA")) rShortCourse = "MTCNA";
-    else if (rc.includes("RHCSA")) rShortCourse = "RHCSA";
-    else if (rc.includes("SECURITY+")) rShortCourse = "COMPTIASEC";
-    else rShortCourse = rCourse.replace(/[^A-Za-z0-9]/g, "").toUpperCase();
-
-    const rMatchDigits = rBatch.match(/\d+/);
-    const rShortBatch = rMatchDigits ? rMatchDigits[0].padStart(2, "0") : rBatch.replace(/[^A-Za-z0-9]/g, "").toUpperCase();
-
-    return rShortCourse === shortCourse && rShortBatch === shortBatch;
+  let maxSerial = 0;
+  registrationsList.forEach(r => {
+    const id = r.studentId;
+    if (id) {
+      const match = id.match(/(?:^|-)(495\d{3})$/);
+      if (match) {
+        const num = parseInt(match[1].substring(3), 10);
+        if (num > maxSerial) {
+          maxSerial = num;
+        }
+      }
+    }
   });
-
-  const nextSerialNum = matching.length + 1;
+  const nextSerialNum = maxSerial + 1;
   const serialStr = String(nextSerialNum).padStart(3, "0");
-
-  return `INTREX-${shortCourse}-${shortBatch}-495${serialStr}`;
+  return `495${serialStr}`;
 }
 
 // Add new course registration

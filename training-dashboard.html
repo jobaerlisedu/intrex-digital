@@ -382,7 +382,7 @@
                             (Search/Edit)</label>
                           <div class="input-group">
                             <input type="text" id="lookupStudentId" class="form-control"
-                              placeholder="Search Student ID (e.g. INTREX-...)">
+                              placeholder="Search Student ID (e.g. 495001)">
                             <button id="lookupStudentBtn" class="btn btn-outline-primary" type="button">
                               <i class="bi bi-search"></i> Search ID
                             </button>
@@ -685,7 +685,7 @@
                             Registration</label>
                           <div class="input-group">
                             <input type="text" id="lookupCertStudentId" class="form-control"
-                              placeholder="Enter Student ID (e.g. INTREX-...)">
+                              placeholder="Enter Student ID (e.g. 495001)">
                             <button id="lookupCertStudentBtn" class="btn btn-outline-primary" type="button">
                               <i class="bi bi-search"></i> Auto-Fill
                             </button>
@@ -1258,7 +1258,7 @@
       // Helper: extract 495XXX numeric segment from studentId
       const extractIdNum = (id) => {
         if (!id) return '';
-        const m = id.match(/-(495\d+)$/i);
+        const m = id.match(/(?:^|-)(495\d+)$/i);
         return m ? m[1] : '';
       };
 
@@ -1646,7 +1646,7 @@
       // Helper: extract 495XXX numeric segment from studentId
       const extractIdNum = (id) => {
         if (!id) return '';
-        const m = id.match(/-(495\d+)$/i);
+        const m = id.match(/(?:^|-)(495\d+)$/i);
         return m ? m[1] : '';
       };
 
@@ -1988,7 +1988,7 @@
       // Helper: extract 495XXX numeric segment from studentId
       const extractIdNum = (id) => {
         if (!id) return '';
-        const m = id.match(/-(495\d+)$/i);
+        const m = id.match(/(?:^|-)(495\d+)$/i);
         return m ? m[1] : '';
       };
 
@@ -2178,7 +2178,7 @@
 
       const extractNum = (id) => {
         if (!id) return '';
-        const m = id.match(/-(495\d+)$/i);
+        const m = id.match(/(?:^|-)(495\d+)$/i);
         return m ? m[1] : '';
       };
 
