@@ -1,7 +1,7 @@
 // assets/js/verify.js
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 import { getFirestore, doc, getDoc, setDoc, serverTimestamp, collection, getDocs, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged, setPersistence, browserSessionPersistence } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
 // ==========================================
 // FIREBASE CONFIGURATION
@@ -25,6 +25,9 @@ if (firebaseConfig.apiKey && !firebaseConfig.apiKey.includes("placeholder-key"))
   app = initializeApp(firebaseConfig);
   db = getFirestore(app);
   auth = getAuth(app);
+  setPersistence(auth, browserSessionPersistence).catch((error) => {
+    console.error("Failed to set auth persistence:", error);
+  });
   isFirebaseConfigured = true;
 } else {
   console.warn("Firebase configuration has not been set up. Please update the firebaseConfig object in assets/js/verify.js.");
@@ -48,7 +51,7 @@ export async function verifyCertificate(certificateId) {
   try {
     const docRef = doc(db, "certificates", certificateId.trim());
     const docSnap = await getDoc(docRef);
-    
+
     if (docSnap.exists()) {
       return docSnap.data();
     } else {
@@ -98,7 +101,7 @@ export async function addCertificate(certData) {
   if (!checkConfiguration()) return;
 
   const { certificateId, studentId, studentName, courseName, issueDate, grade, status, batch } = certData;
-  
+
   if (!certificateId || !studentName || !courseName || !issueDate || !batch) {
     throw new Error("Missing required fields");
   }
@@ -129,7 +132,7 @@ export async function getAllCertificates() {
     const querySnapshot = await getDocs(collection(db, "certificates"));
     const certs = [];
     querySnapshot.forEach((docSnap) => {
-      if (docSnap.exists() && docSnap.id !== "_init_") {
+      if (docSnap.exists()) {
         certs.push(docSnap.data());
       }
     });
@@ -257,7 +260,7 @@ export async function getAllRegistrations() {
     const querySnapshot = await getDocs(collection(db, "registrations"));
     const regs = [];
     querySnapshot.forEach((docSnap) => {
-      if (docSnap.exists() && docSnap.id !== "_init_") {
+      if (docSnap.exists()) {
         regs.push(docSnap.data());
       }
     });
@@ -293,7 +296,7 @@ export async function updateRegistration(studentId, regData) {
 
     // Sync student name, email, course and batch to the payment record
     const payRef = doc(db, "payments", studentId);
-    
+
     const paySnap = await getDoc(payRef);
     if (paySnap.exists()) {
       const payData = paySnap.data();
@@ -385,7 +388,7 @@ export async function getAllPayments() {
     const querySnapshot = await getDocs(collection(db, "payments"));
     const pays = [];
     querySnapshot.forEach((docSnap) => {
-      if (docSnap.exists() && docSnap.id !== "_init_") {
+      if (docSnap.exists()) {
         pays.push(docSnap.data());
       }
     });
@@ -424,6 +427,77 @@ export async function updatePayment(studentId, totalFee, discount, amountPaid, p
     }, { merge: true });
   } catch (error) {
     console.error("Error updating payment: ", error);
+    throw error;
+  }
+}
+
+// ==========================================
+// 5. AUDIT LOGS SYSTEM (tbl_audit_logs)
+// ==========================================
+async function getNextSeqId(collectionName, prefix, idField, paddingSize = 4) {
+  if (!checkConfiguration()) return prefix + "0001";
+  try {
+    const querySnapshot = await getDocs(collection(db, collectionName));
+    let maxNum = 0;
+    querySnapshot.forEach(docSnap => {
+      const data = docSnap.data();
+      const val = data[idField];
+      if (val && val.startsWith(prefix)) {
+        const numPart = val.substring(prefix.length);
+        const num = parseInt(numPart, 10);
+        if (!isNaN(num) && num > maxNum) {
+          maxNum = num;
+        }
+      }
+    });
+    const nextNum = maxNum + 1;
+    return prefix + String(nextNum).padStart(paddingSize, '0');
+  } catch (error) {
+    console.error("Error generating next sequence ID for " + collectionName + ":", error);
+    return prefix + "0001";
+  }
+}
+
+export async function addAuditLog(logData) {
+  if (!checkConfiguration()) return;
+  const { user_email, action_type, collection_name, record_id, details } = logData;
+  if (!user_email || !action_type || !details) {
+    throw new Error("Missing required audit log fields");
+  }
+  try {
+    const id = await getNextSeqId("tbl_audit_logs", "LOG-", "log_id", 5);
+    const docRef = doc(db, "tbl_audit_logs", id);
+    await setDoc(docRef, {
+      log_id: id,
+      user_email: user_email,
+      action_type: action_type,
+      collection_name: collection_name || "N/A",
+      record_id: record_id || "N/A",
+      details: details,
+      local_time: new Date().toLocaleString(),
+      createdAt: serverTimestamp()
+    });
+    return id;
+  } catch (error) {
+    console.error("Error saving audit log: ", error);
+    throw error;
+  }
+}
+
+export async function getAllAuditLogs() {
+  if (!checkConfiguration()) return [];
+  try {
+    const querySnapshot = await getDocs(collection(db, "tbl_audit_logs"));
+    const logs = [];
+    querySnapshot.forEach((docSnap) => {
+      if (docSnap.exists()) {
+        logs.push(docSnap.data());
+      }
+    });
+    logs.sort((a, b) => b.log_id.localeCompare(a.log_id));
+    return logs;
+  } catch (error) {
+    console.error("Error fetching audit logs: ", error);
     throw error;
   }
 }
