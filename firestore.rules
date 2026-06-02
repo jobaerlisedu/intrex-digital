@@ -1,67 +1,114 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
+
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
     
+    function hasRole(role) {
+      return isAuthenticated() && request.auth.token.role == role;
+    }
+
+    function isSuperAdmin() {
+      return hasRole('super_admin');
+    }
+
+    function isProjectManager() {
+      return hasRole('project_manager');
+    }
+
+    function isTrainer() {
+      return hasRole('trainer');
+    }
+
+    function isEmployee() {
+      return hasRole('employee');
+    }
+
     // Certificates collection:
-    // Anyone can read (for verification), but only logged-in administrators can create/edit/delete.
+    // Anyone can read (for verification), super_admin, trainer, or PM can write.
     match /certificates/{certificateId} {
       allow read: if true;
-      allow write: if request.auth != null;
+      allow write: if isSuperAdmin() || isTrainer() || isProjectManager();
     }
     
-    // Course Registrations collection:
-    // Only logged-in administrators can view, edit, or delete registration entries.
+    // Course Registrations & Payments:
+    // Super admins, trainers, and project managers can read/write.
     match /registrations/{registrationId} {
-      allow read, write: if request.auth != null;
+      allow read, write: if isSuperAdmin() || isTrainer() || isProjectManager();
     }
-    
-    // Payment Records collection:
-    // Only logged-in administrators can view or update payments.
     match /payments/{paymentId} {
-      allow read, write: if request.auth != null;
+      allow read, write: if isSuperAdmin() || isTrainer() || isProjectManager();
     }
 
     // Solution Dashboard collections:
-    // Only logged-in administrators can view or update these documents.
     match /tbl_projects/{id} {
-      allow read, write: if request.auth != null;
+      allow read: if isSuperAdmin() || isProjectManager() || isEmployee();
+      allow write: if isSuperAdmin() || isProjectManager();
     }
     match /tbl_contacts/{id} {
-      allow read, write: if request.auth != null;
+      allow read: if isSuperAdmin() || isProjectManager() || isTrainer() || isEmployee();
+      allow write: if isSuperAdmin() || isProjectManager();
     }
     match /tbl_meetings/{id} {
-      allow read, write: if request.auth != null;
+      allow read: if isSuperAdmin() || isProjectManager() || isTrainer() || isEmployee();
+      allow write: if isSuperAdmin() || isProjectManager();
     }
     match /tbl_budget/{id} {
-      allow read, write: if request.auth != null;
+      allow read: if isSuperAdmin() || isProjectManager();
+      allow write: if isSuperAdmin() || isProjectManager();
     }
     match /tbl_tasks/{id} {
-      allow read, write: if request.auth != null;
+      allow read: if isSuperAdmin() || isProjectManager() || isEmployee();
+      allow write: if isSuperAdmin() || isProjectManager() || isEmployee();
     }
     match /tbl_requisitions/{id} {
-      allow read, write: if request.auth != null;
+      allow read: if isSuperAdmin() || isProjectManager() || isEmployee();
+      // Employees can create requisitions
+      allow create: if isSuperAdmin() || isProjectManager() || isEmployee();
+      allow update, delete: if isSuperAdmin() || isProjectManager();
     }
     match /tbl_purchase_orders/{id} {
-      allow read, write: if request.auth != null;
+      allow read: if isSuperAdmin() || isProjectManager();
+      allow write: if isSuperAdmin() || isProjectManager();
     }
     match /tbl_expenses/{id} {
-      allow read, write: if request.auth != null;
+      allow read: if isSuperAdmin() || isProjectManager();
+      allow write: if isSuperAdmin() || isProjectManager();
     }
     match /tbl_client_payments/{id} {
-      allow read, write: if request.auth != null;
+      allow read: if isSuperAdmin() || isProjectManager();
+      allow write: if isSuperAdmin() || isProjectManager();
     }
     match /tbl_employees/{id} {
-      allow read, write: if request.auth != null;
+      allow read: if isSuperAdmin() || isProjectManager();
+      allow write: if isSuperAdmin();
     }
     match /tbl_support_tickets/{id} {
-      allow read, write: if request.auth != null;
+      allow read: if isSuperAdmin() || isProjectManager() || isEmployee();
+      allow write: if isSuperAdmin() || isProjectManager() || isEmployee();
     }
     match /tbl_domain_hosting_sales/{id} {
-      allow read, write: if request.auth != null;
-    }
-    match /tbl_audit_logs/{id} {
-      allow read, write: if request.auth != null;
+      allow read: if isSuperAdmin() || isProjectManager();
+      allow write: if isSuperAdmin() || isProjectManager();
     }
     
+    // Audit logs:
+    // Write-only/create-only for authenticated clients, only super_admin can read, nobody can update or delete.
+    match /tbl_audit_logs/{id} {
+      allow create: if isAuthenticated();
+      allow read: if isSuperAdmin();
+      allow update, delete: if false;
+    }
+
+    // System Errors:
+    // Write-only/create-only for authenticated clients, only super_admin can read, nobody can update or delete.
+    match /tbl_system_errors/{id} {
+      allow create: if isAuthenticated();
+      allow read: if isSuperAdmin();
+      allow update, delete: if false;
+    }
   }
 }

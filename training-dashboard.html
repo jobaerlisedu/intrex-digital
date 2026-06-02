@@ -195,73 +195,100 @@
             <div class="col-12 col-md-9 col-lg-10">
               <div class="tab-content" id="dashboardTabContent">
 
-                <!-- Sub-Page 0: Overview / Analytics -->
+<!-- Sub-Page 0: Overview / Analytics -->
                 <div class="tab-pane fade show active" id="overviewPanel" role="tabpanel"
                   aria-labelledby="overview-tab">
+
+                  <!-- Dynamic Analytics Filters -->
+                  <div class="card p-3 rounded-4 shadow-sm border mb-4 bg-body-tertiary">
+                    <div class="row g-3 align-items-end">
+                      <div class="col-md-3 col-sm-6">
+                        <label class="form-label small fw-semibold text-muted mb-1" for="filterStartDate">Start Date</label>
+                        <input type="date" id="filterStartDate" class="form-control form-control-sm">
+                      </div>
+                      <div class="col-md-3 col-sm-6">
+                        <label class="form-label small fw-semibold text-muted mb-1" for="filterEndDate">End Date</label>
+                        <input type="date" id="filterEndDate" class="form-control form-control-sm">
+                      </div>
+                      <div class="col-md-4 col-sm-8">
+                        <label class="form-label small fw-semibold text-muted mb-1" for="filterCourse">Course Filter</label>
+                        <select id="filterCourse" class="form-select form-select-sm">
+                          <option value="all">All Courses</option>
+                          <option value="CompTIA A+">CompTIA A+</option>
+                          <option value="CompTIA Network+">CompTIA Network+</option>
+                          <option value="CCNA 200-301">CCNA 200-301</option>
+                          <option value="MTCNA & MTCRE (MikroTik)">MTCNA &amp; MTCRE (MikroTik)</option>
+                          <option value="RHCSA / RHCE (Red Hat Linux)">RHCSA / RHCE (Red Hat Linux)</option>
+                          <option value="CompTIA Security+">CompTIA Security+</option>
+                        </select>
+                      </div>
+                      <div class="col-md-2 col-sm-4 d-grid">
+                        <button type="button" id="resetOverviewFiltersBtn" class="btn btn-sm btn-outline-secondary">
+                          <i class="bi bi-x-circle me-1"></i> Reset Filters
+                        </button>
+                      </div>
+                    </div>
+                  </div>
 
                   <!-- KPI Stat Cards -->
                   <div class="row g-3 mb-4">
                     <div class="col-6 col-md-3">
-                      <div class="card border-0 rounded-4 shadow-sm h-100"
-                        style="background-color: var(--bs-primary) !important;">
-                        <div class="card-body p-3 text-white">
+                      <div class="card border-0 rounded-4 shadow-sm h-100 bg-primary text-white">
+                        <div class="card-body p-3">
                           <div class="d-flex align-items-center justify-content-between mb-2">
-                            <span class="small fw-semibold opacity-75">Total Students</span>
+                            <span class="small fw-semibold opacity-75 text-white">Total Students</span>
                             <div class="rounded-circle d-flex align-items-center justify-content-center"
                               style="width:36px;height:36px;background:rgba(255,255,255,0.15);">
-                              <i class="bi bi-people-fill"></i>
+                              <i class="bi bi-people-fill text-white"></i>
                             </div>
                           </div>
                           <div class="h2 fw-bold mb-0 text-white" id="kpiTotalStudents">—</div>
-                          <div class="small opacity-75 mt-1">Registered learners</div>
+                          <div class="small opacity-75 mt-1 text-white">Registered learners</div>
                         </div>
                       </div>
                     </div>
                     <div class="col-6 col-md-3">
-                      <div class="card border-0 rounded-4 shadow-sm h-100"
-                        style="background-color: var(--bs-primary) !important;">
-                        <div class="card-body p-3 text-white">
+                      <div class="card border-0 rounded-4 shadow-sm h-100 bg-primary text-white">
+                        <div class="card-body p-3">
                           <div class="d-flex align-items-center justify-content-between mb-2">
-                            <span class="small fw-semibold opacity-75">Total Collected</span>
+                            <span class="small fw-semibold opacity-75 text-white">Total Collected</span>
                             <div class="rounded-circle d-flex align-items-center justify-content-center"
                               style="width:36px;height:36px;background:rgba(255,255,255,0.15);">
-                              <i class="bi bi-cash-stack"></i>
+                              <i class="bi bi-cash-stack text-white"></i>
                             </div>
                           </div>
                           <div class="h2 fw-bold mb-0 text-white" id="kpiTotalCollected">—</div>
-                          <div class="small opacity-75 mt-1">BDT received</div>
+                          <div class="small opacity-75 mt-1 text-white">BDT received</div>
                         </div>
                       </div>
                     </div>
                     <div class="col-6 col-md-3">
-                      <div class="card border-0 rounded-4 shadow-sm h-100"
-                        style="background-color: var(--bs-primary) !important;">
-                        <div class="card-body p-3 text-white">
+                      <div class="card border-0 rounded-4 shadow-sm h-100 bg-primary text-white">
+                        <div class="card-body p-3">
                           <div class="d-flex align-items-center justify-content-between mb-2">
-                            <span class="small fw-semibold opacity-75">Total Due</span>
+                            <span class="small fw-semibold opacity-75 text-white">Total Due</span>
                             <div class="rounded-circle d-flex align-items-center justify-content-center"
                               style="width:36px;height:36px;background:rgba(255,255,255,0.15);">
-                              <i class="bi bi-exclamation-circle-fill"></i>
+                              <i class="bi bi-exclamation-circle-fill text-white"></i>
                             </div>
                           </div>
                           <div class="h2 fw-bold mb-0 text-white" id="kpiTotalDue">—</div>
-                          <div class="small opacity-75 mt-1">BDT outstanding</div>
+                          <div class="small opacity-75 mt-1 text-white">BDT outstanding</div>
                         </div>
                       </div>
                     </div>
                     <div class="col-6 col-md-3">
-                      <div class="card border-0 rounded-4 shadow-sm h-100"
-                        style="background-color: var(--bs-primary) !important;">
-                        <div class="card-body p-3 text-white">
+                      <div class="card border-0 rounded-4 shadow-sm h-100 bg-primary text-white">
+                        <div class="card-body p-3">
                           <div class="d-flex align-items-center justify-content-between mb-2">
-                            <span class="small fw-semibold opacity-75">Total Discounts</span>
+                            <span class="small fw-semibold opacity-75 text-white">Total Discounts</span>
                             <div class="rounded-circle d-flex align-items-center justify-content-center"
                               style="width:36px;height:36px;background:rgba(255,255,255,0.15);">
-                              <i class="bi bi-tags-fill"></i>
+                              <i class="bi bi-tags-fill text-white"></i>
                             </div>
                           </div>
                           <div class="h2 fw-bold mb-0 text-white" id="kpiTotalDiscount">—</div>
-                          <div class="small opacity-75 mt-1">BDT discounted</div>
+                          <div class="small opacity-75 mt-1 text-white">BDT discounted</div>
                         </div>
                       </div>
                     </div>
@@ -307,18 +334,28 @@
                     </div>
                   </div>
 
-                  <!-- Charts Row -->
+                  <!-- Charts Row 1: Course Enrollment Bar & Payment Status Donut -->
                   <div class="row g-4 mb-4">
-                    <!-- Payment Status Donut -->
+                    <div class="col-md-8">
+                      <div class="card border-0 rounded-4 shadow-sm h-100">
+                        <div class="card-body p-4">
+                          <h6 class="fw-bold text-heading-color mb-3"><i
+                              class="bi bi-bar-chart-fill me-2 text-primary"></i>Enrollment by Course</h6>
+                          <div style="position:relative;height:240px;">
+                            <canvas id="chartCourseEnrollment"></canvas>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                     <div class="col-md-4">
                       <div class="card border-0 rounded-4 shadow-sm h-100">
                         <div class="card-body p-4">
                           <h6 class="fw-bold text-heading-color mb-3"><i
-                              class="bi bi-pie-chart-fill me-2 text-primary"></i>Payment Status</h6>
-                          <div style="position:relative;height:220px;">
+                              class="bi bi-pie-chart-fill me-2 text-primary"></i>Payment Status Breakdown</h6>
+                          <div style="position:relative;height:200px;">
                             <canvas id="chartPaymentStatus"></canvas>
                           </div>
-                          <div class="d-flex justify-content-center gap-3 mt-3 small">
+                          <div class="d-flex justify-content-center gap-3 mt-2 small">
                             <span><span class="badge" style="background:#28a745;">&nbsp;</span> Fully Paid</span>
                             <span><span class="badge" style="background:#ffc107;">&nbsp;</span> Partial</span>
                             <span><span class="badge" style="background:#dc3545;">&nbsp;</span> Unpaid</span>
@@ -326,24 +363,47 @@
                         </div>
                       </div>
                     </div>
+                  </div>
 
-                    <!-- Course Enrollment Bar -->
-                    <div class="col-md-8">
+                  <!-- Charts Row 2: Course Registration Trends & Revenue realization funnel -->
+                  <div class="row g-4 mb-4">
+                    <div class="col-md-6">
                       <div class="card border-0 rounded-4 shadow-sm h-100">
                         <div class="card-body p-4">
                           <h6 class="fw-bold text-heading-color mb-3"><i
-                              class="bi bi-bar-chart-fill me-2 text-primary"></i>Enrollment by Course</h6>
-                          <div style="position:relative;height:220px;">
-                            <canvas id="chartCourseEnrollment"></canvas>
+                              class="bi bi-graph-up me-2 text-primary"></i>Course Registration Trends (Over Time)</h6>
+                          <div style="position:relative;height:240px;">
+                            <canvas id="chartRegTrends"></canvas>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="card border-0 rounded-4 shadow-sm h-100">
+                        <div class="card-body p-4">
+                          <h6 class="fw-bold text-heading-color mb-3"><i
+                              class="bi bi-funnel-fill me-2 text-primary"></i>Payment / Revenue Funnel (BDT)</h6>
+                          <div style="position:relative;height:240px;">
+                            <canvas id="chartPaymentFunnel"></canvas>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
 
-                  <!-- Revenue by course & recent activity -->
-                  <div class="row g-4">
-                    <!-- Revenue by course -->
+                  <!-- Charts Row 3: Certificate Issuance Velocity & Revenue vs Due by Course -->
+                  <div class="row g-4 mb-4">
+                    <div class="col-md-6">
+                      <div class="card border-0 rounded-4 shadow-sm h-100">
+                        <div class="card-body p-4">
+                          <h6 class="fw-bold text-heading-color mb-3"><i
+                              class="bi bi-speedometer2 me-2 text-primary"></i>Certificate Issuance Velocity</h6>
+                          <div style="position:relative;height:240px;">
+                            <canvas id="chartCertVelocity"></canvas>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                     <div class="col-md-6">
                       <div class="card border-0 rounded-4 shadow-sm h-100">
                         <div class="card-body p-4">
@@ -355,9 +415,11 @@
                         </div>
                       </div>
                     </div>
+                  </div>
 
-                    <!-- Recent Registrations -->
-                    <div class="col-md-6">
+                  <!-- Recent activity row -->
+                  <div class="row g-4">
+                    <div class="col-12">
                       <div class="card border-0 rounded-4 shadow-sm h-100">
                         <div class="card-body p-4">
                           <h6 class="fw-bold text-heading-color mb-3"><i
@@ -578,6 +640,10 @@
                               title="Refresh List">
                               <i class="bi bi-arrow-clockwise"></i>
                             </button>
+                            <button id="exportRegCsvBtn" class="btn btn-sm btn-outline-success" type="button"
+                              title="Export CSV">
+                              <i class="bi bi-file-earmark-spreadsheet me-1"></i> Export CSV
+                            </button>
                           </div>
                         </div>
 
@@ -640,6 +706,10 @@
                             <button id="refreshPayListBtn" class="btn btn-sm btn-outline-secondary" type="button"
                               title="Refresh List">
                               <i class="bi bi-arrow-clockwise"></i>
+                            </button>
+                            <button id="exportPayCsvBtn" class="btn btn-sm btn-outline-success" type="button"
+                              title="Export CSV">
+                              <i class="bi bi-file-earmark-spreadsheet me-1"></i> Export CSV
                             </button>
                           </div>
                         </div>
@@ -838,6 +908,10 @@
                               title="Refresh List">
                               <i class="bi bi-arrow-clockwise"></i>
                             </button>
+                            <button id="exportCertCsvBtn" class="btn btn-sm btn-outline-success" type="button"
+                              title="Export CSV">
+                              <i class="bi bi-file-earmark-spreadsheet me-1"></i> Export CSV
+                            </button>
                           </div>
                         </div>
 
@@ -883,7 +957,43 @@
   <script src="assets/vendors/bootstrap/bootstrap.bundle.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script type="module">
-    import { loginAdmin, logoutAdmin, onAdminAuthStateChanged, addCertificate, getAllCertificates, deleteCertificate, addRegistration, getAllRegistrations, updateRegistration, deleteRegistration, getAllPayments, updatePayment } from "./assets/js/verify.js";
+    import { loginAdmin, logoutAdmin, onAdminAuthStateChanged, addCertificate, getAllCertificates, deleteCertificate, addRegistration, getAllRegistrations, updateRegistration, deleteRegistration, getAllPayments, updatePayment, addAuditLog } from "./assets/js/verify.js";
+    import { collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+    // Global Error Logger & Firestore Boundary
+    function logErrorToFirestore(errorMsg, url, line, col, errorObj, type = "error") {
+      try {
+        const fDb = window.db;
+        if (!fDb) {
+          console.error("Firestore db not initialized for error logging:", errorMsg);
+          return;
+        }
+        const errorsCol = collection(fDb, "tbl_system_errors");
+        addDoc(errorsCol, {
+          message: errorMsg || "Unknown error",
+          url: url || window.location.href,
+          line: Number(line) || 0,
+          column: Number(col) || 0,
+          stack: errorObj && errorObj.stack ? errorObj.stack : "N/A",
+          type: type,
+          user_email: (typeof allRecords !== "undefined" && window.currentUserEmail) || "anonymous",
+          timestamp: serverTimestamp()
+        }).catch(err => console.error("Failed to write error to Firestore:", err));
+      } catch (err) {
+        console.error("Failed to execute logErrorToFirestore:", err);
+      }
+    }
+
+    window.onerror = function (message, source, lineno, colno, error) {
+      logErrorToFirestore(message, source, lineno, colno, error, "exception");
+      return false;
+    };
+
+    window.addEventListener("unhandledrejection", function (event) {
+      const reason = event.reason;
+      const msg = reason && reason.message ? reason.message : String(reason);
+      logErrorToFirestore(msg, window.location.href, 0, 0, reason, "unhandled_rejection");
+    });
 
     // Initialize AOS
     if (window.AOS) {
@@ -907,10 +1017,15 @@
     let allPayments = [];
     let editingStudentId = null;
     let editingCertId = null;
+    let currentUserEmail = "";
+    window.currentUserEmail = "";
 
     let chartPaymentStatusInstance = null;
     let chartCourseEnrollmentInstance = null;
     let chartRevenueByCourseInstance = null;
+    let chartRegTrendsInstance = null;
+    let chartPaymentFunnelInstance = null;
+    let chartCertVelocityInstance = null;
 
     const courseFees = {
       "CompTIA A+": 8000,
@@ -921,50 +1036,92 @@
       "CompTIA Security+": 12000
     };
 
+    function getRecordDate(record) {
+      if (!record) return null;
+      if (record.createdAt) {
+        return record.createdAt.toDate ? record.createdAt.toDate() : new Date(record.createdAt);
+      } else if (record.issueDate) {
+        return new Date(record.issueDate);
+      }
+      return null;
+    }
+
     function updateOverview() {
+      // 0. Extract Filter States
+      const startDateVal = document.getElementById("filterStartDate").value;
+      const endDateVal = document.getElementById("filterEndDate").value;
+      const courseVal = document.getElementById("filterCourse").value;
+
+      // 0.1 Apply Filtering
+      let filteredRegs = allRegistrations;
+      let filteredPayments = allPayments;
+      let filteredRecords = allRecords;
+
+      if (courseVal !== "all") {
+        filteredRegs = filteredRegs.filter(r => r.course === courseVal);
+        filteredPayments = filteredPayments.filter(p => p.courseName === courseVal);
+        filteredRecords = filteredRecords.filter(r => r.courseName === courseVal);
+      }
+
+      if (startDateVal) {
+        const start = new Date(startDateVal);
+        start.setHours(0, 0, 0, 0);
+        filteredRegs = filteredRegs.filter(r => { const d = getRecordDate(r); return d && d >= start; });
+        filteredPayments = filteredPayments.filter(p => { const d = getRecordDate(p); return d && d >= start; });
+        filteredRecords = filteredRecords.filter(r => { const d = getRecordDate(r); return d && d >= start; });
+      }
+
+      if (endDateVal) {
+        const end = new Date(endDateVal);
+        end.setHours(23, 59, 59, 999);
+        filteredRegs = filteredRegs.filter(r => { const d = getRecordDate(r); return d && d <= end; });
+        filteredPayments = filteredPayments.filter(p => { const d = getRecordDate(p); return d && d <= end; });
+        filteredRecords = filteredRecords.filter(r => { const d = getRecordDate(r); return d && d <= end; });
+      }
+
       // 1. Update KPI numbers
-      const totalStudents = allRegistrations.length;
+      const totalStudents = filteredRegs.length;
       document.getElementById("kpiTotalStudents").textContent = totalStudents.toLocaleString();
 
-      const totalCollected = allPayments.reduce((sum, p) => sum + (Number(p.amountPaid) || 0), 0);
+      const totalCollected = filteredPayments.reduce((sum, p) => sum + (Number(p.amountPaid) || 0), 0);
       document.getElementById("kpiTotalCollected").textContent = `${totalCollected.toLocaleString()} BDT`;
 
-      const totalDue = allPayments.reduce((sum, p) => sum + (Number(p.dueAmount) || 0), 0);
+      const totalDue = filteredPayments.reduce((sum, p) => sum + (Number(p.dueAmount) || 0), 0);
       document.getElementById("kpiTotalDue").textContent = `${totalDue.toLocaleString()} BDT`;
 
-      const totalDiscount = allPayments.reduce((sum, p) => sum + (Number(p.discount) || 0), 0);
+      const totalDiscount = filteredPayments.reduce((sum, p) => sum + (Number(p.discount) || 0), 0);
       document.getElementById("kpiTotalDiscount").textContent = `${totalDiscount.toLocaleString()} BDT`;
 
       // 2. Breakdown counts
-      const fullyPaidCount = allPayments.filter(p => p.status === "Fully Paid").length;
+      const fullyPaidCount = filteredPayments.filter(p => p.status === "Fully Paid").length;
       document.getElementById("kpiFullyPaid").textContent = fullyPaidCount.toLocaleString();
 
-      const partiallyPaidCount = allPayments.filter(p => p.status === "Partially Paid").length;
+      const partiallyPaidCount = filteredPayments.filter(p => p.status === "Partially Paid").length;
       document.getElementById("kpiPartiallyPaid").textContent = partiallyPaidCount.toLocaleString();
 
-      const unpaidCount = allPayments.filter(p => p.status === "Unpaid" || !p.status).length;
+      const unpaidCount = filteredPayments.filter(p => p.status === "Unpaid" || !p.status).length;
       document.getElementById("kpiUnpaid").textContent = unpaidCount.toLocaleString();
 
-      const totalBilled = allPayments.reduce((sum, p) => sum + (Number(p.totalFee) || 0) - (Number(p.discount) || 0), 0);
+      const totalBilled = filteredPayments.reduce((sum, p) => sum + (Number(p.totalFee) || 0) - (Number(p.discount) || 0), 0);
       const collectionRate = totalBilled > 0 ? ((totalCollected / totalBilled) * 100).toFixed(1) : "0.0";
       document.getElementById("kpiCollectionRate").textContent = `${collectionRate}%`;
 
       // 3. Render Recent Activity List
       const recentList = document.getElementById("recentRegistrationsList");
       if (recentList) {
-        const sortedRegs = [...allRegistrations].sort((a, b) => {
-          const timeA = a.createdAt?.toDate ? a.createdAt.toDate().getTime() : new Date(a.createdAt || 0).getTime();
-          const timeB = b.createdAt?.toDate ? b.createdAt.toDate().getTime() : new Date(b.createdAt || 0).getTime();
+        const sortedRegs = [...filteredRegs].sort((a, b) => {
+          const timeA = getRecordDate(a)?.getTime() || 0;
+          const timeB = getRecordDate(b)?.getTime() || 0;
           return timeB - timeA;
         }).slice(0, 5);
 
         if (sortedRegs.length === 0) {
-          recentList.innerHTML = `<div class="text-muted small text-center py-4">No recent registrations.</div>`;
+          recentList.innerHTML = `<div class="text-muted small text-center py-4">No matching recent registrations.</div>`;
         } else {
           recentList.innerHTML = sortedRegs.map(r => {
             let dateStr = "N/A";
-            if (r.createdAt) {
-              const dt = r.createdAt.toDate ? r.createdAt.toDate() : new Date(r.createdAt);
+            const dt = getRecordDate(r);
+            if (dt) {
               dateStr = dt.toLocaleDateString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
             }
             return `
@@ -1033,7 +1190,7 @@
 
       // B. Course Enrollment Bar Chart
       const courseCounts = {};
-      allRegistrations.forEach(r => {
+      filteredRegs.forEach(r => {
         if (r.course) {
           courseCounts[r.course] = (courseCounts[r.course] || 0) + 1;
         }
@@ -1068,7 +1225,7 @@
                   color: chartTextColor,
                   font: {
                     family: 'Inter',
-                    size: 11
+                    size: 10
                   }
                 }
               },
@@ -1081,7 +1238,7 @@
                   precision: 0,
                   font: {
                     family: 'Inter',
-                    size: 11
+                    size: 10
                   }
                 }
               }
@@ -1090,14 +1247,136 @@
         });
       }
 
-      // C. Revenue & Due by Course (Stacked/Grouped Bar Chart)
+      // C. Course Registration Trends (Line Chart)
+      const rawTrends = {};
+      filteredRegs.forEach(r => {
+        const d = getRecordDate(r);
+        if (d) {
+          const yr = d.getFullYear();
+          const mo = String(d.getMonth() + 1).padStart(2, '0');
+          const key = `${yr}-${mo}`;
+          rawTrends[key] = (rawTrends[key] || 0) + 1;
+        }
+      });
+      const sortedTrendKeys = Object.keys(rawTrends).sort();
+      const trendLabels = sortedTrendKeys.map(k => {
+        const [y, m] = k.split('-');
+        const d = new Date(y, m - 1);
+        return d.toLocaleString('default', { month: 'short', year: '2-digit' });
+      });
+      const trendData = sortedTrendKeys.map(k => rawTrends[k]);
+
+      const ctxRegTrends = document.getElementById("chartRegTrends")?.getContext("2d");
+      if (ctxRegTrends) {
+        if (chartRegTrendsInstance) {
+          chartRegTrendsInstance.destroy();
+        }
+        chartRegTrendsInstance = new Chart(ctxRegTrends, {
+          type: 'line',
+          data: {
+            labels: trendLabels.length ? trendLabels : ['No Data'],
+            datasets: [{
+              data: trendData.length ? trendData : [0],
+              borderColor: primaryColor,
+              backgroundColor: 'rgba(33, 92, 92, 0.1)',
+              fill: true,
+              tension: 0.3,
+              borderWidth: 2,
+              pointRadius: 4,
+              pointBackgroundColor: primaryColor
+            }]
+          },
+          options: {
+            ...commonOptions,
+            scales: {
+              x: { grid: { display: false }, ticks: { color: chartTextColor, font: { family: 'Inter', size: 10 } } },
+              y: { grid: { color: chartGridColor }, ticks: { color: chartTextColor, precision: 0, font: { family: 'Inter', size: 10 } } }
+            }
+          }
+        });
+      }
+
+      // D. Payment realization funnel (Horizontal Bar Chart)
+      const ctxFunnel = document.getElementById("chartPaymentFunnel")?.getContext("2d");
+      if (ctxFunnel) {
+        if (chartPaymentFunnelInstance) {
+          chartPaymentFunnelInstance.destroy();
+        }
+        chartPaymentFunnelInstance = new Chart(ctxFunnel, {
+          type: 'bar',
+          data: {
+            labels: ['Total Billed', 'Collected', 'Outstanding Due', 'Discounts Given'],
+            datasets: [{
+              data: [totalBilled, totalCollected, totalDue, totalDiscount],
+              backgroundColor: ['#0d6efd', '#28a745', '#dc3545', '#ffc107'],
+              borderRadius: 6,
+              barThickness: 20
+            }]
+          },
+          options: {
+            indexAxis: 'y',
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: {
+              x: { grid: { color: chartGridColor }, ticks: { color: chartTextColor, font: { family: 'Inter', size: 10 } } },
+              y: { grid: { display: false }, ticks: { color: chartTextColor, font: { family: 'Inter', size: 10 } } }
+            }
+          }
+        });
+      }
+
+      // E. Certificate issuance velocity (Bar Chart)
+      const rawCertVelocity = {};
+      filteredRecords.forEach(rec => {
+        const d = getRecordDate(rec);
+        if (d) {
+          const yr = d.getFullYear();
+          const mo = String(d.getMonth() + 1).padStart(2, '0');
+          const key = `${yr}-${mo}`;
+          rawCertVelocity[key] = (rawCertVelocity[key] || 0) + 1;
+        }
+      });
+      const sortedCertKeys = Object.keys(rawCertVelocity).sort();
+      const certLabels = sortedCertKeys.map(k => {
+        const [y, m] = k.split('-');
+        const d = new Date(y, m - 1);
+        return d.toLocaleString('default', { month: 'short', year: '2-digit' });
+      });
+      const certData = sortedCertKeys.map(k => rawCertVelocity[k]);
+
+      const ctxCert = document.getElementById("chartCertVelocity")?.getContext("2d");
+      if (ctxCert) {
+        if (chartCertVelocityInstance) {
+          chartCertVelocityInstance.destroy();
+        }
+        chartCertVelocityInstance = new Chart(ctxCert, {
+          type: 'bar',
+          data: {
+            labels: certLabels.length ? certLabels : ['No Data'],
+            datasets: [{
+              data: certData.length ? certData : [0],
+              backgroundColor: '#6f42c1',
+              borderRadius: 4,
+              barThickness: 20
+            }]
+          },
+          options: {
+            ...commonOptions,
+            scales: {
+              x: { grid: { display: false }, ticks: { color: chartTextColor, font: { family: 'Inter', size: 10 } } },
+              y: { grid: { color: chartGridColor }, ticks: { color: chartTextColor, precision: 0, font: { family: 'Inter', size: 10 } } }
+            }
+          }
+        });
+      }
+
+      // F. Revenue & Due by Course (Stacked/Grouped Bar Chart)
       const courseRevenue = {};
-      // Initialize courses
       courseLabels.forEach(c => {
         courseRevenue[c] = { collected: 0, due: 0 };
       });
-      // Sum values
-      allPayments.forEach(p => {
+      filteredPayments.forEach(p => {
         const course = p.courseName || "Unknown Course";
         if (!courseRevenue[course]) {
           courseRevenue[course] = { collected: 0, due: 0 };
@@ -1145,7 +1424,7 @@
                   color: chartTextColor,
                   font: {
                     family: 'Inter',
-                    size: 10
+                    size: 9
                   }
                 }
               }
@@ -1160,7 +1439,7 @@
                   color: chartTextColor,
                   font: {
                     family: 'Inter',
-                    size: 10
+                    size: 9
                   }
                 }
               },
@@ -1173,7 +1452,7 @@
                   color: chartTextColor,
                   font: {
                     family: 'Inter',
-                    size: 10
+                    size: 9
                   },
                   callback: function (value) {
                     return value.toLocaleString();
@@ -1361,6 +1640,13 @@
               btn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status"></span>';
 
               await deleteCertificate(certId);
+              await addAuditLog({
+                user_email: currentUserEmail || "admin@example.com",
+                action_type: "DELETE",
+                collection_name: "certificates",
+                record_id: certId,
+                details: `Deleted certificate record for "${name}"`
+              });
               loadRecords();
             } catch (err) {
               alert("Failed to delete record: " + err.message);
@@ -1391,6 +1677,8 @@
 
       if (user) {
         // Authenticated
+        currentUserEmail = user.email || "admin@example.com";
+        window.currentUserEmail = currentUserEmail;
         loginSection.classList.add("d-none");
         dashboardSection.classList.remove("d-none");
         if (window.AOS) AOS.refresh();
@@ -1399,6 +1687,8 @@
         loadPayments();
       } else {
         // Unauthenticated
+        currentUserEmail = "";
+        window.currentUserEmail = "";
         loginSection.classList.remove("d-none");
         dashboardSection.classList.add("d-none");
         if (window.AOS) AOS.refresh();
@@ -1416,6 +1706,13 @@
 
       try {
         await loginAdmin(email, password);
+        await addAuditLog({
+          user_email: email,
+          action_type: "LOGIN",
+          collection_name: "N/A",
+          record_id: "N/A",
+          details: "Admin logged into Training Dashboard successfully"
+        });
       } catch (err) {
         errorDiv.innerText = "Login failed: " + err.message.replace("Firebase: ", "");
         errorDiv.classList.remove("d-none");
@@ -1424,11 +1721,83 @@
 
     // Logout Handler
     document.getElementById("logoutBtn").addEventListener("click", async function () {
+      const emailBeforeLogout = currentUserEmail || "admin@example.com";
       try {
+        await addAuditLog({
+          user_email: emailBeforeLogout,
+          action_type: "LOGOUT",
+          collection_name: "N/A",
+          record_id: "N/A",
+          details: "Admin logged out from Training Dashboard manually"
+        });
         await logoutAdmin();
       } catch (err) {
         alert("Logout failed: " + err.message);
       }
+    });
+
+    // Overview Panel Filters Event Listeners
+    document.getElementById("filterStartDate")?.addEventListener("change", updateOverview);
+    document.getElementById("filterEndDate")?.addEventListener("change", updateOverview);
+    document.getElementById("filterCourse")?.addEventListener("change", updateOverview);
+    document.getElementById("resetOverviewFiltersBtn")?.addEventListener("click", () => {
+      document.getElementById("filterStartDate").value = "";
+      document.getElementById("filterEndDate").value = "";
+      document.getElementById("filterCourse").value = "all";
+      updateOverview();
+    });
+
+    // CSV Exporter Utility Function
+    function exportTableToCSV(tableId, filename) {
+      const table = document.getElementById(tableId);
+      if (!table) return;
+      
+      let csv = [];
+      const rows = table.querySelectorAll("tr");
+      
+      for (let i = 0; i < rows.length; i++) {
+        const row = [];
+        const cols = rows[i].querySelectorAll("td, th");
+        
+        for (let j = 0; j < cols.length; j++) {
+          let data = cols[j].innerText.replace(/(\r\n|\n|\r)/gm, "").replace(/(\s\s+)/g, ' ');
+          data = data.replace(/"/g, '""');
+          if (data.indexOf(",") > -1 || data.indexOf('"') > -1) {
+            data = '"' + data + '"';
+          }
+          row.push(data);
+        }
+        if (row.length > 0) {
+          // Remove last item (Actions column)
+          const lastItem = row[row.length - 1].toLowerCase();
+          if (lastItem.includes("actions") || lastItem.includes("update") || lastItem.includes("delete") || lastItem.includes("edit") || lastItem.includes("link")) {
+            row.pop();
+          }
+          csv.push(row.join(","));
+        }
+      }
+      
+      const csvString = csv.join("\n");
+      const blob = new Blob([csvString], { type: "text/csv;charset=utf-8;" });
+      const link = document.createElement("a");
+      const url = URL.createObjectURL(blob);
+      link.setAttribute("href", url);
+      link.setAttribute("download", filename);
+      link.style.visibility = 'hidden';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
+    // Bind CSV Export Buttons
+    document.getElementById("exportRegCsvBtn")?.addEventListener("click", () => {
+      exportTableToCSV("regStudentTable", `registrations_export_${new Date().toISOString().slice(0,10)}.csv`);
+    });
+    document.getElementById("exportPayCsvBtn")?.addEventListener("click", () => {
+      exportTableToCSV("paymentTable", `payments_export_${new Date().toISOString().slice(0,10)}.csv`);
+    });
+    document.getElementById("exportCertCsvBtn")?.addEventListener("click", () => {
+      exportTableToCSV("studentTable", `certificates_export_${new Date().toISOString().slice(0,10)}.csv`);
     });
 
     function startEditMode(record) {
@@ -1538,6 +1907,13 @@
           grade,
           batch,
           status
+        });
+        await addAuditLog({
+          user_email: currentUserEmail || "admin@example.com",
+          action_type: editingCertId ? "UPDATE" : "CREATE",
+          collection_name: "certificates",
+          record_id: certificateId,
+          details: `${editingCertId ? "Updated" : "Created"} certificate for "${studentName}" (Course: ${courseName}, Batch: ${batch})`
         });
 
         // Set Link generator value
@@ -1736,6 +2112,13 @@
               btn.disabled = true;
               btn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status"></span>';
               await deleteRegistration(regId);
+              await addAuditLog({
+                user_email: currentUserEmail || "admin@example.com",
+                action_type: "DELETE",
+                collection_name: "registrations",
+                record_id: regId,
+                details: `Deleted course registration and payment ledger for "${name}" (Student ID: ${regId})`
+              });
               await loadRegistrations();
               await loadPayments();
             } catch (err) {
@@ -1901,11 +2284,25 @@
         if (editingStudentId) {
           // Update
           await updateRegistration(editingStudentId, { fullName, email, phone, course, batch, education, schedule, message });
+          await addAuditLog({
+            user_email: currentUserEmail || "admin@example.com",
+            action_type: "UPDATE",
+            collection_name: "registrations",
+            record_id: editingStudentId,
+            details: `Updated course registration details for "${fullName}"`
+          });
           successAlert.querySelector("span").innerText = "Registration updated successfully!";
           cancelRegEditMode();
         } else {
           // Create
           const generatedId = await addRegistration({ fullName, email, phone, course, batch, education, schedule, message, totalFee, discount, amountPaid, paymentType, transactionId });
+          await addAuditLog({
+            user_email: currentUserEmail || "admin@example.com",
+            action_type: "CREATE",
+            collection_name: "registrations",
+            record_id: generatedId,
+            details: `Created new course registration for "${fullName}" (Student ID: ${generatedId}, Course: ${course})`
+          });
           successAlert.querySelector("span").innerHTML = `Student registered successfully!<br><strong>Generated Student ID:</strong> <code class="text-dark font-monospace">${generatedId}</code>`;
           document.getElementById("regForm").reset();
         }
@@ -2156,6 +2553,13 @@
 
       try {
         await updatePayment(regId, total, discount, paid, payType, txId);
+        await addAuditLog({
+          user_email: currentUserEmail || "admin@example.com",
+          action_type: "UPDATE",
+          collection_name: "payments",
+          record_id: regId,
+          details: `Updated payment record for Student ID: ${regId}. Net Paid: ${paid} BDT, Discount: ${discount} BDT`
+        });
         if (editPaymentModalInstance) {
           editPaymentModalInstance.hide();
         }
@@ -2277,6 +2681,54 @@
       r => r.studentName || '',
       renderFilteredRecords
     );
+
+    // A4 Printing Lifecycle listeners
+    window.addEventListener("beforeprint", () => {
+      const header = document.createElement("div");
+      header.id = "print-header-confidential";
+      header.style.textAlign = "center";
+      header.style.fontWeight = "bold";
+      header.style.marginBottom = "20px";
+      header.style.color = "#dc3545";
+      header.style.borderBottom = "2px solid #dc3545";
+      header.style.paddingBottom = "5px";
+      header.style.fontSize = "14pt";
+      header.innerText = `CONFIDENTIAL - Printed on ${new Date().toLocaleString()}`;
+      document.body.insertBefore(header, document.body.firstChild);
+
+      const charts = [
+        chartPaymentStatusInstance,
+        chartCourseEnrollmentInstance,
+        chartRevenueByCourseInstance,
+        chartRegTrendsInstance,
+        chartPaymentFunnelInstance,
+        chartCertVelocityInstance
+      ];
+      charts.forEach(chart => {
+        if (chart) {
+          chart.resize();
+        }
+      });
+    });
+
+    window.addEventListener("afterprint", () => {
+      const header = document.getElementById("print-header-confidential");
+      if (header) header.remove();
+
+      const charts = [
+        chartPaymentStatusInstance,
+        chartCourseEnrollmentInstance,
+        chartRevenueByCourseInstance,
+        chartRegTrendsInstance,
+        chartPaymentFunnelInstance,
+        chartCertVelocityInstance
+      ];
+      charts.forEach(chart => {
+        if (chart) {
+          chart.resize();
+        }
+      });
+    });
   </script>
 
   <!-- Edit Payment Modal -->

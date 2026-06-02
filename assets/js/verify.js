@@ -2,11 +2,11 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 import { getFirestore, doc, getDoc, setDoc, serverTimestamp, collection, getDocs, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+import { initSessionSecurity, markTabSessionActive, cleanseStateAndRedirect } from "./session-security.js";
 
 // ==========================================
 // FIREBASE CONFIGURATION
 // ==========================================
-// Replace this placeholder config with your actual Firebase Web App Credentials
 const firebaseConfig = {
   apiKey: "AIzaSyBS6t7jjgm8xpw-kfa5hIpJvMJ7vzUdzDQ",
   authDomain: "intrex-digital.firebaseapp.com",
@@ -25,7 +25,11 @@ if (firebaseConfig.apiKey && !firebaseConfig.apiKey.includes("placeholder-key"))
   app = initializeApp(firebaseConfig);
   db = getFirestore(app);
   auth = getAuth(app);
+  window.db = db;
   isFirebaseConfigured = true;
+  
+  // Initialize global session security controls
+  initSessionSecurity(auth, logoutAdmin, window.location.origin + window.location.pathname);
 } else {
   console.warn("Firebase configuration has not been set up. Please update the firebaseConfig object in assets/js/verify.js.");
 }
@@ -69,6 +73,7 @@ export async function loginAdmin(email, password) {
   if (!checkConfiguration()) return null;
   try {
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
+    markTabSessionActive();
     return userCredential.user;
   } catch (error) {
     console.error("Login failed: ", error);
@@ -424,6 +429,60 @@ export async function updatePayment(studentId, totalFee, discount, amountPaid, p
     }, { merge: true });
   } catch (error) {
     console.error("Error updating payment: ", error);
+    throw error;
+  }
+}
+
+// Client-side key/ID auto-increment utility
+async function getNextSeqId(collectionName, prefix, idField, paddingSize = 4) {
+  if (!checkConfiguration()) return prefix + "0001";
+  try {
+    const querySnapshot = await getDocs(collection(db, collectionName));
+    let maxNum = 0;
+    querySnapshot.forEach(docSnap => {
+      const data = docSnap.data();
+      const val = data[idField];
+      if (val && val.startsWith(prefix)) {
+        const numPart = val.substring(prefix.length);
+        const num = parseInt(numPart, 10);
+        if (!isNaN(num) && num > maxNum) {
+          maxNum = num;
+        }
+      }
+    });
+    const nextNum = maxNum + 1;
+    return prefix + String(nextNum).padStart(paddingSize, "0");
+  } catch (error) {
+    console.error("Error generating seq ID: ", error);
+    return prefix + "0001";
+  }
+}
+
+// ==========================================
+// 5. AUDIT LOGS SYSTEM (tbl_audit_logs)
+// ==========================================
+export async function addAuditLog(logData) {
+  if (!checkConfiguration()) return;
+  const { user_email, action_type, collection_name, record_id, details } = logData;
+  if (!user_email || !action_type || !details) {
+    throw new Error("Missing required audit log fields");
+  }
+  try {
+    const id = await getNextSeqId("tbl_audit_logs", "LOG-", "log_id", 5);
+    const docRef = doc(db, "tbl_audit_logs", id);
+    await setDoc(docRef, {
+      log_id: id,
+      user_email: user_email,
+      action_type: action_type,
+      collection_name: collection_name || "N/A",
+      record_id: record_id || "N/A",
+      details: details,
+      local_time: new Date().toLocaleString(),
+      createdAt: serverTimestamp()
+    });
+    return id;
+  } catch (error) {
+    console.error("Error saving audit log: ", error);
     throw error;
   }
 }

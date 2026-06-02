@@ -1610,3 +1610,65 @@ h6 {
   --bs-btn-active-bg: var(--bs-primary-hover) !important;
   --bs-btn-active-border-color: var(--bs-primary-hover) !important;
 }
+
+/* ==========================================================================
+   A4 PORTRAIT PRINTING STYLESHEET
+   ========================================================================== */
+@media print {
+  body {
+    background: #fff !important;
+    color: #000 !important;
+    font-size: 10pt !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+  
+  @page {
+    size: A4 portrait;
+    margin: 1.5cm 1.5cm 1.5cm 1.5cm;
+  }
+  
+  #dashboardTabs, 
+  .sidebar, 
+  .nav-pills, 
+  nav, 
+  form, 
+  .btn, 
+  .btn-close, 
+  .modal-footer,
+  .print-hide,
+  header {
+    display: none !important;
+  }
+
+  .col-md-9, .col-lg-10, .col-md-8, .col-md-4, .col-12, .col-sm-6, .col-md-6 {
+    width: 100% !important;
+    max-width: 100% !important;
+    flex: 0 0 100% !important;
+    padding: 0 !important;
+    margin: 0 0 15px 0 !important;
+  }
+
+  thead {
+    display: table-header-group !important;
+  }
+  
+  tr {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+
+  .card, .chart-card {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+    box-shadow: none !important;
+    border: 1px solid #dee2e6 !important;
+    margin-bottom: 20px !important;
+    background: #fff !important;
+  }
+  
+  canvas {
+    max-width: 100% !important;
+    height: auto !important;
+  }
+}

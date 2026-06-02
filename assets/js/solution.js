@@ -1,7 +1,8 @@
 // assets/js/solution.js
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 import { getFirestore, doc, getDoc, setDoc, serverTimestamp, collection, getDocs, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged, setPersistence, browserSessionPersistence } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+import { initSessionSecurity, markTabSessionActive } from "./session-security.js";
 
 // ==========================================
 // FIREBASE CONFIGURATION
@@ -24,10 +25,11 @@ if (firebaseConfig.apiKey && !firebaseConfig.apiKey.includes("placeholder-key"))
   app = initializeApp(firebaseConfig);
   db = getFirestore(app);
   auth = getAuth(app);
-  setPersistence(auth, browserSessionPersistence).catch((error) => {
-    console.error("Failed to set auth persistence:", error);
-  });
+  window.db = db;
   isFirebaseConfigured = true;
+
+  // Initialize global session security controls
+  initSessionSecurity(auth, logoutAdmin, window.location.origin + window.location.pathname);
 } else {
   console.warn("Firebase configuration has not been set up.");
 }
@@ -80,6 +82,7 @@ export async function loginAdmin(email, password) {
   if (!checkConfiguration()) return null;
   try {
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
+    markTabSessionActive();
     return userCredential.user;
   } catch (error) {
     console.error("Login failed: ", error);

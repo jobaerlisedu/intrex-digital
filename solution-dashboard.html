@@ -226,6 +226,45 @@
 
                 <!-- 0. OVERVIEW PANEL -->
                 <div class="tab-pane fade show active" id="overviewPanel" role="tabpanel">
+                  
+                  <!-- Dynamic Analytics Filters -->
+                  <div class="card p-3 rounded-4 shadow-sm border mb-4 bg-body-tertiary">
+                    <div class="row g-3 align-items-end">
+                      <div class="col-md-2 col-sm-6">
+                        <label class="form-label small fw-semibold text-muted mb-1" for="filterStartDate">Start Date</label>
+                        <input type="date" id="filterStartDate" class="form-control form-control-sm">
+                      </div>
+                      <div class="col-md-2 col-sm-6">
+                        <label class="form-label small fw-semibold text-muted mb-1" for="filterEndDate">End Date</label>
+                        <input type="date" id="filterEndDate" class="form-control form-control-sm">
+                      </div>
+                      <div class="col-md-3 col-sm-6">
+                        <label class="form-label small fw-semibold text-muted mb-1" for="filterProject">Project</label>
+                        <select id="filterProject" class="form-select form-select-sm">
+                          <option value="all">All Projects</option>
+                        </select>
+                      </div>
+                      <div class="col-md-3 col-sm-6">
+                        <label class="form-label small fw-semibold text-muted mb-1" for="filterDept">Department</label>
+                        <select id="filterDept" class="form-select form-select-sm">
+                          <option value="all">All Departments</option>
+                          <option value="Engineering">Engineering</option>
+                          <option value="Operations">Operations</option>
+                          <option value="Procurement">Procurement</option>
+                          <option value="IT & Cloud">IT &amp; Cloud</option>
+                          <option value="Human Resources">Human Resources</option>
+                          <option value="Finance">Finance</option>
+                        </select>
+                      </div>
+                      <div class="col-md-2 col-sm-12 d-grid">
+                        <button type="button" id="resetOverviewFiltersBtn" class="btn btn-sm btn-outline-secondary">
+                          <i class="bi bi-x-circle me-1"></i> Reset Filters
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- KPI Stat Cards -->
                   <div class="row g-3 mb-4">
                     <div class="col-6 col-md-3">
                       <div class="card border-0 rounded-4 shadow-sm h-100 bg-primary text-white">
@@ -273,30 +312,73 @@
                     </div>
                   </div>
 
+                  <!-- Row 3: Project Status & Budget vs Expense -->
                   <div class="row g-4 mb-4">
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                       <div class="card border-0 rounded-4 shadow-sm h-100">
                         <div class="card-body p-4">
                           <h6 class="fw-bold text-heading-color mb-3"><i
-                              class="bi bi-pie-chart-fill me-2 text-primary"></i>Project Status</h6>
-                          <div style="position:relative;height:240px;">
+                              class="bi bi-pie-chart-fill me-2 text-primary"></i>Project Status Breakdown</h6>
+                          <div style="position:relative;height:220px;">
                             <canvas id="chartProjectStatus"></canvas>
                           </div>
                         </div>
                       </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-8">
                       <div class="card border-0 rounded-4 shadow-sm h-100">
                         <div class="card-body p-4">
                           <h6 class="fw-bold text-heading-color mb-3"><i
                               class="bi bi-bar-chart-fill me-2 text-primary"></i>Budget vs Expense by Project</h6>
-                          <div style="position:relative;height:240px;">
+                          <div style="position:relative;height:220px;">
                             <canvas id="chartBudgetVsExpense"></canvas>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
+
+                  <!-- Row 4: Requisition Approval Lifecycle & Resource Allocation Matrix -->
+                  <div class="row g-4 mb-4">
+                    <div class="col-md-4">
+                      <div class="card border-0 rounded-4 shadow-sm h-100">
+                        <div class="card-body p-4">
+                          <h6 class="fw-bold text-heading-color mb-3"><i
+                              class="bi bi-activity me-2 text-primary"></i>Requisition Approvals</h6>
+                          <div style="position:relative;height:220px;">
+                            <canvas id="chartRequisitionLifecycle"></canvas>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-8">
+                      <div class="card border-0 rounded-4 shadow-sm h-100">
+                        <div class="card-body p-4">
+                          <h6 class="fw-bold text-heading-color mb-3"><i
+                              class="bi bi-people-fill me-2 text-primary"></i>Personnel Allocation by Department</h6>
+                          <div style="position:relative;height:220px;">
+                            <canvas id="chartResourceAllocation"></canvas>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Row 5: Monthly Financial Summary -->
+                  <div class="row g-4 mb-4">
+                    <div class="col-12">
+                      <div class="card border-0 rounded-4 shadow-sm h-100">
+                        <div class="card-body p-4">
+                          <h6 class="fw-bold text-heading-color mb-3"><i
+                              class="bi bi-file-earmark-bar-graph me-2 text-primary"></i>Cash Flow: Monthly Invoices vs. Expenses</h6>
+                          <div style="position:relative;height:280px;">
+                            <canvas id="chartMonthlyFinance"></canvas>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
                 </div>
 
                 <!-- 1. PROJECT CREATOR PANEL -->
@@ -371,9 +453,14 @@
                   </div>
                   <!-- Directory -->
                   <div class="card p-4 rounded-4 shadow-sm border">
-                    <h3 class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
-                      <i class="bi bi-list-task me-2 text-primary"></i>Projects Directory
-                    </h3>
+                    <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
+                      <h3 class="h5 fw-bold mb-0 text-heading-color">
+                        <i class="bi bi-list-task me-2 text-primary"></i>Projects Directory
+                      </h3>
+                      <button id="exportProjectsCsvBtn" class="btn btn-sm btn-outline-success" type="button" title="Export CSV">
+                        <i class="bi bi-file-earmark-spreadsheet me-1"></i> Export CSV
+                      </button>
+                    </div>
                     <div class="table-responsive">
                       <table class="table table-hover align-middle mb-0" id="projectsTable">
                         <thead class="table-light">
@@ -464,9 +551,14 @@
                   </div>
                   <!-- Directory -->
                   <div class="card p-4 rounded-4 shadow-sm border">
-                    <h3 class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
-                      <i class="bi bi-people me-2 text-primary"></i>Employee Directory
-                    </h3>
+                    <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
+                      <h3 class="h5 fw-bold mb-0 text-heading-color">
+                        <i class="bi bi-people me-2 text-primary"></i>Employee Directory
+                      </h3>
+                      <button id="exportEmployeesCsvBtn" class="btn btn-sm btn-outline-success" type="button" title="Export CSV">
+                        <i class="bi bi-file-earmark-spreadsheet me-1"></i> Export CSV
+                      </button>
+                    </div>
                     <div class="table-responsive">
                       <table class="table table-hover align-middle mb-0" id="employeesTable">
                         <thead class="table-light">
@@ -549,9 +641,14 @@
                   </div>
                   <!-- Directory -->
                   <div class="card p-4 rounded-4 shadow-sm border">
-                    <h3 class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
-                      <i class="bi bi-journals me-2 text-primary"></i>Contact Directory
-                    </h3>
+                    <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
+                      <h3 class="h5 fw-bold mb-0 text-heading-color">
+                        <i class="bi bi-journals me-2 text-primary"></i>Contact Directory
+                      </h3>
+                      <button id="exportContactsCsvBtn" class="btn btn-sm btn-outline-success" type="button" title="Export CSV">
+                        <i class="bi bi-file-earmark-spreadsheet me-1"></i> Export CSV
+                      </button>
+                    </div>
                     <div class="table-responsive">
                       <table class="table table-hover align-middle mb-0" id="contactsTable">
                         <thead class="table-light">
@@ -642,9 +739,14 @@
                   </div>
                   <!-- Directory -->
                   <div class="card p-4 rounded-4 shadow-sm border">
-                    <h3 class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
-                      <i class="bi bi-calendar3 me-2 text-primary"></i>Meetings Log
-                    </h3>
+                    <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
+                      <h3 class="h5 fw-bold mb-0 text-heading-color">
+                        <i class="bi bi-calendar3 me-2 text-primary"></i>Meetings Log
+                      </h3>
+                      <button id="exportMeetingsCsvBtn" class="btn btn-sm btn-outline-success" type="button" title="Export CSV">
+                        <i class="bi bi-file-earmark-spreadsheet me-1"></i> Export CSV
+                      </button>
+                    </div>
                     <div class="table-responsive">
                       <table class="table table-hover align-middle mb-0" id="meetingsTable">
                         <thead class="table-light">
@@ -729,9 +831,14 @@
                   </div>
                   <!-- Directory -->
                   <div class="card p-4 rounded-4 shadow-sm border">
-                    <h3 class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
-                      <i class="bi bi-wallet-fill me-2 text-primary"></i>Budget Overview
-                    </h3>
+                    <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
+                      <h3 class="h5 fw-bold mb-0 text-heading-color">
+                        <i class="bi bi-wallet-fill me-2 text-primary"></i>Budget Overview
+                      </h3>
+                      <button id="exportBudgetCsvBtn" class="btn btn-sm btn-outline-success" type="button" title="Export CSV">
+                        <i class="bi bi-file-earmark-spreadsheet me-1"></i> Export CSV
+                      </button>
+                    </div>
                     <div class="table-responsive">
                       <table class="table table-hover align-middle mb-0" id="budgetTable">
                         <thead class="table-light">
@@ -839,9 +946,14 @@
                   </div>
                   <!-- Directory -->
                   <div class="card p-4 rounded-4 shadow-sm border">
-                    <h3 class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
-                      <i class="bi bi-list-stars me-2 text-primary"></i>Tasks Directory
-                    </h3>
+                    <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
+                      <h3 class="h5 fw-bold mb-0 text-heading-color">
+                        <i class="bi bi-list-stars me-2 text-primary"></i>Tasks Directory
+                      </h3>
+                      <button id="exportTasksCsvBtn" class="btn btn-sm btn-outline-success" type="button" title="Export CSV">
+                        <i class="bi bi-file-earmark-spreadsheet me-1"></i> Export CSV
+                      </button>
+                    </div>
                     <div class="table-responsive">
                       <table class="table table-hover align-middle mb-0" id="tasksTable">
                         <thead class="table-light">
@@ -950,9 +1062,14 @@
                   </div>
                   <!-- Directory -->
                   <div class="card p-4 rounded-4 shadow-sm border">
-                    <h3 class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
-                      <i class="bi bi-file-earmark-spreadsheet me-2 text-primary"></i>Requisitions Directory
-                    </h3>
+                    <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
+                      <h3 class="h5 fw-bold mb-0 text-heading-color">
+                        <i class="bi bi-file-earmark-spreadsheet me-2 text-primary"></i>Requisitions Directory
+                      </h3>
+                      <button id="exportRequisitionsCsvBtn" class="btn btn-sm btn-outline-success" type="button" title="Export CSV">
+                        <i class="bi bi-file-earmark-spreadsheet me-1"></i> Export CSV
+                      </button>
+                    </div>
                     <div class="table-responsive">
                       <table class="table table-hover align-middle mb-0" id="requisitionsTable">
                         <thead class="table-light">
@@ -1058,9 +1175,14 @@
                   </div>
                   <!-- Directory -->
                   <div class="card p-4 rounded-4 shadow-sm border">
-                    <h3 class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
-                      <i class="bi bi-receipt-cutoff me-2 text-primary"></i>Purchase Ledger
-                    </h3>
+                    <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
+                      <h3 class="h5 fw-bold mb-0 text-heading-color">
+                        <i class="bi bi-receipt-cutoff me-2 text-primary"></i>Purchase Ledger
+                      </h3>
+                      <button id="exportPurchasesCsvBtn" class="btn btn-sm btn-outline-success" type="button" title="Export CSV">
+                        <i class="bi bi-file-earmark-spreadsheet me-1"></i> Export CSV
+                      </button>
+                    </div>
                     <div class="table-responsive">
                       <table class="table table-hover align-middle mb-0" id="purchasesTable">
                         <thead class="table-light">
@@ -1174,9 +1296,14 @@
                   </div>
                   <!-- Directory -->
                   <div class="card p-4 rounded-4 shadow-sm border">
-                    <h3 class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
-                      <i class="bi bi-clipboard-data me-2 text-primary"></i>Operational Expenses Ledger
-                    </h3>
+                    <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
+                      <h3 class="h5 fw-bold mb-0 text-heading-color">
+                        <i class="bi bi-clipboard-data me-2 text-primary"></i>Operational Expenses Ledger
+                      </h3>
+                      <button id="exportExpensesCsvBtn" class="btn btn-sm btn-outline-success" type="button" title="Export CSV">
+                        <i class="bi bi-file-earmark-spreadsheet me-1"></i> Export CSV
+                      </button>
+                    </div>
                     <div class="table-responsive">
                       <table class="table table-hover align-middle mb-0" id="expensesTable">
                         <thead class="table-light">
@@ -1295,9 +1422,14 @@
                   </div>
                   <!-- Directory -->
                   <div class="card p-4 rounded-4 shadow-sm border">
-                    <h3 class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
-                      <i class="bi bi-cash-stack me-2 text-primary"></i>Invoices &amp; Revenue Ledger
-                    </h3>
+                    <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
+                      <h3 class="h5 fw-bold mb-0 text-heading-color">
+                        <i class="bi bi-cash-stack me-2 text-primary"></i>Invoices &amp; Revenue Ledger
+                      </h3>
+                      <button id="exportPaymentsCsvBtn" class="btn btn-sm btn-outline-success" type="button" title="Export CSV">
+                        <i class="bi bi-file-earmark-spreadsheet me-1"></i> Export CSV
+                      </button>
+                    </div>
                     <div class="table-responsive">
                       <table class="table table-hover align-middle mb-0" id="paymentsTable">
                         <thead class="table-light">
@@ -1418,9 +1550,14 @@
                   </div>
                   <!-- Directory -->
                   <div class="card p-4 rounded-4 shadow-sm border">
-                    <h3 class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
-                      <i class="bi bi-ticket-perforated me-2 text-primary"></i>Support Tickets Directory
-                    </h3>
+                    <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
+                      <h3 class="h5 fw-bold mb-0 text-heading-color">
+                        <i class="bi bi-ticket-perforated me-2 text-primary"></i>Support Tickets Directory
+                      </h3>
+                      <button id="exportTicketsCsvBtn" class="btn btn-sm btn-outline-success" type="button" title="Export CSV">
+                        <i class="bi bi-file-earmark-spreadsheet me-1"></i> Export CSV
+                      </button>
+                    </div>
                     <div class="table-responsive">
                       <table class="table table-hover align-middle mb-0" id="ticketsTable">
                         <thead class="table-light">
@@ -1567,9 +1704,14 @@
                   </div>
                   <!-- Directory -->
                   <div class="card p-4 rounded-4 shadow-sm border">
-                    <h3 class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
-                      <i class="bi bi-check2-circle me-2 text-primary"></i>Domain & Hosting Assets
-                    </h3>
+                    <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
+                      <h3 class="h5 fw-bold mb-0 text-heading-color">
+                        <i class="bi bi-check2-circle me-2 text-primary"></i>Domain & Hosting Assets
+                      </h3>
+                      <button id="exportHostingCsvBtn" class="btn btn-sm btn-outline-success" type="button" title="Export CSV">
+                        <i class="bi bi-file-earmark-spreadsheet me-1"></i> Export CSV
+                      </button>
+                    </div>
                     <div class="table-responsive">
                       <table class="table table-hover align-middle mb-0" id="hostingTable">
                         <thead class="table-light">
@@ -1831,9 +1973,14 @@
                       <h3 class="h5 fw-bold mb-0 text-heading-color">
                         <i class="bi bi-shield-check me-2 text-primary"></i>System Audit Logs
                       </h3>
-                      <button type="button" id="refreshLogsBtn" class="btn btn-outline-primary py-1 px-3 d-flex align-items-center gap-2">
-                        <i class="bi bi-arrow-clockwise"></i> Refresh Logs
-                      </button>
+                      <div class="d-flex gap-2">
+                        <button type="button" id="refreshLogsBtn" class="btn btn-outline-primary py-1 px-3 d-flex align-items-center gap-2">
+                          <i class="bi bi-arrow-clockwise"></i> Refresh Logs
+                        </button>
+                        <button id="exportLogsCsvBtn" class="btn btn-sm btn-outline-success" type="button" title="Export CSV">
+                          <i class="bi bi-file-earmark-spreadsheet me-1"></i> Export CSV
+                        </button>
+                      </div>
                     </div>
                     <div class="table-responsive">
                       <table class="table table-hover align-middle mb-0" id="logsTable">
@@ -1919,6 +2066,42 @@
       addDomainHosting, getAllDomainHosting, deleteDomainHosting,
       addAuditLog, getAllAuditLogs
     } from "./assets/js/solution.js";
+    import { collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+    // Global Error Logger & Firestore Boundary
+    function logErrorToFirestore(errorMsg, url, line, col, errorObj, type = "error") {
+      try {
+        const fDb = window.db;
+        if (!fDb) {
+          console.error("Firestore db not initialized for error logging:", errorMsg);
+          return;
+        }
+        const errorsCol = collection(fDb, "tbl_system_errors");
+        addDoc(errorsCol, {
+          message: errorMsg || "Unknown error",
+          url: url || window.location.href,
+          line: Number(line) || 0,
+          column: Number(col) || 0,
+          stack: errorObj && errorObj.stack ? errorObj.stack : "N/A",
+          type: type,
+          user_email: (typeof currentUserEmail !== "undefined" && currentUserEmail) || "anonymous",
+          timestamp: serverTimestamp()
+        }).catch(err => console.error("Failed to write error to Firestore:", err));
+      } catch (err) {
+        console.error("Failed to execute logErrorToFirestore:", err);
+      }
+    }
+
+    window.onerror = function (message, source, lineno, colno, error) {
+      logErrorToFirestore(message, source, lineno, colno, error, "exception");
+      return false;
+    };
+
+    window.addEventListener("unhandledrejection", function (event) {
+      const reason = event.reason;
+      const msg = reason && reason.message ? reason.message : String(reason);
+      logErrorToFirestore(msg, window.location.href, 0, 0, reason, "unhandled_rejection");
+    });
 
     // Set today's dates as default (except clearance date & client payment received date)
     const todayDateStr = new Date().toISOString().substring(0, 10);
@@ -1949,6 +2132,9 @@
 
     let chartProjectStatusInstance = null;
     let chartBudgetVsExpenseInstance = null;
+    let chartRequisitionLifecycleInstance = null;
+    let chartResourceAllocationInstance = null;
+    let chartMonthlyFinanceInstance = null;
 
     // Populate dropdown selection lists with Project IDs for referential integrity
     function populateProjectDropdowns() {
@@ -1966,6 +2152,21 @@
           select.value = selectedVal;
         }
       });
+
+      const filterProjSelect = document.getElementById("filterProject");
+      if (filterProjSelect) {
+        const selectedVal = filterProjSelect.value;
+        filterProjSelect.innerHTML = `<option value="all">All Projects</option>`;
+        allProjects.forEach(p => {
+          const opt = document.createElement("option");
+          opt.value = p.project_id;
+          opt.textContent = `${p.project_id} - ${p.project_name}`;
+          filterProjSelect.appendChild(opt);
+        });
+        if (selectedVal) {
+          filterProjSelect.value = selectedVal;
+        }
+      }
     }
 
     // Populate Requisition ID in Purchase order log
@@ -2528,17 +2729,135 @@
     document.getElementById("req_est_unit_cost")?.addEventListener("input", calculateReqTotal);
 
     // Overview Update and Rendering
+    function getRecordDate(record) {
+      if (!record) return null;
+      if (record.createdAt) {
+        return record.createdAt.toDate ? record.createdAt.toDate() : new Date(record.createdAt);
+      } else if (record.start_date) {
+        return new Date(record.start_date);
+      } else if (record.meeting_date) {
+        return new Date(record.meeting_date);
+      } else if (record.clearance_date) {
+        return new Date(record.clearance_date);
+      } else if (record.po_issue_date) {
+        return new Date(record.po_issue_date);
+      } else if (record.invoice_date) {
+        return new Date(record.invoice_date);
+      } else if (record.renewal_date) {
+        return new Date(record.renewal_date);
+      }
+      return null;
+    }
+
+    function getMonthKey(date) {
+      if (!date) return null;
+      try {
+        const d = new Date(date);
+        if (isNaN(d.getTime())) return null;
+        const year = d.getFullYear();
+        const month = String(d.getMonth() + 1).padStart(2, '0');
+        return `${year}-${month}`;
+      } catch (err) {
+        return null;
+      }
+    }
+
+    function formatMonthLabel(key) {
+      const [year, month] = key.split('-');
+      const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+      return `${months[parseInt(month, 10) - 1]} ${year}`;
+    }
+
+    // Overview Update and Rendering
     function updateOverview() {
-      const activeProjCount = allProjects.filter(p => p.project_status === "Active").length;
+      // 0. Extract Filter States
+      const startDateVal = document.getElementById("filterStartDate")?.value;
+      const endDateVal = document.getElementById("filterEndDate")?.value;
+      const projectVal = document.getElementById("filterProject")?.value;
+      const deptVal = document.getElementById("filterDept")?.value;
+
+      // Filtered sets initialization
+      let filteredProjects = allProjects;
+      let filteredBudgets = allBudgets;
+      let filteredExpenses = allExpenses;
+      let filteredRequisitions = allRequisitions;
+      let filteredClientPayments = allClientPayments; // Invoices
+      let filteredEmployees = allEmployees;
+      let filteredTasks = allTasks;
+      let filteredPOs = allPurchaseOrders;
+
+      // 1. Department Filtering
+      // Map department to projects via project managers
+      if (deptVal && deptVal !== "all") {
+        // Filter employees belonging to this department
+        filteredEmployees = allEmployees.filter(e => e.department === deptVal);
+        
+        // Find employee IDs
+        const deptEmpIds = filteredEmployees.map(e => e.employee_id);
+        
+        // Filter projects managed by employees of this department
+        filteredProjects = allProjects.filter(p => deptEmpIds.includes(p.project_manager));
+        
+        // Project ID list for matching
+        const projIds = filteredProjects.map(p => p.project_id);
+        
+        // Filter everything linked to these projects
+        filteredBudgets = allBudgets.filter(b => projIds.includes(b.project_id));
+        filteredExpenses = allExpenses.filter(e => projIds.includes(e.project_id));
+        filteredRequisitions = allRequisitions.filter(r => projIds.includes(r.project_id));
+        filteredClientPayments = allClientPayments.filter(cp => projIds.includes(cp.project_id));
+        filteredTasks = allTasks.filter(t => projIds.includes(t.project_id));
+        filteredPOs = allPurchaseOrders.filter(po => projIds.includes(po.project_id));
+      }
+
+      // 2. Project ID Filtering
+      if (projectVal && projectVal !== "all") {
+        filteredProjects = filteredProjects.filter(p => p.project_id === projectVal);
+        filteredBudgets = filteredBudgets.filter(b => b.project_id === projectVal);
+        filteredExpenses = filteredExpenses.filter(e => e.project_id === projectVal);
+        filteredRequisitions = filteredRequisitions.filter(r => r.project_id === projectVal);
+        filteredClientPayments = filteredClientPayments.filter(cp => cp.project_id === projectVal);
+        filteredTasks = filteredTasks.filter(t => t.project_id === projectVal);
+        filteredPOs = filteredPOs.filter(po => po.project_id === projectVal);
+      }
+
+      // 3. Date Filtering
+      if (startDateVal) {
+        const start = new Date(startDateVal);
+        start.setHours(0, 0, 0, 0);
+
+        filteredProjects = filteredProjects.filter(p => { const d = getRecordDate(p); return d && d >= start; });
+        filteredBudgets = filteredBudgets.filter(b => { const d = getRecordDate(b); return d && d >= start; });
+        filteredExpenses = filteredExpenses.filter(e => { const d = getRecordDate(e); return d && d >= start; });
+        filteredRequisitions = filteredRequisitions.filter(r => { const d = getRecordDate(r); return d && d >= start; });
+        filteredClientPayments = filteredClientPayments.filter(cp => { const d = getRecordDate(cp); return d && d >= start; });
+        filteredTasks = filteredTasks.filter(t => { const d = getRecordDate(t); return d && d >= start; });
+        filteredPOs = filteredPOs.filter(po => { const d = getRecordDate(po); return d && d >= start; });
+      }
+      if (endDateVal) {
+        const end = new Date(endDateVal);
+        end.setHours(23, 59, 59, 999);
+
+        filteredProjects = filteredProjects.filter(p => { const d = getRecordDate(p); return d && d <= end; });
+        filteredBudgets = filteredBudgets.filter(b => { const d = getRecordDate(b); return d && d <= end; });
+        filteredExpenses = filteredExpenses.filter(e => { const d = getRecordDate(e); return d && d <= end; });
+        filteredRequisitions = filteredRequisitions.filter(r => { const d = getRecordDate(r); return d && d <= end; });
+        filteredClientPayments = filteredClientPayments.filter(cp => { const d = getRecordDate(cp); return d && d <= end; });
+        filteredTasks = filteredTasks.filter(t => { const d = getRecordDate(t); return d && d <= end; });
+        filteredPOs = filteredPOs.filter(po => { const d = getRecordDate(po); return d && d <= end; });
+      }
+
+      // 4. Update KPI numbers based on filtered data
+      const activeProjCount = filteredProjects.filter(p => p.project_status === "Active").length;
       document.getElementById("kpiActiveProjects").textContent = activeProjCount;
 
-      const totalBudgetSum = allBudgets.reduce((sum, b) => sum + (Number(b.allocated_amount) || 0), 0);
+      const totalBudgetSum = filteredBudgets.reduce((sum, b) => sum + (Number(b.allocated_amount) || 0), 0);
       document.getElementById("kpiTotalBudget").textContent = `${totalBudgetSum.toLocaleString()} BDT`;
 
-      const totalExpensesSum = allExpenses.reduce((sum, e) => sum + (Number(e.amount_paid) || 0), 0);
+      const totalExpensesSum = filteredExpenses.reduce((sum, e) => sum + (Number(e.amount_paid) || 0), 0);
       document.getElementById("kpiTotalExpenses").textContent = `${totalExpensesSum.toLocaleString()} BDT`;
 
-      const pendingReqsCount = allRequisitions.filter(r => r.dept_approval === "Pending Review").length;
+      const pendingReqsCount = filteredRequisitions.filter(r => r.dept_approval === "Pending Review").length;
       document.getElementById("kpiPendingReqs").textContent = pendingReqsCount;
 
       // Render Charts
@@ -2548,12 +2867,12 @@
       const textColor = isDark ? '#f8f9fa' : '#494B5B';
       const gridColor = isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.05)';
 
-      // 1. Project Status Chart
-      const pipeline = allProjects.filter(p => p.project_status === "Pipeline").length;
-      const active = allProjects.filter(p => p.project_status === "Active").length;
-      const onhold = allProjects.filter(p => p.project_status === "On Hold").length;
-      const completed = allProjects.filter(p => p.project_status === "Completed").length;
-      const cancelled = allProjects.filter(p => p.project_status === "Cancelled").length;
+      // Chart 1. Project Status Chart (Doughnut)
+      const pipeline = filteredProjects.filter(p => p.project_status === "Pipeline").length;
+      const active = filteredProjects.filter(p => p.project_status === "Active").length;
+      const onhold = filteredProjects.filter(p => p.project_status === "On Hold").length;
+      const completed = filteredProjects.filter(p => p.project_status === "Completed").length;
+      const cancelled = filteredProjects.filter(p => p.project_status === "Cancelled").length;
 
       const ctxStatus = document.getElementById("chartProjectStatus")?.getContext("2d");
       if (ctxStatus) {
@@ -2582,14 +2901,14 @@
         });
       }
 
-      // 2. Budget vs Expense Chart
-      const projectLabels = allProjects.map(p => p.project_id);
-      const budgetData = allProjects.map(p => {
-        const projBudgets = allBudgets.filter(budg => budg.project_id === p.project_id);
+      // Chart 2. Budget vs Expense Chart (Bar)
+      const projectLabels = filteredProjects.map(p => p.project_id);
+      const budgetData = filteredProjects.map(p => {
+        const projBudgets = filteredBudgets.filter(budg => budg.project_id === p.project_id);
         return projBudgets.reduce((sum, b) => sum + Number(b.allocated_amount), 0);
       });
-      const expenseData = allProjects.map(p => {
-        const projsExpenses = allExpenses.filter(e => e.project_id === p.project_id);
+      const expenseData = filteredProjects.map(p => {
+        const projsExpenses = filteredExpenses.filter(e => e.project_id === p.project_id);
         return projsExpenses.reduce((sum, e) => sum + Number(e.amount_paid), 0);
       });
 
@@ -2618,7 +2937,216 @@
           }
         });
       }
+
+      // Chart 3. Requisition Approval Lifecycle (Pie)
+      const pendingReq = filteredRequisitions.filter(r => r.dept_approval === "Pending Review").length;
+      const approvedReq = filteredRequisitions.filter(r => r.dept_approval === "Approved").length;
+      const rejectedReq = filteredRequisitions.filter(r => r.dept_approval === "Rejected").length;
+
+      const ctxReq = document.getElementById("chartRequisitionLifecycle")?.getContext("2d");
+      if (ctxReq) {
+        if (chartRequisitionLifecycleInstance) chartRequisitionLifecycleInstance.destroy();
+        chartRequisitionLifecycleInstance = new Chart(ctxReq, {
+          type: 'pie',
+          data: {
+            labels: ['Pending Review', 'Approved', 'Rejected'],
+            datasets: [{
+              data: [pendingReq, approvedReq, rejectedReq],
+              backgroundColor: ['#ffc107', '#28a745', '#dc3545'],
+              borderWidth: isDark ? 2 : 1,
+              borderColor: isDark ? '#212529' : '#fff'
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                position: 'bottom',
+                labels: { color: textColor }
+              }
+            }
+          }
+        });
+      }
+
+      // Chart 4. Resource Allocation Matrix (Horizontal Bar)
+      const departments = ['Engineering', 'Operations', 'Procurement', 'IT & Cloud', 'Human Resources', 'Finance'];
+      const activeEmployees = filteredEmployees.filter(e => e.status === "Active");
+      const employeeCounts = departments.map(dept => {
+        return activeEmployees.filter(e => e.department === dept).length;
+      });
+
+      const ctxResource = document.getElementById("chartResourceAllocation")?.getContext("2d");
+      if (ctxResource) {
+        if (chartResourceAllocationInstance) chartResourceAllocationInstance.destroy();
+        chartResourceAllocationInstance = new Chart(ctxResource, {
+          type: 'bar',
+          data: {
+            labels: departments,
+            datasets: [{
+              label: 'Active Personnel',
+              data: employeeCounts,
+              backgroundColor: '#4A90E2',
+              borderRadius: 4
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            indexAxis: 'y',
+            plugins: {
+              legend: { display: false }
+            },
+            scales: {
+              x: { grid: { color: gridColor }, ticks: { color: textColor, stepSize: 1 } },
+              y: { grid: { display: false }, ticks: { color: textColor } }
+            }
+          }
+        });
+      }
+
+      // Chart 5. Monthly Financial Summary (Line Cashflow)
+      const financeMap = {};
+      
+      filteredClientPayments.forEach(cp => {
+        const date = cp.date_received || cp.invoice_date;
+        const key = getMonthKey(date);
+        if (key) {
+          if (!financeMap[key]) financeMap[key] = { collections: 0, expenses: 0 };
+          financeMap[key].collections += Number(cp.amount_received) || 0;
+        }
+      });
+
+      filteredExpenses.forEach(exp => {
+        const date = exp.clearance_date;
+        const key = getMonthKey(date) || getMonthKey(getRecordDate(exp));
+        if (key) {
+          if (!financeMap[key]) financeMap[key] = { collections: 0, expenses: 0 };
+          financeMap[key].expenses += Number(exp.amount_paid) || 0;
+        }
+      });
+      
+      const sortedMonthKeys = Object.keys(financeMap).sort();
+      if (sortedMonthKeys.length === 0) {
+        const curKey = getMonthKey(new Date());
+        sortedMonthKeys.push(curKey);
+        financeMap[curKey] = { collections: 0, expenses: 0 };
+      }
+
+      const financeLabels = sortedMonthKeys.map(formatMonthLabel);
+      const collectionsData = sortedMonthKeys.map(k => financeMap[k].collections);
+      const expensesData = sortedMonthKeys.map(k => financeMap[k].expenses);
+
+      const ctxFinance = document.getElementById("chartMonthlyFinance")?.getContext("2d");
+      if (ctxFinance) {
+        if (chartMonthlyFinanceInstance) chartMonthlyFinanceInstance.destroy();
+        chartMonthlyFinanceInstance = new Chart(ctxFinance, {
+          type: 'line',
+          data: {
+            labels: financeLabels,
+            datasets: [
+              {
+                label: 'Client Collections',
+                data: collectionsData,
+                borderColor: '#28a745',
+                backgroundColor: 'rgba(40, 167, 69, 0.1)',
+                tension: 0.3,
+                fill: true
+              },
+              {
+                label: 'Vendor Expenses',
+                data: expensesData,
+                borderColor: '#dc3545',
+                backgroundColor: 'rgba(220, 53, 69, 0.1)',
+                tension: 0.3,
+                fill: true
+              }
+            ]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: { position: 'top', labels: { color: textColor } }
+            },
+            scales: {
+              x: { grid: { display: false }, ticks: { color: textColor } },
+              y: { grid: { color: gridColor }, ticks: { color: textColor } }
+            }
+          }
+        });
+      }
     }
+
+    // CSV Exporter Utility Function
+    function exportTableToCSV(tableId, filename) {
+      const table = document.getElementById(tableId);
+      if (!table) return;
+      
+      let csv = [];
+      const rows = table.querySelectorAll("tr");
+      
+      for (let i = 0; i < rows.length; i++) {
+        const row = [];
+        const cols = rows[i].querySelectorAll("td, th");
+        
+        for (let j = 0; j < cols.length; j++) {
+          let data = cols[j].innerText.replace(/(\r\n|\n|\r)/gm, "").replace(/(\s\s+)/g, ' ');
+          data = data.replace(/"/g, '""');
+          if (data.indexOf(",") > -1 || data.indexOf('"') > -1) {
+            data = '"' + data + '"';
+          }
+          row.push(data);
+        }
+        if (row.length > 0) {
+          const lastItem = row[row.length - 1].toLowerCase();
+          if (lastItem.includes("actions") || lastItem.includes("update") || lastItem.includes("delete") || lastItem.includes("edit") || lastItem.includes("view")) {
+            row.pop();
+          }
+          csv.push(row.join(","));
+        }
+      }
+      
+      const csvString = csv.join("\n");
+      const blob = new Blob([csvString], { type: "text/csv;charset=utf-8;" });
+      const link = document.createElement("a");
+      const url = URL.createObjectURL(blob);
+      link.setAttribute("href", url);
+      link.setAttribute("download", filename);
+      link.style.visibility = 'hidden';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
+    // Bind Overview Filters
+    document.getElementById("filterStartDate")?.addEventListener("change", updateOverview);
+    document.getElementById("filterEndDate")?.addEventListener("change", updateOverview);
+    document.getElementById("filterProject")?.addEventListener("change", updateOverview);
+    document.getElementById("filterDept")?.addEventListener("change", updateOverview);
+    document.getElementById("resetOverviewFiltersBtn")?.addEventListener("click", () => {
+      document.getElementById("filterStartDate").value = "";
+      document.getElementById("filterEndDate").value = "";
+      document.getElementById("filterProject").value = "all";
+      document.getElementById("filterDept").value = "all";
+      updateOverview();
+    });
+
+    // Bind CSV Export Buttons
+    document.getElementById("exportProjectsCsvBtn")?.addEventListener("click", () => exportTableToCSV("projectsTable", `projects_export_${new Date().toISOString().slice(0,10)}.csv`));
+    document.getElementById("exportEmployeesCsvBtn")?.addEventListener("click", () => exportTableToCSV("employeesTable", `employees_export_${new Date().toISOString().slice(0,10)}.csv`));
+    document.getElementById("exportContactsCsvBtn")?.addEventListener("click", () => exportTableToCSV("contactsTable", `contacts_export_${new Date().toISOString().slice(0,10)}.csv`));
+    document.getElementById("exportMeetingsCsvBtn")?.addEventListener("click", () => exportTableToCSV("meetingsTable", `meetings_export_${new Date().toISOString().slice(0,10)}.csv`));
+    document.getElementById("exportBudgetCsvBtn")?.addEventListener("click", () => exportTableToCSV("budgetTable", `budgets_export_${new Date().toISOString().slice(0,10)}.csv`));
+    document.getElementById("exportTasksCsvBtn")?.addEventListener("click", () => exportTableToCSV("tasksTable", `tasks_export_${new Date().toISOString().slice(0,10)}.csv`));
+    document.getElementById("exportRequisitionsCsvBtn")?.addEventListener("click", () => exportTableToCSV("requisitionsTable", `requisitions_export_${new Date().toISOString().slice(0,10)}.csv`));
+    document.getElementById("exportPurchasesCsvBtn")?.addEventListener("click", () => exportTableToCSV("purchasesTable", `purchase_orders_export_${new Date().toISOString().slice(0,10)}.csv`));
+    document.getElementById("exportExpensesCsvBtn")?.addEventListener("click", () => exportTableToCSV("expensesTable", `expenses_export_${new Date().toISOString().slice(0,10)}.csv`));
+    document.getElementById("exportPaymentsCsvBtn")?.addEventListener("click", () => exportTableToCSV("paymentsTable", `invoices_export_${new Date().toISOString().slice(0,10)}.csv`));
+    document.getElementById("exportTicketsCsvBtn")?.addEventListener("click", () => exportTableToCSV("ticketsTable", `tickets_export_${new Date().toISOString().slice(0,10)}.csv`));
+    document.getElementById("exportHostingCsvBtn")?.addEventListener("click", () => exportTableToCSV("hostingTable", `domain_hosting_export_${new Date().toISOString().slice(0,10)}.csv`));
+    document.getElementById("exportLogsCsvBtn")?.addEventListener("click", () => exportTableToCSV("logsTable", `system_logs_export_${new Date().toISOString().slice(0,10)}.csv`));
 
     // Refresh datasets from Firestore
     async function loadAllData() {
@@ -5463,6 +5991,52 @@
       }
     });
     themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['data-bs-theme'] });
+
+    // A4 Printing Lifecycle listeners
+    window.addEventListener("beforeprint", () => {
+      const header = document.createElement("div");
+      header.id = "print-header-confidential";
+      header.style.textAlign = "center";
+      header.style.fontWeight = "bold";
+      header.style.marginBottom = "20px";
+      header.style.color = "#dc3545";
+      header.style.borderBottom = "2px solid #dc3545";
+      header.style.paddingBottom = "5px";
+      header.style.fontSize = "14pt";
+      header.innerText = `CONFIDENTIAL - Printed on ${new Date().toLocaleString()}`;
+      document.body.insertBefore(header, document.body.firstChild);
+
+      const charts = [
+        chartProjectStatusInstance,
+        chartBudgetVsExpenseInstance,
+        chartRequisitionLifecycleInstance,
+        chartResourceAllocationInstance,
+        chartMonthlyFinanceInstance
+      ];
+      charts.forEach(chart => {
+        if (chart) {
+          chart.resize();
+        }
+      });
+    });
+
+    window.addEventListener("afterprint", () => {
+      const header = document.getElementById("print-header-confidential");
+      if (header) header.remove();
+
+      const charts = [
+        chartProjectStatusInstance,
+        chartBudgetVsExpenseInstance,
+        chartRequisitionLifecycleInstance,
+        chartResourceAllocationInstance,
+        chartMonthlyFinanceInstance
+      ];
+      charts.forEach(chart => {
+        if (chart) {
+          chart.resize();
+        }
+      });
+    });
   </script>
 
 </body>
