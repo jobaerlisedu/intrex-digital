@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <title>Training & Solutions Dashboard | Intrex Digital Hub</title>
+  <link rel="icon" href="assets/images/logo/intrex-favicon.svg" type="image/svg+xml">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="description" content="Intrex Digital Hub Unified Training & Solutions Operations Portal. Manage courses, student registrations, certificate verifications, employees, projects, budgets, requisitions, purchase orders, expenses, and client invoicing in one secure interface.">
+
+  <!-- ======= Google Font =======-->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&amp;display=swap" rel="stylesheet">
+
+  <!-- ======= Styles =======-->
+  <link href="assets/vendors/bootstrap/bootstrap.min.css" rel="stylesheet">
+  <link href="assets/vendors/bootstrap-icons/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link href="assets/vendors/aos/aos.css" rel="stylesheet">
+  <link href="assets/css/style.css" rel="stylesheet">
+  <style>
+    :root {
+      --primary-color: #215C5C;
+      --primary-hover: #174242;
+    }
+
+    .nav-pills .nav-link.active,
+    .nav-pills .show>.nav-link {
+      background-color: var(--primary-color) !important;
+      color: white !important;
+    }
+
+    .nav-pills .nav-link {
+      color: var(--bs-body-color);
+      transition: all 0.2s ease;
+    }
+
+    .nav-pills .nav-link:hover:not(.active) {
+      background-color: rgba(33, 92, 92, 0.08) !important;
+      color: var(--primary-color) !important;
+    }
+
+    .btn-primary {
+      background-color: var(--primary-color) !important;
+      border-color: var(--primary-color) !important;
+    }
+
+    .btn-primary:hover {
+      background-color: var(--primary-hover) !important;
+      border-color: var(--primary-hover) !important;
+    }
+
+    .text-primary {
+      color: var(--primary-color) !important;
+    }
+
+    .badge-primary {
+      background-color: var(--primary-color);
+      color: white;
+    }
+
+    .qf-wrapper {
+      position: relative;
+    }
+
+    .qf-wrapper .btn {
+      border-top-right-radius: var(--bs-border-radius, 0.375rem) !important;
+      border-bottom-right-radius: var(--bs-border-radius, 0.375rem) !important;
+    }
+
+    .qf-dropdown {
+      position: absolute;
+      top: calc(100% + 4px);
+      left: 0;
+      right: 0;
+      z-index: 9999;
+      background: var(--bs-body-bg, #fff);
+      border: 1px solid var(--bs-border-color, #dee2e6);
+      border-radius: .5rem;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, .12);
+      overflow: hidden;
+      display: none;
+      max-height: 260px;
+      overflow-y: auto;
+    }
+
+    .qf-dropdown.show {
+      display: block;
+    }
+
+    .qf-item {
+      display: flex;
+      align-items: center;
+      gap: .55rem;
+      padding: .45rem .85rem;
+      cursor: pointer;
+      font-size: .83rem;
+      transition: background .15s;
+      border-bottom: 1px solid var(--bs-border-color-translucent, rgba(0, 0, 0, .06));
+    }
+
+    .qf-item:last-child {
+      border-bottom: none;
+    }
+
+    .qf-item:hover,
+    .qf-item.active {
+      background: rgba(33, 92, 92, 0.1);
+    }
+
+    .qf-badge {
+      font-size: .72rem;
+      padding: .18em .5em;
+      border-radius: .3em;
+      background: var(--primary-color);
+      color: #fff;
+      font-weight: 600;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .qf-name {
+      color: var(--bs-body-color);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .qf-empty {
+      padding: .5rem .85rem;
+      font-size: .83rem;
+      color: var(--bs-secondary-color);
+    }
+
+    .form-text {
+      font-size: 0.775rem;
+      opacity: 0.8;
+    }
+
+    /* Premium Detail View Cards CSS */
+    .detail-card {
+      background-color: var(--bs-body-bg);
+      border: 1px solid var(--bs-border-color);
+      border-radius: 12px;
+      padding: 12px 16px;
+      height: 100%;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .detail-card:hover {
+      border-color: var(--primary-color);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+    }
+
+    .detail-card-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: var(--bs-secondary-color);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 4px;
+    }
+
+    .detail-card-value {
+      font-size: 0.925rem;
+      font-weight: 600;
+      color: var(--bs-heading-color);
+      word-break: break-word;
+    }
+
+    .sidebar-heading {
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      padding: 0.5rem 0.75rem 0.25rem;
+      color: var(--bs-secondary-color);
+      opacity: 0.8;
+    }
+
+    @media print {
+      body {
+        background: white !important;
+        color: black !important;
+      }
+      .no-print {
+        display: none !important;
+      }
+      .card {
+        border: 1px solid #ddd !important;
+        box-shadow: none !important;
+        background: white !important;
+        page-break-inside: avoid;
+      }
+      .sidebar-col {
+        display: none !important;
+      }
+      .main-content-col {
+        width: 100% !important;
+        flex: 0 0 100% !important;
+        max-width: 100% !important;
+      }
+      .tab-pane {
+        display: block !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+      }
+      .tab-content > .tab-pane {
+        display: none !important;
+      }
+      .tab-content > .tab-pane.active {
+        display: block !important;
+      }
+    }
+  </style>
+  <script>
+    (function () {
+      const storedTheme = localStorage.getItem('theme') || 'light';
+      document.documentElement.setAttribute('data-bs-theme', storedTheme);
+    })();
+  </script>
+</head>
+
+<body>
+
+  <div class="site-wrap">
+
+    <!-- ======= Admin Dashboard Section =======-->
+    <section class="section py-4 py-md-5">
+      <div class="container-fluid px-md-5">
+
+        <!-- 1. LOGIN INTERFACE -->
+        <div id="loginSection" class="row justify-content-center align-items-center" style="min-height: 75vh;">
+          <div class="col-12 col-md-4 col-lg-3">
+            <div class="card p-4 rounded-4 shadow-sm border">
+              <div class="text-center mb-4">
+                <img src="assets/images/logo/intrex-logo.svg" alt="Logo" class="mb-3" style="height: 40px;">
+                <h2 class="h4 fw-bold text-heading-color">Unified Portal Login</h2>
+                <p class="text-muted small">Access the Training, Course, & Solution Operations Dashboard.</p>
+              </div>
+
+              <div id="loginError" class="alert alert-danger d-none small"></div>
+
+              <form id="loginForm">
+                <div class="mb-3">
+                  <label for="adminEmail" class="form-label small fw-semibold">Email Address</label>
+                  <input type="email" class="form-control" id="adminEmail" required
+                    placeholder="admin@intrex-digital.com">
+                </div>
+                <div class="mb-3">
+                  <label for="adminPassword" class="form-label small fw-semibold">Password</label>
+                  <input type="password" class="form-control" id="adminPassword" required placeholder="••••••••">
+                </div>
+                <button type="submit" class="btn btn-primary w-100 fw-semibold py-2 mt-2">
+                  <i class="bi bi-box-arrow-in-right me-2"></i>Login
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. DASHBOARD PANEL (HIDDEN BY DEFAULT) -->
+        <div id="dashboardSection" class="d-none">
+          <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2 pb-3 border-bottom no-print">
+            <div>
+              <span class="badge bg-primary text-white mb-1">INTREX UNIFIED SYSTEM</span>
+              <h1 class="h3 fw-bold text-heading-color mb-0" id="main-dashboard-title">Training & Solutions Operations</h1>
+            </div>
+            <button id="logoutBtn" class="btn btn-outline-danger btn-sm py-2 px-3">
+              <i class="bi bi-box-arrow-right me-1"></i> Logout
+            </button>
+          </div>
+
+          <!-- Sidebar Layout Row -->
+          <div class="row g-4 mt-2">
+            <!-- Left Sidebar Tabs Navigation -->
+            <div class="col-12 col-md-3 col-lg-2 border-end pe-md-4 sidebar-col no-print">
+              <div class="nav flex-column nav-pills gap-1" id="dashboardTabs" role="tablist"
+                aria-orientation="vertical">
+                
+                <div class="sidebar-heading">MAIN DASHBOARD</div>
+                <button class="nav-link active text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2 mb-2"
+                  id="overview-tab" data-bs-toggle="tab" data-bs-target="#overviewPanel" type="button" role="tab"
+                  aria-controls="overviewPanel" aria-selected="true">
+                  <i class="bi bi-bar-chart-line"></i> Overview
+                </button>
+                
+                <div class="sidebar-heading">TRAINING & COURSES</div>
+                <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
+                  id="registration-tab" data-bs-toggle="tab" data-bs-target="#registrationPanel" type="button"
+                  role="tab" aria-controls="registrationPanel" aria-selected="false">
+                  <i class="bi bi-pencil-square"></i> Course Registration
+                </button>
+                <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
+                  id="student-list-tab" data-bs-toggle="tab" data-bs-target="#studentListPanel" type="button" role="tab"
+                  aria-controls="studentListPanel" aria-selected="false">
+                  <i class="bi bi-people"></i> Student List
+                </button>
+                <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
+                  id="payment-tab" data-bs-toggle="tab" data-bs-target="#paymentPanel" type="button" role="tab"
+                  aria-controls="paymentPanel" aria-selected="false">
+                  <i class="bi bi-credit-card"></i> Course Payments
+                </button>
+                <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
+                  id="generate-tab" data-bs-toggle="tab" data-bs-target="#generatePanel" type="button" role="tab"
+                  aria-controls="generatePanel" aria-selected="false">
+                  <i class="bi bi-patch-plus"></i> Generate Cert
+                </button>
+                <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2 mb-2"
+                  id="records-tab" data-bs-toggle="tab" data-bs-target="#recordsPanel" type="button" role="tab"
+                  aria-controls="recordsPanel" aria-selected="false">
+                  <i class="bi bi-award"></i> Issued Certificates
+                </button>
+                
+                <div class="sidebar-heading">SOLUTION & OPERATIONS</div>
+                <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
+                  id="employees-tab" data-bs-toggle="tab" data-bs-target="#employeesPanel" type="button" role="tab"
+                  aria-controls="employeesPanel" aria-selected="false">
+                  <i class="bi bi-people"></i> Employee Database
+                </button>
+                <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
+                  id="contacts-tab" data-bs-toggle="tab" data-bs-target="#contactsPanel" type="button" role="tab"
+                  aria-controls="contactsPanel" aria-selected="false">
+                  <i class="bi bi-telephone-inbound"></i> Contact Directory
+                </button>
+                <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
+                  id="projects-tab" data-bs-toggle="tab" data-bs-target="#projectsPanel" type="button" role="tab"
+                  aria-controls="projectsPanel" aria-selected="false">
+                  <i class="bi bi-kanban"></i> Project Creator
+                </button>
+                <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
+                  id="meetings-tab" data-bs-toggle="tab" data-bs-target="#meetingsPanel" type="button" role="tab"
+                  aria-controls="meetingsPanel" aria-selected="false">
+                  <i class="bi bi-calendar-event"></i> Meeting Scheduler
+                </button>
+                <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
+                  id="budget-tab" data-bs-toggle="tab" data-bs-target="#budgetPanel" type="button" role="tab"
+                  aria-controls="budgetPanel" aria-selected="false">
+                  <i class="bi bi-wallet2"></i> Budget Planner
+                </button>
+                <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
+                  id="tasks-tab" data-bs-toggle="tab" data-bs-target="#tasksPanel" type="button" role="tab"
+                  aria-controls="tasksPanel" aria-selected="false">
+                  <i class="bi bi-activity"></i> Project Tasks
+                </button>
+                <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
+                  id="requisition-tab" data-bs-toggle="tab" data-bs-target="#requisitionPanel" type="button" role="tab"
+                  aria-controls="requisitionPanel" aria-selected="false">
+                  <i class="bi bi-file-earmark-plus"></i> Requisitions
+                </button>
+                <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
+                  id="purchases-tab" data-bs-toggle="tab" data-bs-target="#purchasesPanel" type="button" role="tab"
+                  aria-controls="purchasesPanel" aria-selected="false">
+                  <i class="bi bi-cart-check"></i> Purchase Orders
+                </button>
+                <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
+                  id="expenses-tab" data-bs-toggle="tab" data-bs-target="#expensesPanel" type="button" role="tab"
+                  aria-controls="expensesPanel" aria-selected="false">
+                  <i class="bi bi-cash-coin"></i> Expense Tracker
+                </button>
+                <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
+                  id="payments-tab" data-bs-toggle="tab" data-bs-target="#paymentsPanel" type="button" role="tab"
+                  aria-controls="paymentsPanel" aria-selected="false">
+                  <i class="bi bi-cash-stack"></i> Client Invoicing
+                </button>
+                <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
+                  id="tickets-tab" data-bs-toggle="tab" data-bs-target="#ticketsPanel" type="button" role="tab"
+                  aria-controls="ticketsPanel" aria-selected="false">
+                  <i class="bi bi-headset"></i> Support Ticketing
+                </button>
+                <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2 mb-2"
+                  id="hosting-tab" data-bs-toggle="tab" data-bs-target="#hostingPanel" type="button" role="tab"
+                  aria-controls="hostingPanel" aria-selected="false">
+                  <i class="bi bi-server"></i> Domain & Hosting
+                </button>
+                
+                <div class="sidebar-heading">ADMINISTRATION</div>
+                <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
+                  id="reports-tab" data-bs-toggle="tab" data-bs-target="#reportsPanel" type="button" role="tab"
+                  aria-controls="reportsPanel" aria-selected="false">
+                  <i class="bi bi-file-earmark-bar-graph"></i> Report Generator
+                </button>
+                <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
+                  id="logs-tab" data-bs-toggle="tab" data-bs-target="#logsPanel" type="button" role="tab"
+                  aria-controls="logsPanel" aria-selected="false">
+                  <i class="bi bi-shield-check"></i> System Audit Logs
+                </button>
+              </div>
+            </div>
+
+            <!-- Right Content Panel -->
+            <div class="col-12 col-md-9 col-lg-10 main-content-col">
+              <div class="tab-content" id="dashboardTabContent">
+
+                <!-- 0. UNIFIED OVERVIEW PANEL -->
+                <div class="tab-pane fade show active" id="overviewPanel" role="tabpanel" aria-labelledby="overview-tab">
+                  
+                  <!-- Dynamic Analytics Filters -->
+                  <div class="card p-3 rounded-4 shadow-sm border mb-4 bg-body-tertiary no-print">
+                    <div class="row g-3 align-items-end">
+                      <div class="col-md-2 col-sm-6">
+                        <label class="form-label small fw-semibold text-muted mb-1" for="filterStartDate">Start Date</label>
+                        <input type="date" id="filterStartDate" class="form-control form-control-sm">
+                      </div>
+                      <div class="col-md-2 col-sm-6">
+                        <label class="form-label small fw-semibold text-muted mb-1" for="filterEndDate">End Date</label>
+                        <input type="date" id="filterEndDate" class="form-control form-control-sm">
+                      </div>
+                      <div class="col-md-3 col-sm-6">
+                        <label class="form-label small fw-semibold text-muted mb-1" for="filterProject">Project</label>
+                        <select id="filterProject" class="form-select form-select-sm">
+                          <option value="all">All Projects</option>
+                        </select>
+                      </div>
+                      <div class="col-md-3 col-sm-6">
+                        <label class="form-label small fw-semibold text-muted mb-1" for="filterDept">Department</label>
+                        <select id="filterDept" class="form-select form-select-sm">
+                          <option value="all">All Departments</option>
+                          <option value="Engineering">Engineering</option>
+                          <option value="Operations">Operations</option>
+                          <option value="Procurement">Procurement</option>
+                          <option value="IT & Cloud">IT &amp; Cloud</option>
+                          <option value="Human Resources">Human Resources</option>
+                          <option value="Finance">Finance</option>
+                        </select>
+                      </div>
+                      <div class="col-md-2 col-sm-6">
+                        <label class="form-label small fw-semibold text-muted mb-1" for="filterCourse">Course</label>
+                        <select id="filterCourse" class="form-select form-select-sm">
+                          <option value="all">All Courses</option>
+                          <option value="CompTIA A+">CompTIA A+</option>
+                          <option value="CompTIA Network+">CompTIA Network+</option>
+                          <option value="CCNA 200-301">CCNA 200-301</option>
+                          <option value="MTCNA & MTCRE (MikroTik)">MTCNA &amp; MTCRE (MikroTik)</option>
+                          <option value="RHCSA / RHCE (Red Hat Linux)">RHCSA / RHCE (Red Hat Linux)</option>
+                          <option value="CompTIA Security+">CompTIA Security+</option>
+                        </select>
+                      </div>
+                      <div class="col-md-2 col-sm-12 d-grid">
+                        <button type="button" id="resetOverviewFiltersBtn" class="btn btn-sm btn-outline-secondary">
+                          <i class="bi bi-x-circle me-1"></i> Reset Filters
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Solutions KPI Stat Cards -->
+                  <h5 class="fw-bold mb-3 text-heading-color"><i class="bi bi-gear-fill me-2 text-primary"></i>Operations & Solution Metrics</h5>
+                  <div class="row g-3 mb-4">
+                    <div class="col-6 col-md-2.4 col-lg-2">
+                      <div class="card border-0 rounded-4 shadow-sm h-100 bg-primary text-white">
+                        <div class="card-body p-3">
+                          <span class="small fw-semibold opacity-75 text-white">Active Projects</span>
+                          <div class="h3 fw-bold mb-0 text-white" id="kpiActiveProjects">—</div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-6 col-md-2.4 col-lg-2">
+                      <div class="card border-0 rounded-4 shadow-sm h-100 bg-primary text-white">
+                        <div class="card-body p-3">
+                          <span class="small fw-semibold opacity-75 text-white">Total Projects</span>
+                          <div class="h3 fw-bold mb-0 text-white" id="kpiTotalProjects">—</div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-6 col-md-2.4 col-lg-3">
+                      <div class="card border-0 rounded-4 shadow-sm h-100 bg-primary text-white">
+                        <div class="card-body p-3">
+                          <span class="small fw-semibold opacity-75 text-white">Total Budget</span>
+                          <div class="h3 fw-bold mb-0 text-white" id="kpiTotalBudget">—</div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-6 col-md-2.4 col-lg-3">
+                      <div class="card border-0 rounded-4 shadow-sm h-100 bg-primary text-white">
+                        <div class="card-body p-3">
+                          <span class="small fw-semibold opacity-75 text-white">Actual Expenses</span>
+                          <div class="h3 fw-bold mb-0 text-white" id="kpiTotalExpenses">—</div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-6 col-md-2.4 col-lg-2">
+                      <div class="card border-0 rounded-4 shadow-sm h-100 bg-primary text-white">
+                        <div class="card-body p-3">
+                          <span class="small fw-semibold opacity-75 text-white">Client Collections</span>
+                          <div class="h3 fw-bold mb-0 text-white" id="kpiMonthlyCollections">—</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Training KPI Stat Cards -->
+                  <h5 class="fw-bold mb-3 text-heading-color"><i class="bi bi-mortarboard-fill me-2 text-primary"></i>Training & Course Metrics</h5>
+                  <div class="row g-3 mb-4">
+                    <div class="col-6 col-md-3">
+                      <div class="card border-0 rounded-4 shadow-sm h-100 bg-primary text-white">
+                        <div class="card-body p-3">
+                          <div class="d-flex align-items-center justify-content-between mb-1">
+                            <span class="small fw-semibold opacity-75 text-white">Total Students</span>
+                            <i class="bi bi-people-fill text-white fs-5"></i>
+                          </div>
+                          <div class="h3 fw-bold mb-0 text-white" id="kpiTotalStudents">—</div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-6 col-md-3">
+                      <div class="card border-0 rounded-4 shadow-sm h-100 bg-primary text-white">
+                        <div class="card-body p-3">
+                          <div class="d-flex align-items-center justify-content-between mb-1">
+                            <span class="small fw-semibold opacity-75 text-white">Total Collected</span>
+                            <i class="bi bi-cash-stack text-white fs-5"></i>
+                          </div>
+                          <div class="h3 fw-bold mb-0 text-white" id="kpiTotalCollected">—</div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-6 col-md-3">
+                      <div class="card border-0 rounded-4 shadow-sm h-100 bg-primary text-white">
+                        <div class="card-body p-3">
+                          <div class="d-flex align-items-center justify-content-between mb-1">
+                            <span class="small fw-semibold opacity-75 text-white">Total Outstanding</span>
+                            <i class="bi bi-exclamation-circle-fill text-white fs-5"></i>
+                          </div>
+                          <div class="h3 fw-bold mb-0 text-white" id="kpiTotalDue">—</div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-6 col-md-3">
+                      <div class="card border-0 rounded-4 shadow-sm h-100 bg-primary text-white">
+                        <div class="card-body p-3">
+                          <div class="d-flex align-items-center justify-content-between mb-1">
+                            <span class="small fw-semibold opacity-75 text-white">Collection Rate</span>
+                            <i class="bi bi-percent text-white fs-5"></i>
+                          </div>
+                          <div class="h3 fw-bold mb-0 text-white" id="kpiCollectionRate">—</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Row 3: Payment status breakdown cards (Sub-KPIs) -->
+                  <div class="row g-3 mb-4">
+                    <div class="col-6 col-md-3">
+                      <div class="card border rounded-4 shadow-sm h-100">
+                        <div class="card-body p-3 text-center">
+                          <div class="small text-muted fw-semibold mb-1">Fully Paid Learners</div>
+                          <div class="h4 fw-bold text-success mb-0" id="kpiFullyPaid">—</div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-6 col-md-3">
+                      <div class="card border rounded-4 shadow-sm h-100">
+                        <div class="card-body p-3 text-center">
+                          <div class="small text-muted fw-semibold mb-1">Partially Paid Learners</div>
+                          <div class="h4 fw-bold text-warning mb-0" id="kpiPartiallyPaid">—</div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-6 col-md-3">
+                      <div class="card border rounded-4 shadow-sm h-100">
+                        <div class="card-body p-3 text-center">
+                          <div class="small text-muted fw-semibold mb-1">Unpaid Learners</div>
+                          <div class="h4 fw-bold text-danger mb-0" id="kpiUnpaid">—</div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-6 col-md-3">
+                      <div class="card border rounded-4 shadow-sm h-100">
+                        <div class="card-body p-3 text-center">
+                          <div class="small text-muted fw-semibold mb-1">Discounts Offered</div>
+                          <div class="h4 fw-bold text-primary mb-0" id="kpiTotalDiscount">—</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- CHARTS SECTIONS -->
+                  <h5 class="fw-bold mb-3 mt-4 text-heading-color"><i class="bi bi-bar-chart-steps me-2 text-primary"></i>Operational & Financial Analytics</h5>
+                  
+                  <!-- Solutions Charts Grid -->
+                  <div class="row g-4 mb-4">
+                    <div class="col-md-4">
+                      <div class="card border-0 rounded-4 shadow-sm h-100">
+                        <div class="card-body p-4">
+                          <h6 class="fw-bold text-heading-color mb-3"><i class="bi bi-pie-chart-fill me-2 text-primary"></i>Project Status Breakdown</h6>
+                          <div style="position:relative;height:220px;">
+                            <canvas id="chartProjectStatus"></canvas>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-8">
+                      <div class="card border-0 rounded-4 shadow-sm h-100">
+                        <div class="card-body p-4">
+                          <h6 class="fw-bold text-heading-color mb-3"><i class="bi bi-bar-chart-fill me-2 text-primary"></i>Budget vs Expense by Project</h6>
+                          <div style="position:relative;height:220px;">
+                            <canvas id="chartBudgetVsExpense"></canvas>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row g-4 mb-4">
+                    <div class="col-md-4">
+                      <div class="card border-0 rounded-4 shadow-sm h-100">
+                        <div class="card-body p-4">
+                          <h6 class="fw-bold text-heading-color mb-3"><i class="bi bi-activity me-2 text-primary"></i>Requisition Approvals</h6>
+                          <div style="position:relative;height:220px;">
+                            <canvas id="chartRequisitionLifecycle"></canvas>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-8">
+                      <div class="card border-0 rounded-4 shadow-sm h-100">
+                        <div class="card-body p-4">
+                          <h6 class="fw-bold text-heading-color mb-3"><i class="bi bi-people-fill me-2 text-primary"></i>Personnel Allocation by Department</h6>
+                          <div style="position:relative;height:220px;">
+                            <canvas id="chartResourceAllocation"></canvas>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row g-4 mb-4">
+                    <div class="col-12">
+                      <div class="card border-0 rounded-4 shadow-sm h-100">
+                        <div class="card-body p-4">
+                          <h6 class="fw-bold text-heading-color mb-3"><i class="bi bi-file-earmark-bar-graph me-2 text-primary"></i>Cash Flow: Monthly Invoices vs. Expenses</h6>
+                          <div style="position:relative;height:280px;">
+                            <canvas id="chartMonthlyFinance"></canvas>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Training Charts Grid -->
+                  <h5 class="fw-bold mb-3 mt-5 text-heading-color"><i class="bi bi-mortarboard me-2 text-primary"></i>Training & Enrollment Analytics</h5>
+                  
+                  <div class="row g-4 mb-4">
+                    <div class="col-md-8">
+                      <div class="card border-0 rounded-4 shadow-sm h-100">
+                        <div class="card-body p-4">
+                          <h6 class="fw-bold text-heading-color mb-3"><i class="bi bi-bar-chart-fill me-2 text-primary"></i>Enrollment by Course</h6>
+                          <div style="position:relative;height:240px;">
+                            <canvas id="chartCourseEnrollment"></canvas>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="card border-0 rounded-4 shadow-sm h-100">
+                        <div class="card-body p-4">
+                          <h6 class="fw-bold text-heading-color mb-3"><i class="bi bi-pie-chart-fill me-2 text-primary"></i>Payment Status Breakdown</h6>
+                          <div style="position:relative;height:200px;">
+                            <canvas id="chartPaymentStatus"></canvas>
+                          </div>
+                          <div class="d-flex justify-content-center gap-3 mt-2 small">
+                            <span><span class="badge" style="background:#28a745;">&nbsp;</span> Fully Paid</span>
+                            <span><span class="badge" style="background:#ffc107;">&nbsp;</span> Partial</span>
+                            <span><span class="badge" style="background:#dc3545;">&nbsp;</span> Unpaid</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row g-4 mb-4">
+                    <div class="col-md-6">
+                      <div class="card border-0 rounded-4 shadow-sm h-100">
+                        <div class="card-body p-4">
+                          <h6 class="fw-bold text-heading-color mb-3"><i class="bi bi-graph-up me-2 text-primary"></i>Course Registration Trends (Over Time)</h6>
+                          <div style="position:relative;height:240px;">
+                            <canvas id="chartRegTrends"></canvas>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="card border-0 rounded-4 shadow-sm h-100">
+                        <div class="card-body p-4">
+                          <h6 class="fw-bold text-heading-color mb-3"><i class="bi bi-funnel-fill me-2 text-primary"></i>Payment / Revenue Funnel (BDT)</h6>
+                          <div style="position:relative;height:240px;">
+                            <canvas id="chartPaymentFunnel"></canvas>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row g-4 mb-4">
+                    <div class="col-md-6">
+                      <div class="card border-0 rounded-4 shadow-sm h-100">
+                        <div class="card-body p-4">
+                          <h6 class="fw-bold text-heading-color mb-3"><i class="bi bi-speedometer2 me-2 text-primary"></i>Certificate Issuance Velocity</h6>
+                          <div style="position:relative;height:240px;">
+                            <canvas id="chartCertVelocity"></canvas>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="card border-0 rounded-4 shadow-sm h-100">
+                        <div class="card-body p-4">
+                          <h6 class="fw-bold text-heading-color mb-3"><i class="bi bi-graph-up-arrow me-2 text-primary"></i>Revenue vs Due by Course</h6>
+                          <div style="position:relative;height:240px;">
+                            <canvas id="chartRevenueByCourse"></canvas>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Recent activity row -->
+                  <div class="row g-4">
+                    <div class="col-12">
+                      <div class="card border-0 rounded-4 shadow-sm h-100">
+                        <div class="card-body p-4">
+                          <h6 class="fw-bold text-heading-color mb-3"><i class="bi bi-clock-history me-2 text-primary"></i>Recent Registrations</h6>
+                          <div id="recentRegistrationsList" style="max-height:260px;overflow-y:auto;">
+                            <div class="text-muted small text-center py-4">Loading...</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+                <!-- End Unified Overview Panel -->
+
+                <!-- TRAINING MODULE TABS -->
+                ${registrationPanel}
+                ${studentListPanel}
+                ${paymentPanel}
+                ${generatePanel}
+                ${recordsPanel}
+
+                <!-- SOLUTIONS MODULE TABS -->
+                ${employeesPanel}
+                ${contactsPanel}
+                ${projectsPanel}
+                ${meetingsPanel}
+                ${budgetPanel}
+                ${tasksPanel}
+                ${requisitionPanel}
+                ${purchasesPanel}
+                ${expensesPanel}
+                ${paymentsPanel}
+                ${ticketsPanel}
+                ${hostingPanel}
+
+                <!-- SYSTEM ADMINISTRATION TABS -->
+                ${reportsPanel}
+                ${logsPanel}
+
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </div>
+
+  ${detailsViewModal}
+
+  <!-- Update Payment Modal (Training Component) -->
+  <div class="modal fade" id="updatePaymentModal" tabindex="-1" aria-labelledby="updatePaymentModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content rounded-4 border-0 shadow-lg">
+        <div class="modal-header border-bottom px-4">
+          <h5 class="modal-title fw-bold" id="updatePaymentModalLabel">
+            <i class="bi bi-credit-card me-2 text-primary"></i>Update Course Payment Details
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form id="updatePaymentForm">
+          <div class="modal-body p-4">
+            <input type="hidden" id="updatePayStudentId">
+
+            <div class="mb-3">
+              <label class="form-label small fw-semibold text-muted mb-1">Student Name</label>
+              <input type="text" id="updatePayStudentName" class="form-control bg-body-secondary" readonly>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label small fw-semibold text-muted mb-1">Course Name</label>
+              <input type="text" id="updatePayCourse" class="form-control bg-body-secondary" readonly>
+            </div>
+
+            <div class="row g-3 mb-3">
+              <div class="col-md-6">
+                <label for="updatePayFee" class="form-label small fw-semibold mb-1">Total Fee (BDT) <span class="text-danger">*</span></label>
+                <input type="number" min="0" class="form-control" id="updatePayFee" required>
+              </div>
+              <div class="col-md-6">
+                <label for="updatePayDiscount" class="form-label small fw-semibold mb-1">Discount (BDT)</label>
+                <input type="number" min="0" class="form-control" id="updatePayDiscount" value="0">
+              </div>
+            </div>
+
+            <div class="row g-3 mb-3">
+              <div class="col-md-6">
+                <label for="updatePayAmountPaid" class="form-label small fw-semibold mb-1">Amount Paid (BDT) <span class="text-danger">*</span></label>
+                <input type="number" min="0" class="form-control" id="updatePayAmountPaid" required>
+              </div>
+              <div class="col-md-6">
+                <label for="updatePayType" class="form-label small fw-semibold mb-1">Payment Method</label>
+                <select class="form-select" id="updatePayType">
+                  <option value="Cash" selected>Cash</option>
+                  <option value="Bkash">Bkash</option>
+                  <option value="Rocket">Rocket</option>
+                  <option value="Nagad">Nagad</option>
+                  <option value="Bank Transfer">Bank Transfer</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="mb-3 d-none" id="updatePayTxIdContainer">
+              <label for="updatePayTxId" class="form-label small fw-semibold mb-1">Transaction ID Reference</label>
+              <input type="text" class="form-control" id="updatePayTxId" placeholder="e.g. Bkash Trx ID">
+            </div>
+          </div>
+          <div class="modal-footer border-top p-3 bg-light-subtle rounded-bottom-4">
+            <button type="button" class="btn btn-outline-secondary px-3 fw-semibold rounded-3" data-bs-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-primary px-3 fw-semibold rounded-3">
+              <i class="bi bi-save me-1"></i> Update Payment
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======= Javascripts =======-->
+  <script src="assets/vendors/bootstrap/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script type="module" src="assets/js/dashboard-controller.js"></script>
+
+</body>
+
+</html>

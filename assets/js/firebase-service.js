@@ -1,4 +1,4 @@
-// assets/js/solution.js
+// assets/js/firebase-service.js
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 import { getFirestore, doc, getDoc, setDoc, serverTimestamp, collection, getDocs, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
@@ -68,11 +68,46 @@ async function getNextSeqId(collectionName, prefix, idField, paddingSize = 4) {
   }
 }
 
-// Project ID custom generator
+// Custom ID generators
 async function generateProjectId() {
   const year = new Date().getFullYear();
   const prefix = `PRJ-${year}-`;
   return await getNextSeqId("tbl_projects", prefix, "project_id", 3);
+}
+
+async function generateRequisitionId() {
+  const year = new Date().getFullYear();
+  const prefix = `REQ-${year}-`;
+  return await getNextSeqId("tbl_requisitions", prefix, "requisition_id", 4);
+}
+
+async function generateInvoiceId() {
+  const year = new Date().getFullYear();
+  const prefix = `INV-${year}-`;
+  return await getNextSeqId("tbl_client_payments", prefix, "invoice_id", 3);
+}
+
+async function generateAssetId() {
+  return await getNextSeqId("tbl_domain_hosting_sales", "AST-", "asset_id", 4);
+}
+
+function generateStudentId(courseName, batchName, registrationsList) {
+  let maxSerial = 0;
+  registrationsList.forEach(r => {
+    const id = r.studentId;
+    if (id) {
+      const match = id.match(/(?:^|-)(495\d{3})$/);
+      if (match) {
+        const num = parseInt(match[1].substring(3), 10);
+        if (num > maxSerial) {
+          maxSerial = num;
+        }
+      }
+    }
+  });
+  const nextSerialNum = maxSerial + 1;
+  const serialStr = String(nextSerialNum).padStart(3, "0");
+  return `495${serialStr}`;
 }
 
 // ==========================================
@@ -106,7 +141,311 @@ export function onAdminAuthStateChanged(callback) {
 }
 
 // ==========================================
-// 2. PROJECT CREATOR (tbl_projects)
+// 2. PUBLIC CERTIFICATE VERIFICATION
+// ==========================================
+export async function verifyCertificate(certificateId) {
+  if (!checkConfiguration()) return null;
+  try {
+    const docRef = doc(db, "certificates", certificateId.trim());
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      return docSnap.data();
+    } else {
+      return null;
+    }
+  } catch (error) {
+    console.error("Error looking up certificate: ", error);
+    throw error;
+  }
+}
+
+// ==========================================
+// 3. CERTIFICATE MANAGEMENT
+// ==========================================
+export async function addCertificate(certData) {
+  if (!checkConfiguration()) return;
+  const { certificateId, studentId, studentName, courseName, issueDate, grade, status, batch } = certData;
+  if (!certificateId || !studentName || !courseName || !issueDate || !batch) {
+    throw new Error("Missing required fields");
+  }
+  try {
+    const docRef = doc(db, "certificates", certificateId.trim());
+    await setDoc(docRef, {
+      certificateId: certificateId.trim(),
+      studentId: studentId ? studentId.trim() : "",
+      studentName: studentName.trim(),
+      courseName: courseName.trim(),
+      issueDate: issueDate.trim(),
+      grade: grade ? grade.trim() : "N/A",
+      status: status || "Verified",
+      batch: batch.trim(),
+      createdAt: serverTimestamp()
+    });
+  } catch (error) {
+    console.error("Error saving certificate: ", error);
+    throw error;
+  }
+}
+
+export async function getAllCertificates() {
+  if (!checkConfiguration()) return [];
+  try {
+    const querySnapshot = await getDocs(collection(db, "certificates"));
+    const certs = [];
+    querySnapshot.forEach((docSnap) => {
+      if (docSnap.exists()) {
+        certs.push(docSnap.data());
+      }
+    });
+    return certs;
+  } catch (error) {
+    console.error("Error fetching all certificates: ", error);
+    throw error;
+  }
+}
+
+export async function deleteCertificate(certificateId) {
+  if (!checkConfiguration()) return;
+  try {
+    const docRef = doc(db, "certificates", certificateId.trim());
+    await deleteDoc(docRef);
+  } catch (error) {
+    console.error("Error deleting certificate: ", error);
+    throw error;
+  }
+}
+
+// ==========================================
+// 4. COURSE REGISTRATION OPERATIONS
+// ==========================================
+export async function addRegistration(regData) {
+  if (!checkConfiguration()) return null;
+  const { fullName, email, phone, course, batch, education, schedule, message, totalFee, discount, amountPaid, paymentType, transactionId } = regData;
+  if (!fullName || !email || !phone || !course || !batch || !schedule) {
+    throw new Error("Missing required registration fields");
+  }
+  try {
+    const querySnapshot = await getDocs(collection(db, "registrations"));
+    const regs = [];
+    querySnapshot.forEach((docSnap) => {
+      if (docSnap.exists()) {
+        regs.push(docSnap.data());
+      }
+    });
+    const studentId = generateStudentId(course, batch, regs);
+    const regRef = doc(db, "registrations", studentId);
+    await setDoc(regRef, {
+      studentId,
+      fullName: fullName.trim(),
+      email: email.trim(),
+      phone: phone.trim(),
+      course: course.trim(),
+      batch: batch.trim(),
+      education: education || "",
+      schedule: schedule || "",
+      message: message ? message.trim() : "",
+      createdAt: serverTimestamp()
+    });
+
+    const fee = Number(totalFee) || 0;
+    const disc = Number(discount) || 0;
+    const paid = Number(amountPaid) || 0;
+    const effectiveFee = Math.max(0, fee - disc);
+    const due = Math.max(0, effectiveFee - paid);
+    let status = "Unpaid";
+    if (paid > 0) {
+      status = paid >= effectiveFee ? "Fully Paid" : "Partially Paid";
+    }
+
+    const payRef = doc(db, "payments", studentId);
+    await setDoc(payRef, {
+      studentId,
+      studentName: fullName.trim(),
+      email: email.trim(),
+      courseName: course.trim(),
+      batch: batch.trim(),
+      totalFee: fee,
+      discount: disc,
+      amountPaid: paid,
+      dueAmount: due,
+      status: status,
+      paymentType: paymentType || "Cash",
+      transactionId: (paymentType !== "Cash" && transactionId) ? transactionId.trim() : "",
+      createdAt: serverTimestamp(),
+      updatedAt: serverTimestamp()
+    });
+
+    return studentId;
+  } catch (error) {
+    console.error("Error adding course registration: ", error);
+    throw error;
+  }
+}
+
+export async function getAllRegistrations() {
+  if (!checkConfiguration()) return [];
+  try {
+    const querySnapshot = await getDocs(collection(db, "registrations"));
+    const regs = [];
+    querySnapshot.forEach((docSnap) => {
+      if (docSnap.exists()) {
+        regs.push(docSnap.data());
+      }
+    });
+    return regs;
+  } catch (error) {
+    console.error("Error fetching registrations: ", error);
+    throw error;
+  }
+}
+
+export async function updateRegistration(studentId, regData) {
+  if (!checkConfiguration()) return;
+  const { fullName, email, phone, course, batch, education, schedule, message } = regData;
+  if (!fullName || !email || !phone || !course || !batch || !schedule) {
+    throw new Error("Missing required registration fields");
+  }
+  try {
+    const regRef = doc(db, "registrations", studentId);
+    await setDoc(regRef, {
+      fullName: fullName.trim(),
+      email: email.trim(),
+      phone: phone.trim(),
+      course: course.trim(),
+      batch: batch.trim(),
+      education: education || "",
+      schedule: schedule || "",
+      message: message ? message.trim() : ""
+    }, { merge: true });
+
+    const payRef = doc(db, "payments", studentId);
+    const paySnap = await getDoc(payRef);
+    if (paySnap.exists()) {
+      const payData = paySnap.data();
+      const totalFee = payData.totalFee || 0;
+      const disc = payData.discount || 0;
+      const amountPaid = payData.amountPaid || 0;
+      const effectiveFee = Math.max(0, totalFee - disc);
+      const dueAmount = Math.max(0, effectiveFee - amountPaid);
+      let status = "Unpaid";
+      if (amountPaid > 0) {
+        status = amountPaid >= effectiveFee ? "Fully Paid" : "Partially Paid";
+      }
+      await setDoc(payRef, {
+        studentName: fullName.trim(),
+        email: email.trim(),
+        courseName: course.trim(),
+        batch: batch.trim(),
+        dueAmount,
+        status,
+        updatedAt: serverTimestamp()
+      }, { merge: true });
+    } else {
+      await setDoc(payRef, {
+        studentName: fullName.trim(),
+        email: email.trim(),
+        courseName: course.trim(),
+        batch: batch.trim(),
+        updatedAt: serverTimestamp()
+      }, { merge: true });
+    }
+
+    const certQuerySnapshot = await getDocs(collection(db, "certificates"));
+    certQuerySnapshot.forEach(async (docSnap) => {
+      if (docSnap.exists()) {
+        const certData = docSnap.data();
+        if (certData.studentId === studentId) {
+          const certRef = doc(db, "certificates", certData.certificateId);
+          await setDoc(certRef, {
+            studentName: fullName.trim(),
+            courseName: course.trim(),
+            batch: batch.trim()
+          }, { merge: true });
+        }
+      }
+    });
+  } catch (error) {
+    console.error("Error updating registration: ", error);
+    throw error;
+  }
+}
+
+export async function deleteRegistration(studentId) {
+  if (!checkConfiguration()) return;
+  try {
+    const regRef = doc(db, "registrations", studentId);
+    await deleteDoc(regRef);
+
+    const payRef = doc(db, "payments", studentId);
+    await deleteDoc(payRef);
+
+    const certQuerySnapshot = await getDocs(collection(db, "certificates"));
+    certQuerySnapshot.forEach(async (docSnap) => {
+      if (docSnap.exists()) {
+        const certData = docSnap.data();
+        if (certData.studentId === studentId) {
+          const certRef = doc(db, "certificates", certData.certificateId);
+          await deleteDoc(certRef);
+        }
+      }
+    });
+  } catch (error) {
+    console.error("Error deleting registration & payment: ", error);
+    throw error;
+  }
+}
+
+// ==========================================
+// 5. PAYMENT RECORD OPERATIONS
+// ==========================================
+export async function getAllPayments() {
+  if (!checkConfiguration()) return [];
+  try {
+    const querySnapshot = await getDocs(collection(db, "payments"));
+    const pays = [];
+    querySnapshot.forEach((docSnap) => {
+      if (docSnap.exists()) {
+        pays.push(docSnap.data());
+      }
+    });
+    return pays;
+  } catch (error) {
+    console.error("Error fetching payments: ", error);
+    throw error;
+  }
+}
+
+export async function updatePayment(studentId, totalFee, discount, amountPaid, paymentType, transactionId) {
+  if (!checkConfiguration()) return;
+  try {
+    const fee = Number(totalFee) || 0;
+    const disc = Number(discount) || 0;
+    const paid = Number(amountPaid) || 0;
+    const effectiveFee = Math.max(0, fee - disc);
+    const due = Math.max(0, effectiveFee - paid);
+    let status = "Unpaid";
+    if (paid > 0) {
+      status = paid >= effectiveFee ? "Fully Paid" : "Partially Paid";
+    }
+    const payRef = doc(db, "payments", studentId);
+    await setDoc(payRef, {
+      totalFee: fee,
+      discount: disc,
+      amountPaid: paid,
+      dueAmount: due,
+      status: status,
+      paymentType: paymentType || "Cash",
+      transactionId: (paymentType !== "Cash" && transactionId) ? transactionId.trim() : "",
+      updatedAt: serverTimestamp()
+    }, { merge: true });
+  } catch (error) {
+    console.error("Error updating payment: ", error);
+    throw error;
+  }
+}
+
+// ==========================================
+// 6. PROJECT MANAGEMENT (tbl_projects)
 // ==========================================
 export async function addProject(projectData) {
   if (!checkConfiguration()) return;
@@ -115,7 +454,6 @@ export async function addProject(projectData) {
     throw new Error("Missing required project fields");
   }
 
-  // Check project name uniqueness
   const querySnapshot = await getDocs(collection(db, "tbl_projects"));
   let nameExists = false;
   querySnapshot.forEach(docSnap => {
@@ -179,7 +517,7 @@ export async function deleteProject(projectId) {
 }
 
 // ==========================================
-// 3. CONTACT DIRECTORY (tbl_contacts)
+// 7. CONTACT DIRECTORY (tbl_contacts)
 // ==========================================
 export async function addContact(contactData) {
   if (!checkConfiguration()) return;
@@ -188,7 +526,6 @@ export async function addContact(contactData) {
     throw new Error("Missing required contact fields");
   }
 
-  // Check email uniqueness if provided
   if (email) {
     const querySnapshot = await getDocs(collection(db, "tbl_contacts"));
     let emailExists = false;
@@ -208,7 +545,7 @@ export async function addContact(contactData) {
     const docRef = doc(db, "tbl_contacts", id);
     await setDoc(docRef, {
       contact_id: id,
-      project_id: project_id, // Stored as array of strings
+      project_id: project_id,
       contact_name: contact_name.trim(),
       designation: designation.trim(),
       organization: organization.trim(),
@@ -253,7 +590,7 @@ export async function deleteContact(contactId) {
 }
 
 // ==========================================
-// 4. MEETING SCHEDULER (tbl_meetings)
+// 8. MEETING SCHEDULER (tbl_meetings)
 // ==========================================
 export async function addMeeting(meetingData) {
   if (!checkConfiguration()) return;
@@ -270,7 +607,7 @@ export async function addMeeting(meetingData) {
       meeting_title: meeting_title.trim(),
       meeting_timestamp: meeting_timestamp,
       agenda: agenda ? agenda.trim() : "",
-      attendees_list: attendees_list, // Stored as array of emails
+      attendees_list: attendees_list,
       meeting_url: meeting_url ? meeting_url.trim() : "",
       meeting_minutes: meeting_minutes ? meeting_minutes.trim() : "",
       createdAt: serverTimestamp(),
@@ -312,7 +649,7 @@ export async function deleteMeeting(meetingId) {
 }
 
 // ==========================================
-// 5. BUDGET PLANNER (tbl_budget)
+// 9. BUDGET PLANNER (tbl_budget)
 // ==========================================
 export async function addBudget(budgetData) {
   if (!checkConfiguration()) return;
@@ -369,7 +706,7 @@ export async function deleteBudget(budgetLineId) {
 }
 
 // ==========================================
-// 6. TASKS & WORKING UPDATES (tbl_tasks)
+// 10. TASKS & WORKING UPDATES (tbl_tasks)
 // ==========================================
 export async function addTask(taskData) {
   if (!checkConfiguration()) return;
@@ -381,14 +718,12 @@ export async function addTask(taskData) {
     const id = task_id || await getNextSeqId("tbl_tasks", "TSK-", "task_id", 4);
     const docRef = doc(db, "tbl_tasks", id);
     
-    // Read previous task document if existing to support append-only log visualizer
     let finalUpdate = working_update ? working_update.trim() : "";
     if (task_id) {
       const existingSnap = await getDoc(docRef);
       if (existingSnap.exists()) {
         const existingData = existingSnap.data();
         if (existingData.working_update && working_update && existingData.working_update !== working_update) {
-          // If the text is new and doesn't already contain the existing logs, append/prepend
           if (!working_update.includes(existingData.working_update)) {
             finalUpdate = existingData.working_update + "\n" + working_update.trim();
           }
@@ -413,7 +748,6 @@ export async function addTask(taskData) {
       updatedAt: serverTimestamp()
     });
 
-    // Cascade update the project status if the task is set to Completed/In Progress
     if (task_status === "Completed" || task_status === "In Progress") {
       const projRef = doc(db, "tbl_projects", project_id.trim().toUpperCase());
       const projSnap = await getDoc(projRef);
@@ -461,17 +795,7 @@ export async function deleteTask(taskId) {
 }
 
 // ==========================================
-// 7. PURCHASE REQUISITIONS (tbl_requisitions)
-// ==========================================
-// Requisition ID custom generator REQ-YYYY-XXXX
-async function generateRequisitionId() {
-  const year = new Date().getFullYear();
-  const prefix = `REQ-${year}-`;
-  return await getNextSeqId("tbl_requisitions", prefix, "requisition_id", 4);
-}
-
-// ==========================================
-// 7. PURCHASE REQUISITIONS (tbl_requisitions)
+// 11. PURCHASE REQUISITIONS (tbl_requisitions)
 // ==========================================
 export async function addRequisition(reqData) {
   if (!checkConfiguration()) return;
@@ -480,22 +804,18 @@ export async function addRequisition(reqData) {
     throw new Error("Missing required requisition fields");
   }
 
-  // Validate item description length >= 10
   if (item_description.trim().length < 10) {
     throw new Error("Item Description must be at least 10 characters long.");
   }
 
-  // Validate quantity >= 1
   if (Number(qty_requested) < 1 || !Number.isInteger(Number(qty_requested))) {
     throw new Error("Quantity Requested must be a positive whole number >= 1.");
   }
 
-  // Validate unit cost > 0
   if (Number(est_unit_cost) <= 0) {
     throw new Error("Estimated Unit Cost must be greater than 0.00.");
   }
 
-  // Validate rejection reason if rejected
   if (dept_approval === "Rejected" && (!rejection_reason || !rejection_reason.trim())) {
     throw new Error("Rejection Reason is required when approval status is Rejected.");
   }
@@ -512,7 +832,7 @@ export async function addRequisition(reqData) {
       item_description: item_description.trim(),
       qty_requested: Number(qty_requested),
       est_unit_cost: Number(est_unit_cost),
-      est_total_cost: Number(total.toFixed(2)), // Calculated field
+      est_total_cost: Number(total.toFixed(2)),
       dept_approval: dept_approval || "Pending Review",
       rejection_reason: dept_approval === "Rejected" ? rejection_reason.trim() : "",
       createdAt: serverTimestamp(),
@@ -554,7 +874,7 @@ export async function deleteRequisition(requisitionId) {
 }
 
 // ==========================================
-// 8. PURCHASE ORDER MANAGEMENT (tbl_purchase_orders)
+// 12. PURCHASE ORDER MANAGEMENT (tbl_purchase_orders)
 // ==========================================
 export async function addPurchaseOrder(poData) {
   if (!checkConfiguration()) return;
@@ -563,7 +883,6 @@ export async function addPurchaseOrder(poData) {
     throw new Error("Missing required purchase order fields");
   }
 
-  // Validate PO Issue Date is not in future
   const issueDate = new Date(po_issue_date);
   const today = new Date();
   today.setHours(23, 59, 59, 999);
@@ -571,7 +890,6 @@ export async function addPurchaseOrder(poData) {
     throw new Error("PO Issue Date cannot be in the future.");
   }
 
-  // Check unique requisition_id
   const querySnapshot = await getDocs(collection(db, "tbl_purchase_orders"));
   let reqExists = false;
   querySnapshot.forEach(docSnap => {
@@ -600,14 +918,12 @@ export async function addPurchaseOrder(poData) {
       updatedAt: serverTimestamp()
     });
 
-    // Cascade update: update requisition status
     const reqRef = doc(db, "tbl_requisitions", requisition_id);
     const reqSnap = await getDoc(reqRef);
     if (reqSnap.exists()) {
       await setDoc(reqRef, { dept_approval: "Approved", updatedAt: serverTimestamp() }, { merge: true });
     }
 
-    // Cascade add to Expense tracker automatically (ledger of truth)
     const expenseId = "EXP-AUTO-" + id;
     const expRef = doc(db, "tbl_expenses", expenseId);
     await setDoc(expRef, {
@@ -660,7 +976,7 @@ export async function deletePurchaseOrder(poNumber) {
 }
 
 // ==========================================
-// 9. COST / EXPENSE LEDGER (tbl_expenses)
+// 13. COST / EXPENSE LEDGER (tbl_expenses)
 // ==========================================
 export async function addExpense(expenseData) {
   if (!checkConfiguration()) return;
@@ -669,17 +985,14 @@ export async function addExpense(expenseData) {
     throw new Error("Missing required expense fields");
   }
 
-  // Validate PO reference for PO-Backed routing
   if (expense_routing_type === "PO-Backed" && (!po_number_ref || !po_number_ref.trim())) {
     throw new Error("PO Number Reference is required for PO-Backed expenses.");
   }
 
-  // Validate paid amount does not exceed invoice amount
   if (Number(amount_paid) > Number(invoice_amount)) {
     throw new Error("Amount Paid To Date cannot exceed Invoice Gross Amount.");
   }
 
-  // Validate clearance date based on payment status
   if (payment_status === "Unpaid / Awaiting Approval") {
     clearance_date = "";
   } else if ((payment_status === "Partially Paid" || payment_status === "Fully Settled") && !clearance_date) {
@@ -738,7 +1051,7 @@ export async function deleteExpense(expenseId) {
 }
 
 // ==========================================
-// 10. EMPLOYEE INFORMATION DATABASE (tbl_employees)
+// 14. EMPLOYEE INFORMATION DATABASE (tbl_employees)
 // ==========================================
 export async function addEmployee(employeeData) {
   if (!checkConfiguration()) return;
@@ -747,7 +1060,6 @@ export async function addEmployee(employeeData) {
     throw new Error("Missing required employee fields");
   }
 
-  // Check email uniqueness if provided
   if (email) {
     const querySnapshot = await getDocs(collection(db, "tbl_employees"));
     let emailExists = false;
@@ -812,7 +1124,7 @@ export async function deleteEmployee(employeeId) {
 }
 
 // ==========================================
-// 11. SUPPORT TICKETING & SLA (tbl_support_tickets)
+// 15. SUPPORT TICKETING & SLA (tbl_support_tickets)
 // ==========================================
 export async function addSupportTicket(ticketData) {
   if (!checkConfiguration()) return;
@@ -830,7 +1142,6 @@ export async function addSupportTicket(ticketData) {
     throw new Error("Subject/Summary cannot exceed 150 characters.");
   }
 
-  // Validate resolution notes before resolving/closing
   const isClosedStatus = ticket_status === "Resolved" || ticket_status === "Closed";
   if (isClosedStatus && (!resolution_notes || !resolution_notes.trim())) {
     throw new Error("Resolution Notes are required before resolving or closing a ticket.");
@@ -844,12 +1155,10 @@ export async function addSupportTicket(ticketData) {
     let closedAt = "";
 
     if (ticket_id) {
-      // Fetch existing ticket to preserve created_at and handle status transitions
       const snap = await getDoc(docRef);
       if (snap.exists()) {
         const data = snap.data();
         createdAt = data.created_at || createdAt;
-        
         const origWasClosed = data.ticket_status === "Resolved" || data.ticket_status === "Closed";
         if (isClosedStatus) {
           closedAt = origWasClosed ? (data.closed_at || new Date().toISOString()) : new Date().toISOString();
@@ -858,19 +1167,16 @@ export async function addSupportTicket(ticketData) {
         }
       }
     } else {
-      // New ticket
       if (isClosedStatus) {
         closedAt = new Date().toISOString();
       }
     }
 
-    // SLA Deadline calculation
     const baseDate = new Date(createdAt);
-    let hoursToAdd = 72; // Default Medium
+    let hoursToAdd = 72;
     if (priority === "Low") hoursToAdd = 168;
     else if (priority === "High") hoursToAdd = 24;
     else if (priority === "Critical") hoursToAdd = 4;
-    
     baseDate.setHours(baseDate.getHours() + hoursToAdd);
     const slaDeadline = baseDate.toISOString();
 
@@ -890,7 +1196,6 @@ export async function addSupportTicket(ticketData) {
       asset_id: asset_id || "",
       updated_at: serverTimestamp()
     });
-
     return id;
   } catch (error) {
     console.error("Error saving support ticket: ", error);
@@ -927,14 +1232,8 @@ export async function deleteSupportTicket(ticketId) {
 }
 
 // ==========================================
-// 12. CLIENT INVOICING & REVENUE (tbl_client_payments)
+// 16. CLIENT INVOICING & REVENUE (tbl_client_payments)
 // ==========================================
-async function generateInvoiceId() {
-  const year = new Date().getFullYear();
-  const prefix = `INV-${year}-`;
-  return await getNextSeqId("tbl_client_payments", prefix, "invoice_id", 3);
-}
-
 export async function addClientPayment(paymentData) {
   if (!checkConfiguration()) return;
   const {
@@ -982,7 +1281,6 @@ export async function addClientPayment(paymentData) {
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp()
     }, { merge: true });
-
     return id;
   } catch (error) {
     console.error("Error saving client payment invoice: ", error);
@@ -1019,12 +1317,8 @@ export async function deleteClientPayment(invoiceId) {
 }
 
 // ==========================================
-// 13. DOMAIN & HOSTING SALES TRACKER (tbl_domain_hosting_sales)
+// 17. DOMAIN & HOSTING SALES TRACKER (tbl_domain_hosting_sales)
 // ==========================================
-async function generateAssetId() {
-  return await getNextSeqId("tbl_domain_hosting_sales", "AST-", "asset_id", 4);
-}
-
 export async function addDomainHosting(assetData) {
   if (!checkConfiguration()) return;
   const {
@@ -1052,7 +1346,6 @@ export async function addDomainHosting(assetData) {
   try {
     const id = asset_id || await generateAssetId();
     const docRef = doc(db, "tbl_domain_hosting_sales", id);
-
     await setDoc(docRef, {
       asset_id: id,
       project_id: project_id.trim().toUpperCase(),
@@ -1070,7 +1363,6 @@ export async function addDomainHosting(assetData) {
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp()
     }, { merge: true });
-
     return id;
   } catch (error) {
     console.error("Error saving domain & hosting asset: ", error);
@@ -1107,7 +1399,7 @@ export async function deleteDomainHosting(assetId) {
 }
 
 // ==========================================
-// 14. AUDIT LOGS SYSTEM (tbl_audit_logs)
+// 18. SYSTEM AUDIT LOGS (tbl_audit_logs)
 // ==========================================
 export async function addAuditLog(logData) {
   if (!checkConfiguration()) return;
@@ -1145,7 +1437,6 @@ export async function getAllAuditLogs() {
         logs.push(docSnap.data());
       }
     });
-    // Sort logs descending (newest first) by log_id
     logs.sort((a, b) => b.log_id.localeCompare(a.log_id));
     return logs;
   } catch (error) {
@@ -1153,5 +1444,3 @@ export async function getAllAuditLogs() {
     throw error;
   }
 }
-
-
