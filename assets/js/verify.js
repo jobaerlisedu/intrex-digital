@@ -129,7 +129,7 @@ export async function getAllCertificates() {
     const querySnapshot = await getDocs(collection(db, "certificates"));
     const certs = [];
     querySnapshot.forEach((docSnap) => {
-      if (docSnap.exists()) {
+      if (docSnap.exists() && docSnap.id !== "_init_") {
         certs.push(docSnap.data());
       }
     });
@@ -257,7 +257,7 @@ export async function getAllRegistrations() {
     const querySnapshot = await getDocs(collection(db, "registrations"));
     const regs = [];
     querySnapshot.forEach((docSnap) => {
-      if (docSnap.exists()) {
+      if (docSnap.exists() && docSnap.id !== "_init_") {
         regs.push(docSnap.data());
       }
     });
@@ -385,7 +385,7 @@ export async function getAllPayments() {
     const querySnapshot = await getDocs(collection(db, "payments"));
     const pays = [];
     querySnapshot.forEach((docSnap) => {
-      if (docSnap.exists()) {
+      if (docSnap.exists() && docSnap.id !== "_init_") {
         pays.push(docSnap.data());
       }
     });

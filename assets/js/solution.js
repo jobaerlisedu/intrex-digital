@@ -153,7 +153,7 @@ export async function getAllProjects() {
     const querySnapshot = await getDocs(collection(db, "tbl_projects"));
     const projects = [];
     querySnapshot.forEach((docSnap) => {
-      if (docSnap.exists()) {
+      if (docSnap.exists() && docSnap.id !== "_init_") {
         projects.push(docSnap.data());
       }
     });
@@ -227,7 +227,7 @@ export async function getAllContacts() {
     const querySnapshot = await getDocs(collection(db, "tbl_contacts"));
     const contacts = [];
     querySnapshot.forEach((docSnap) => {
-      if (docSnap.exists()) {
+      if (docSnap.exists() && docSnap.id !== "_init_") {
         contacts.push(docSnap.data());
       }
     });
@@ -286,7 +286,7 @@ export async function getAllMeetings() {
     const querySnapshot = await getDocs(collection(db, "tbl_meetings"));
     const meetings = [];
     querySnapshot.forEach((docSnap) => {
-      if (docSnap.exists()) {
+      if (docSnap.exists() && docSnap.id !== "_init_") {
         meetings.push(docSnap.data());
       }
     });
@@ -343,7 +343,7 @@ export async function getAllBudgets() {
     const querySnapshot = await getDocs(collection(db, "tbl_budget"));
     const budgets = [];
     querySnapshot.forEach((docSnap) => {
-      if (docSnap.exists()) {
+      if (docSnap.exists() && docSnap.id !== "_init_") {
         budgets.push(docSnap.data());
       }
     });
@@ -435,7 +435,7 @@ export async function getAllTasks() {
     const querySnapshot = await getDocs(collection(db, "tbl_tasks"));
     const tasks = [];
     querySnapshot.forEach((docSnap) => {
-      if (docSnap.exists()) {
+      if (docSnap.exists() && docSnap.id !== "_init_") {
         tasks.push(docSnap.data());
       }
     });
@@ -528,7 +528,7 @@ export async function getAllRequisitions() {
     const querySnapshot = await getDocs(collection(db, "tbl_requisitions"));
     const reqs = [];
     querySnapshot.forEach((docSnap) => {
-      if (docSnap.exists()) {
+      if (docSnap.exists() && docSnap.id !== "_init_") {
         reqs.push(docSnap.data());
       }
     });
@@ -634,7 +634,7 @@ export async function getAllPurchaseOrders() {
     const querySnapshot = await getDocs(collection(db, "tbl_purchase_orders"));
     const purchases = [];
     querySnapshot.forEach((docSnap) => {
-      if (docSnap.exists()) {
+      if (docSnap.exists() && docSnap.id !== "_init_") {
         purchases.push(docSnap.data());
       }
     });
@@ -712,7 +712,7 @@ export async function getAllExpenses() {
     const querySnapshot = await getDocs(collection(db, "tbl_expenses"));
     const expenses = [];
     querySnapshot.forEach((docSnap) => {
-      if (docSnap.exists()) {
+      if (docSnap.exists() && docSnap.id !== "_init_") {
         expenses.push(docSnap.data());
       }
     });
@@ -786,7 +786,7 @@ export async function getAllEmployees() {
     const querySnapshot = await getDocs(collection(db, "tbl_employees"));
     const employees = [];
     querySnapshot.forEach((docSnap) => {
-      if (docSnap.exists()) {
+      if (docSnap.exists() && docSnap.id !== "_init_") {
         employees.push(docSnap.data());
       }
     });
@@ -901,7 +901,7 @@ export async function getAllSupportTickets() {
     const querySnapshot = await getDocs(collection(db, "tbl_support_tickets"));
     const tickets = [];
     querySnapshot.forEach((docSnap) => {
-      if (docSnap.exists()) {
+      if (docSnap.exists() && docSnap.id !== "_init_") {
         tickets.push(docSnap.data());
       }
     });
@@ -993,7 +993,7 @@ export async function getAllClientPayments() {
     const querySnapshot = await getDocs(collection(db, "tbl_client_payments"));
     const payments = [];
     querySnapshot.forEach((docSnap) => {
-      if (docSnap.exists()) {
+      if (docSnap.exists() && docSnap.id !== "_init_") {
         payments.push(docSnap.data());
       }
     });
@@ -1081,7 +1081,7 @@ export async function getAllDomainHosting() {
     const querySnapshot = await getDocs(collection(db, "tbl_domain_hosting_sales"));
     const assets = [];
     querySnapshot.forEach((docSnap) => {
-      if (docSnap.exists()) {
+      if (docSnap.exists() && docSnap.id !== "_init_") {
         assets.push(docSnap.data());
       }
     });
@@ -1138,7 +1138,7 @@ export async function getAllAuditLogs() {
     const querySnapshot = await getDocs(collection(db, "tbl_audit_logs"));
     const logs = [];
     querySnapshot.forEach((docSnap) => {
-      if (docSnap.exists()) {
+      if (docSnap.exists() && docSnap.id !== "_init_") {
         logs.push(docSnap.data());
       }
     });
