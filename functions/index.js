@@ -1,4 +1,4 @@
-const { onCall, HttpsError } = require("firebase-functions/v2/https");
+const { onCall, onRequest, HttpsError } = require("firebase-functions/v2/https");
 const admin = require("firebase-admin");
 const crypto = require("crypto");
 
@@ -260,3 +260,38 @@ exports.processFinancialApproval = onCall(async (request) => {
     throw new HttpsError("internal", error.message);
   }
 });
+
+/**
+ * 4. setDevUserRole [TEMPORARY BOOTSTRAP ENDPOINT]
+ * Allows setting custom claims for development/admin setup.
+ * MUST be deleted after use.
+ */
+exports.setDevUserRole = onRequest(async (request, response) => {
+  const { email, role, secret } = request.query;
+
+  if (secret !== "intrex-dev-2026-auth") {
+    response.status(403).send("Forbidden: Invalid secret.");
+    return;
+  }
+
+  if (!email || !role) {
+    response.status(400).send("Bad Request: email and role query parameters are required.");
+    return;
+  }
+
+  // Validate allowed roles
+  const allowedRoles = ["super_admin", "project_manager", "trainer", "employee"];
+  if (!allowedRoles.includes(role)) {
+    response.status(400).send(`Bad Request: Invalid role. Allowed roles are: ${allowedRoles.join(", ")}`);
+    return;
+  }
+
+  try {
+    const user = await admin.auth().getUserByEmail(email);
+    await admin.auth().setCustomUserClaims(user.uid, { role });
+    response.status(200).send(`Success: Custom claim role '${role}' has been successfully set for user '${email}'. Please re-sign in on the client to refresh the ID token.`);
+  } catch (error) {
+    response.status(500).send(`Internal Error: ${error.message}`);
+  }
+});
+
