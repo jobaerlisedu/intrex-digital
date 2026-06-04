@@ -243,6 +243,11 @@
                   <i class="bi bi-credit-card"></i> Payment Records
                 </button>
                 <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
+                  id="installment-tab" data-bs-toggle="tab" data-bs-target="#installmentPanel" type="button" role="tab"
+                  aria-controls="installmentPanel" aria-selected="false">
+                  <i class="bi bi-calculator"></i> Installment Plan
+                </button>
+                <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
                   id="generate-tab" data-bs-toggle="tab" data-bs-target="#generatePanel" type="button" role="tab"
                   aria-controls="generatePanel" aria-selected="false">
                   <i class="bi bi-patch-plus"></i> Generate Cert
@@ -511,10 +516,20 @@
                                 <option value="" disabled selected>Select a course</option>
                                 <option value="CompTIA A+">CompTIA A+</option>
                                 <option value="CompTIA Network+">CompTIA Network+</option>
-                                <option value="CCNA 200-301">CCNA 200-301</option>
-                                <option value="MTCNA & MTCRE (MikroTik)">MTCNA &amp; MTCRE (MikroTik)</option>
-                                <option value="RHCSA / RHCE (Red Hat Linux)">RHCSA / RHCE (Red Hat Linux)</option>
                                 <option value="CompTIA Security+">CompTIA Security+</option>
+                                <option value="CompTIA Linux+">CompTIA Linux+</option>
+                                <option value="CompTIA Server+">CompTIA Server+</option>
+                                <option value="CCNA">CCNA</option>
+                                <option value="CCNP - Enterprise">CCNP - Enterprise</option>
+                                <option value="CCNP - Security">CCNP - Security</option>
+                                <option value="MTCNA">MTCNA</option>
+                                <option value="MTCRE">MTCRE</option>
+                                <option value="MTCSE">MTCSE</option>
+                                <option value="RHCSA">RHCSA</option>
+                                <option value="RHCE">RHCE</option>
+                                <option value="FCP NSE4">FCP NSE4</option>
+                                <option value="FCP NSE5">FCP NSE5</option>
+                                <option value="CCNA & MTCNA">CCNA &amp; MTCNA</option>
                               </select>
                             </div>
                           </div>
@@ -570,6 +585,43 @@
                                 <span class="text-danger">*</span></label>
                               <input class="form-control" id="regAmountPaid" type="number" min="0" value="0"
                                 placeholder="e.g. 0" required>
+                            </div>
+                          </div>
+
+                          <!-- Row 4.5: Registration Fee & Installments Switch -->
+                          <div class="row g-3 mb-3">
+                            <div class="col-md-6">
+                              <label class="form-label small fw-semibold mb-1" for="regRegistrationFee">Registration Fee (BDT)</label>
+                              <input class="form-control" id="regRegistrationFee" type="number" min="0" value="0" placeholder="e.g. 2000">
+                            </div>
+                            <div class="col-md-6 d-flex align-items-end">
+                              <div class="form-check form-switch mb-2">
+                                <input class="form-check-input" type="checkbox" id="regEnableInstallments">
+                                <label class="form-check-label small fw-semibold" for="regEnableInstallments">Enable Installment Plan</label>
+                              </div>
+                            </div>
+                          </div>
+
+                          <!-- Installments Plan Details Container -->
+                          <div id="regInstallmentsPlanContainer" class="d-none border p-3 rounded-3 mb-3 bg-light">
+                            <div class="row g-2 align-items-center mb-3">
+                              <div class="col-md-6">
+                                <label class="form-label small fw-semibold mb-1" for="regNumInstallments">Number of Installments</label>
+                                <select class="form-select form-select-sm" id="regNumInstallments">
+                                  <option value="1">1 Installment</option>
+                                  <option value="2" selected>2 Installments</option>
+                                  <option value="3">3 Installments</option>
+                                  <option value="4">4 Installments</option>
+                                </select>
+                              </div>
+                              <div class="col-md-6 text-end">
+                                <button type="button" class="btn btn-xs btn-outline-primary" id="regAutoDistributeBtn">
+                                  <i class="bi bi-magic me-1"></i>Auto Distribute Due
+                                </button>
+                              </div>
+                            </div>
+                            <div id="regInstallmentsList" class="row g-2">
+                              <!-- Dynamic Installment Rows Go Here -->
                             </div>
                           </div>
 
@@ -682,10 +734,20 @@
                               <option value="all">All Courses</option>
                               <option value="CompTIA A+">CompTIA A+</option>
                               <option value="CompTIA Network+">CompTIA Network+</option>
-                              <option value="CCNA 200-301">CCNA 200-301</option>
-                              <option value="MTCNA & MTCRE (MikroTik)">MTCNA &amp; MTCRE</option>
-                              <option value="RHCSA / RHCE (Red Hat Linux)">RHCSA / RHCE</option>
                               <option value="CompTIA Security+">CompTIA Security+</option>
+                              <option value="CompTIA Linux+">CompTIA Linux+</option>
+                              <option value="CompTIA Server+">CompTIA Server+</option>
+                              <option value="CCNA">CCNA</option>
+                              <option value="CCNP - Enterprise">CCNP - Enterprise</option>
+                              <option value="CCNP - Security">CCNP - Security</option>
+                              <option value="MTCNA">MTCNA</option>
+                              <option value="MTCRE">MTCRE</option>
+                              <option value="MTCSE">MTCSE</option>
+                              <option value="RHCSA">RHCSA</option>
+                              <option value="RHCE">RHCE</option>
+                              <option value="FCP NSE4">FCP NSE4</option>
+                              <option value="FCP NSE5">FCP NSE5</option>
+                              <option value="CCNA & MTCNA">CCNA &amp; MTCNA</option>
                             </select>
                             <button id="refreshRegListBtn" class="btn btn-sm btn-outline-secondary" type="button"
                               title="Refresh List">
@@ -789,6 +851,137 @@
                   </div>
                 </div>
 
+                <!-- Sub-Page 3.5: Installment Plan Creator -->
+                <div class="tab-pane fade" id="installmentPanel" role="tabpanel" aria-labelledby="installment-tab">
+                  <div class="row g-4">
+                    <!-- Left Column: Controls and Student Search -->
+                    <div class="col-lg-4">
+                      <div class="card p-4 rounded-4 shadow-sm border mb-4">
+                        <h4 class="fw-bold text-heading-color mb-3 pb-2 border-bottom d-flex align-items-center gap-2">
+                          <i class="bi bi-search text-primary"></i> Load Student Profile
+                        </h4>
+                        
+                        <div class="mb-3 qf-wrapper">
+                          <label for="studentSearchInput" class="form-label small fw-semibold">Search Student</label>
+                          <div class="input-group">
+                            <input type="text" id="studentSearchInput" class="form-control" autocomplete="off" placeholder="Enter student name or ID...">
+                            <button class="btn btn-outline-primary" type="button" id="installmentSearchBtn"><i class="bi bi-search"></i></button>
+                          </div>
+                          <div id="studentSearchDropdown" class="qf-dropdown"></div>
+                        </div>
+                        
+                        <div class="alert alert-info py-2 px-3 small mb-0">
+                          <i class="bi bi-info-circle-fill me-1"></i> Load a student to configure their specific installment plan.
+                        </div>
+                      </div>
+
+                      <!-- Profile Info Card (Read Only) -->
+                      <div class="card p-4 rounded-4 shadow-sm border d-none" id="studentProfileCard">
+                        <h4 class="fw-bold text-heading-color mb-3 pb-2 border-bottom d-flex align-items-center gap-2">
+                          <i class="bi bi-person-badge text-primary"></i> Student Profile
+                        </h4>
+                        <div class="mb-2">
+                          <span class="small fw-semibold text-muted d-block">Student ID</span>
+                          <strong class="text-dark" id="displayStudentId">-</strong>
+                        </div>
+                        <div class="mb-2">
+                          <span class="small fw-semibold text-muted d-block">Full Name</span>
+                          <strong class="text-dark" id="displayStudentName">-</strong>
+                        </div>
+                        <div class="mb-2">
+                          <span class="small fw-semibold text-muted d-block">Course & Batch</span>
+                          <span class="text-dark small" id="displayCourseBatch">-</span>
+                        </div>
+                        <div class="mb-0">
+                          <span class="small fw-semibold text-muted d-block">Email Address</span>
+                          <span class="text-dark small" id="displayEmail">-</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Right Column: Calculator and Schedules Table -->
+                    <div class="col-lg-8">
+                      <div class="card p-4 rounded-4 shadow-sm border mb-4">
+                        <h4 class="fw-bold text-heading-color mb-4 pb-2 border-bottom d-flex align-items-center justify-content-between">
+                          <span><i class="bi bi-calculator text-primary me-2"></i>Installment Plan Calculator</span>
+                          <span id="validationBadge" class="badge bg-secondary" style="font-size: 0.8rem;">No Student Loaded</span>
+                        </h4>
+
+                        <!-- Financial Summary Grid -->
+                        <div class="row g-3 mb-4">
+                          <div class="col-md-3 col-6">
+                            <div class="financial-card bg-light border-light-subtle p-3 text-center" style="border: 1px solid rgba(0, 0, 0, 0.08); border-radius: 16px;">
+                              <span class="text-muted small fw-semibold d-block text-uppercase mb-1" style="font-size: 0.65rem; letter-spacing: 0.05em;">Course Fee</span>
+                              <input type="number" id="planTotalFee" class="form-control form-control-sm text-center fw-bold text-dark border-0 bg-transparent" value="0" min="0">
+                            </div>
+                          </div>
+                          <div class="col-md-3 col-6">
+                            <div class="financial-card bg-light border-light-subtle p-3 text-center" style="border: 1px solid rgba(0, 0, 0, 0.08); border-radius: 16px;">
+                              <span class="text-muted small fw-semibold d-block text-uppercase mb-1" style="font-size: 0.65rem; letter-spacing: 0.05em;">Discount</span>
+                              <input type="number" id="planDiscount" class="form-control form-control-sm text-center fw-bold text-dark border-0 bg-transparent" value="0" min="0">
+                            </div>
+                          </div>
+                          <div class="col-md-3 col-6">
+                            <div class="financial-card bg-light border-light-subtle p-3 text-center" style="border: 1px solid rgba(0, 0, 0, 0.08); border-radius: 16px;">
+                              <span class="text-muted small fw-semibold d-block text-uppercase mb-1" style="font-size: 0.65rem; letter-spacing: 0.05em;">Registration Fee</span>
+                              <input type="number" id="planRegistrationFee" class="form-control form-control-sm text-center fw-bold text-primary border-0 bg-transparent" value="0" min="0">
+                            </div>
+                          </div>
+                          <div class="col-md-3 col-6">
+                            <div class="financial-card bg-primary-subtle border-primary-subtle p-3 text-center" style="border: 1px solid rgba(0, 0, 0, 0.08); border-radius: 16px;">
+                              <span class="text-primary-emphasis small fw-semibold d-block text-uppercase mb-1" style="font-size: 0.65rem; letter-spacing: 0.05em;">Remaining Due</span>
+                              <strong class="text-primary fs-5" id="displayRemainingDue">0 BDT</strong>
+                            </div>
+                          </div>
+                        </div>
+
+                        <!-- Calculator Configuration Row -->
+                        <div class="row g-3 mb-4 bg-light p-3 rounded-3 border mx-0">
+                          <div class="col-md-4">
+                            <label for="numInstallments" class="form-label small fw-semibold">Number of Installments</label>
+                            <select id="numInstallments" class="form-select form-select-sm">
+                              <option value="1">1 Installment</option>
+                              <option value="2" selected>2 Installments</option>
+                              <option value="3">3 Installments</option>
+                              <option value="4">4 Installments</option>
+                              <option value="5">5 Installments</option>
+                              <option value="6">6 Installments</option>
+                            </select>
+                          </div>
+                          <div class="col-md-4">
+                            <label for="startDate" class="form-label small fw-semibold">First Installment Due Date</label>
+                            <input type="date" id="startDate" class="form-control form-control-sm">
+                          </div>
+                          <div class="col-md-4 d-flex align-items-end">
+                            <button type="button" id="calculateBtn" class="btn btn-sm btn-primary w-100 fw-semibold">
+                              <i class="bi bi-magic me-1"></i>Distribute Dues
+                            </button>
+                          </div>
+                        </div>
+
+                        <!-- Installments Editor List -->
+                        <div class="mb-4">
+                          <h5 class="fw-bold text-heading-color mb-3">Installments Schedule Editor</h5>
+                          <div id="installmentsListContainer" class="row g-2">
+                            <div class="col-12 text-center text-muted small py-4">No installments distributed yet. Select parameters and click "Distribute Dues" or load a student.</div>
+                          </div>
+                        </div>
+
+                        <!-- Action buttons row -->
+                        <div class="d-flex flex-wrap gap-2 pt-3 border-top justify-content-between">
+                          <button type="button" id="printBtn" class="btn btn-outline-secondary fw-semibold">
+                            <i class="bi bi-printer me-1"></i>Print Plan
+                          </button>
+                          <button type="button" id="saveBtn" class="btn btn-primary fw-semibold px-4" disabled>
+                            <i class="bi bi-cloud-arrow-up-fill me-1"></i>Save Schedule to Student Account
+                          </button>
+                        </div>
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
                 <!-- Sub-Page 4: Generate Certificate -->
                 <div class="tab-pane fade" id="generatePanel" role="tabpanel" aria-labelledby="generate-tab">
                   <div class="row justify-content-center">
@@ -860,10 +1053,20 @@
                                 <option value="" disabled selected>Select Course</option>
                                 <option value="CompTIA A+">CompTIA A+</option>
                                 <option value="CompTIA Network+">CompTIA Network+</option>
-                                <option value="CCNA 200-301">CCNA 200-301</option>
-                                <option value="MTCNA & MTCRE (MikroTik)">MTCNA &amp; MTCRE (MikroTik)</option>
-                                <option value="RHCSA / RHCE (Red Hat Linux)">RHCSA / RHCE (Red Hat Linux)</option>
                                 <option value="CompTIA Security+">CompTIA Security+</option>
+                                <option value="CompTIA Linux+">CompTIA Linux+</option>
+                                <option value="CompTIA Server+">CompTIA Server+</option>
+                                <option value="CCNA">CCNA</option>
+                                <option value="CCNP - Enterprise">CCNP - Enterprise</option>
+                                <option value="CCNP - Security">CCNP - Security</option>
+                                <option value="MTCNA">MTCNA</option>
+                                <option value="MTCRE">MTCRE</option>
+                                <option value="MTCSE">MTCSE</option>
+                                <option value="RHCSA">RHCSA</option>
+                                <option value="RHCE">RHCE</option>
+                                <option value="FCP NSE4">FCP NSE4</option>
+                                <option value="FCP NSE5">FCP NSE5</option>
+                                <option value="CCNA & MTCNA">CCNA &amp; MTCNA</option>
                               </select>
                             </div>
 
@@ -1094,7 +1297,7 @@
   <script src="assets/vendors/bootstrap/bootstrap.bundle.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script type="module">
-    import { loginAdmin, logoutAdmin, onAdminAuthStateChanged, addCertificate, getAllCertificates, deleteCertificate, addRegistration, getAllRegistrations, updateRegistration, deleteRegistration, getAllPayments, updatePayment, addAuditLog, getAllAuditLogs, getAllOnlineRegistrations, getOnlineRegistration, deleteOnlineRegistration, getAllOnlineInquiries, deleteOnlineInquiry } from "./assets/js/verify.js";
+    import { loginAdmin, logoutAdmin, onAdminAuthStateChanged, addCertificate, getAllCertificates, deleteCertificate, addRegistration, getAllRegistrations, updateRegistration, deleteRegistration, getAllPayments, updatePayment, addAuditLog, getAllAuditLogs, getAllOnlineRegistrations, getOnlineRegistration, deleteOnlineRegistration, getAllOnlineInquiries, deleteOnlineInquiry } from "./assets/js/training.js";
 
     // Initialize AOS
     if (window.AOS) {
@@ -1104,7 +1307,7 @@
     // Helper to generate verification link (always uses production domain)
     function getVerifyUrl(certificateId) {
       const origin = "https://intrex-digital.com";
-      return `${origin}/verify.html?id=${certificateId}`;
+      return `${origin}/verify-certificate.html?id=${certificateId}`;
     }
 
     // Set today's date in form by default
@@ -1164,10 +1367,20 @@
     const courseFees = {
       "CompTIA A+": 8000,
       "CompTIA Network+": 8000,
-      "CCNA 200-301": 12000,
-      "MTCNA & MTCRE (MikroTik)": 10000,
-      "RHCSA / RHCE (Red Hat Linux)": 12000,
-      "CompTIA Security+": 12000
+      "CompTIA Security+": 12000,
+      "CompTIA Linux+": 10000,
+      "CompTIA Server+": 10000,
+      "CCNA": 10000,
+      "CCNP - Enterprise": 18000,
+      "CCNP - Security": 18000,
+      "MTCNA": 6000,
+      "MTCRE": 7000,
+      "MTCSE": 8000,
+      "RHCSA": 8000,
+      "RHCE": 10000,
+      "FCP NSE4": 12000,
+      "FCP NSE5": 12000,
+      "CCNA & MTCNA": 15000
     };
 
     function updateOverview() {
@@ -2211,6 +2424,19 @@
       const paymentType = document.getElementById("regPaymentType").value;
       const transactionId = document.getElementById("regPaymentTxId").value.trim();
       const message = document.getElementById("regMessage").value.trim();
+      
+      const registrationFee = Number(document.getElementById("regRegistrationFee").value) || 0;
+      const enableInstallments = document.getElementById("regEnableInstallments").checked;
+      let installments = [];
+      if (enableInstallments) {
+        const rows = document.querySelectorAll("#regInstallmentsList .installment-row");
+        rows.forEach((row, index) => {
+          const amount = Number(row.querySelector(".inst-amount").value) || 0;
+          const dueDate = row.querySelector(".inst-due-date").value;
+          const status = row.querySelector(".inst-status").value;
+          installments.push({ amount, dueDate, status });
+        });
+      }
 
       const successAlert = document.getElementById("regSuccess");
       const errorAlert = document.getElementById("regError");
@@ -2242,7 +2468,7 @@
           cancelRegEditMode();
         } else {
           // Create
-          const generatedId = await addRegistration({ fullName, email, phone, course, batch, education, schedule, message, totalFee, discount, amountPaid, paymentType, transactionId });
+          const generatedId = await addRegistration({ fullName, email, phone, course, batch, education, schedule, message, totalFee, discount, amountPaid, paymentType, transactionId, registrationFee, installments });
 
           // Audit Logging
           await addAuditLog({
@@ -2628,6 +2854,93 @@
         `;
       }).join('');
 
+      if (type === 'payment') {
+        const registrationFee = record.registrationFee || 0;
+        const installments = record.installments || [];
+        
+        let staledTotal = 0;
+        let unstalledTotal = 0;
+        let installmentsHtml = '';
+
+        if (installments.length > 0) {
+          installmentsHtml = installments.map((inst, index) => {
+            const amt = Number(inst.amount) || 0;
+            const status = inst.status || 'Unstalled';
+            const dueDate = inst.dueDate || 'N/A';
+            
+            let badgeClass = 'bg-secondary';
+            if (status === 'Paid') {
+              badgeClass = 'bg-success text-white';
+            } else if (status === 'Staled') {
+              badgeClass = 'bg-danger text-white';
+              staledTotal += amt;
+            } else if (status === 'Unstalled') {
+              badgeClass = 'bg-info text-dark';
+              unstalledTotal += amt;
+            }
+            
+            return `
+              <tr class="align-middle">
+                <td class="fw-semibold small">Installment #${index + 1}</td>
+                <td class="fw-bold text-dark small">${amt.toLocaleString()} BDT</td>
+                <td class="small text-muted">${dueDate}</td>
+                <td><span class="badge ${badgeClass} fw-bold" style="font-size:0.75rem;">${status}</span></td>
+              </tr>
+            `;
+          }).join('');
+        } else {
+          installmentsHtml = `<tr><td colspan="4" class="text-center text-muted small py-3">No installment schedule set for this record.</td></tr>`;
+        }
+
+        const breakdownSectionHtml = `
+          <div class="col-12 mt-4">
+            <h5 class="fw-bold text-heading-color mb-3 pb-2 border-bottom d-flex align-items-center gap-2">
+              <i class="bi bi-credit-card-2-front-fill text-primary"></i> Installment & Fee Details
+            </h5>
+            
+            <!-- Summary Row -->
+            <div class="row g-3 mb-3">
+              <div class="col-md-4">
+                <div class="card bg-light border-light-subtle rounded-3 p-3 shadow-sm text-center">
+                  <span class="text-muted small fw-semibold d-block text-uppercase mb-1" style="font-size: 0.7rem; letter-spacing: 0.05em;">Registration Fee</span>
+                  <strong class="text-primary fs-5">${registrationFee.toLocaleString()} BDT</strong>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="card bg-danger-subtle border-danger-subtle rounded-3 p-3 shadow-sm text-center">
+                  <span class="text-danger small fw-semibold d-block text-uppercase mb-1" style="font-size: 0.7rem; letter-spacing: 0.05em;">Staled Installments</span>
+                  <strong class="text-danger fs-5">${staledTotal.toLocaleString()} BDT</strong>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="card bg-info-subtle border-info-subtle rounded-3 p-3 shadow-sm text-center">
+                  <span class="text-info-emphasis small fw-semibold d-block text-uppercase mb-1" style="font-size: 0.7rem; letter-spacing: 0.05em;">Unstalled Installments</span>
+                  <strong class="text-info-emphasis fs-5">${unstalledTotal.toLocaleString()} BDT</strong>
+                </div>
+              </div>
+            </div>
+
+            <!-- Installment Schedule Table -->
+            <div class="table-responsive border rounded-3 bg-white shadow-sm">
+              <table class="table table-sm table-hover mb-0">
+                <thead class="table-light">
+                  <tr>
+                    <th class="small fw-semibold text-muted py-2">Schedule</th>
+                    <th class="small fw-semibold text-muted py-2">Amount</th>
+                    <th class="small fw-semibold text-muted py-2">Due Date</th>
+                    <th class="small fw-semibold text-muted py-2">Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${installmentsHtml}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        `;
+        gridBody.innerHTML += breakdownSectionHtml;
+      }
+
       // Launch Modal
       const modalInst = bootstrap.Modal.getOrCreateInstance(document.getElementById('detailsViewModal'));
       modalInst.show();
@@ -2694,6 +3007,8 @@
       document.getElementById("editPaymentDiscount").value = record.discount || 0;
       document.getElementById("editPaymentAmountPaid").value = record.amountPaid || 0;
 
+      document.getElementById("editPaymentRegistrationFee").value = record.registrationFee || 0;
+      
       const payType = record.paymentType || "Cash";
       document.getElementById("editPaymentType").value = payType;
       const txContainer = document.getElementById("editPaymentTxIdContainer");
@@ -2703,6 +3018,19 @@
       } else {
         txContainer.classList.remove("d-none");
         document.getElementById("editPaymentTxId").value = record.transactionId || "";
+      }
+
+      const instCheckbox = document.getElementById("editPaymentEnableInstallments");
+      const instContainer = document.getElementById("editPaymentInstallmentsContainer");
+      
+      if (record.installments && record.installments.length > 0) {
+        instCheckbox.checked = true;
+        instContainer.classList.remove("d-none");
+        renderEditInstallments(record.installments);
+      } else {
+        instCheckbox.checked = false;
+        instContainer.classList.add("d-none");
+        document.getElementById("editPaymentInstallmentsList").innerHTML = "";
       }
 
       document.getElementById("paymentModalError").classList.add("d-none");
@@ -2742,6 +3070,195 @@
     document.getElementById("editPaymentDiscount").addEventListener("input", updateModalCalculations);
     document.getElementById("editPaymentAmountPaid").addEventListener("input", updateModalCalculations);
 
+    // ============================================================
+    // INSTALLMENTS & FEES DYNAMIC SYSTEM LOGIC
+    // ============================================================
+    function renderRegInstallments() {
+      const container = document.getElementById("regInstallmentsList");
+      if (!container) return;
+
+      const enabled = document.getElementById("regEnableInstallments").checked;
+      const numInst = parseInt(document.getElementById("regNumInstallments").value) || 1;
+      
+      const total = Number(document.getElementById("regFee").value) || 0;
+      const discount = Number(document.getElementById("regDiscount").value) || 0;
+      const regFeeVal = Number(document.getElementById("regRegistrationFee").value) || 0;
+      const due = Math.max(0, total - discount - regFeeVal);
+      
+      const share = Math.floor(due / numInst);
+      let remainder = due % numInst;
+
+      container.innerHTML = "";
+      
+      for (let i = 1; i <= numInst; i++) {
+        const instAmount = share + (i === 1 ? remainder : 0);
+        
+        const date = new Date();
+        date.setMonth(date.getMonth() + i);
+        const dateStr = date.toISOString().substring(0, 10);
+        
+        const row = document.createElement("div");
+        row.className = "col-12 border-bottom pb-2 mb-2 installment-row";
+        row.innerHTML = `
+          <div class="row g-2 align-items-center">
+            <div class="col-md-4">
+              <span class="small fw-semibold text-muted">Installment #${i}</span>
+              <input type="number" class="form-control form-control-sm inst-amount" value="${instAmount}" placeholder="Amount" required>
+            </div>
+            <div class="col-md-4">
+              <span class="small fw-semibold text-muted">Due Date</span>
+              <input type="date" class="form-control form-control-sm inst-due-date" value="${dateStr}" required>
+            </div>
+            <div class="col-md-4">
+              <span class="small fw-semibold text-muted">Status</span>
+              <select class="form-select form-select-sm inst-status">
+                <option value="Unstalled" selected>Unstalled (Pending)</option>
+                <option value="Staled">Staled (Overdue)</option>
+                <option value="Paid">Paid</option>
+              </select>
+            </div>
+          </div>
+        `;
+        container.appendChild(row);
+      }
+    }
+
+    function renderEditInstallments(installmentsArray) {
+      const container = document.getElementById("editPaymentInstallmentsList");
+      if (!container) return;
+
+      const enabled = document.getElementById("editPaymentEnableInstallments").checked;
+      
+      if (!enabled) {
+        container.innerHTML = "";
+        return;
+      }
+
+      if (installmentsArray && installmentsArray.length > 0) {
+        document.getElementById("editPaymentNumInstallments").value = installmentsArray.length;
+        container.innerHTML = "";
+        installmentsArray.forEach((inst, idx) => {
+          const row = document.createElement("div");
+          row.className = "col-12 border-bottom pb-2 mb-2 installment-row";
+          row.innerHTML = `
+            <div class="row g-2 align-items-center">
+              <div class="col-md-4">
+                <span class="small fw-semibold text-muted">Installment #${idx + 1}</span>
+                <input type="number" class="form-control form-control-sm inst-amount" value="${inst.amount}" placeholder="Amount" required>
+              </div>
+              <div class="col-md-4">
+                <span class="small fw-semibold text-muted">Due Date</span>
+                <input type="date" class="form-control form-control-sm inst-due-date" value="${inst.dueDate || ''}" required>
+              </div>
+              <div class="col-md-4">
+                <span class="small fw-semibold text-muted">Status</span>
+                <select class="form-select form-select-sm inst-status">
+                  <option value="Unstalled" ${inst.status === 'Unstalled' ? 'selected' : ''}>Unstalled (Pending)</option>
+                  <option value="Staled" ${inst.status === 'Staled' ? 'selected' : ''}>Staled (Overdue)</option>
+                  <option value="Paid" ${inst.status === 'Paid' ? 'selected' : ''}>Paid</option>
+                </select>
+              </div>
+            </div>
+          `;
+          container.appendChild(row);
+        });
+      } else {
+        distributeEditPaymentInstallments();
+      }
+    }
+
+    function distributeEditPaymentInstallments() {
+      const container = document.getElementById("editPaymentInstallmentsList");
+      if (!container) return;
+
+      const numInst = parseInt(document.getElementById("editPaymentNumInstallments").value) || 1;
+      const total = Number(document.getElementById("editPaymentTotalFee").value) || 0;
+      const discount = Number(document.getElementById("editPaymentDiscount").value) || 0;
+      const regFeeVal = Number(document.getElementById("editPaymentRegistrationFee").value) || 0;
+      const due = Math.max(0, total - discount - regFeeVal);
+      
+      const share = Math.floor(due / numInst);
+      let remainder = due % numInst;
+
+      container.innerHTML = "";
+      
+      for (let i = 1; i <= numInst; i++) {
+        const instAmount = share + (i === 1 ? remainder : 0);
+        const date = new Date();
+        date.setMonth(date.getMonth() + i);
+        const dateStr = date.toISOString().substring(0, 10);
+        
+        const row = document.createElement("div");
+        row.className = "col-12 border-bottom pb-2 mb-2 installment-row";
+        row.innerHTML = `
+          <div class="row g-2 align-items-center">
+            <div class="col-md-4">
+              <span class="small fw-semibold text-muted">Installment #${i}</span>
+              <input type="number" class="form-control form-control-sm inst-amount" value="${instAmount}" placeholder="Amount" required>
+            </div>
+            <div class="col-md-4">
+              <span class="small fw-semibold text-muted">Due Date</span>
+              <input type="date" class="form-control form-control-sm inst-due-date" value="${dateStr}" required>
+            </div>
+            <div class="col-md-4">
+              <span class="small fw-semibold text-muted">Status</span>
+              <select class="form-select form-select-sm inst-status">
+                <option value="Unstalled" selected>Unstalled (Pending)</option>
+                <option value="Staled">Staled (Overdue)</option>
+                <option value="Paid">Paid</option>
+              </select>
+            </div>
+          </div>
+        `;
+        container.appendChild(row);
+      }
+    }
+
+    // Event listeners wiring
+    document.getElementById("regEnableInstallments").addEventListener("change", function () {
+      const container = document.getElementById("regInstallmentsPlanContainer");
+      if (this.checked) {
+        container.classList.remove("d-none");
+        renderRegInstallments();
+      } else {
+        container.classList.add("d-none");
+      }
+    });
+
+    document.getElementById("regNumInstallments").addEventListener("change", renderRegInstallments);
+    document.getElementById("regAutoDistributeBtn").addEventListener("click", renderRegInstallments);
+    document.getElementById("regFee").addEventListener("input", () => {
+      if (document.getElementById("regEnableInstallments").checked) renderRegInstallments();
+    });
+    document.getElementById("regDiscount").addEventListener("input", () => {
+      if (document.getElementById("regEnableInstallments").checked) renderRegInstallments();
+    });
+    document.getElementById("regRegistrationFee").addEventListener("input", () => {
+      if (document.getElementById("regEnableInstallments").checked) renderRegInstallments();
+    });
+
+    document.getElementById("editPaymentEnableInstallments").addEventListener("change", function () {
+      const container = document.getElementById("editPaymentInstallmentsContainer");
+      if (this.checked) {
+        container.classList.remove("d-none");
+        distributeEditPaymentInstallments();
+      } else {
+        container.classList.add("d-none");
+      }
+    });
+
+    document.getElementById("editPaymentNumInstallments").addEventListener("change", distributeEditPaymentInstallments);
+    document.getElementById("editPaymentAutoDistributeBtn").addEventListener("click", distributeEditPaymentInstallments);
+    document.getElementById("editPaymentTotalFee").addEventListener("input", () => {
+      if (document.getElementById("editPaymentEnableInstallments").checked) distributeEditPaymentInstallments();
+    });
+    document.getElementById("editPaymentDiscount").addEventListener("input", () => {
+      if (document.getElementById("editPaymentEnableInstallments").checked) distributeEditPaymentInstallments();
+    });
+    document.getElementById("editPaymentRegistrationFee").addEventListener("input", () => {
+      if (document.getElementById("editPaymentEnableInstallments").checked) distributeEditPaymentInstallments();
+    });
+
     // Dynamic show/hide of TxID field based on Payment Type
     document.getElementById("editPaymentType").addEventListener("change", function () {
       const txContainer = document.getElementById("editPaymentTxIdContainer");
@@ -2762,12 +3279,26 @@
       const paid = Number(document.getElementById("editPaymentAmountPaid").value) || 0;
       const payType = document.getElementById("editPaymentType").value;
       const txId = document.getElementById("editPaymentTxId").value.trim();
+      
+      const registrationFee = Number(document.getElementById("editPaymentRegistrationFee").value) || 0;
+      const enableInstallments = document.getElementById("editPaymentEnableInstallments").checked;
+      let installments = [];
+      if (enableInstallments) {
+        const rows = document.querySelectorAll("#editPaymentInstallmentsList .installment-row");
+        rows.forEach((row, index) => {
+          const amount = Number(row.querySelector(".inst-amount").value) || 0;
+          const dueDate = row.querySelector(".inst-due-date").value;
+          const status = row.querySelector(".inst-status").value;
+          installments.push({ amount, dueDate, status });
+        });
+      }
+      
       const errorDiv = document.getElementById("paymentModalError");
 
       errorDiv.classList.add("d-none");
 
       try {
-        await updatePayment(regId, total, discount, paid, payType, txId);
+        await updatePayment(regId, total, discount, paid, payType, txId, registrationFee, installments);
 
         // Audit Logging
         await addAuditLog({
@@ -2775,7 +3306,7 @@
           action_type: "UPDATE",
           collection_name: "payments",
           record_id: regId,
-          details: `Updated payment record for student "${document.getElementById("editPaymentStudentName").value}" (${regId}): Total Fee ${total} BDT, Paid ${paid} BDT, Discount ${discount} BDT, Method: ${payType}.`
+          details: `Updated payment record for student "${document.getElementById("editPaymentStudentName").value}" (${regId}): Total Fee ${total} BDT, Paid ${paid} BDT, Discount ${discount} BDT, Method: ${payType}, Registration Fee: ${registrationFee} BDT, Installments count: ${installments.length}.`
         });
         refreshAuditLogs();
 
@@ -2812,12 +3343,13 @@
       };
 
       let activeIdx = -1;
+      let currentMatches = [];
 
       function buildItems(val) {
         const q = val.toLowerCase().trim();
         if (q.length < 2) { close(); return; }
         const records = getRecords();
-        const matches = records.filter(r => {
+        currentMatches = records.filter(r => {
           const label = getLabel(r).toLowerCase();
           const num = extractNum(r.studentId);
           return label.includes(q) ||
@@ -2825,10 +3357,10 @@
             num.includes(q);
         }).slice(0, 7);
 
-        if (matches.length === 0) {
+        if (currentMatches.length === 0) {
           drop.innerHTML = '<div class="qf-empty">No matches found</div>';
         } else {
-          drop.innerHTML = matches.map((r, i) => {
+          drop.innerHTML = currentMatches.map((r, i) => {
             const num = extractNum(r.studentId) || r.studentId || '';
             const name = getLabel(r);
             return `<div class="qf-item" data-idx="${i}" data-value="${num}">
@@ -2839,10 +3371,11 @@
           drop.querySelectorAll('.qf-item').forEach(el => {
             el.addEventListener('mousedown', e => {
               e.preventDefault();
-              const val = el.dataset.value;
-              input.value = val;
+              const idx = parseInt(el.dataset.idx, 10);
+              const selectedRecord = currentMatches[idx];
+              input.value = el.dataset.value;
               close();
-              onSelect();
+              onSelect(selectedRecord);
             });
           });
         }
@@ -2874,8 +3407,28 @@
         else if (e.key === 'ArrowUp') { e.preventDefault(); navigate(-1); }
         else if (e.key === 'Enter') {
           const active = drop.querySelector('.qf-item.active');
-          if (active) { e.preventDefault(); input.value = active.dataset.value; close(); onSelect(); }
-          else { close(); onSelect(); }
+          if (active) {
+            e.preventDefault();
+            const idx = parseInt(active.dataset.idx, 10);
+            const selectedRecord = currentMatches[idx];
+            input.value = active.dataset.value;
+            close();
+            onSelect(selectedRecord);
+          }
+          else {
+            close();
+            // If no item is active, search for a matching record from all available ones
+            const query = input.value.trim().toLowerCase();
+            if (query.length >= 2) {
+              const record = getRecords().find(r => 
+                (r.studentId && r.studentId.toLowerCase() === query) ||
+                (getLabel(r) && getLabel(r).toLowerCase() === query)
+              );
+              onSelect(record);
+            } else {
+              onSelect(undefined);
+            }
+          }
         }
         else if (e.key === 'Escape') close();
       });
@@ -3093,11 +3646,12 @@
 
       try {
         allInquiries = await getAllOnlineInquiries();
+        const trainingInquiries = allInquiries.filter(i => i.source === "training-page");
         const filterVal = document.getElementById("inquiryStatusFilter")?.value || "all";
-        const filtered = filterVal === "all" ? allInquiries : allInquiries.filter(i => i.status === filterVal);
+        const filtered = filterVal === "all" ? trainingInquiries : trainingInquiries.filter(i => i.status === filterVal);
 
-        if (badge1) badge1.textContent = allInquiries.length;
-        if (badge2) badge2.textContent = allInquiries.length;
+        if (badge1) badge1.textContent = trainingInquiries.length;
+        if (badge2) badge2.textContent = trainingInquiries.length;
 
         if (filtered.length === 0) {
           tbody.innerHTML = `<tr><td colspan="8" class="text-center py-5 text-muted"><i class="bi bi-inbox fs-3 d-block mb-2 opacity-25"></i>No inquiries found.</td></tr>`;
@@ -3245,6 +3799,430 @@
     document.getElementById("logs-tab")?.addEventListener("click", refreshAuditLogs);
     document.getElementById("refreshLogsBtn")?.addEventListener("click", refreshAuditLogs);
 
+    // ============================================================
+    // DUAL-TAB INSTALLMENT PLANNER CONTROLLER
+    // ============================================================
+    let selectedStudent = null;
+
+    // Set default dates
+    const planDateInput = document.getElementById("startDate");
+    if (planDateInput) {
+      const today = new Date();
+      today.setMonth(today.getMonth() + 1); // default due next month
+      planDateInput.value = today.toISOString().substring(0, 10);
+    }
+
+    // Auto calculate remaining due
+    function updatePlanCalculations() {
+      const total = Number(document.getElementById("planTotalFee").value) || 0;
+      const discount = Number(document.getElementById("planDiscount").value) || 0;
+      const regFeeVal = Number(document.getElementById("planRegistrationFee").value) || 0;
+      const due = Math.max(0, total - discount - regFeeVal);
+      
+      document.getElementById("displayRemainingDue").textContent = `${due.toLocaleString()} BDT`;
+      validateInstallmentPlanTotals();
+    }
+
+    document.getElementById("planTotalFee").addEventListener("input", updatePlanCalculations);
+    document.getElementById("planDiscount").addEventListener("input", updatePlanCalculations);
+    document.getElementById("planRegistrationFee").addEventListener("input", updatePlanCalculations);
+
+    // Dynamic autocomplete search for Installment Tab
+    attachQuickFill(
+      'studentSearchInput', 'studentSearchDropdown',
+      () => allPayments,
+      p => p.studentName || '',
+      onPlanStudentSelect
+    );
+
+    document.getElementById("installmentSearchBtn")?.addEventListener("click", function() {
+      const inputVal = document.getElementById("studentSearchInput").value.trim().toLowerCase();
+      if (!inputVal) return;
+      const payRecord = allPayments.find(p => 
+        (p.studentId && p.studentId.toLowerCase() === inputVal) ||
+        (p.studentName && p.studentName.toLowerCase() === inputVal)
+      );
+      if (payRecord) {
+        onPlanStudentSelect(payRecord);
+      } else {
+        const matches = allPayments.filter(p => 
+          (p.studentId && p.studentId.toLowerCase().includes(inputVal)) ||
+          (p.studentName && p.studentName.toLowerCase().includes(inputVal))
+        );
+        if (matches.length === 1) {
+          onPlanStudentSelect(matches[0]);
+        } else if (matches.length > 1) {
+          alert(`Multiple students found matching "${inputVal}". Please select one from the autocomplete list.`);
+        } else {
+          alert(`No student found matching "${inputVal}".`);
+        }
+      }
+    });
+
+    function onPlanStudentSelect(payRecord) {
+      if (!payRecord) {
+        document.getElementById("studentProfileCard").classList.add("d-none");
+        document.getElementById("displayStudentId").textContent = "-";
+        document.getElementById("displayStudentName").textContent = "-";
+        document.getElementById("displayCourseBatch").textContent = "-";
+        document.getElementById("displayEmail").textContent = "-";
+        
+        document.getElementById("planTotalFee").value = 0;
+        document.getElementById("planDiscount").value = 0;
+        document.getElementById("planRegistrationFee").value = 0;
+        updatePlanCalculations();
+        
+        const container = document.getElementById("installmentsListContainer");
+        if (container) {
+          container.innerHTML = '<div class="col-12 text-center text-muted small py-4">No student loaded. Please search for a student.</div>';
+        }
+        
+        selectedStudent = null;
+        document.getElementById("saveBtn").disabled = true;
+        
+        alert("Please select a valid student from the autocomplete suggestions.");
+        return;
+      }
+      selectedStudent = payRecord;
+      
+      const regRecord = allRegistrations.find(r => r.studentId === payRecord.studentId) || {};
+      
+      // Update displays
+      document.getElementById("studentProfileCard").classList.remove("d-none");
+      document.getElementById("displayStudentId").textContent = payRecord.studentId;
+      document.getElementById("displayStudentName").textContent = payRecord.studentName;
+      document.getElementById("displayCourseBatch").textContent = `${payRecord.courseName || regRecord.course || ''} - ${payRecord.batch || regRecord.batch || ''}`;
+      document.getElementById("displayEmail").textContent = payRecord.email || regRecord.email || '-';
+
+      // Update Financials
+      document.getElementById("planTotalFee").value = payRecord.totalFee || 0;
+      document.getElementById("planDiscount").value = payRecord.discount || 0;
+      document.getElementById("planRegistrationFee").value = payRecord.registrationFee || 0;
+      updatePlanCalculations();
+
+      // Load existing schedule or auto-create one
+      if (payRecord.installments && payRecord.installments.length > 0) {
+        document.getElementById("numInstallments").value = payRecord.installments.length;
+        renderInstallmentPlanEditor(payRecord.installments);
+      } else {
+        distributePlanInstallments();
+      }
+
+      document.getElementById("saveBtn").disabled = false;
+    }
+
+    // Auto distribute remaining dues equally
+    function distributePlanInstallments() {
+      const numInst = parseInt(document.getElementById("numInstallments").value) || 1;
+      const total = Number(document.getElementById("planTotalFee").value) || 0;
+      const discount = Number(document.getElementById("planDiscount").value) || 0;
+      const regFeeVal = Number(document.getElementById("planRegistrationFee").value) || 0;
+      const due = Math.max(0, total - discount - regFeeVal);
+      
+      const share = Math.floor(due / numInst);
+      let remainder = due % numInst;
+
+      const insts = [];
+      const baseDateStr = document.getElementById("startDate").value || new Date().toISOString().substring(0, 10);
+      const baseDate = new Date(baseDateStr);
+
+      for (let i = 1; i <= numInst; i++) {
+        const instAmount = share + (i === 1 ? remainder : 0);
+        
+        const date = new Date(baseDate);
+        date.setMonth(baseDate.getMonth() + (i - 1));
+        const dateStr = date.toISOString().substring(0, 10);
+        
+        insts.push({
+          amount: instAmount,
+          dueDate: dateStr,
+          status: "Unstalled"
+        });
+      }
+      renderInstallmentPlanEditor(insts);
+    }
+
+    document.getElementById("calculateBtn").addEventListener("click", distributePlanInstallments);
+
+    // Render schedule editor input rows
+    function renderInstallmentPlanEditor(installmentsArray) {
+      const container = document.getElementById("installmentsListContainer");
+      if (!container) return;
+
+      container.innerHTML = "";
+      
+      installmentsArray.forEach((inst, idx) => {
+        const row = document.createElement("div");
+        row.className = "col-12 border-bottom pb-2 mb-2 installment-row";
+        row.innerHTML = `
+          <div class="row g-2 align-items-center">
+            <div class="col-md-4">
+              <span class="small fw-semibold text-muted">Installment #${idx + 1}</span>
+              <input type="number" class="form-control form-control-sm inst-amount" value="${inst.amount}" placeholder="Amount" required>
+            </div>
+            <div class="col-md-4">
+              <span class="small fw-semibold text-muted">Due Date</span>
+              <input type="date" class="form-control form-control-sm inst-due-date" value="${inst.dueDate || ''}" required>
+            </div>
+            <div class="col-md-4">
+              <span class="small fw-semibold text-muted">Status</span>
+              <select class="form-select form-select-sm inst-status">
+                <option value="Unstalled" ${inst.status === 'Unstalled' ? 'selected' : ''}>Unstalled (Pending)</option>
+                <option value="Staled" ${inst.status === 'Staled' ? 'selected' : ''}>Staled (Overdue)</option>
+                <option value="Paid" ${inst.status === 'Paid' ? 'selected' : ''}>Paid</option>
+              </select>
+            </div>
+          </div>
+        `;
+        
+        row.querySelector(".inst-amount").addEventListener("input", validateInstallmentPlanTotals);
+        row.querySelector(".inst-due-date").addEventListener("input", validateInstallmentPlanTotals);
+        row.querySelector(".inst-status").addEventListener("change", validateInstallmentPlanTotals);
+        
+        container.appendChild(row);
+      });
+
+      validateInstallmentPlanTotals();
+    }
+
+    // Real time validation checking
+    function validateInstallmentPlanTotals() {
+      const badge = document.getElementById("validationBadge");
+      const saveBtn = document.getElementById("saveBtn");
+      if (!badge) return;
+
+      if (!selectedStudent) {
+        badge.className = "badge bg-secondary";
+        badge.textContent = "No Student Loaded";
+        saveBtn.disabled = true;
+        return;
+      }
+
+      const total = Number(document.getElementById("planTotalFee").value) || 0;
+      const discount = Number(document.getElementById("planDiscount").value) || 0;
+      const regFeeVal = Number(document.getElementById("planRegistrationFee").value) || 0;
+      const due = Math.max(0, total - discount - regFeeVal);
+
+      let sum = 0;
+      const instRows = document.querySelectorAll("#installmentsListContainer .installment-row");
+      instRows.forEach(row => {
+        sum += Number(row.querySelector(".inst-amount").value) || 0;
+      });
+
+      if (sum === due) {
+        badge.className = "badge bg-success";
+        badge.textContent = "✓ Valid Schedule: Amounts match remaining due";
+        saveBtn.disabled = false;
+      } else {
+        const diff = due - sum;
+        badge.className = "badge bg-danger";
+        if (diff > 0) {
+          badge.textContent = `⚠ Invalid Schedule: BDT ${diff.toLocaleString()} underpaid`;
+        } else {
+          badge.textContent = `⚠ Invalid Schedule: BDT ${Math.abs(diff).toLocaleString()} excess`;
+        }
+        saveBtn.disabled = true;
+      }
+    }
+
+    // Save schedule plan to Firestore
+    document.getElementById("saveBtn").addEventListener("click", async function () {
+      if (!selectedStudent) return;
+      const saveBtn = document.getElementById("saveBtn");
+      const origText = saveBtn.innerHTML;
+
+      try {
+        saveBtn.disabled = true;
+        saveBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status"></span>Saving...';
+
+        const total = Number(document.getElementById("planTotalFee").value) || 0;
+        const discount = Number(document.getElementById("planDiscount").value) || 0;
+        const regFeeVal = Number(document.getElementById("planRegistrationFee").value) || 0;
+        
+        let amountPaid = regFeeVal;
+        const installments = [];
+        const instRows = document.querySelectorAll("#installmentsListContainer .installment-row");
+        instRows.forEach(row => {
+          const amount = Number(row.querySelector(".inst-amount").value) || 0;
+          const dueDate = row.querySelector(".inst-due-date").value;
+          const status = row.querySelector(".inst-status").value;
+          
+          if (status === "Paid") {
+            amountPaid += amount;
+          }
+          
+          installments.push({ amount, dueDate, status });
+        });
+
+        const method = selectedStudent.paymentType || "Cash";
+        const txId = selectedStudent.transactionId || "";
+
+        await updatePayment(
+          selectedStudent.studentId,
+          total,
+          discount,
+          amountPaid,
+          method,
+          txId,
+          regFeeVal,
+          installments
+        );
+
+        // Audit Logging
+        await addAuditLog({
+          user_email: currentUserEmail || "admin@intrex-digital.com",
+          action_type: "UPDATE",
+          collection_name: "payments",
+          record_id: selectedStudent.studentId,
+          details: `Updated custom installment schedule for student "${selectedStudent.studentName}" (${selectedStudent.studentId}): Total Fee ${total} BDT, Paid ${amountPaid} BDT, Discount ${discount} BDT, Reg Fee: ${regFeeVal} BDT, Installments count: ${installments.length}.`
+        });
+        refreshAuditLogs();
+
+        alert("Installment plan saved successfully!");
+        
+        // Refresh local memory and reload student details
+        allPayments = await getAllPayments();
+        const updatedRecord = allPayments.find(p => p.studentId === selectedStudent.studentId);
+        onPlanStudentSelect(updatedRecord);
+        await loadPayments();
+
+      } catch (err) {
+        alert("Failed to save installment schedule: " + err.message);
+      } finally {
+        saveBtn.disabled = false;
+        saveBtn.innerHTML = origText;
+      }
+    });
+
+    // Print plan handler
+    document.getElementById("printBtn").addEventListener("click", function () {
+      if (!selectedStudent) {
+        alert("Please load a student record first before printing.");
+        return;
+      }
+
+      const courseBatch = document.getElementById("displayCourseBatch").textContent;
+      const email = document.getElementById("displayEmail").textContent;
+
+      const total = Number(document.getElementById("planTotalFee").value) || 0;
+      const discount = Number(document.getElementById("planDiscount").value) || 0;
+      const regFeeVal = Number(document.getElementById("planRegistrationFee").value) || 0;
+      const due = Math.max(0, total - discount - regFeeVal);
+
+      let installmentsHtml = "";
+      const instRows = document.querySelectorAll("#installmentsListContainer .installment-row");
+      instRows.forEach((row, idx) => {
+        const amount = Number(row.querySelector(".inst-amount").value) || 0;
+        const dueDate = row.querySelector(".inst-due-date").value;
+        const status = row.querySelector(".inst-status").value;
+
+        installmentsHtml += `
+          <tr>
+            <td class="fw-semibold">Installment #${idx + 1}</td>
+            <td class="fw-bold">${amount.toLocaleString()} BDT</td>
+            <td>${dueDate}</td>
+            <td><strong>${status}</strong></td>
+          </tr>
+        `;
+      });
+
+      const printWindow = window.open('', '_blank');
+      const printHTML = `
+        <html><head>
+        <title>Print - Installment Agreement - ${selectedStudent.studentId}</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+        <style>
+          body { font-family: "Inter", sans-serif; background: #fff; color: #333; padding: 40px; }
+          @media print { body { padding: 0; } .btn-print-hide { display: none; } }
+        </style>
+        </head><body>
+          <div class="d-flex justify-content-between align-items-center mb-4 pb-3 border-bottom">
+            <div>
+              <h2 class="fw-bold text-uppercase mb-1">Intrex Digital Hub</h2>
+              <p class="text-muted small mb-0">100/2, Chowdhury Para, Malibagh, Dhaka 1219 | Phone: +8809678529839</p>
+            </div>
+            <button class="btn btn-primary btn-print-hide" onclick="window.print()"><i class="bi bi-printer me-2"></i>Print</button>
+          </div>
+          
+          <h3 class="fw-bold text-center text-uppercase my-4" style="color: #1a4a4a; letter-spacing: 1px;">Payment Agreement & Installment Schedule</h3>
+
+          <div class="row g-3 mb-4">
+            <div class="col-6">
+              <h5 class="fw-bold mb-2 pb-1 border-bottom">Student Information</h5>
+              <table class="table table-sm table-borderless small">
+                <tr><td class="fw-semibold text-muted" style="width: 35%;">Student Name:</td><td class="fw-bold text-dark">${selectedStudent.studentName}</td></tr>
+                <tr><td class="fw-semibold text-muted">Student ID:</td><td class="fw-bold font-monospace text-dark">${selectedStudent.studentId}</td></tr>
+                <tr><td class="fw-semibold text-muted">Course/Batch:</td><td class="text-dark">${courseBatch}</td></tr>
+                <tr><td class="fw-semibold text-muted">Email:</td><td class="text-dark">${email}</td></tr>
+              </table>
+            </div>
+            <div class="col-6 border-start ps-4">
+              <h5 class="fw-bold mb-2 pb-1 border-bottom">Financial Breakdown</h5>
+              <table class="table table-sm table-borderless small">
+                <tr><td class="fw-semibold text-muted" style="width: 45%;">Course Total Fee:</td><td class="text-dark">${total.toLocaleString()} BDT</td></tr>
+                <tr><td class="fw-semibold text-muted">Applied Discount:</td><td class="text-dark">${discount.toLocaleString()} BDT</td></tr>
+                <tr><td class="fw-semibold text-muted">Registration Fee Paid:</td><td class="fw-bold text-primary">${regFeeVal.toLocaleString()} BDT</td></tr>
+                <tr class="border-top"><td class="fw-bold text-dark">Total Remaining Due:</td><td class="fw-bold text-success">${due.toLocaleString()} BDT</td></tr>
+              </table>
+            </div>
+          </div>
+
+          <div class="mb-4">
+            <h5 class="fw-bold mb-3 pb-1 border-bottom">Installment Payment Schedule</h5>
+            <table class="table table-bordered align-middle">
+              <thead class="table-light">
+                <tr>
+                  <th>Installment Period</th>
+                  <th>Amount Due</th>
+                  <th>Due Date</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${installmentsHtml}
+              </tbody>
+            </table>
+          </div>
+
+          <div class="alert alert-light border small mb-5 p-3">
+            <h6 class="fw-bold mb-2">Terms & Conditions:</h6>
+            <ol class="mb-0 ps-3 text-muted" style="line-height: 1.5;">
+              <li>Installments must be paid on or before their respective due dates.</li>
+              <li>Failure to clear staled (overdue) installments may result in temporary account hold or class suspension.</li>
+              <li>Any extension requests must be formally submitted in writing 3 business days prior to the due date.</li>
+            </ol>
+          </div>
+
+          <div class="row pt-5 mt-5">
+            <div class="col-6 text-center">
+              <div class="border-top pt-2 mx-auto" style="width: 200px;">
+                <p class="small fw-bold mb-0">Student's Signature</p>
+                <p class="text-muted" style="font-size: 0.7rem;">Date: ____ / ____ / ________</p>
+              </div>
+            </div>
+            <div class="col-6 text-center">
+              <div class="border-top pt-2 mx-auto" style="width: 200px;">
+                <p class="small fw-bold mb-0">Authorized Representative</p>
+                <p class="text-muted" style="font-size: 0.7rem;">Intrex Digital Hub</p>
+              </div>
+            </div>
+          </div>
+        </body></html>
+      `;
+
+      printWindow.document.write(printHTML);
+      printWindow.document.close();
+      
+      const script = printWindow.document.createElement("script");
+      script.textContent = `
+        window.onload = function() {
+          window.print();
+          setTimeout(function() { window.close(); }, 500);
+        };
+      `;
+      printWindow.document.body.appendChild(script);
+    });
+
   </script>
 
   <!-- Edit Payment Modal -->
@@ -3283,6 +4261,42 @@
               <div class="col-md-6">
                 <label for="editPaymentDiscount" class="form-label small fw-semibold mb-1">Discount (BDT)</label>
                 <input type="number" min="0" class="form-control" id="editPaymentDiscount" value="0">
+              </div>
+            </div>
+
+            <div class="row g-3 mb-3">
+              <div class="col-md-6">
+                <label for="editPaymentRegistrationFee" class="form-label small fw-semibold mb-1">Registration Fee (BDT)</label>
+                <input type="number" min="0" class="form-control" id="editPaymentRegistrationFee" value="0">
+              </div>
+              <div class="col-md-6 d-flex align-items-end">
+                <div class="form-check form-switch mb-2">
+                  <input class="form-check-input" type="checkbox" id="editPaymentEnableInstallments">
+                  <label class="form-check-label small fw-semibold" for="editPaymentEnableInstallments">Enable Installments</label>
+                </div>
+              </div>
+            </div>
+
+            <!-- Installment Details Container in Edit Modal -->
+            <div id="editPaymentInstallmentsContainer" class="d-none border p-3 rounded-3 mb-3 bg-light">
+              <div class="row g-2 align-items-center mb-3">
+                <div class="col-md-6">
+                  <label class="form-label small fw-semibold mb-1" for="editPaymentNumInstallments">Number of Installments</label>
+                  <select class="form-select form-select-sm" id="editPaymentNumInstallments">
+                    <option value="1">1 Installment</option>
+                    <option value="2">2 Installments</option>
+                    <option value="3">3 Installments</option>
+                    <option value="4">4 Installments</option>
+                  </select>
+                </div>
+                <div class="col-md-6 text-end">
+                  <button type="button" class="btn btn-xs btn-outline-primary" id="editPaymentAutoDistributeBtn">
+                    <i class="bi bi-magic me-1"></i>Auto Distribute Due
+                  </button>
+                </div>
+              </div>
+              <div id="editPaymentInstallmentsList" class="row g-2">
+                <!-- Dynamic Installment Rows for editing -->
               </div>
             </div>
 

@@ -305,7 +305,7 @@
                 <ul class="list-unstyled">
                   <li><a href="index.html#home">Home</a></li>
                   <li><a href="about/background.html">About Us</a></li>
-                  <li><a href="verify.html">Verify Certificate</a></li>
+                  <li><a href="verify-certificate.html">Verify Certificate</a></li>
                   <li><a href="index.html#pricing">Pricing Plans</a></li>
                   <li><a href="index.html#testimonials">Testimonials</a></li>
                 </ul>
@@ -348,7 +348,7 @@
 
   <!-- Load Verify logic -->
   <script type="module">
-    import { verifyCertificate } from "./assets/js/verify.js";
+    import { verifyCertificate } from "./assets/js/training.js";
 
     document.getElementById("verifyForm").addEventListener("submit", async function (e) {
       e.preventDefault();
@@ -379,7 +379,7 @@
           });
 
           const origin = "https://intrex-digital.com";
-          const verifyUrl = `${origin}/verify.html?id=${certData.certificateId}`;
+          const verifyUrl = `${origin}/verify-certificate.html?id=${certData.certificateId}`;
 
           // Generate Verification Report Data Table Markup
           certResult.innerHTML = `
@@ -460,7 +460,7 @@
       }
     });
 
-    // Check if query param exists (e.g. verify.html?id=495001)
+    // Check if query param exists (e.g. verify-certificate.html?id=495001)
     const urlParams = new URLSearchParams(window.location.search);
     const queryId = urlParams.get('id');
     if (queryId) {

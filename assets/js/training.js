@@ -1,4 +1,4 @@
-// assets/js/verify.js
+// assets/js/training.js
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 import { getFirestore, doc, getDoc, setDoc, serverTimestamp, collection, getDocs, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged, setPersistence, browserSessionPersistence } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
@@ -30,13 +30,13 @@ if (firebaseConfig.apiKey && !firebaseConfig.apiKey.includes("placeholder-key"))
   });
   isFirebaseConfigured = true;
 } else {
-  console.warn("Firebase configuration has not been set up. Please update the firebaseConfig object in assets/js/verify.js.");
+  console.warn("Firebase configuration has not been set up. Please update the firebaseConfig object in assets/js/training.js.");
 }
 
 // Helper to check configuration state
 function checkConfiguration() {
   if (!isFirebaseConfigured) {
-    alert("Firebase configuration is not set up yet. Please enter your Firebase config details in 'assets/js/verify.js'.");
+    alert("Firebase configuration is not set up yet. Please enter your Firebase config details in 'assets/js/training.js'.");
     return false;
   }
   return true;
@@ -204,7 +204,7 @@ function generateStudentId(courseName, batchName, registrationsList) {
 export async function addRegistration(regData) {
   if (!checkConfiguration()) return null;
 
-  const { fullName, email, phone, course, batch, education, schedule, message, totalFee, discount, amountPaid, paymentType, transactionId } = regData;
+  const { fullName, email, phone, course, batch, education, schedule, message, totalFee, discount, amountPaid, paymentType, transactionId, registrationFee, installments } = regData;
 
   if (!fullName || !email || !phone || !course || !batch || !schedule) {
     throw new Error("Missing required registration fields");
@@ -263,7 +263,9 @@ export async function addRegistration(regData) {
       paymentType: paymentType || "Cash",
       transactionId: (paymentType !== "Cash" && transactionId) ? transactionId.trim() : "",
       createdAt: serverTimestamp(),
-      updatedAt: serverTimestamp()
+      updatedAt: serverTimestamp(),
+      registrationFee: Number(registrationFee) || 0,
+      installments: installments || []
     });
 
     return studentId;
@@ -436,7 +438,12 @@ export async function getAllPayments() {
         dueAmount: 0,
         paymentType: "Bkash",
         transactionId: "TRX998877",
-        updatedAt: new Date()
+        updatedAt: new Date(),
+        registrationFee: 2000,
+        installments: [
+          { amount: 4000, dueDate: "2026-07-01", status: "Paid" },
+          { amount: 4000, dueDate: "2026-08-01", status: "Paid" }
+        ]
       }
     ];
   }
@@ -457,7 +464,7 @@ export async function getAllPayments() {
 }
 
 // Update payment record details
-export async function updatePayment(studentId, totalFee, discount, amountPaid, paymentType, transactionId) {
+export async function updatePayment(studentId, totalFee, discount, amountPaid, paymentType, transactionId, registrationFee, installments) {
   if (!checkConfiguration()) return;
 
   try {
@@ -480,7 +487,9 @@ export async function updatePayment(studentId, totalFee, discount, amountPaid, p
       status: status,
       paymentType: paymentType || "Cash",
       transactionId: (paymentType !== "Cash" && transactionId) ? transactionId.trim() : "",
-      updatedAt: serverTimestamp()
+      updatedAt: serverTimestamp(),
+      registrationFee: Number(registrationFee) || 0,
+      installments: installments || []
     }, { merge: true });
   } catch (error) {
     console.error("Error updating payment: ", error);

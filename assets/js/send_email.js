@@ -24,10 +24,10 @@ document.addEventListener("DOMContentLoaded", function () {
       const message = (document.getElementById("message")?.value || "").trim();
 
       // Resolve module path depending on root or sub-directory location
-      let importPath = "/assets/js/verify.js";
+      let importPath = "/assets/js/training.js";
       if (window.location.hostname === "" || window.location.protocol === "file:") {
         const depth = window.location.pathname.split("/services/").length > 1 ? "../" : "./";
-        importPath = depth + "assets/js/verify.js";
+        importPath = depth + "assets/js/training.js";
       }
 
       import(importPath)
@@ -94,7 +94,7 @@ document.addEventListener("DOMContentLoaded", function () {
           }
         })
         .catch((err) => {
-          console.error("Failed to dynamically import verify.js module:", err);
+          console.error("Failed to dynamically import training.js module:", err);
           submitBtn.disabled = false;
           submitBtn.textContent = originalBtnText;
           errorMessage.textContent = "Unable to connect. Please check your network and try again.";
@@ -134,10 +134,10 @@ document.addEventListener("DOMContentLoaded", function () {
       }
 
       // Resolve module path depending on root or sub-directory location
-      let importPath = "/assets/js/verify.js";
+      let importPath = "/assets/js/training.js";
       if (window.location.hostname === "" || window.location.protocol === "file:") {
         const depth = window.location.pathname.split("/services/").length > 1 ? "../" : "./";
-        importPath = depth + "assets/js/verify.js";
+        importPath = depth + "assets/js/training.js";
       }
 
       import(importPath)
@@ -162,7 +162,7 @@ document.addEventListener("DOMContentLoaded", function () {
           }
         })
         .catch((err) => {
-          console.error("Failed to dynamically import verify.js module:", err);
+          console.error("Failed to dynamically import training.js module:", err);
           submitBtn.disabled = false;
           submitBtn.textContent = originalBtnText;
           if (feedback) {
