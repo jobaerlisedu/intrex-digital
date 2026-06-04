@@ -162,6 +162,14 @@
                   <i class="bi bi-bar-chart-line"></i> Overview
                 </button>
                 <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
+                  id="inquiries-tab" data-bs-toggle="tab" data-bs-target="#inquiriesPanel" type="button" role="tab">
+                  <i class="bi bi-chat-left-text"></i> Inquiries
+                </button>
+                <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
+                  id="newsletter-tab" data-bs-toggle="tab" data-bs-target="#newsletterPanel" type="button" role="tab">
+                  <i class="bi bi-envelope-at"></i> Newsletter Subs
+                </button>
+                <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
                   id="employees-tab" data-bs-toggle="tab" data-bs-target="#employeesPanel" type="button" role="tab">
                   <i class="bi bi-people"></i> Employee Database
                 </button>
@@ -207,7 +215,7 @@
                 </button>
                 <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
                   id="hosting-tab" data-bs-toggle="tab" data-bs-target="#hostingPanel" type="button" role="tab">
-                  <i class="bi bi-server"></i> Domain & Hosting
+                  <i class="bi bi-server"></i> Domain &amp; Hosting
                 </button>
                 <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
                   id="reports-tab" data-bs-toggle="tab" data-bs-target="#reportsPanel" type="button" role="tab">
@@ -1824,6 +1832,87 @@
                   </div>
                 </div>
 
+                <!-- 10. ONLINE INQUIRIES PANEL -->
+                <div class="tab-pane fade" id="inquiriesPanel" role="tabpanel">
+                  <div class="card p-4 rounded-4 shadow-sm border mb-4">
+                    <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom flex-wrap gap-2">
+                      <h3 class="h5 fw-bold text-heading-color mb-0">
+                        <i class="bi bi-chat-left-text me-2 text-primary"></i>Online Inquiries
+                      </h3>
+                      <div class="d-flex align-items-center gap-2">
+                        <select class="form-select form-select-sm" id="inquiryStatusFilter" style="width: 150px;">
+                          <option value="all" selected>All Status</option>
+                          <option value="New">New</option>
+                          <option value="Replied">Replied</option>
+                          <option value="Closed">Closed</option>
+                        </select>
+                        <button id="refreshInquiriesBtn" class="btn btn-sm btn-outline-primary py-2 px-3 d-flex align-items-center gap-2" type="button" title="Refresh Inquiries">
+                          <i class="bi bi-arrow-clockwise"></i> Refresh
+                        </button>
+                      </div>
+                    </div>
+                    <div class="table-responsive" style="max-height: 620px; overflow-y: auto;">
+                      <table class="table table-hover align-middle mb-0" id="inquiriesTable">
+                        <thead class="table-light sticky-top">
+                          <tr>
+                            <th class="small fw-semibold" style="min-width: 100px;">Inquiry Key</th>
+                            <th class="small fw-semibold" style="min-width: 140px;">Name & Phone</th>
+                            <th class="small fw-semibold" style="min-width: 160px;">Email</th>
+                            <th class="small fw-semibold" style="min-width: 180px;">Subject</th>
+                            <th class="small fw-semibold" style="min-width: 100px;">Source</th>
+                            <th class="small fw-semibold" style="min-width: 100px;">Status</th>
+                            <th class="small fw-semibold" style="min-width: 130px;">Submitted</th>
+                            <th class="small fw-semibold text-center" style="min-width: 100px;">Actions</th>
+                          </tr>
+                        </thead>
+                        <tbody id="inquiriesTableBody">
+                          <tr>
+                            <td colspan="8" class="text-center py-4 text-muted">
+                              <div class="spinner-border spinner-border-sm text-primary me-2" role="status"></div>
+                              Loading inquiries...
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- 10.5. NEWSLETTER SUBSCRIPTIONS PANEL -->
+                <div class="tab-pane fade" id="newsletterPanel" role="tabpanel">
+                  <div class="card p-4 rounded-4 shadow-sm border mb-4">
+                    <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom flex-wrap gap-2">
+                      <h3 class="h5 fw-bold text-heading-color mb-0">
+                        <i class="bi bi-envelope-at me-2 text-primary"></i>Newsletter Subscriptions
+                      </h3>
+                      <div class="d-flex align-items-center gap-2">
+                        <button id="refreshNewsletterBtn" class="btn btn-sm btn-outline-primary py-2 px-3 d-flex align-items-center gap-2" type="button" title="Refresh Subscriptions">
+                          <i class="bi bi-arrow-clockwise"></i> Refresh
+                        </button>
+                      </div>
+                    </div>
+                    <div class="table-responsive" style="max-height: 620px; overflow-y: auto;">
+                      <table class="table table-hover align-middle mb-0" id="newsletterTable">
+                        <thead class="table-light sticky-top">
+                          <tr>
+                            <th class="small fw-semibold" style="min-width: 250px;">Subscriber Email</th>
+                            <th class="small fw-semibold" style="min-width: 180px;">Subscribed Timestamp</th>
+                            <th class="small fw-semibold text-center" style="min-width: 100px;">Actions</th>
+                          </tr>
+                        </thead>
+                        <tbody id="newsletterTableBody">
+                          <tr>
+                            <td colspan="3" class="text-center py-4 text-muted">
+                              <div class="spinner-border spinner-border-sm text-primary me-2" role="status"></div>
+                              Loading subscriptions...
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+
                 <!-- 11. SYSTEM AUDIT LOGS PANEL -->
                 <div class="tab-pane fade" id="logsPanel" role="tabpanel">
                   <div class="card p-4 rounded-4 shadow-sm border">
@@ -1835,9 +1924,9 @@
                         <i class="bi bi-arrow-clockwise"></i> Refresh Logs
                       </button>
                     </div>
-                    <div class="table-responsive">
+                    <div class="table-responsive" style="max-height: 620px; overflow-y: auto;">
                       <table class="table table-hover align-middle mb-0" id="logsTable">
-                        <thead class="table-light">
+                        <thead class="table-light sticky-top">
                           <tr>
                             <th>Log ID</th>
                             <th>Timestamp</th>
@@ -1874,7 +1963,7 @@
     <div class="modal-dialog modal-lg modal-dialog-centered">
       <div class="modal-content rounded-4 border-0 shadow-lg overflow-hidden">
         <div class="modal-header border-0 flex-column align-items-start p-4 text-white position-relative"
-          style="background-color: var(--primary-color);">
+          style="background-color: var(--bs-primary);">
           <button type="button" class="btn-close btn-close-white position-absolute top-0 end-0 m-3"
             data-bs-dismiss="modal" aria-label="Close" style="font-size: 0.85rem; opacity: 0.8;"></button>
           <span class="badge text-uppercase bg-white text-dark mb-2 px-3 py-2 fw-bold" id="detailsModalBadge"
@@ -1917,7 +2006,9 @@
       addSupportTicket, getAllSupportTickets, deleteSupportTicket,
       addClientPayment, getAllClientPayments, deleteClientPayment,
       addDomainHosting, getAllDomainHosting, deleteDomainHosting,
-      addAuditLog, getAllAuditLogs
+      addAuditLog, getAllAuditLogs,
+      getAllOnlineInquiries, deleteOnlineInquiry,
+      getAllNewsletterSubscriptions, deleteNewsletterSubscription
     } from "./assets/js/solution.js";
 
     // Set today's dates as default (except clearance date & client payment received date)
@@ -1946,6 +2037,8 @@
     let allSupportTickets = [];
     let allClientPayments = [];
     let allDomainHosting = [];
+    let allInquiries = [];
+    let allNewsletterSubs = [];
 
     let chartProjectStatusInstance = null;
     let chartBudgetVsExpenseInstance = null;
@@ -2636,6 +2729,8 @@
         allClientPayments = await getAllClientPayments();
         allDomainHosting = await getAllDomainHosting();
         allAuditLogs = await getAllAuditLogs();
+        allInquiries = await getAllOnlineInquiries();
+        allNewsletterSubs = await getAllNewsletterSubscriptions();
 
         populateProjectDropdowns();
         populateContactSelects();
@@ -2660,6 +2755,8 @@
         renderSupportTickets();
         renderDomainHosting();
         renderAuditLogs();
+        renderInquiries();
+        renderNewsletterSubscriptions();
 
         updateOverview();
       } catch (err) {
@@ -4741,6 +4838,197 @@
       });
     }
 
+    async function refreshInquiries() {
+      const tbody = document.getElementById("inquiriesTableBody");
+      if (tbody) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="8" class="text-center py-4 text-muted">
+              <div class="spinner-border spinner-border-sm text-primary me-2" role="status"></div>
+              Loading inquiries...
+            </td>
+          </tr>
+        `;
+      }
+      try {
+        allInquiries = await getAllOnlineInquiries();
+        renderInquiries();
+      } catch (err) {
+        console.error("refreshInquiries failed:", err);
+        if (tbody) {
+          tbody.innerHTML = `<tr><td colspan="8" class="text-center py-4 text-danger">Error loading inquiries: ${err.message}</td></tr>`;
+        }
+      }
+    }
+
+    function renderInquiries() {
+      const tbody = document.getElementById("inquiriesTableBody");
+      if (!tbody) return;
+
+      // Filter out training-page inquiries
+      const filteredSource = allInquiries.filter(inq => inq.source !== "training-page");
+
+      // Filter by status filter dropdown
+      const filterVal = document.getElementById("inquiryStatusFilter")?.value || "all";
+      const filtered = filterVal === "all" ? filteredSource : filteredSource.filter(i => i.status === filterVal);
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="8" class="text-center py-5 text-muted"><i class="bi bi-inbox fs-3 d-block mb-2 opacity-25"></i>No inquiries found.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = filtered.map(inq => {
+        let dateStr = "N/A";
+        if (inq.createdAt) {
+          const dt = inq.createdAt.toDate ? inq.createdAt.toDate() : new Date(inq.createdAt);
+          dateStr = dt.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: '2-digit', hour: '2-digit', minute: '2-digit' });
+        }
+        const statusColor = inq.status === 'New' ? 'danger' : inq.status === 'Replied' ? 'warning' : 'secondary';
+        const msgPreview = (inq.message || "").length > 80 ? (inq.message || "").substring(0, 80) + "…" : (inq.message || "");
+        
+        return `
+          <tr>
+            <td><code class="badge bg-primary text-white font-monospace" style="font-size:0.7rem;">${inq.inquiryKey}</code></td>
+            <td>
+              <span class="fw-semibold small">${inq.name || ""}</span>
+              ${inq.phone ? `<br><a href="tel:${inq.phone}" class="text-muted small text-decoration-none" style="font-size:0.75rem;"><i class="bi bi-telephone me-1"></i>${inq.phone}</a>` : ""}
+            </td>
+            <td><a href="mailto:${inq.email || ""}" class="small text-primary text-decoration-none">${inq.email || ""}</a></td>
+            <td><span class="small">${inq.subject || "—"}</span></td>
+            <td><span class="badge bg-secondary text-white" style="font-size:0.65rem;">${inq.source || 'home-page'}</span></td>
+            <td class="text-center"><span class="badge bg-${statusColor}" style="font-size:0.7rem;">${inq.status || 'New'}</span></td>
+            <td><span class="text-muted small">${dateStr}</span></td>
+            <td class="text-center">
+              <div class="d-flex justify-content-center gap-1">
+                <button class="btn btn-sm btn-outline-info py-0 px-2 view-inq-btn" data-key="${inq.inquiryKey}" title="View full details">
+                  <i class="bi bi-eye"></i>
+                </button>
+                <button class="btn btn-sm btn-outline-danger py-0 px-2 delete-inq-btn" data-key="${inq.inquiryKey}" data-name="${inq.name}" title="Delete inquiry">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
+
+      // Bind view buttons
+      tbody.querySelectorAll(".view-inq-btn").forEach(btn => {
+        btn.onclick = function () {
+          showRecordDetails("inquiry", btn.getAttribute("data-key"));
+        };
+      });
+
+      // Bind delete buttons
+      tbody.querySelectorAll(".delete-inq-btn").forEach(btn => {
+        btn.onclick = async function () {
+          const key = btn.getAttribute("data-key");
+          const name = btn.getAttribute("data-name");
+          if (!confirm(`Delete inquiry from "${name}" (${key})?`)) return;
+          try {
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status"></span>';
+            await deleteOnlineInquiry(key);
+
+            // Audit Logging
+            await addAuditLog({
+              user_email: currentUserEmail || "admin@example.com",
+              action_type: "DELETE",
+              collection_name: "online_inquiries",
+              record_id: key,
+              details: `Deleted online inquiry from "${name}"`
+            });
+            refreshAuditLogs();
+
+            await refreshInquiries();
+          } catch (err) {
+            alert("Failed to delete inquiry: " + err.message);
+            btn.disabled = false;
+            btn.innerHTML = '<i class="bi bi-trash"></i>';
+          }
+        };
+      });
+    }
+
+    async function refreshNewsletterSubscriptions() {
+      const tbody = document.getElementById("newsletterTableBody");
+      if (tbody) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="3" class="text-center py-4 text-muted">
+              <div class="spinner-border spinner-border-sm text-primary me-2" role="status"></div>
+              Refreshing subscriptions...
+            </td>
+          </tr>
+        `;
+      }
+      try {
+        allNewsletterSubs = await getAllNewsletterSubscriptions();
+        renderNewsletterSubscriptions();
+      } catch (err) {
+        console.error("Failed to refresh newsletter subscriptions:", err);
+      }
+    }
+
+    function renderNewsletterSubscriptions() {
+      const tbody = document.getElementById("newsletterTableBody");
+      if (!tbody) return;
+
+      if (allNewsletterSubs.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="3" class="text-center py-5 text-muted"><i class="bi bi-inbox fs-3 d-block mb-2 opacity-25"></i>No subscriptions found.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = allNewsletterSubs.map(sub => {
+        let dateStr = "N/A";
+        if (sub.createdAt) {
+          const dt = sub.createdAt.toDate ? sub.createdAt.toDate() : new Date(sub.createdAt);
+          dateStr = dt.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: '2-digit', hour: '2-digit', minute: '2-digit' });
+        }
+        
+        return `
+          <tr>
+            <td><a href="mailto:${sub.email || ""}" class="fw-semibold text-primary text-decoration-none">${sub.email || ""}</a></td>
+            <td><span class="text-muted small">${dateStr}</span></td>
+            <td class="text-center">
+              <button class="btn btn-sm btn-outline-danger py-0 px-2 delete-sub-btn" data-email="${sub.email}" title="Delete subscription">
+                <i class="bi bi-trash"></i>
+              </button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+
+      // Bind delete buttons
+      tbody.querySelectorAll(".delete-sub-btn").forEach(btn => {
+        btn.onclick = async function () {
+          const email = btn.getAttribute("data-email");
+          if (!confirm(`Delete newsletter subscription for "${email}"?`)) return;
+          try {
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status"></span>';
+            await deleteNewsletterSubscription(email);
+
+            // Audit Logging
+            await addAuditLog({
+              user_email: currentUserEmail || "admin@example.com",
+              action_type: "DELETE",
+              collection_name: "newsletter_subscriptions",
+              record_id: email,
+              details: `Deleted newsletter subscription for "${email}"`
+            });
+            refreshAuditLogs();
+
+            await refreshNewsletterSubscriptions();
+          } catch (err) {
+            alert("Failed to delete subscription: " + err.message);
+            btn.disabled = false;
+            btn.innerHTML = '<i class="bi bi-trash"></i>';
+          }
+        };
+      });
+    }
+
     // ==========================================
     // PREMIUM RECORD DETAILS VIEW POPUP SYSTEM
     // ==========================================
@@ -4950,6 +5238,23 @@
             { label: "Registration Date", key: "reg_date", type: "date", cols: 6 },
             { label: "Next Renewal Date", key: "renewal_date", type: "date", cols: 6 }
           ]
+        },
+        inquiry: {
+          title: "Online Inquiry Details",
+          badge: "Visitor Inquiry",
+          getRecords: () => allInquiries,
+          idField: "inquiryKey",
+          fields: [
+            { label: "Inquiry Key", key: "inquiryKey", type: "code", cols: 6 },
+            { label: "Inquiry Status", key: "status", type: "badge", cols: 6 },
+            { label: "Visitor Name", key: "name", type: "text", cols: 6 },
+            { label: "Submitted Source / Page", key: "source", type: "badge", cols: 6 },
+            { label: "Email Address", key: "email", type: "email", cols: 6 },
+            { label: "Mobile Phone", key: "phone", type: "phone", cols: 6 },
+            { label: "Subject", key: "subject", type: "text", cols: 12 },
+            { label: "Inquiry Message", key: "message", type: "textarea", cols: 12 },
+            { label: "Submitted Timestamp", key: "createdAt", type: "datetime", cols: 12 }
+          ]
         }
       };
 
@@ -4973,6 +5278,7 @@
       else if (type === "ticket") subtitleText = record.ticket_subject;
       else if (type === "meeting") subtitleText = record.meeting_title;
       else if (type === "hosting") subtitleText = record.asset_url;
+      else if (type === "inquiry") subtitleText = record.subject || record.name;
       document.getElementById("detailsModalSubtitle").textContent = subtitleText;
 
       // Status Badge Style Resolver
@@ -5032,7 +5338,17 @@
               displayHtml = `<i class="bi bi-calendar-event me-2 text-primary"></i>${val}`;
               break;
             case 'datetime':
-              displayHtml = `<i class="bi bi-clock me-2 text-primary"></i>${val.replace('T', ' ')}`;
+              let formattedDt = val;
+              if (val && typeof val.toDate === 'function') {
+                const dt = val.toDate();
+                formattedDt = dt.toLocaleString('en-US');
+              } else if (val instanceof Date) {
+                formattedDt = val.toLocaleString('en-US');
+              }
+              if (typeof formattedDt === 'string') {
+                formattedDt = formattedDt.replace('T', ' ');
+              }
+              displayHtml = `<i class="bi bi-clock me-2 text-primary"></i>${formattedDt}`;
               break;
             case 'phone':
               displayHtml = `<a href="tel:${val}" class="text-decoration-none text-heading-color fw-semibold"><i class="bi bi-telephone me-2 text-primary"></i>${val}</a>`;
@@ -5093,7 +5409,7 @@
       }).join('');
 
       // Launch Modal
-      const modalInst = new bootstrap.Modal(document.getElementById('detailsViewModal'));
+      const modalInst = bootstrap.Modal.getOrCreateInstance(document.getElementById('detailsViewModal'));
       modalInst.show();
     }
 
@@ -5455,6 +5771,13 @@
 
     document.getElementById("logs-tab")?.addEventListener("click", refreshAuditLogs);
     document.getElementById("refreshLogsBtn")?.addEventListener("click", refreshAuditLogs);
+
+    document.getElementById("inquiryStatusFilter")?.addEventListener("change", renderInquiries);
+    document.getElementById("refreshInquiriesBtn")?.addEventListener("click", refreshInquiries);
+    document.getElementById("inquiries-tab")?.addEventListener("click", refreshInquiries);
+
+    document.getElementById("refreshNewsletterBtn")?.addEventListener("click", refreshNewsletterSubscriptions);
+    document.getElementById("newsletter-tab")?.addEventListener("click", refreshNewsletterSubscriptions);
 
     // Dynamic theme observer to update charts styling on the fly
     const themeObserver = new MutationObserver(() => {

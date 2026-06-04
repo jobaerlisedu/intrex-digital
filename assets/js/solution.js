@@ -1151,4 +1151,121 @@ export async function getAllAuditLogs() {
   }
 }
 
+export async function getAllOnlineInquiries() {
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('mock') === '1') {
+    return [
+      {
+        inquiryKey: "INQ-981023",
+        status: "New",
+        name: "Rahat Khan",
+        email: "rahat@example.com",
+        phone: "+8801911223344",
+        subject: "Network Architecture Consultation",
+        source: "home-page",
+        createdAt: new Date(),
+        message: "We are looking to design a hybrid enterprise network for our new head office in Dhaka."
+      },
+      {
+        inquiryKey: "INQ-981024",
+        status: "Replied",
+        name: "Sadia Rahman",
+        email: "sadia@example.com",
+        phone: "+8801811223344",
+        subject: "Cloud Migration Service",
+        source: "service-cloud",
+        createdAt: new Date(Date.now() - 86400000),
+        message: "Can you provide a price quotation for migrating our on-premise VMs to AWS?"
+      }
+    ];
+  }
+
+  if (!checkConfiguration()) return [];
+  try {
+    const querySnapshot = await getDocs(collection(db, "online_inquiries"));
+    const inquiries = [];
+    querySnapshot.forEach((docSnap) => {
+      if (docSnap.exists()) inquiries.push(docSnap.data());
+    });
+    inquiries.sort((a, b) => {
+      const timeA = a.createdAt?.toDate ? a.createdAt.toDate().getTime() : new Date(a.createdAt || 0).getTime();
+      const timeB = b.createdAt?.toDate ? b.createdAt.toDate().getTime() : new Date(b.createdAt || 0).getTime();
+      return timeB - timeA;
+    });
+    return inquiries;
+  } catch (error) {
+    console.error("Error fetching online inquiries: ", error);
+    throw error;
+  }
+}
+
+export async function deleteOnlineInquiry(inquiryKey) {
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('mock') === '1') {
+    console.log("Mock delete inquiry: ", inquiryKey);
+    return;
+  }
+
+  if (!checkConfiguration()) return;
+  try {
+    const docRef = doc(db, "online_inquiries", inquiryKey.trim().toUpperCase());
+    await deleteDoc(docRef);
+  } catch (error) {
+    console.error("Error deleting online inquiry: ", error);
+    throw error;
+  }
+}
+
+export async function getAllNewsletterSubscriptions() {
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('mock') === '1') {
+    return [
+      {
+        email: "subscriber1@example.com",
+        createdAt: new Date()
+      },
+      {
+        email: "subscriber2@example.com",
+        createdAt: new Date(Date.now() - 86400000)
+      }
+    ];
+  }
+
+  if (!checkConfiguration()) return [];
+  try {
+    const querySnapshot = await getDocs(collection(db, "newsletter_subscriptions"));
+    const subs = [];
+    querySnapshot.forEach((docSnap) => {
+      if (docSnap.exists()) subs.push(docSnap.data());
+    });
+    subs.sort((a, b) => {
+      const timeA = a.createdAt?.toDate ? a.createdAt.toDate().getTime() : new Date(a.createdAt || 0).getTime();
+      const timeB = b.createdAt?.toDate ? b.createdAt.toDate().getTime() : new Date(b.createdAt || 0).getTime();
+      return timeB - timeA;
+    });
+    return subs;
+  } catch (error) {
+    console.error("Error fetching newsletter subscriptions: ", error);
+    throw error;
+  }
+}
+
+export async function deleteNewsletterSubscription(email) {
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('mock') === '1') {
+    console.log("Mock delete newsletter subscription: ", email);
+    return;
+  }
+
+  if (!checkConfiguration()) return;
+  try {
+    const docRef = doc(db, "newsletter_subscriptions", email.trim().toLowerCase());
+    await deleteDoc(docRef);
+  } catch (error) {
+    console.error("Error deleting newsletter subscription: ", error);
+    throw error;
+  }
+}
+
+
 

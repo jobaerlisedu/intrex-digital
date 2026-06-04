@@ -4,9 +4,25 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Certificate Admin Portal | Intrex Digital Hub</title>
+  <title>Training Management Portal | Intrex Digital Hub</title>
   <link rel="icon" href="assets/images/logo/intrex-favicon.svg" type="image/svg+xml">
   <meta name="robots" content="noindex, nofollow">
+  <script>
+    window.addEventListener('error', function (event) {
+      const errDiv = document.createElement('div');
+      errDiv.id = 'js-debug-error';
+      errDiv.style = 'position: fixed; top: 10px; left: 10px; right: 10px; background: rgba(220, 53, 69, 0.95); color: white; padding: 15px; z-index: 100000; border-radius: 5px; font-family: monospace; box-shadow: 0 4px 12px rgba(0,0,0,0.15);';
+      errDiv.innerHTML = '<strong>JS Error:</strong> ' + event.message + ' at ' + event.filename + ':' + event.lineno;
+      document.body.appendChild(errDiv);
+    });
+    window.addEventListener('unhandledrejection', function (event) {
+      const errDiv = document.createElement('div');
+      errDiv.id = 'js-debug-rejection';
+      errDiv.style = 'position: fixed; top: 10px; left: 10px; right: 10px; background: rgba(220, 53, 69, 0.95); color: white; padding: 15px; z-index: 100000; border-radius: 5px; font-family: monospace; box-shadow: 0 4px 12px rgba(0,0,0,0.15);';
+      errDiv.innerHTML = '<strong>Unhandled Promise Rejection:</strong> ' + (event.reason ? event.reason.message || event.reason : 'Unknown reason');
+      document.body.appendChild(errDiv);
+    });
+  </script>
 
   <!-- ======= Google Font =======-->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -126,11 +142,20 @@
       word-break: break-word;
     }
   </style>
+
   <script>
     (function () {
       const storedTheme = localStorage.getItem('theme') || 'light';
       document.documentElement.setAttribute('data-bs-theme', storedTheme);
     })();
+  </script>
+  <!-- Teleport all modals to <body> to escape site-wrap stacking context -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      document.querySelectorAll('.modal').forEach(function (modal) {
+        document.body.appendChild(modal);
+      });
+    });
   </script>
 </head>
 
@@ -195,6 +220,13 @@
                   aria-controls="overviewPanel" aria-selected="true">
                   <i class="bi bi-bar-chart-line"></i> Overview
                 </button>
+                <button
+                  class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2 position-relative"
+                  id="inquiries-tab" data-bs-toggle="tab" data-bs-target="#inquiriesPanel" type="button" role="tab"
+                  aria-controls="inquiriesPanel" aria-selected="false">
+                  <i class="bi bi-envelope-open"></i> Inquiries
+                  <span class="badge bg-danger ms-auto" id="inquiryBadge" style="font-size:0.65rem;">0</span>
+                </button>
                 <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
                   id="registration-tab" data-bs-toggle="tab" data-bs-target="#registrationPanel" type="button"
                   role="tab" aria-controls="registrationPanel" aria-selected="false">
@@ -219,6 +251,11 @@
                   id="records-tab" data-bs-toggle="tab" data-bs-target="#recordsPanel" type="button" role="tab"
                   aria-controls="recordsPanel" aria-selected="false">
                   <i class="bi bi-award"></i> Issued Certificates
+                </button>
+                <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2" id="logs-tab"
+                  data-bs-toggle="tab" data-bs-target="#logsPanel" type="button" role="tab" aria-controls="logsPanel"
+                  aria-selected="false">
+                  <i class="bi bi-shield-check"></i> System Audit Logs
                 </button>
               </div>
             </div>
@@ -404,10 +441,12 @@
 
                 </div>
                 <!-- End Overview Panel -->
+
                 <!-- Sub-Page 1: Course Registration Form -->
                 <div class="tab-pane fade" id="registrationPanel" role="tabpanel" aria-labelledby="registration-tab">
-                  <div class="row justify-content-center">
-                    <div class="col-lg-10 d-flex flex-column gap-4">
+                  <div class="row g-4">
+                    <!-- Left: Form -->
+                    <div class="col-lg-7">
                       <!-- REGISTRATION CARD -->
                       <div class="card p-4 rounded-4 shadow-sm border">
                         <h3 id="regFormTitle" class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
@@ -572,6 +611,48 @@
                             </button>
                           </div>
                         </form>
+                      </div>
+                    </div>
+
+                    <!-- Right Column: Pending Online Registrations -->
+                    <div class="col-lg-5">
+                      <!-- Online Key Quick Fill Card -->
+                      <div class="card p-4 rounded-4 shadow-sm border mb-4">
+                        <h4 class="h6 fw-bold mb-3 pb-2 border-bottom text-heading-color">
+                          <i class="bi bi-lightning-charge-fill me-2 text-primary"></i>Quick Fill from Online Key
+                        </h4>
+                        <div class="input-group">
+                          <input type="text" id="lookupOnlineKey" class="form-control"
+                            placeholder="Search Online Key (e.g. REG-123456)">
+                          <button id="lookupOnlineKeyBtn" class="btn btn-outline-primary" type="button">
+                            <i class="bi bi-lightning-charge"></i> Quick Fill
+                          </button>
+                        </div>
+                        <span class="text-muted small mt-2 d-block" style="font-size: 0.725rem;">Enter a student's
+                          online registration key to pre-fill the form.</span>
+                      </div>
+
+                      <!-- Pending Online Submissions Card -->
+                      <div class="card p-4 rounded-4 shadow-sm border">
+                        <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
+                          <h4 class="h6 fw-bold mb-0 text-heading-color">
+                            <i class="bi bi-clock-history me-2 text-primary"></i>Pending Online Submissions
+                          </h4>
+                          <div class="d-flex align-items-center gap-2">
+                            <span class="badge bg-danger text-white rounded-pill" id="onlinePendingBadge">0</span>
+                            <button type="button" class="btn btn-sm btn-outline-secondary p-1 lh-1"
+                              id="refreshOnlinePendingBtn" title="Refresh pending submissions"
+                              onclick="window.loadOnlineRegistrations && window.loadOnlineRegistrations()">
+                              <i class="bi bi-arrow-clockwise"></i>
+                            </button>
+                          </div>
+                        </div>
+                        <div id="onlinePendingList" style="max-height: 480px; overflow-y: auto;">
+                          <div class="text-muted small text-center py-4">
+                            <div class="spinner-border spinner-border-sm text-primary me-2" role="status"></div>
+                            Loading pending registrations...
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -901,6 +982,104 @@
                     </div>
                   </div>
                 </div>
+
+                <!-- Sub-Page 6: Inquiries -->
+                <div class="tab-pane fade" id="inquiriesPanel" role="tabpanel" aria-labelledby="inquiries-tab">
+                  <div class="row">
+                    <div class="col-12">
+                      <div class="card p-4 rounded-4 shadow-sm border">
+                        <div
+                          class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom flex-wrap gap-2">
+                          <h3 class="h5 fw-bold text-heading-color mb-0">
+                            <i class="bi bi-envelope-open me-2 text-primary"></i>Online Inquiries
+                            <span class="badge bg-danger ms-2" id="inquiryCountBadge" style="font-size:0.7rem;">0</span>
+                          </h3>
+                          <div class="d-flex align-items-center gap-2">
+                            <select id="inquiryStatusFilter" class="form-select form-select-sm"
+                              style="width:auto;min-width:130px;">
+                              <option value="all">All Status</option>
+                              <option value="New">New</option>
+                              <option value="Replied">Replied</option>
+                              <option value="Closed">Closed</option>
+                            </select>
+                            <button id="refreshInquiriesBtn" class="btn btn-sm btn-outline-secondary" type="button"
+                              title="Refresh">
+                              <i class="bi bi-arrow-clockwise"></i>
+                            </button>
+                          </div>
+                        </div>
+
+                        <!-- Table -->
+                        <div class="table-responsive" style="max-height:620px;overflow-y:auto;">
+                          <table class="table table-hover align-middle mb-0" id="inquiriesTable">
+                            <thead class="table-light sticky-top">
+                              <tr>
+                                <th class="small fw-semibold" style="min-width:100px;">Key</th>
+                                <th class="small fw-semibold" style="min-width:130px;">Name</th>
+                                <th class="small fw-semibold" style="min-width:160px;">Email</th>
+                                <th class="small fw-semibold" style="min-width:130px;">Course / Subject</th>
+                                <th class="small fw-semibold" style="min-width:200px;">Message</th>
+                                <th class="small fw-semibold text-center" style="min-width:80px;">Status</th>
+                                <th class="small fw-semibold text-center" style="min-width:100px;">Date</th>
+                                <th class="small fw-semibold text-center" style="min-width:80px;">Actions</th>
+                              </tr>
+                            </thead>
+                            <tbody id="inquiriesTableBody">
+                              <tr>
+                                <td colspan="8" class="text-center py-4 text-muted">
+                                  <div class="spinner-border spinner-border-sm text-primary me-2" role="status"></div>
+                                  Loading inquiries...
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- End Inquiries Panel -->
+
+                <!-- Sub-Page 7: System Audit Logs -->
+                <div class="tab-pane fade" id="logsPanel" role="tabpanel" aria-labelledby="logs-tab">
+                  <div class="card p-4 rounded-4 shadow-sm border">
+                    <div
+                      class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom flex-wrap gap-2">
+                      <h3 class="h5 fw-bold text-heading-color mb-0">
+                        <i class="bi bi-shield-check me-2 text-primary"></i>System Audit Logs
+                      </h3>
+                      <button id="refreshLogsBtn"
+                        class="btn btn-sm btn-outline-primary py-2 px-3 d-flex align-items-center gap-2" type="button"
+                        title="Refresh Logs">
+                        <i class="bi bi-arrow-clockwise"></i> Refresh Logs
+                      </button>
+                    </div>
+                    <div class="table-responsive" style="max-height: 620px; overflow-y: auto;">
+                      <table class="table table-hover align-middle mb-0" id="logsTable">
+                        <thead class="table-light sticky-top">
+                          <tr>
+                            <th class="small fw-semibold" style="min-width: 100px;">Log ID</th>
+                            <th class="small fw-semibold" style="min-width: 140px;">Timestamp</th>
+                            <th class="small fw-semibold" style="min-width: 160px;">User Email</th>
+                            <th class="small fw-semibold" style="min-width: 100px;">Action Type</th>
+                            <th class="small fw-semibold" style="min-width: 120px;">Collection</th>
+                            <th class="small fw-semibold" style="min-width: 100px;">Record ID</th>
+                            <th class="small fw-semibold" style="min-width: 250px;">Details</th>
+                          </tr>
+                        </thead>
+                        <tbody id="logsTableBody">
+                          <tr>
+                            <td colspan="7" class="text-center py-4 text-muted">
+                              <div class="spinner-border spinner-border-sm text-primary me-2" role="status"></div>
+                              Loading logs...
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+
               </div>
             </div>
           </div>
@@ -915,7 +1094,7 @@
   <script src="assets/vendors/bootstrap/bootstrap.bundle.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script type="module">
-    import { loginAdmin, logoutAdmin, onAdminAuthStateChanged, addCertificate, getAllCertificates, deleteCertificate, addRegistration, getAllRegistrations, updateRegistration, deleteRegistration, getAllPayments, updatePayment, addAuditLog } from "./assets/js/verify.js";
+    import { loginAdmin, logoutAdmin, onAdminAuthStateChanged, addCertificate, getAllCertificates, deleteCertificate, addRegistration, getAllRegistrations, updateRegistration, deleteRegistration, getAllPayments, updatePayment, addAuditLog, getAllAuditLogs, getAllOnlineRegistrations, getOnlineRegistration, deleteOnlineRegistration, getAllOnlineInquiries, deleteOnlineInquiry } from "./assets/js/verify.js";
 
     // Initialize AOS
     if (window.AOS) {
@@ -937,6 +1116,10 @@
     let allRecords = [];
     let allRegistrations = [];
     let allPayments = [];
+    let allOnlineRegistrations = [];
+    let allInquiries = [];
+    let allAuditLogs = [];
+    let loadedOnlineKey = null;
     let editingStudentId = null;
     let editingCertId = null;
     let currentUserEmail = "";
@@ -1438,6 +1621,17 @@
               btn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status"></span>';
 
               await deleteCertificate(certId);
+
+              // Audit Logging
+              await addAuditLog({
+                user_email: currentUserEmail,
+                action_type: "DELETE",
+                collection_name: "certificates",
+                record_id: certId,
+                details: `Deleted certificate record for student "${name}"`
+              });
+              refreshAuditLogs();
+
               loadRecords();
             } catch (err) {
               alert("Failed to delete record: " + err.message);
@@ -1475,6 +1669,9 @@
         loadRecords();
         loadRegistrations();
         loadPayments();
+        loadOnlineRegistrations();
+        loadInquiries();
+        refreshAuditLogs();
         resetInactivityTimer();
       } else {
         // Unauthenticated
@@ -1635,6 +1832,16 @@
           batch,
           status
         });
+
+        // Audit Logging
+        await addAuditLog({
+          user_email: currentUserEmail,
+          action_type: editingCertId ? "UPDATE" : "CREATE",
+          collection_name: "certificates",
+          record_id: certificateId,
+          details: `${editingCertId ? "Updated" : "Created"} certificate record for student "${studentName}" (${studentId}), status: ${status}`
+        });
+        refreshAuditLogs();
 
         // Set Link generator value
         const verifyUrl = getVerifyUrl(certificateId);
@@ -1843,6 +2050,17 @@
               btn.disabled = true;
               btn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status"></span>';
               await deleteRegistration(regId);
+
+              // Audit Logging
+              await addAuditLog({
+                user_email: currentUserEmail,
+                action_type: "DELETE",
+                collection_name: "registrations",
+                record_id: regId,
+                details: `Deleted course registration and payments for student "${name}" (${regId}).`
+              });
+              refreshAuditLogs();
+
               await loadRegistrations();
               await loadPayments();
             } catch (err) {
@@ -1919,6 +2137,7 @@
 
     function cancelRegEditMode() {
       editingStudentId = null;
+      loadedOnlineKey = null;
       document.getElementById("regForm").reset();
       document.getElementById("regFee").disabled = false;
       document.getElementById("regAmountPaid").disabled = false;
@@ -2008,13 +2227,60 @@
         if (editingStudentId) {
           // Update
           await updateRegistration(editingStudentId, { fullName, email, phone, course, batch, education, schedule, message });
+
+          // Audit Logging
+          await addAuditLog({
+            user_email: currentUserEmail,
+            action_type: "UPDATE",
+            collection_name: "registrations",
+            record_id: editingStudentId,
+            details: `Updated course registration details for student "${fullName}" (${editingStudentId}).`
+          });
+          refreshAuditLogs();
+
           successAlert.querySelector("span").innerText = "Registration updated successfully!";
           cancelRegEditMode();
         } else {
           // Create
           const generatedId = await addRegistration({ fullName, email, phone, course, batch, education, schedule, message, totalFee, discount, amountPaid, paymentType, transactionId });
+
+          // Audit Logging
+          await addAuditLog({
+            user_email: currentUserEmail,
+            action_type: "CREATE",
+            collection_name: "registrations",
+            record_id: generatedId,
+            details: `Registered student "${fullName}" for course "${course}" under batch "${batch}". Payment: ${paymentType}, initial paid BDT ${amountPaid}.`
+          });
+          refreshAuditLogs();
+
+          // Delete online registration if quick-filled
+          if (loadedOnlineKey) {
+            try {
+              await deleteOnlineRegistration(loadedOnlineKey);
+
+              // Audit Logging
+              await addAuditLog({
+                user_email: currentUserEmail,
+                action_type: "DELETE",
+                collection_name: "online_registrations",
+                record_id: loadedOnlineKey,
+                details: `Processed and converted online registration key "${loadedOnlineKey}" for student "${fullName}"`
+              });
+              refreshAuditLogs();
+
+              loadedOnlineKey = null;
+            } catch (deleteErr) {
+              console.error("Failed to delete processed online registration:", deleteErr);
+            }
+          }
+
           successAlert.querySelector("span").innerHTML = `Student registered successfully!<br><strong>Generated Student ID:</strong> <code class="text-dark font-monospace">${generatedId}</code>`;
           document.getElementById("regForm").reset();
+
+          // Reset title
+          document.getElementById("regFormTitle").innerHTML = `<i class="bi bi-pencil-square me-2 text-primary"></i>Course Registration Form`;
+          document.getElementById("cancelRegEditBtn").classList.add("d-none");
         }
 
         successAlert.classList.remove("d-none");
@@ -2023,6 +2289,7 @@
         // Reload data
         await loadRegistrations();
         await loadPayments();
+        await loadOnlineRegistrations();
 
         // Switch to Student List Tab to view the new registration
         setTimeout(() => {
@@ -2246,6 +2513,23 @@
             { label: "Verification Status", key: "status", type: "badge", cols: 6 },
             { label: "Date of Issue", key: "issueDate", type: "date", cols: 6 }
           ]
+        },
+        inquiry: {
+          title: "Inquiry Details",
+          badge: "Online Inquiry",
+          getRecords: () => allInquiries,
+          idField: "inquiryKey",
+          fields: [
+            { label: "Inquiry Key", key: "inquiryKey", type: "code", cols: 6 },
+            { label: "Status", key: "status", type: "badge", cols: 6 },
+            { label: "Full Name", key: "name", type: "text", cols: 6 },
+            { label: "Email Address", key: "email", type: "email", cols: 6 },
+            { label: "Mobile Phone", key: "phone", type: "phone", cols: 6 },
+            { label: "Course / Subject", key: "subject", type: "text", cols: 6 },
+            { label: "Source Page", key: "source", type: "text", cols: 6 },
+            { label: "Submitted On", key: "createdAt", type: "datetime", cols: 12 },
+            { label: "Message", key: "message", type: "textarea", cols: 12 }
+          ]
         }
       };
 
@@ -2266,6 +2550,7 @@
       if (type === "registration") subtitleText = record.fullName;
       else if (type === "payment") subtitleText = record.studentName;
       else if (type === "certificate") subtitleText = record.studentName;
+      else if (type === "inquiry") subtitleText = record.name;
       document.getElementById("detailsModalSubtitle").textContent = subtitleText;
 
       // Status Badge Style Resolver
@@ -2344,7 +2629,7 @@
       }).join('');
 
       // Launch Modal
-      const modalInst = new bootstrap.Modal(document.getElementById('detailsViewModal'));
+      const modalInst = bootstrap.Modal.getOrCreateInstance(document.getElementById('detailsViewModal'));
       modalInst.show();
     }
 
@@ -2483,6 +2768,17 @@
 
       try {
         await updatePayment(regId, total, discount, paid, payType, txId);
+
+        // Audit Logging
+        await addAuditLog({
+          user_email: currentUserEmail,
+          action_type: "UPDATE",
+          collection_name: "payments",
+          record_id: regId,
+          details: `Updated payment record for student "${document.getElementById("editPaymentStudentName").value}" (${regId}): Total Fee ${total} BDT, Paid ${paid} BDT, Discount ${discount} BDT, Method: ${payType}.`
+        });
+        refreshAuditLogs();
+
         if (editPaymentModalInstance) {
           editPaymentModalInstance.hide();
         }
@@ -2604,6 +2900,351 @@
       r => r.studentName || '',
       renderFilteredRecords
     );
+
+    // ============================================================
+    // PENDING ONLINE REGISTRATIONS LIST & QUICK FILL IMPLEMENTATION
+    // ============================================================
+    async function loadOnlineRegistrations() {
+      const listDiv = document.getElementById("onlinePendingList");
+      const badge = document.getElementById("onlinePendingBadge");
+      if (!listDiv) return;
+
+      try {
+        allOnlineRegistrations = await getAllOnlineRegistrations();
+        if (badge) badge.textContent = allOnlineRegistrations.length;
+
+        if (allOnlineRegistrations.length === 0) {
+          listDiv.innerHTML = `<div class="text-muted small text-center py-4">No pending online registrations.</div>`;
+          return;
+        }
+
+        listDiv.innerHTML = allOnlineRegistrations.map(r => {
+          let dateStr = "N/A";
+          if (r.createdAt) {
+            const dt = r.createdAt.toDate ? r.createdAt.toDate() : new Date(r.createdAt);
+            dateStr = dt.toLocaleDateString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+          }
+          return `
+            <div class="card p-3 mb-2 border shadow-sm rounded-3 bg-body-tertiary">
+              <div class="d-flex justify-content-between align-items-start mb-2">
+                <div style="max-width: 70%;">
+                  <strong class="text-heading-color d-block text-truncate" style="font-size: 0.85rem;" title="${r.fullName}">${r.fullName}</strong>
+                  <span class="text-muted d-block text-truncate" style="font-size: 0.725rem;" title="${r.email}">${r.email}</span>
+                  <span class="text-muted d-block text-truncate" style="font-size: 0.725rem;" title="${r.phone}">${r.phone}</span>
+                </div>
+                <code class="badge bg-primary text-white font-monospace" style="font-size: 0.725rem;">${r.registrationKey}</code>
+              </div>
+              <div class="text-muted small mb-3" style="font-size: 0.75rem;">
+                <strong>Course:</strong> ${r.course}<br>
+                <strong>Schedule:</strong> ${r.schedule}<br>
+                <strong>Submitted:</strong> ${dateStr}
+              </div>
+              <div class="btn-group w-100 gap-2">
+                <button class="btn btn-xs btn-primary py-1 px-2 text-xs w-50 quick-fill-btn" data-key="${r.registrationKey}">
+                  <i class="bi bi-lightning-charge-fill me-1"></i>Quick Fill
+                </button>
+                <button class="btn btn-xs btn-outline-danger py-1 px-2 text-xs w-50 delete-online-btn" data-key="${r.registrationKey}" data-name="${r.fullName}">
+                  <i class="bi bi-trash-fill me-1"></i>Delete
+                </button>
+              </div>
+            </div>
+          `;
+        }).join('');
+
+        // Bind event listeners
+        listDiv.querySelectorAll(".quick-fill-btn").forEach(btn => {
+          btn.onclick = function () {
+            const key = btn.getAttribute("data-key");
+            const found = allOnlineRegistrations.find(r => r.registrationKey === key);
+            if (found) {
+              quickFillForm(found);
+            }
+          };
+        });
+
+        listDiv.querySelectorAll(".delete-online-btn").forEach(btn => {
+          btn.onclick = async function () {
+            const key = btn.getAttribute("data-key");
+            const name = btn.getAttribute("data-name");
+            if (confirm(`Are you sure you want to delete the online registration inquiry for "${name}" (${key})?`)) {
+              try {
+                btn.disabled = true;
+                btn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status"></span>';
+                await deleteOnlineRegistration(key);
+
+                // Audit Logging
+                await addAuditLog({
+                  user_email: currentUserEmail,
+                  action_type: "DELETE",
+                  collection_name: "online_registrations",
+                  record_id: key,
+                  details: `Deleted/rejected pending online registration inquiry for "${name}"`
+                });
+                refreshAuditLogs();
+
+                loadOnlineRegistrations();
+              } catch (err) {
+                alert("Failed to delete online registration: " + err.message);
+                btn.disabled = false;
+                btn.innerHTML = '<i class="bi bi-trash-fill me-1"></i>Delete';
+              }
+            }
+          };
+        });
+
+      } catch (err) {
+        console.error("Failed to load online registrations:", err);
+        listDiv.innerHTML = `<div class="text-danger small text-center py-4">Error loading registrations: ${err.message}</div>`;
+      }
+    }
+
+    function quickFillForm(record) {
+      // Reset any previous state first
+      cancelRegEditMode();
+
+      loadedOnlineKey = record.registrationKey;
+
+      // Populate registration form fields
+      document.getElementById("regName").value = record.fullName || "";
+      document.getElementById("regEmail").value = record.email || "";
+      document.getElementById("regPhone").value = record.phone || "";
+
+      // Handle course matching
+      const regCourseSelect = document.getElementById("regCourse");
+      let matchedValue = "";
+      for (let i = 0; i < regCourseSelect.options.length; i++) {
+        const optVal = regCourseSelect.options[i].value;
+        if (optVal.toLowerCase() === (record.course || "").toLowerCase() ||
+          optVal.toLowerCase().includes((record.course || "").toLowerCase()) ||
+          (record.course || "").toLowerCase().includes(optVal.toLowerCase())) {
+          matchedValue = optVal;
+          break;
+        }
+      }
+      if (matchedValue) {
+        regCourseSelect.value = matchedValue;
+        // Set course fee
+        if (matchedValue in courseFees) {
+          document.getElementById("regFee").value = courseFees[matchedValue];
+        }
+      } else {
+        regCourseSelect.value = "";
+      }
+
+      document.getElementById("regEducation").value = record.education || "";
+      document.getElementById("regSchedule").value = record.schedule || "";
+      document.getElementById("regMessage").value = record.message || "";
+
+      // Update Form Title & Button
+      document.getElementById("regFormTitle").innerHTML = `
+        <i class="bi bi-pencil-square me-2 text-primary"></i>Course Registration Form
+        <span class="badge bg-success text-white ms-2" style="font-size: 0.7rem;">
+          <i class="bi bi-lightning-charge-fill"></i> Loaded ${record.registrationKey}
+        </span>
+      `;
+      document.getElementById("cancelRegEditBtn").classList.remove("d-none");
+
+      // Focus
+      document.getElementById("regName").focus();
+      document.getElementById("regFormTitle").scrollIntoView({ behavior: "smooth" });
+    }
+
+    // Lookup Online Key input handler
+    document.getElementById("lookupOnlineKeyBtn").addEventListener("click", async function () {
+      const key = document.getElementById("lookupOnlineKey").value.trim().toUpperCase();
+      if (!key) {
+        alert("Please enter an online registration key.");
+        return;
+      }
+      try {
+        const lookupBtn = document.getElementById("lookupOnlineKeyBtn");
+        lookupBtn.disabled = true;
+        lookupBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status"></span>';
+
+        const record = await getOnlineRegistration(key);
+
+        lookupBtn.disabled = false;
+        lookupBtn.innerHTML = '<i class="bi bi-lightning-charge"></i> Quick Fill';
+
+        if (record) {
+          quickFillForm(record);
+          alert(`Successfully loaded registration for ${record.fullName}!`);
+        } else {
+          alert("Online registration key not found or already processed.");
+        }
+      } catch (err) {
+        alert("Error looking up registration: " + err.message);
+        document.getElementById("lookupOnlineKeyBtn").disabled = false;
+        document.getElementById("lookupOnlineKeyBtn").innerHTML = '<i class="bi bi-lightning-charge"></i> Quick Fill';
+      }
+    });
+
+    // Make loadOnlineRegistrations globally available inside the script block scope
+    window.loadOnlineRegistrations = loadOnlineRegistrations;
+
+    // ============================================================
+    // ONLINE INQUIRIES – LIST & MANAGE
+    // ============================================================
+    async function loadInquiries() {
+      const tbody = document.getElementById("inquiriesTableBody");
+      const badge1 = document.getElementById("inquiryBadge");
+      const badge2 = document.getElementById("inquiryCountBadge");
+      if (!tbody) return;
+
+      try {
+        allInquiries = await getAllOnlineInquiries();
+        const filterVal = document.getElementById("inquiryStatusFilter")?.value || "all";
+        const filtered = filterVal === "all" ? allInquiries : allInquiries.filter(i => i.status === filterVal);
+
+        if (badge1) badge1.textContent = allInquiries.length;
+        if (badge2) badge2.textContent = allInquiries.length;
+
+        if (filtered.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="8" class="text-center py-5 text-muted"><i class="bi bi-inbox fs-3 d-block mb-2 opacity-25"></i>No inquiries found.</td></tr>`;
+          return;
+        }
+
+        tbody.innerHTML = filtered.map(inq => {
+          let dateStr = "N/A";
+          if (inq.createdAt) {
+            const dt = inq.createdAt.toDate ? inq.createdAt.toDate() : new Date(inq.createdAt);
+            dateStr = dt.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: '2-digit', hour: '2-digit', minute: '2-digit' });
+          }
+          const statusColor = inq.status === 'New' ? 'danger' : inq.status === 'Replied' ? 'warning' : 'secondary';
+          const msgPreview = (inq.message || "").length > 80 ? (inq.message || "").substring(0, 80) + "…" : (inq.message || "");
+          return `
+            <tr>
+              <td><code class="badge bg-primary text-white font-monospace" style="font-size:0.7rem;">${inq.inquiryKey}</code></td>
+              <td>
+                <span class="fw-semibold small">${inq.name || ""}</span>
+                ${inq.phone ? `<br><a href="tel:${inq.phone}" class="text-muted small text-decoration-none" style="font-size:0.75rem;"><i class="bi bi-telephone me-1"></i>${inq.phone}</a>` : ""}
+              </td>
+              <td><a href="mailto:${inq.email || ""}" class="small text-primary text-decoration-none">${inq.email || ""}</a></td>
+              <td><span class="small">${inq.subject || "—"}</span></td>
+              <td><span class="small text-muted" title="${(inq.message || "").replace(/"/g, '&quot;')}">${msgPreview}</span></td>
+              <td class="text-center"><span class="badge bg-${statusColor}" style="font-size:0.7rem;">${inq.status || 'New'}</span></td>
+              <td class="text-center"><span class="text-muted" style="font-size:0.75rem;">${dateStr}</span></td>
+              <td class="text-center">
+                <div class="d-flex justify-content-center gap-1">
+                  <button class="btn btn-sm btn-outline-info py-0 px-2 view-inq-btn" data-key="${inq.inquiryKey}" title="View full details">
+                    <i class="bi bi-eye"></i>
+                  </button>
+                  <button class="btn btn-sm btn-outline-danger py-0 px-2 delete-inq-btn" data-key="${inq.inquiryKey}" data-name="${inq.name}" title="Delete inquiry">
+                    <i class="bi bi-trash"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          `;
+        }).join('');
+
+        // Bind view buttons
+        tbody.querySelectorAll(".view-inq-btn").forEach(btn => {
+          btn.onclick = function () {
+            showRecordDetails("inquiry", btn.getAttribute("data-key"));
+          };
+        });
+
+        // Bind delete buttons
+        tbody.querySelectorAll(".delete-inq-btn").forEach(btn => {
+          btn.onclick = async function () {
+            const key = btn.getAttribute("data-key");
+            const name = btn.getAttribute("data-name");
+            if (!confirm(`Delete inquiry from "${name}" (${key})?`)) return;
+            try {
+              btn.disabled = true;
+              btn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status"></span>';
+              await deleteOnlineInquiry(key);
+
+              // Audit Logging
+              await addAuditLog({
+                user_email: currentUserEmail,
+                action_type: "DELETE",
+                collection_name: "online_inquiries",
+                record_id: key,
+                details: `Deleted online inquiry from "${name}"`
+              });
+              refreshAuditLogs();
+
+              await loadInquiries();
+            } catch (err) {
+              alert("Failed to delete inquiry: " + err.message);
+              btn.disabled = false;
+              btn.innerHTML = '<i class="bi bi-trash"></i>';
+            }
+          };
+        });
+
+      } catch (err) {
+        console.error("Failed to load inquiries:", err);
+        tbody.innerHTML = `<tr><td colspan="8" class="text-center py-4 text-danger">Error loading inquiries: ${err.message}</td></tr>`;
+      }
+    }
+
+    async function refreshAuditLogs() {
+      const tbody = document.getElementById("logsTableBody");
+      if (tbody) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="7" class="text-center py-4 text-muted">
+              <div class="spinner-border spinner-border-sm text-primary me-2" role="status"></div>
+              Loading logs...
+            </td>
+          </tr>
+        `;
+      }
+      try {
+        allAuditLogs = await getAllAuditLogs();
+        renderAuditLogs();
+      } catch (err) {
+        console.error("refreshAuditLogs failed:", err);
+        if (tbody) {
+          tbody.innerHTML = `<tr><td colspan="7" class="text-center py-4 text-danger">Error loading audit logs: ${err.message}</td></tr>`;
+        }
+      }
+    }
+
+    function renderAuditLogs() {
+      const tbody = document.getElementById("logsTableBody");
+      if (!tbody) return;
+      if (allAuditLogs.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="7" class="text-center py-4 text-muted">No audit logs found.</td></tr>';
+        return;
+      }
+
+      function actionBadge(action) {
+        const map = {
+          "CREATE": '<span class="badge bg-success text-white px-2 py-1 fw-bold" style="font-size: 0.725rem;">CREATE</span>',
+          "UPDATE": '<span class="badge bg-warning text-dark px-2 py-1 fw-bold" style="font-size: 0.725rem;">UPDATE</span>',
+          "DELETE": '<span class="badge bg-danger text-white px-2 py-1 fw-bold" style="font-size: 0.725rem;">DELETE</span>',
+          "LOGIN": '<span class="badge bg-info text-dark px-2 py-1 fw-bold" style="font-size: 0.725rem;">LOGIN</span>',
+          "LOGOUT": '<span class="badge bg-secondary text-white px-2 py-1 fw-bold" style="font-size: 0.725rem;">LOGOUT</span>'
+        };
+        return map[action] || `<span class="badge bg-secondary text-white px-2 py-1 fw-bold" style="font-size: 0.725rem;">${action}</span>`;
+      }
+
+      tbody.innerHTML = allAuditLogs.map(log => {
+        return `
+          <tr>
+            <td><code class="text-dark fw-bold font-monospace">${log.log_id}</code></td>
+            <td><span class="small text-muted">${log.local_time || '—'}</span></td>
+            <td><strong>${log.user_email}</strong></td>
+            <td>${actionBadge(log.action_type)}</td>
+            <td><span class="small font-monospace text-secondary">${log.collection_name}</span></td>
+            <td><code class="text-dark font-monospace">${log.record_id}</code></td>
+            <td><span class="small text-wrap">${log.details}</span></td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    // Status filter + refresh handlers
+    document.getElementById("inquiryStatusFilter")?.addEventListener("change", loadInquiries);
+    document.getElementById("refreshInquiriesBtn")?.addEventListener("click", loadInquiries);
+
+    document.getElementById("logs-tab")?.addEventListener("click", refreshAuditLogs);
+    document.getElementById("refreshLogsBtn")?.addEventListener("click", refreshAuditLogs);
+
   </script>
 
   <!-- Edit Payment Modal -->
@@ -2696,7 +3337,7 @@
     <div class="modal-dialog modal-lg modal-dialog-centered">
       <div class="modal-content rounded-4 border-0 shadow-lg overflow-hidden">
         <div class="modal-header border-0 flex-column align-items-start p-4 text-white position-relative"
-          style="background-color: var(--primary-color, #0d6efd);">
+          style="background-color: var(--bs-primary, #0d6efd);">
           <button type="button" class="btn-close btn-close-white position-absolute top-0 end-0 m-3"
             data-bs-dismiss="modal" aria-label="Close" style="font-size: 0.85rem; opacity: 0.8;"></button>
           <span class="badge text-uppercase bg-white text-dark mb-2 px-3 py-2 fw-bold" id="detailsModalBadge"

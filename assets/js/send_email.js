@@ -17,42 +17,87 @@ document.addEventListener("DOMContentLoaded", function () {
       successMessage.classList.add("d-none");
       errorMessage.classList.add("d-none");
 
-      const formData = new FormData(contactForm);
-      const endpoint = contactForm.dataset.formspree;
+      const name = (document.getElementById("name")?.value || "").trim();
+      const email = (document.getElementById("email")?.value || "").trim();
+      const phone = (document.getElementById("phone")?.value || "").trim();
+      const subject = (document.getElementById("subject")?.value || "").trim();
+      const message = (document.getElementById("message")?.value || "").trim();
 
-      if (!endpoint) {
-        errorMessage.textContent = "Form endpoint not configured.";
-        errorMessage.classList.remove("d-none");
-        submitBtn.disabled = false;
-        submitBtn.textContent = originalBtnText;
-        return;
+      // Resolve module path depending on root or sub-directory location
+      let importPath = "/assets/js/verify.js";
+      if (window.location.hostname === "" || window.location.protocol === "file:") {
+        const depth = window.location.pathname.split("/services/").length > 1 ? "../" : "./";
+        importPath = depth + "assets/js/verify.js";
       }
 
-      fetch(endpoint, {
-        method: "POST",
-        body: formData,
-        headers: { Accept: "application/json" },
-      })
-        .then(function (response) {
-          submitBtn.disabled = false;
-          submitBtn.textContent = originalBtnText;
-          if (response.ok) {
-            successMessage.classList.remove("d-none");
-            contactForm.reset();
-          } else {
-            return response.json().then(function (data) {
-              errorMessage.textContent =
-                data.errors
-                  ? data.errors.map(function (e) { return e.message; }).join(", ")
-                  : "Request failed. Please try again.";
-              errorMessage.classList.remove("d-none");
+      import(importPath)
+        .then(async (module) => {
+          try {
+            let source = "home-page";
+            if (window.location.pathname.includes("service-")) {
+              source = window.location.pathname.substring(window.location.pathname.lastIndexOf("/") + 1).replace(".html", "");
+            }
+
+            // Save inquiry in Firestore
+            const inquiryKey = await module.addOnlineInquiry({
+              name,
+              email,
+              phone,
+              subject,
+              message,
+              source
             });
+
+            submitBtn.disabled = false;
+            submitBtn.textContent = originalBtnText;
+
+            successMessage.innerHTML = `
+              <div class="w-100">
+                <div class="d-flex align-items-center gap-2 mb-2 text-success">
+                  <i class="bi bi-check-circle-fill fs-5"></i>
+                  <span class="fw-bold">Inquiry Sent!</span>
+                </div>
+                <p class="small text-muted mb-2">Your inquiry reference key:</p>
+                <div class="d-flex align-items-center gap-2 bg-body-secondary p-2 rounded-3 border mb-2">
+                  <code class="fw-bold font-monospace flex-grow-1" id="generatedInqKeyVal" style="color: var(--bs-heading-color);">${inquiryKey}</code>
+                  <button class="btn btn-sm btn-primary py-1 px-2 d-flex align-items-center gap-1" id="copyInqKeyBtn" type="button">
+                    <i class="bi bi-clipboard"></i> <span>Copy</span>
+                  </button>
+                </div>
+                <p class="small text-muted mb-0"><i class="bi bi-info-circle me-1"></i>We will respond shortly.</p>
+              </div>
+            `;
+            successMessage.className = "mt-3 alert alert-success d-flex align-items-start border border-success p-3 rounded-4 shadow-sm";
+            successMessage.classList.remove("d-none");
+
+            // Bind copy logic
+            const copyBtn = document.getElementById("copyInqKeyBtn");
+            if (copyBtn) {
+              copyBtn.onclick = () => {
+                navigator.clipboard.writeText(inquiryKey);
+                copyBtn.innerHTML = '<i class="bi bi-check-lg"></i> <span>Copied</span>';
+                copyBtn.className = "btn btn-sm btn-success py-1 px-2 d-flex align-items-center gap-1";
+                setTimeout(() => {
+                  copyBtn.innerHTML = '<i class="bi bi-clipboard"></i> <span>Copy</span>';
+                  copyBtn.className = "btn btn-sm btn-primary py-1 px-2 d-flex align-items-center gap-1";
+                }, 1500);
+              };
+            }
+
+            contactForm.reset();
+          } catch (err) {
+            console.error("Firestore inquiry write error:", err);
+            submitBtn.disabled = false;
+            submitBtn.textContent = originalBtnText;
+            errorMessage.textContent = "Failed to submit inquiry: " + (err.message || "Please try again.");
+            errorMessage.classList.remove("d-none");
           }
         })
-        .catch(function () {
+        .catch((err) => {
+          console.error("Failed to dynamically import verify.js module:", err);
           submitBtn.disabled = false;
           submitBtn.textContent = originalBtnText;
-          errorMessage.textContent = "Network error. Please check your connection and try again.";
+          errorMessage.textContent = "Unable to connect. Please check your network and try again.";
           errorMessage.classList.remove("d-none");
         });
     });
@@ -75,12 +120,12 @@ document.addEventListener("DOMContentLoaded", function () {
         feedback.className = "small mt-2";
       }
 
-      const formData = new FormData(newsletterForm);
-      const endpoint = newsletterForm.dataset.formspree;
+      const emailInput = newsletterForm.querySelector('input[type="email"]');
+      const email = (emailInput?.value || "").trim();
 
-      if (!endpoint) {
+      if (!email) {
         if (feedback) {
-          feedback.textContent = "Newsletter endpoint not configured.";
+          feedback.textContent = "Email address is required.";
           feedback.classList.add("text-danger");
         }
         submitBtn.disabled = false;
@@ -88,123 +133,45 @@ document.addEventListener("DOMContentLoaded", function () {
         return;
       }
 
-      fetch(endpoint, {
-        method: "POST",
-        body: formData,
-        headers: { Accept: "application/json" },
-      })
-        .then(function (response) {
-          submitBtn.disabled = false;
-          submitBtn.textContent = originalBtnText;
-          if (response.ok) {
+      // Resolve module path depending on root or sub-directory location
+      let importPath = "/assets/js/verify.js";
+      if (window.location.hostname === "" || window.location.protocol === "file:") {
+        const depth = window.location.pathname.split("/services/").length > 1 ? "../" : "./";
+        importPath = depth + "assets/js/verify.js";
+      }
+
+      import(importPath)
+        .then(async (module) => {
+          try {
+            await module.addNewsletterSubscription(email);
+            submitBtn.disabled = false;
+            submitBtn.textContent = originalBtnText;
             newsletterForm.reset();
             if (feedback) {
               feedback.textContent = "✓ You're subscribed! Thank you.";
-              feedback.classList.add("text-success", "fw-semibold");
+              feedback.className = "small mt-2 text-success fw-semibold";
             }
-          } else {
-            return response.json().then(function (data) {
-              if (feedback) {
-                feedback.textContent =
-                  data.errors
-                    ? data.errors.map(function (e) { return e.message; }).join(", ")
-                    : "Subscription failed. Please try again.";
-                feedback.classList.add("text-danger");
-              }
-            });
+          } catch (err) {
+            console.error("Newsletter registration error:", err);
+            submitBtn.disabled = false;
+            submitBtn.textContent = originalBtnText;
+            if (feedback) {
+              feedback.textContent = "Subscription failed: " + (err.message || "Please try again.");
+              feedback.className = "small mt-2 text-danger";
+            }
           }
         })
-        .catch(function () {
+        .catch((err) => {
+          console.error("Failed to dynamically import verify.js module:", err);
           submitBtn.disabled = false;
           submitBtn.textContent = originalBtnText;
           if (feedback) {
-            feedback.textContent = "Network error. Please try again.";
-            feedback.classList.add("text-danger");
+            feedback.textContent = "Unable to connect. Please try again.";
+            feedback.className = "small mt-2 text-danger";
           }
         });
     });
   }
 
-  /* ── Registration Modal – pre-fill course & handle submit ───── */
-  const registrationModal = document.getElementById("registrationModal");
-  const registrationForm  = document.getElementById("registrationForm");
-  const regCourseSelect   = document.getElementById("reg-course");
-  const regSuccessMessage = document.getElementById("regSuccessMessage");
-  const regErrorMessage   = document.getElementById("regErrorMessage");
-
-  // Pre-fill course dropdown when any Register button opens the modal
-  if (registrationModal && regCourseSelect) {
-    registrationModal.addEventListener("show.bs.modal", function (event) {
-      const triggerBtn = event.relatedTarget;
-      const course = triggerBtn && triggerBtn.dataset.course;
-      if (course) {
-        regCourseSelect.value = course;
-      }
-      // Reset feedback on re-open
-      if (regSuccessMessage) regSuccessMessage.classList.add("d-none");
-      if (regErrorMessage)   regErrorMessage.classList.add("d-none");
-      if (registrationForm)  registrationForm.classList.remove("d-none");
-    });
-  }
-
-  if (registrationForm) {
-    registrationForm.addEventListener("submit", function (event) {
-      event.preventDefault();
-
-      const submitBtn = registrationForm.querySelector('button[type="submit"]');
-      const originalBtnText = submitBtn.innerHTML;
-      submitBtn.disabled = true;
-      submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status"></span>Submitting...';
-
-      if (regSuccessMessage) regSuccessMessage.classList.add("d-none");
-      if (regErrorMessage)   regErrorMessage.classList.add("d-none");
-
-      const formData = new FormData(registrationForm);
-      const endpoint = registrationForm.dataset.formspree;
-
-      if (!endpoint) {
-        if (regErrorMessage) {
-          regErrorMessage.textContent = "Registration endpoint not configured.";
-          regErrorMessage.classList.remove("d-none");
-        }
-        submitBtn.disabled = false;
-        submitBtn.innerHTML = originalBtnText;
-        return;
-      }
-
-      fetch(endpoint, {
-        method: "POST",
-        body: formData,
-        headers: { Accept: "application/json" },
-      })
-        .then(function (response) {
-          submitBtn.disabled = false;
-          submitBtn.innerHTML = originalBtnText;
-          if (response.ok) {
-            registrationForm.reset();
-            registrationForm.classList.add("d-none");
-            if (regSuccessMessage) regSuccessMessage.classList.remove("d-none");
-          } else {
-            return response.json().then(function (data) {
-              if (regErrorMessage) {
-                regErrorMessage.textContent =
-                  data.errors
-                    ? data.errors.map(function (e) { return e.message; }).join(", ")
-                    : "Submission failed. Please try again.";
-                regErrorMessage.classList.remove("d-none");
-              }
-            });
-          }
-        })
-        .catch(function () {
-          submitBtn.disabled = false;
-          submitBtn.innerHTML = originalBtnText;
-          if (regErrorMessage) {
-            regErrorMessage.textContent = "Network error. Please check your connection and try again.";
-            regErrorMessage.classList.remove("d-none");
-          }
-        });
-    });
-  }
 
 });

@@ -92,6 +92,11 @@ export async function logoutAdmin() {
 
 // Watch authentication status changes
 export function onAdminAuthStateChanged(callback) {
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('mock') === '1') {
+    setTimeout(() => callback({ email: "admin@intrex-digital.com" }), 100);
+    return;
+  }
   if (!checkConfiguration()) return;
   onAuthStateChanged(auth, callback);
 }
@@ -127,6 +132,21 @@ export async function addCertificate(certData) {
 
 // Fetch all certificates from Firestore
 export async function getAllCertificates() {
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('mock') === '1') {
+    return [
+      {
+        certificateId: "INTREX-CERT-495001",
+        studentId: "495001",
+        studentName: "Shibli Akter",
+        courseName: "CompTIA Security+",
+        batch: "02",
+        status: "Verified",
+        grade: "A+",
+        issueDate: "2026-06-01"
+      }
+    ];
+  }
   if (!checkConfiguration()) return [];
   try {
     const querySnapshot = await getDocs(collection(db, "certificates"));
@@ -255,6 +275,23 @@ export async function addRegistration(regData) {
 
 // Fetch all course registrations
 export async function getAllRegistrations() {
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('mock') === '1') {
+    return [
+      {
+        studentId: "495001",
+        fullName: "Shibli Akter",
+        email: "shibli@example.com",
+        phone: "+8801700000000",
+        course: "CompTIA Security+",
+        batch: "02",
+        education: "B.Sc in CSE",
+        schedule: "Fri-Sat 10:00 AM",
+        createdAt: new Date(),
+        message: "Looking forward to starting the course."
+      }
+    ];
+  }
   if (!checkConfiguration()) return [];
   try {
     const querySnapshot = await getDocs(collection(db, "registrations"));
@@ -383,6 +420,26 @@ export async function deleteRegistration(studentId) {
 
 // Fetch all payment records
 export async function getAllPayments() {
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('mock') === '1') {
+    return [
+      {
+        studentId: "495001",
+        studentName: "Shibli Akter",
+        email: "shibli@example.com",
+        courseName: "CompTIA Security+",
+        batch: "02",
+        status: "Fully Paid",
+        totalFee: 12000,
+        discount: 2000,
+        amountPaid: 10000,
+        dueAmount: 0,
+        paymentType: "Bkash",
+        transactionId: "TRX998877",
+        updatedAt: new Date()
+      }
+    ];
+  }
   if (!checkConfiguration()) return [];
   try {
     const querySnapshot = await getDocs(collection(db, "payments"));
@@ -458,12 +515,35 @@ async function getNextSeqId(collectionName, prefix, idField, paddingSize = 4) {
   }
 }
 
+let mockAuditLogs = null;
+
 export async function addAuditLog(logData) {
   if (!checkConfiguration()) return;
   const { user_email, action_type, collection_name, record_id, details } = logData;
   if (!user_email || !action_type || !details) {
     throw new Error("Missing required audit log fields");
   }
+
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('mock') === '1') {
+    if (!mockAuditLogs) {
+      await getAllAuditLogs();
+    }
+    const nextId = "LOG-" + String(mockAuditLogs.length + 1).padStart(5, '0');
+    const newLog = {
+      log_id: nextId,
+      user_email: user_email,
+      action_type: action_type,
+      collection_name: collection_name || "N/A",
+      record_id: record_id || "N/A",
+      details: details,
+      local_time: new Date().toLocaleString(),
+      createdAt: new Date()
+    };
+    mockAuditLogs.unshift(newLog);
+    return nextId;
+  }
+
   try {
     const id = await getNextSeqId("tbl_audit_logs", "LOG-", "log_id", 5);
     const docRef = doc(db, "tbl_audit_logs", id);
@@ -485,6 +565,42 @@ export async function addAuditLog(logData) {
 }
 
 export async function getAllAuditLogs() {
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('mock') === '1') {
+    if (!mockAuditLogs) {
+      mockAuditLogs = [
+        {
+          log_id: "LOG-00003",
+          local_time: new Date().toLocaleString(),
+          user_email: "admin@intrex-digital.com",
+          action_type: "LOGIN",
+          collection_name: "N/A",
+          record_id: "N/A",
+          details: "Admin logged in successfully to training dashboard via mock auto-login"
+        },
+        {
+          log_id: "LOG-00002",
+          local_time: new Date(Date.now() - 3600000).toLocaleString(),
+          user_email: "admin@intrex-digital.com",
+          action_type: "CREATE",
+          collection_name: "certificates",
+          record_id: "INTREX-CERT-495001",
+          details: "Created certificate record for student \"Shibli Akter\" (495001), status: Verified"
+        },
+        {
+          log_id: "LOG-00001",
+          local_time: new Date(Date.now() - 7200000).toLocaleString(),
+          user_email: "admin@intrex-digital.com",
+          action_type: "CREATE",
+          collection_name: "registrations",
+          record_id: "495001",
+          details: "Registered student \"Shibli Akter\" for course \"CompTIA Security+\" under batch \"02\". Payment: Bkash, initial paid BDT 10000."
+        }
+      ];
+    }
+    return mockAuditLogs;
+  }
+
   if (!checkConfiguration()) return [];
   try {
     const querySnapshot = await getDocs(collection(db, "tbl_audit_logs"));
@@ -498,6 +614,248 @@ export async function getAllAuditLogs() {
     return logs;
   } catch (error) {
     console.error("Error fetching audit logs: ", error);
+    throw error;
+  }
+}
+
+// ==========================================
+// 6. ONLINE PENDING REGISTRATIONS OPERATIONS
+// ==========================================
+
+// Add new online registration from public page
+export async function addOnlineRegistration(regData) {
+  if (!checkConfiguration()) return null;
+
+  const { fullName, email, phone, course, education, schedule, message } = regData;
+
+  if (!fullName || !email || !phone || !course || !schedule) {
+    throw new Error("Missing required registration fields");
+  }
+
+  try {
+    // Generate a unique registration key: REG- followed by 6 random digits
+    let isUnique = false;
+    let regKey = "";
+    let attempts = 0;
+    
+    while (!isUnique && attempts < 10) {
+      attempts++;
+      const randomNum = Math.floor(100000 + Math.random() * 900000);
+      regKey = `REG-${randomNum}`;
+      
+      // Verify uniqueness by checking if the doc already exists
+      const docRef = doc(db, "online_registrations", regKey);
+      const docSnap = await getDoc(docRef);
+      if (!docSnap.exists()) {
+        isUnique = true;
+      }
+    }
+
+    const regRef = doc(db, "online_registrations", regKey);
+    await setDoc(regRef, {
+      registrationKey: regKey,
+      fullName: fullName.trim(),
+      email: email.trim(),
+      phone: phone.trim(),
+      course: course.trim(),
+      education: education || "",
+      schedule: schedule || "",
+      message: message ? message.trim() : "",
+      createdAt: serverTimestamp()
+    });
+
+    return regKey;
+  } catch (error) {
+    console.error("Error saving online registration: ", error);
+    throw error;
+  }
+}
+
+// Fetch all pending online registrations (for dashboard list)
+export async function getAllOnlineRegistrations() {
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('mock') === '1') {
+    return [
+      {
+        registrationKey: "REG-123456",
+        fullName: "Mock Student",
+        email: "mock@example.com",
+        phone: "+8801500000000",
+        course: "CompTIA Security+",
+        schedule: "Fri-Sat 10:00 AM",
+        education: "HSC",
+        message: "Mock registration message.",
+        createdAt: new Date()
+      }
+    ];
+  }
+  if (!checkConfiguration()) return [];
+  try {
+    const querySnapshot = await getDocs(collection(db, "online_registrations"));
+    const regs = [];
+    querySnapshot.forEach((docSnap) => {
+      if (docSnap.exists()) {
+        regs.push(docSnap.data());
+      }
+    });
+    // Sort by createdAt descending (newest first)
+    regs.sort((a, b) => {
+      const timeA = a.createdAt?.toDate ? a.createdAt.toDate().getTime() : new Date(a.createdAt || 0).getTime();
+      const timeB = b.createdAt?.toDate ? b.createdAt.toDate().getTime() : new Date(b.createdAt || 0).getTime();
+      return timeB - timeA;
+    });
+    return regs;
+  } catch (error) {
+    console.error("Error fetching online registrations: ", error);
+    throw error;
+  }
+}
+
+// Fetch single online registration by key
+export async function getOnlineRegistration(regKey) {
+  if (!checkConfiguration()) return null;
+  try {
+    const docRef = doc(db, "online_registrations", regKey.trim().toUpperCase());
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      return docSnap.data();
+    }
+    return null;
+  } catch (error) {
+    console.error("Error fetching online registration: ", error);
+    throw error;
+  }
+}
+
+// Delete online registration from Firestore
+export async function deleteOnlineRegistration(regKey) {
+  if (!checkConfiguration()) return;
+  try {
+    const docRef = doc(db, "online_registrations", regKey.trim().toUpperCase());
+    await deleteDoc(docRef);
+  } catch (error) {
+    console.error("Error deleting online registration: ", error);
+    throw error;
+  }
+}
+
+// ==========================================
+// 7. ONLINE INQUIRIES OPERATIONS
+// ==========================================
+
+// Add new inquiry from public training/service page
+export async function addOnlineInquiry(inquiryData) {
+  if (!checkConfiguration()) return null;
+
+  const { name, email, phone, subject, message, source } = inquiryData;
+
+  if (!name || !email || !message) {
+    throw new Error("Missing required inquiry fields: name, email, message");
+  }
+
+  try {
+    // Generate unique inquiry key: INQ-XXXXXX
+    let isUnique = false;
+    let inquiryKey = "";
+    let attempts = 0;
+
+    while (!isUnique && attempts < 10) {
+      attempts++;
+      const randomNum = Math.floor(100000 + Math.random() * 900000);
+      inquiryKey = `INQ-${randomNum}`;
+      const docRef = doc(db, "online_inquiries", inquiryKey);
+      const docSnap = await getDoc(docRef);
+      if (!docSnap.exists()) isUnique = true;
+    }
+
+    const inquiryRef = doc(db, "online_inquiries", inquiryKey);
+    await setDoc(inquiryRef, {
+      inquiryKey,
+      name: name.trim(),
+      email: email.trim(),
+      phone: phone ? phone.trim() : "",
+      subject: subject ? subject.trim() : "",
+      message: message.trim(),
+      source: source || "training-page",
+      status: "New",
+      createdAt: serverTimestamp()
+    });
+
+    return inquiryKey;
+  } catch (error) {
+    console.error("Error saving online inquiry: ", error);
+    throw error;
+  }
+}
+
+// Fetch all pending inquiries (for dashboard)
+export async function getAllOnlineInquiries() {
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('mock') === '1') {
+    return [
+      {
+        inquiryKey: "INQ-693174",
+        status: "New",
+        name: "Jobaer",
+        email: "hsjobaer.nu.edu@gmail.com",
+        phone: "+8801711223344",
+        subject: "CompTIA Security+",
+        source: "training-page",
+        createdAt: new Date(),
+        message: "Test message from Jobaer."
+      }
+    ];
+  }
+  if (!checkConfiguration()) return [];
+  try {
+    const querySnapshot = await getDocs(collection(db, "online_inquiries"));
+    const inquiries = [];
+    querySnapshot.forEach((docSnap) => {
+      if (docSnap.exists()) inquiries.push(docSnap.data());
+    });
+    inquiries.sort((a, b) => {
+      const timeA = a.createdAt?.toDate ? a.createdAt.toDate().getTime() : new Date(a.createdAt || 0).getTime();
+      const timeB = b.createdAt?.toDate ? b.createdAt.toDate().getTime() : new Date(b.createdAt || 0).getTime();
+      return timeB - timeA;
+    });
+    return inquiries;
+  } catch (error) {
+    console.error("Error fetching online inquiries: ", error);
+    throw error;
+  }
+}
+
+// Delete inquiry from Firestore
+export async function deleteOnlineInquiry(inquiryKey) {
+  if (!checkConfiguration()) return;
+  try {
+    const docRef = doc(db, "online_inquiries", inquiryKey.trim().toUpperCase());
+    await deleteDoc(docRef);
+  } catch (error) {
+    console.error("Error deleting online inquiry: ", error);
+    throw error;
+  }
+}
+
+// Add newsletter subscription to Firestore
+export async function addNewsletterSubscription(email) {
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('mock') === '1') {
+    return email;
+  }
+  if (!checkConfiguration()) return null;
+  if (!email) {
+    throw new Error("Email is required");
+  }
+  try {
+    const docRef = doc(db, "newsletter_subscriptions", email.trim().toLowerCase());
+    await setDoc(docRef, {
+      email: email.trim().toLowerCase(),
+      createdAt: serverTimestamp()
+    });
+    return email;
+  } catch (error) {
+    console.error("Error saving newsletter subscription: ", error);
     throw error;
   }
 }
