@@ -2858,25 +2858,28 @@
         const registrationFee = record.registrationFee || 0;
         const installments = record.installments || [];
         
-        let staledTotal = 0;
-        let unstalledTotal = 0;
+        let overdueTotal = 0;
+        let pendingTotal = 0;
         let installmentsHtml = '';
 
         if (installments.length > 0) {
           installmentsHtml = installments.map((inst, index) => {
             const amt = Number(inst.amount) || 0;
-            const status = inst.status || 'Unstalled';
+            const status = inst.status || 'Pending';
             const dueDate = inst.dueDate || 'N/A';
             
             let badgeClass = 'bg-secondary';
+            let displayStatus = status;
             if (status === 'Paid') {
               badgeClass = 'bg-success text-white';
-            } else if (status === 'Staled') {
+            } else if (status === 'Staled' || status === 'Overdue') {
               badgeClass = 'bg-danger text-white';
-              staledTotal += amt;
-            } else if (status === 'Unstalled') {
+              displayStatus = 'Overdue';
+              overdueTotal += amt;
+            } else if (status === 'Unstalled' || status === 'Pending') {
               badgeClass = 'bg-info text-dark';
-              unstalledTotal += amt;
+              displayStatus = 'Pending';
+              pendingTotal += amt;
             }
             
             return `
@@ -2884,7 +2887,7 @@
                 <td class="fw-semibold small">Installment #${index + 1}</td>
                 <td class="fw-bold text-dark small">${amt.toLocaleString()} BDT</td>
                 <td class="small text-muted">${dueDate}</td>
-                <td><span class="badge ${badgeClass} fw-bold" style="font-size:0.75rem;">${status}</span></td>
+                <td><span class="badge ${badgeClass} fw-bold" style="font-size:0.75rem;">${displayStatus}</span></td>
               </tr>
             `;
           }).join('');
@@ -2908,14 +2911,14 @@
               </div>
               <div class="col-md-4">
                 <div class="card bg-danger-subtle border-danger-subtle rounded-3 p-3 shadow-sm text-center">
-                  <span class="text-danger small fw-semibold d-block text-uppercase mb-1" style="font-size: 0.7rem; letter-spacing: 0.05em;">Staled Installments</span>
-                  <strong class="text-danger fs-5">${staledTotal.toLocaleString()} BDT</strong>
+                  <span class="text-danger small fw-semibold d-block text-uppercase mb-1" style="font-size: 0.7rem; letter-spacing: 0.05em;">Overdue Installments</span>
+                  <strong class="text-danger fs-5">${overdueTotal.toLocaleString()} BDT</strong>
                 </div>
               </div>
               <div class="col-md-4">
                 <div class="card bg-info-subtle border-info-subtle rounded-3 p-3 shadow-sm text-center">
-                  <span class="text-info-emphasis small fw-semibold d-block text-uppercase mb-1" style="font-size: 0.7rem; letter-spacing: 0.05em;">Unstalled Installments</span>
-                  <strong class="text-info-emphasis fs-5">${unstalledTotal.toLocaleString()} BDT</strong>
+                  <span class="text-info-emphasis small fw-semibold d-block text-uppercase mb-1" style="font-size: 0.7rem; letter-spacing: 0.05em;">Pending Installments</span>
+                  <strong class="text-info-emphasis fs-5">${pendingTotal.toLocaleString()} BDT</strong>
                 </div>
               </div>
             </div>
@@ -3112,8 +3115,8 @@
             <div class="col-md-4">
               <span class="small fw-semibold text-muted">Status</span>
               <select class="form-select form-select-sm inst-status">
-                <option value="Unstalled" selected>Unstalled (Pending)</option>
-                <option value="Staled">Staled (Overdue)</option>
+                <option value="Pending" selected>Pending</option>
+                <option value="Overdue">Overdue</option>
                 <option value="Paid">Paid</option>
               </select>
             </div>
@@ -3153,8 +3156,8 @@
               <div class="col-md-4">
                 <span class="small fw-semibold text-muted">Status</span>
                 <select class="form-select form-select-sm inst-status">
-                  <option value="Unstalled" ${inst.status === 'Unstalled' ? 'selected' : ''}>Unstalled (Pending)</option>
-                  <option value="Staled" ${inst.status === 'Staled' ? 'selected' : ''}>Staled (Overdue)</option>
+                  <option value="Pending" ${inst.status === 'Pending' || inst.status === 'Unstalled' ? 'selected' : ''}>Pending</option>
+                  <option value="Overdue" ${inst.status === 'Overdue' || inst.status === 'Staled' ? 'selected' : ''}>Overdue</option>
                   <option value="Paid" ${inst.status === 'Paid' ? 'selected' : ''}>Paid</option>
                 </select>
               </div>
@@ -3203,8 +3206,8 @@
             <div class="col-md-4">
               <span class="small fw-semibold text-muted">Status</span>
               <select class="form-select form-select-sm inst-status">
-                <option value="Unstalled" selected>Unstalled (Pending)</option>
-                <option value="Staled">Staled (Overdue)</option>
+                <option value="Pending" selected>Pending</option>
+                <option value="Overdue">Overdue</option>
                 <option value="Paid">Paid</option>
               </select>
             </div>
@@ -3936,7 +3939,7 @@
         insts.push({
           amount: instAmount,
           dueDate: dateStr,
-          status: "Unstalled"
+          status: "Pending"
         });
       }
       renderInstallmentPlanEditor(insts);
@@ -3967,8 +3970,8 @@
             <div class="col-md-4">
               <span class="small fw-semibold text-muted">Status</span>
               <select class="form-select form-select-sm inst-status">
-                <option value="Unstalled" ${inst.status === 'Unstalled' ? 'selected' : ''}>Unstalled (Pending)</option>
-                <option value="Staled" ${inst.status === 'Staled' ? 'selected' : ''}>Staled (Overdue)</option>
+                <option value="Pending" ${inst.status === 'Pending' || inst.status === 'Unstalled' ? 'selected' : ''}>Pending</option>
+                <option value="Overdue" ${inst.status === 'Overdue' || inst.status === 'Staled' ? 'selected' : ''}>Overdue</option>
                 <option value="Paid" ${inst.status === 'Paid' ? 'selected' : ''}>Paid</option>
               </select>
             </div>
@@ -4188,7 +4191,7 @@
             <h6 class="fw-bold mb-2">Terms & Conditions:</h6>
             <ol class="mb-0 ps-3 text-muted" style="line-height: 1.5;">
               <li>Installments must be paid on or before their respective due dates.</li>
-              <li>Failure to clear staled (overdue) installments may result in temporary account hold or class suspension.</li>
+              <li>Failure to clear overdue installments may result in temporary account hold or class suspension.</li>
               <li>Any extension requests must be formally submitted in writing 3 business days prior to the due date.</li>
             </ol>
           </div>
