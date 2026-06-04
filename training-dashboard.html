@@ -980,6 +980,53 @@
                       </div>
                     </div>
                   </div>
+
+                  <!-- All Students Installment Ledger -->
+                  <div class="row g-4 mt-3">
+                    <div class="col-12">
+                      <div class="card p-4 rounded-4 shadow-sm border">
+                        <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom flex-wrap gap-2">
+                          <h3 class="h5 fw-bold text-heading-color mb-0">
+                            <i class="bi bi-list-task me-2 text-primary"></i>All Students Installment Ledger
+                          </h3>
+                          <div class="d-flex align-items-center gap-2 flex-wrap">
+                            <input type="text" id="installmentListSearch" class="form-control form-control-sm" style="max-width: 200px;" placeholder="Search student name or ID...">
+                            <select id="installmentListStatusFilter" class="form-select form-select-sm" style="width: auto; min-width: 140px;">
+                              <option value="all">All Status</option>
+                              <option value="Pending">Pending</option>
+                              <option value="Overdue">Overdue</option>
+                              <option value="Paid">Paid</option>
+                            </select>
+                            <button id="refreshInstallmentListBtn" class="btn btn-sm btn-outline-secondary" type="button" title="Refresh List">
+                              <i class="bi bi-arrow-clockwise"></i>
+                            </button>
+                          </div>
+                        </div>
+                        
+                        <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
+                          <table class="table table-hover align-middle mb-0" id="allInstallmentsLedgerTable">
+                            <thead class="table-light sticky-top">
+                              <tr>
+                                <th class="small fw-semibold py-2">Student</th>
+                                <th class="small fw-semibold py-2">Course & Batch</th>
+                                <th class="small fw-semibold py-2 text-center">Period</th>
+                                <th class="small fw-semibold py-2 text-center">Amount Due</th>
+                                <th class="small fw-semibold py-2 text-center">Due Date</th>
+                                <th class="small fw-semibold py-2 text-center">Status</th>
+                                <th class="small fw-semibold py-2 text-center">Actions</th>
+                              </tr>
+                            </thead>
+                            <tbody id="allInstallmentsLedgerBody">
+                              <tr>
+                                <td colspan="7" class="text-center py-4 text-muted">No installments available. Load records to populate.</td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
                 </div>
 
                 <!-- Sub-Page 4: Generate Certificate -->
@@ -2566,6 +2613,9 @@
         allPayments = await getAllPayments();
         renderFilteredPayments();
         updateOverview();
+        if (window.loadAllInstallmentsLedger) {
+          window.loadAllInstallmentsLedger();
+        }
       } catch (err) {
         tbody.innerHTML = `
           <tr>
@@ -4224,6 +4274,142 @@
         };
       `;
       printWindow.document.body.appendChild(script);
+    });
+
+    // ============================================================
+    // ALL STUDENTS INSTALLMENT LEDGER
+    // ============================================================
+    window.loadAllInstallmentsLedger = function() {
+      const tbody = document.getElementById("allInstallmentsLedgerBody");
+      if (!tbody) return;
+
+      const searchVal = document.getElementById("installmentListSearch")?.value.toLowerCase().trim() || "";
+      const statusFilterVal = document.getElementById("installmentListStatusFilter")?.value || "all";
+
+      const flatList = [];
+      allPayments.forEach(pay => {
+        const reg = allRegistrations.find(r => r.studentId === pay.studentId) || {};
+        const insts = pay.installments || [];
+        insts.forEach((inst, idx) => {
+          let status = inst.status || "Pending";
+          if (status === "Unstalled") status = "Pending";
+          if (status === "Staled") status = "Overdue";
+
+          flatList.push({
+            studentId: pay.studentId,
+            studentName: pay.studentName,
+            courseName: pay.courseName || reg.course || "N/A",
+            batch: pay.batch || reg.batch || "N/A",
+            installmentIndex: idx + 1,
+            amount: Number(inst.amount) || 0,
+            dueDate: inst.dueDate || "N/A",
+            status: status
+          });
+        });
+      });
+
+      // Filtering
+      let filtered = flatList;
+      if (statusFilterVal !== "all") {
+        filtered = filtered.filter(item => item.status === statusFilterVal);
+      }
+
+      if (searchVal) {
+        filtered = filtered.filter(item => 
+          item.studentName.toLowerCase().includes(searchVal) ||
+          item.studentId.toLowerCase().includes(searchVal) ||
+          item.courseName.toLowerCase().includes(searchVal) ||
+          item.batch.toLowerCase().includes(searchVal)
+        );
+      }
+
+      // Sort by status: Overdue first, then Pending, then Paid. Chronological order within each
+      const statusPriority = { "Overdue": 1, "Pending": 2, "Paid": 3 };
+      filtered.sort((a, b) => {
+        if (statusPriority[a.status] !== statusPriority[b.status]) {
+          return statusPriority[a.status] - statusPriority[b.status];
+        }
+        return a.dueDate.localeCompare(b.dueDate);
+      });
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="7" class="text-center py-4 text-muted">No matching installments found.</td>
+          </tr>
+        `;
+        return;
+      }
+
+      tbody.innerHTML = filtered.map(item => {
+        let badgeClass = "bg-secondary";
+        if (item.status === "Paid") badgeClass = "bg-success text-white";
+        else if (item.status === "Overdue") badgeClass = "bg-danger text-white";
+        else if (item.status === "Pending") badgeClass = "bg-info text-dark";
+
+        return `
+          <tr>
+            <td>
+              <strong class="d-block text-dark">${item.studentName}</strong>
+              <code class="small text-muted font-monospace">${item.studentId}</code>
+            </td>
+            <td>
+              <span class="small d-block fw-semibold text-secondary">${item.courseName}</span>
+              <span class="badge bg-light text-dark border small" style="font-size:0.65rem;">${item.batch}</span>
+            </td>
+            <td class="text-center">
+              <span class="badge bg-dark-subtle text-dark-emphasis fw-bold">Installment #${item.installmentIndex}</span>
+            </td>
+            <td class="text-center fw-bold text-dark">${item.amount.toLocaleString()} BDT</td>
+            <td class="text-center small font-monospace text-muted">${item.dueDate}</td>
+            <td class="text-center">
+              <span class="badge ${badgeClass} fw-bold" style="font-size:0.75rem;">${item.status}</span>
+            </td>
+            <td class="text-center">
+              <button type="button" class="btn btn-xs btn-outline-primary fw-semibold load-installment-student-btn" data-id="${item.studentId}">
+                <i class="bi bi-pencil-square me-1"></i>Edit Plan
+              </button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+
+      tbody.querySelectorAll(".load-installment-student-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const studentId = btn.dataset.id;
+          const record = allPayments.find(p => p.studentId === studentId);
+          if (record) {
+            document.getElementById("studentSearchInput").value = record.studentId;
+            onPlanStudentSelect(record);
+            document.getElementById("studentSearchInput").scrollIntoView({ behavior: "smooth", block: "center" });
+          }
+        });
+      });
+    };
+
+    // Attach event listeners
+    document.getElementById("installmentListSearch")?.addEventListener("input", window.loadAllInstallmentsLedger);
+    document.getElementById("installmentListStatusFilter")?.addEventListener("change", window.loadAllInstallmentsLedger);
+    document.getElementById("refreshInstallmentListBtn")?.addEventListener("click", async () => {
+      const btn = document.getElementById("refreshInstallmentListBtn");
+      const origHtml = btn.innerHTML;
+      btn.disabled = true;
+      btn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status"></span>';
+      try {
+        allPayments = await getAllPayments();
+        window.loadAllInstallmentsLedger();
+      } catch (err) {
+        alert("Failed to refresh: " + err.message);
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = origHtml;
+      }
+    });
+
+    document.getElementById("installment-tab")?.addEventListener("click", () => {
+      if (window.loadAllInstallmentsLedger) {
+        window.loadAllInstallmentsLedger();
+      }
     });
 
   </script>
