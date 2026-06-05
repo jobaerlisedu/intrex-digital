@@ -37,16 +37,20 @@
   <style>
     /* ── Split Screen Dashboard Layout (MD & Up) ── */
     @media (min-width: 768px) {
-      html, body {
+
+      html,
+      body {
         height: 100vh;
         overflow: hidden;
       }
+
       .site-wrap {
         height: 100vh;
         display: flex;
         flex-direction: column;
         overflow: hidden;
       }
+
       section.section {
         flex: 1;
         min-height: 0;
@@ -54,50 +58,66 @@
         flex-direction: column;
         padding: 24px 0 !important;
       }
-      section.section > .container-fluid {
+
+      section.section>.container-fluid {
         flex: 1;
         min-height: 0;
         display: flex;
         flex-direction: column;
         padding-right: 0 !important;
       }
+
       #dashboardSection {
         flex: 1;
         min-height: 0;
         display: flex;
         flex-direction: column;
       }
+
       .dashboard-main-row {
         flex: 1;
         min-height: 0;
         display: flex;
-        margin-right: 0 !important; /* Make sure row aligns to the very right edge */
+        margin-right: 0 !important;
+        /* Make sure row aligns to the very right edge */
       }
+
       .sidebar-container {
         height: 100%;
         overflow-y: auto;
         padding-right: 15px;
         overscroll-behavior: contain;
       }
+
       .content-container {
         height: 100%;
         overflow-y: auto;
-        padding-right: 24px; /* Breathing room between cards and the rightmost scrollbar */
+        padding-right: 24px;
+        /* Breathing room between cards and the rightmost scrollbar */
       }
     }
 
-    /* Custom thin scrollbars */
-    .sidebar-container, .content-container {
-      scrollbar-width: thin;                        /* Firefox */
+    /* Custom thin scrollbars and bottom padding for scroll breathing room */
+    .sidebar-container,
+    .content-container {
+      scrollbar-width: thin;
+      /* Firefox */
       scrollbar-color: var(--bs-primary) transparent;
+      padding-bottom: 25px;
     }
-    .sidebar-container::-webkit-scrollbar, .content-container::-webkit-scrollbar {
+
+    .sidebar-container::-webkit-scrollbar,
+    .content-container::-webkit-scrollbar {
       width: 5px;
     }
-    .sidebar-container::-webkit-scrollbar-track, .content-container::-webkit-scrollbar-track {
+
+    .sidebar-container::-webkit-scrollbar-track,
+    .content-container::-webkit-scrollbar-track {
       background: transparent;
     }
-    .sidebar-container::-webkit-scrollbar-thumb, .content-container::-webkit-scrollbar-thumb {
+
+    .sidebar-container::-webkit-scrollbar-thumb,
+    .content-container::-webkit-scrollbar-thumb {
       background-color: var(--bs-primary);
       border-radius: 10px;
     }
@@ -211,12 +231,15 @@
 
     /* ── Print styles ── */
     @media print {
-      body > *:not(#printSection) {
+      body>*:not(#printSection) {
         display: none !important;
       }
-      #printSection, #printSection * {
+
+      #printSection,
+      #printSection * {
         display: block !important;
       }
+
       #printSection {
         position: absolute;
         left: 0;
@@ -227,9 +250,11 @@
         padding: 0;
         margin: 0;
       }
+
       .btn-print-hide {
         display: none !important;
       }
+
       /* Ensure Bootstrap grid prints correctly */
       .row {
         display: flex !important;
@@ -237,44 +262,150 @@
         margin-right: -15px !important;
         margin-left: -15px !important;
       }
-      .col-1 { width: 8.33333333%; }
-      .col-2 { width: 16.66666667%; }
-      .col-3 { width: 25%; }
-      .col-4 { width: 33.33333333%; }
-      .col-5 { width: 41.66666667%; }
-      .col-6 { width: 50%; }
-      .col-7 { width: 58.33333333%; }
-      .col-8 { width: 66.66666667%; }
-      .col-9 { width: 75%; }
-      .col-10 { width: 83.33333333%; }
-      .col-11 { width: 91.66666667%; }
-      .col-12 { width: 100%; }
-      
-      .col-sm-1 { width: 8.33333333%; }
-      .col-sm-2 { width: 16.66666667%; }
-      .col-sm-3 { width: 25%; }
-      .col-sm-4 { width: 33.33333333%; }
-      .col-sm-5 { width: 41.66666667%; }
-      .col-sm-6 { width: 50%; }
-      .col-sm-7 { width: 58.33333333%; }
-      .col-sm-8 { width: 66.66666667%; }
-      .col-sm-9 { width: 75%; }
-      .col-sm-10 { width: 83.33333333%; }
-      .col-sm-11 { width: 91.66666667%; }
-      .col-sm-12 { width: 100%; }
-      
-      .col-md-1 { width: 8.33333333%; }
-      .col-md-2 { width: 16.66666667%; }
-      .col-md-3 { width: 25%; }
-      .col-md-4 { width: 33.33333333%; }
-      .col-md-5 { width: 41.66666667%; }
-      .col-md-6 { width: 50%; }
-      .col-md-7 { width: 58.33333333%; }
-      .col-md-8 { width: 66.66666667%; }
-      .col-md-9 { width: 75%; }
-      .col-md-10 { width: 83.33333333%; }
-      .col-md-11 { width: 91.66666667%; }
-      .col-md-12 { width: 100%; }
+
+      .col-1 {
+        width: 8.33333333%;
+      }
+
+      .col-2 {
+        width: 16.66666667%;
+      }
+
+      .col-3 {
+        width: 25%;
+      }
+
+      .col-4 {
+        width: 33.33333333%;
+      }
+
+      .col-5 {
+        width: 41.66666667%;
+      }
+
+      .col-6 {
+        width: 50%;
+      }
+
+      .col-7 {
+        width: 58.33333333%;
+      }
+
+      .col-8 {
+        width: 66.66666667%;
+      }
+
+      .col-9 {
+        width: 75%;
+      }
+
+      .col-10 {
+        width: 83.33333333%;
+      }
+
+      .col-11 {
+        width: 91.66666667%;
+      }
+
+      .col-12 {
+        width: 100%;
+      }
+
+      .col-sm-1 {
+        width: 8.33333333%;
+      }
+
+      .col-sm-2 {
+        width: 16.66666667%;
+      }
+
+      .col-sm-3 {
+        width: 25%;
+      }
+
+      .col-sm-4 {
+        width: 33.33333333%;
+      }
+
+      .col-sm-5 {
+        width: 41.66666667%;
+      }
+
+      .col-sm-6 {
+        width: 50%;
+      }
+
+      .col-sm-7 {
+        width: 58.33333333%;
+      }
+
+      .col-sm-8 {
+        width: 66.66666667%;
+      }
+
+      .col-sm-9 {
+        width: 75%;
+      }
+
+      .col-sm-10 {
+        width: 83.33333333%;
+      }
+
+      .col-sm-11 {
+        width: 91.66666667%;
+      }
+
+      .col-sm-12 {
+        width: 100%;
+      }
+
+      .col-md-1 {
+        width: 8.33333333%;
+      }
+
+      .col-md-2 {
+        width: 16.66666667%;
+      }
+
+      .col-md-3 {
+        width: 25%;
+      }
+
+      .col-md-4 {
+        width: 33.33333333%;
+      }
+
+      .col-md-5 {
+        width: 41.66666667%;
+      }
+
+      .col-md-6 {
+        width: 50%;
+      }
+
+      .col-md-7 {
+        width: 58.33333333%;
+      }
+
+      .col-md-8 {
+        width: 66.66666667%;
+      }
+
+      .col-md-9 {
+        width: 75%;
+      }
+
+      .col-md-10 {
+        width: 83.33333333%;
+      }
+
+      .col-md-11 {
+        width: 91.66666667%;
+      }
+
+      .col-md-12 {
+        width: 100%;
+      }
     }
   </style>
 
@@ -334,7 +465,8 @@
 
         <!-- 2. DASHBOARD PANEL (HIDDEN BY DEFAULT) -->
         <div id="dashboardSection" class="d-none">
-          <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2 pb-3 border-bottom" style="padding-right: 24px;">
+          <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2 pb-3 border-bottom"
+            style="padding-right: 24px;">
             <div>
               <span class="badge bg-primary text-white mb-1">INTREX DIGITAL HUB SYSTEM</span>
               <h2 class="h3 fw-bold text-heading-color mb-0">Student Management Dashboard</h2>
@@ -378,13 +510,13 @@
                   <i class="bi bi-collection"></i> Batch Management
                 </button>
                 <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
-                  id="contact-directory-tab" data-bs-toggle="tab" data-bs-target="#contactDirectoryPanel" type="button" role="tab"
-                  aria-controls="contactDirectoryPanel" aria-selected="false">
+                  id="contact-directory-tab" data-bs-toggle="tab" data-bs-target="#contactDirectoryPanel" type="button"
+                  role="tab" aria-controls="contactDirectoryPanel" aria-selected="false">
                   <i class="bi bi-person-lines-fill"></i> Contact Directory
                 </button>
                 <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
-                  id="job-placement-tab" data-bs-toggle="tab" data-bs-target="#jobPlacementPanel" type="button" role="tab"
-                  aria-controls="jobPlacementPanel" aria-selected="false">
+                  id="job-placement-tab" data-bs-toggle="tab" data-bs-target="#jobPlacementPanel" type="button"
+                  role="tab" aria-controls="jobPlacementPanel" aria-selected="false">
                   <i class="bi bi-briefcase"></i> Job Placement
                 </button>
                 <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
@@ -862,22 +994,28 @@
                             <div class="col-12">
                               <div class="form-check form-switch">
                                 <input class="form-check-input" type="checkbox" role="switch" id="regIsJobHolder">
-                                <label class="form-check-label small fw-semibold text-heading-color" for="regIsJobHolder">Are they currently a job holder?</label>
+                                <label class="form-check-label small fw-semibold text-heading-color"
+                                  for="regIsJobHolder">Are they currently a job holder?</label>
                               </div>
                             </div>
                           </div>
 
                           <!-- Job Profile Details (Hidden by default) -->
                           <div id="regJobProfileFields" class="d-none border p-3 rounded-4 mb-3 bg-light">
-                            <h6 class="small fw-bold mb-3 text-primary"><i class="bi bi-briefcase-fill me-1"></i>Job Profile Details</h6>
+                            <h6 class="small fw-bold mb-3 text-primary"><i class="bi bi-briefcase-fill me-1"></i>Job
+                              Profile Details</h6>
                             <div class="row g-3">
                               <div class="col-md-6">
-                                <label class="form-label small fw-semibold mb-1" for="regCompany">Company Name <span class="text-danger">*</span></label>
-                                <input class="form-control" id="regCompany" type="text" placeholder="e.g. Intrex Digital">
+                                <label class="form-label small fw-semibold mb-1" for="regCompany">Company Name <span
+                                    class="text-danger">*</span></label>
+                                <input class="form-control" id="regCompany" type="text"
+                                  placeholder="e.g. Intrex Digital">
                               </div>
                               <div class="col-md-6">
-                                <label class="form-label small fw-semibold mb-1" for="regDesignation">Designation <span class="text-danger">*</span></label>
-                                <input class="form-control" id="regDesignation" type="text" placeholder="e.g. Network Engineer">
+                                <label class="form-label small fw-semibold mb-1" for="regDesignation">Designation <span
+                                    class="text-danger">*</span></label>
+                                <input class="form-control" id="regDesignation" type="text"
+                                  placeholder="e.g. Network Engineer">
                               </div>
                             </div>
                           </div>
@@ -896,7 +1034,8 @@
                                 placeholder="e.g. 0">
                             </div>
                             <div class="col-md-4">
-                              <label class="form-label small fw-semibold mb-1" id="regAmountPaidLabel" for="regAmountPaid">Amount Paid (BDT)
+                              <label class="form-label small fw-semibold mb-1" id="regAmountPaidLabel"
+                                for="regAmountPaid">Amount Paid (BDT)
                                 <span class="text-danger">*</span></label>
                               <input class="form-control" id="regAmountPaid" type="number" min="0" value="0"
                                 placeholder="e.g. 0" required>
@@ -908,7 +1047,8 @@
                             <div class="col-12">
                               <div class="form-check form-switch mb-2">
                                 <input class="form-check-input" type="checkbox" id="regEnableInstallments">
-                                <label class="form-check-label small fw-semibold" for="regEnableInstallments">Enable Installment Plan</label>
+                                <label class="form-check-label small fw-semibold" for="regEnableInstallments">Enable
+                                  Installment Plan</label>
                               </div>
                             </div>
                           </div>
@@ -917,7 +1057,8 @@
                           <div id="regInstallmentsPlanContainer" class="d-none border p-3 rounded-3 mb-3 bg-light">
                             <div class="row g-2 align-items-center mb-3">
                               <div class="col-md-6">
-                                <label class="form-label small fw-semibold mb-1" for="regNumInstallments">Number of Installments</label>
+                                <label class="form-label small fw-semibold mb-1" for="regNumInstallments">Number of
+                                  Installments</label>
                                 <select class="form-select form-select-sm" id="regNumInstallments">
                                   <option value="1">1 Installment</option>
                                   <option value="2" selected>2 Installments</option>
@@ -1171,18 +1312,21 @@
                         <h4 class="fw-bold text-heading-color mb-3 pb-2 border-bottom d-flex align-items-center gap-2">
                           <i class="bi bi-search text-primary"></i> Load Student Profile
                         </h4>
-                        
+
                         <div class="mb-3 qf-wrapper">
                           <label for="studentSearchInput" class="form-label small fw-semibold">Search Student</label>
                           <div class="input-group">
-                            <input type="text" id="studentSearchInput" class="form-control" autocomplete="off" placeholder="Enter student name or ID...">
-                            <button class="btn btn-outline-primary" type="button" id="installmentSearchBtn"><i class="bi bi-search"></i></button>
+                            <input type="text" id="studentSearchInput" class="form-control" autocomplete="off"
+                              placeholder="Enter student name or ID...">
+                            <button class="btn btn-outline-primary" type="button" id="installmentSearchBtn"><i
+                                class="bi bi-search"></i></button>
                           </div>
                           <div id="studentSearchDropdown" class="qf-dropdown"></div>
                         </div>
-                        
+
                         <div class="alert alert-info py-2 px-3 small mb-0">
-                          <i class="bi bi-info-circle-fill me-1"></i> Load a student to configure their specific installment plan.
+                          <i class="bi bi-info-circle-fill me-1"></i> Load a student to configure their specific
+                          installment plan.
                         </div>
                       </div>
 
@@ -1213,34 +1357,50 @@
                     <!-- Right Column: Calculator and Schedules Table -->
                     <div class="col-lg-8">
                       <div class="card p-4 rounded-4 shadow-sm border mb-4">
-                        <h4 class="fw-bold text-heading-color mb-4 pb-2 border-bottom d-flex align-items-center justify-content-between">
+                        <h4
+                          class="fw-bold text-heading-color mb-4 pb-2 border-bottom d-flex align-items-center justify-content-between">
                           <span><i class="bi bi-calculator text-primary me-2"></i>Installment Plan Calculator</span>
-                          <span id="validationBadge" class="badge bg-secondary" style="font-size: 0.8rem;">No Student Loaded</span>
+                          <span id="validationBadge" class="badge bg-secondary" style="font-size: 0.8rem;">No Student
+                            Loaded</span>
                         </h4>
 
                         <!-- Financial Summary Grid -->
                         <div class="row g-3 mb-4">
                           <div class="col-md-3 col-6">
-                            <div class="financial-card bg-light border-light-subtle p-3 text-center" style="border: 1px solid rgba(0, 0, 0, 0.08); border-radius: 16px;">
-                              <span class="text-muted small fw-semibold d-block text-uppercase mb-1" style="font-size: 0.65rem; letter-spacing: 0.05em;">Course Fee</span>
-                              <input type="number" id="planTotalFee" class="form-control form-control-sm text-center fw-bold text-dark border-0 bg-transparent" value="0" min="0">
+                            <div class="financial-card bg-light border-light-subtle p-3 text-center"
+                              style="border: 1px solid rgba(0, 0, 0, 0.08); border-radius: 16px;">
+                              <span class="text-muted small fw-semibold d-block text-uppercase mb-1"
+                                style="font-size: 0.65rem; letter-spacing: 0.05em;">Course Fee</span>
+                              <input type="number" id="planTotalFee"
+                                class="form-control form-control-sm text-center fw-bold text-dark border-0 bg-transparent"
+                                value="0" min="0">
                             </div>
                           </div>
                           <div class="col-md-3 col-6">
-                            <div class="financial-card bg-light border-light-subtle p-3 text-center" style="border: 1px solid rgba(0, 0, 0, 0.08); border-radius: 16px;">
-                              <span class="text-muted small fw-semibold d-block text-uppercase mb-1" style="font-size: 0.65rem; letter-spacing: 0.05em;">Discount</span>
-                              <input type="number" id="planDiscount" class="form-control form-control-sm text-center fw-bold text-dark border-0 bg-transparent" value="0" min="0">
+                            <div class="financial-card bg-light border-light-subtle p-3 text-center"
+                              style="border: 1px solid rgba(0, 0, 0, 0.08); border-radius: 16px;">
+                              <span class="text-muted small fw-semibold d-block text-uppercase mb-1"
+                                style="font-size: 0.65rem; letter-spacing: 0.05em;">Discount</span>
+                              <input type="number" id="planDiscount"
+                                class="form-control form-control-sm text-center fw-bold text-dark border-0 bg-transparent"
+                                value="0" min="0">
                             </div>
                           </div>
                           <div class="col-md-3 col-6">
-                            <div class="financial-card bg-light border-light-subtle p-3 text-center" style="border: 1px solid rgba(0, 0, 0, 0.08); border-radius: 16px;">
-                              <span class="text-muted small fw-semibold d-block text-uppercase mb-1" style="font-size: 0.65rem; letter-spacing: 0.05em;">Registration Fee</span>
-                              <input type="number" id="planRegistrationFee" class="form-control form-control-sm text-center fw-bold text-primary border-0 bg-transparent" value="0" min="0">
+                            <div class="financial-card bg-light border-light-subtle p-3 text-center"
+                              style="border: 1px solid rgba(0, 0, 0, 0.08); border-radius: 16px;">
+                              <span class="text-muted small fw-semibold d-block text-uppercase mb-1"
+                                style="font-size: 0.65rem; letter-spacing: 0.05em;">Registration Fee</span>
+                              <input type="number" id="planRegistrationFee"
+                                class="form-control form-control-sm text-center fw-bold text-primary border-0 bg-transparent"
+                                value="0" min="0">
                             </div>
                           </div>
                           <div class="col-md-3 col-6">
-                            <div class="financial-card bg-primary-subtle border-primary-subtle p-3 text-center" style="border: 1px solid rgba(0, 0, 0, 0.08); border-radius: 16px;">
-                              <span class="text-primary-emphasis small fw-semibold d-block text-uppercase mb-1" style="font-size: 0.65rem; letter-spacing: 0.05em;">Remaining Due</span>
+                            <div class="financial-card bg-primary-subtle border-primary-subtle p-3 text-center"
+                              style="border: 1px solid rgba(0, 0, 0, 0.08); border-radius: 16px;">
+                              <span class="text-primary-emphasis small fw-semibold d-block text-uppercase mb-1"
+                                style="font-size: 0.65rem; letter-spacing: 0.05em;">Remaining Due</span>
                               <strong class="text-primary fs-5" id="displayRemainingDue">0 BDT</strong>
                             </div>
                           </div>
@@ -1249,7 +1409,8 @@
                         <!-- Calculator Configuration Row -->
                         <div class="row g-3 mb-4 bg-light p-3 rounded-3 border mx-0">
                           <div class="col-md-4">
-                            <label for="numInstallments" class="form-label small fw-semibold">Number of Installments</label>
+                            <label for="numInstallments" class="form-label small fw-semibold">Number of
+                              Installments</label>
                             <select id="numInstallments" class="form-select form-select-sm">
                               <option value="1">1 Installment</option>
                               <option value="2" selected>2 Installments</option>
@@ -1260,7 +1421,8 @@
                             </select>
                           </div>
                           <div class="col-md-4">
-                            <label for="startDate" class="form-label small fw-semibold">First Installment Due Date</label>
+                            <label for="startDate" class="form-label small fw-semibold">First Installment Due
+                              Date</label>
                             <input type="date" id="startDate" class="form-control form-control-sm">
                           </div>
                           <div class="col-md-4 d-flex align-items-end">
@@ -1274,7 +1436,8 @@
                         <div class="mb-4">
                           <h5 class="fw-bold text-heading-color mb-3">Installments Schedule Editor</h5>
                           <div id="installmentsListContainer" class="row g-2">
-                            <div class="col-12 text-center text-muted small py-4">No installments distributed yet. Select parameters and click "Distribute Dues" or load a student.</div>
+                            <div class="col-12 text-center text-muted small py-4">No installments distributed yet.
+                              Select parameters and click "Distribute Dues" or load a student.</div>
                           </div>
                         </div>
 
@@ -1296,24 +1459,28 @@
                   <div class="row g-4 mt-3">
                     <div class="col-12">
                       <div class="card p-4 rounded-4 shadow-sm border">
-                        <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom flex-wrap gap-2">
+                        <div
+                          class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom flex-wrap gap-2">
                           <h3 class="h5 fw-bold text-heading-color mb-0">
                             <i class="bi bi-list-task me-2 text-primary"></i>All Students Installment Ledger
                           </h3>
                           <div class="d-flex align-items-center gap-2 flex-wrap">
-                            <input type="text" id="installmentListSearch" class="form-control form-control-sm" style="max-width: 200px;" placeholder="Search student name or ID...">
-                            <select id="installmentListStatusFilter" class="form-select form-select-sm" style="width: auto; min-width: 140px;">
+                            <input type="text" id="installmentListSearch" class="form-control form-control-sm"
+                              style="max-width: 200px;" placeholder="Search student name or ID...">
+                            <select id="installmentListStatusFilter" class="form-select form-select-sm"
+                              style="width: auto; min-width: 140px;">
                               <option value="all">All Status</option>
                               <option value="Pending">Pending</option>
                               <option value="Overdue">Overdue</option>
                               <option value="Paid">Paid</option>
                             </select>
-                            <button id="refreshInstallmentListBtn" class="btn btn-sm btn-outline-secondary" type="button" title="Refresh List">
+                            <button id="refreshInstallmentListBtn" class="btn btn-sm btn-outline-secondary"
+                              type="button" title="Refresh List">
                               <i class="bi bi-arrow-clockwise"></i>
                             </button>
                           </div>
                         </div>
-                        
+
                         <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
                           <table class="table table-hover align-middle mb-0" id="allInstallmentsLedgerTable">
                             <thead class="table-light sticky-top">
@@ -1329,7 +1496,8 @@
                             </thead>
                             <tbody id="allInstallmentsLedgerBody">
                               <tr>
-                                <td colspan="7" class="text-center py-4 text-muted">No installments available. Load records to populate.</td>
+                                <td colspan="7" class="text-center py-4 text-muted">No installments available. Load
+                                  records to populate.</td>
                               </tr>
                             </tbody>
                           </table>
@@ -1605,9 +1773,10 @@
                 <div class="tab-pane fade" id="reportPanel" role="tabpanel" aria-labelledby="report-tab">
                   <div class="card p-4 rounded-4 shadow-sm border mb-4">
                     <h3 class="h5 fw-bold text-heading-color mb-3 pb-2 border-bottom">
-                      <i class="bi bi-file-earmark-bar-graph text-primary me-2"></i>Student & Financial Reports Generator
+                      <i class="bi bi-file-earmark-bar-graph text-primary me-2"></i>Student & Financial Reports
+                      Generator
                     </h3>
-                    
+
                     <!-- Form Filter Controls -->
                     <form id="reportFilterForm" class="row g-3 align-items-end mb-4">
                       <div class="col-md-3 col-sm-6">
@@ -1650,7 +1819,8 @@
                         </select>
                       </div>
                       <div class="col-md-2 col-sm-6" id="reportPaymentStatusContainer">
-                        <label for="reportPaymentStatusFilter" class="form-label small fw-semibold">Payment Status</label>
+                        <label for="reportPaymentStatusFilter" class="form-label small fw-semibold">Payment
+                          Status</label>
                         <select id="reportPaymentStatusFilter" class="form-select form-select-sm">
                           <option value="all">All Statuses</option>
                           <option value="Fully Paid">Fully Paid</option>
@@ -1666,7 +1836,7 @@
                           <input type="date" id="reportEndDate" class="form-control" placeholder="End">
                         </div>
                       </div>
-                      
+
                       <div class="col-12 d-flex justify-content-between flex-wrap gap-2 mt-4 pt-3 border-top">
                         <div class="d-flex gap-2">
                           <button type="button" id="generateReportBtn" class="btn btn-sm btn-primary fw-semibold px-3">
@@ -1674,44 +1844,53 @@
                           </button>
                         </div>
                         <div class="d-flex gap-2">
-                          <button type="button" id="printReportBtn" class="btn btn-sm btn-outline-secondary fw-semibold">
+                          <button type="button" id="printReportBtn"
+                            class="btn btn-sm btn-outline-secondary fw-semibold">
                             <i class="bi bi-printer me-1"></i>Print Report
                           </button>
-                          <button type="button" id="exportReportCsvBtn" class="btn btn-sm btn-outline-success fw-semibold">
+                          <button type="button" id="exportReportCsvBtn"
+                            class="btn btn-sm btn-outline-success fw-semibold">
                             <i class="bi bi-file-earmark-excel me-1"></i>Export CSV
                           </button>
                         </div>
                       </div>
                     </form>
-                    
+
                     <!-- Dynamic Summary Stats Card Grid -->
                     <div class="row g-3 mb-4" id="reportSummaryCards">
                       <div class="col-sm-6 col-md-3">
                         <div class="p-3 bg-light border rounded-3 text-center">
-                          <span class="text-muted small fw-semibold d-block text-uppercase mb-1" style="font-size:0.65rem; letter-spacing:0.05em;" id="lblReportStatRecords">Total Records</span>
+                          <span class="text-muted small fw-semibold d-block text-uppercase mb-1"
+                            style="font-size:0.65rem; letter-spacing:0.05em;" id="lblReportStatRecords">Total
+                            Records</span>
                           <strong class="fs-4 text-dark" id="reportStatRecords">0</strong>
                         </div>
                       </div>
                       <div class="col-sm-6 col-md-3">
                         <div class="p-3 bg-light border rounded-3 text-center">
-                          <span class="text-muted small fw-semibold d-block text-uppercase mb-1" style="font-size:0.65rem; letter-spacing:0.05em;" id="lblReportStatFees">Total Fees</span>
+                          <span class="text-muted small fw-semibold d-block text-uppercase mb-1"
+                            style="font-size:0.65rem; letter-spacing:0.05em;" id="lblReportStatFees">Total Fees</span>
                           <strong class="fs-4 text-dark" id="reportStatFees">0 BDT</strong>
                         </div>
                       </div>
                       <div class="col-sm-6 col-md-3">
                         <div class="p-3 bg-light border rounded-3 text-center">
-                          <span class="text-muted small fw-semibold d-block text-uppercase mb-1" style="font-size:0.65rem; letter-spacing:0.05em;" id="lblReportStatCollected">Total Collected</span>
+                          <span class="text-muted small fw-semibold d-block text-uppercase mb-1"
+                            style="font-size:0.65rem; letter-spacing:0.05em;" id="lblReportStatCollected">Total
+                            Collected</span>
                           <strong class="fs-4 text-success" id="reportStatCollected">0 BDT</strong>
                         </div>
                       </div>
                       <div class="col-sm-6 col-md-3">
                         <div class="p-3 bg-light border rounded-3 text-center">
-                          <span class="text-muted small fw-semibold d-block text-uppercase mb-1" style="font-size:0.65rem; letter-spacing:0.05em;" id="lblReportStatOutstanding">Total Outstanding</span>
+                          <span class="text-muted small fw-semibold d-block text-uppercase mb-1"
+                            style="font-size:0.65rem; letter-spacing:0.05em;" id="lblReportStatOutstanding">Total
+                            Outstanding</span>
                           <strong class="fs-4 text-danger" id="reportStatOutstanding">0 BDT</strong>
                         </div>
                       </div>
                     </div>
-                    
+
                     <!-- Table Display -->
                     <div class="table-responsive border rounded-3 shadow-sm bg-white">
                       <table class="table table-hover align-middle mb-0" id="reportTable">
@@ -1740,24 +1919,29 @@
                           <i class="bi bi-collection-play me-2 text-primary"></i>Create New Batch
                         </h3>
 
-                        <div id="batchSuccess" class="alert alert-success d-none alert-dismissible fade show small" role="alert">
+                        <div id="batchSuccess" class="alert alert-success d-none alert-dismissible fade show small"
+                          role="alert">
                           <span>Batch created successfully!</span>
                           <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
-                        <div id="batchError" class="alert alert-danger d-none alert-dismissible fade show small" role="alert">
+                        <div id="batchError" class="alert alert-danger d-none alert-dismissible fade show small"
+                          role="alert">
                           <span>An error occurred. Please try again.</span>
                           <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
 
                         <form id="batchForm">
                           <div class="mb-3">
-                            <label class="form-label small fw-semibold mb-1" for="batchIdInput">Batch ID <span class="text-danger">*</span></label>
-                            <input class="form-control" id="batchIdInput" type="text" placeholder="e.g. CCNA-B01" required>
+                            <label class="form-label small fw-semibold mb-1" for="batchIdInput">Batch ID <span
+                                class="text-danger">*</span></label>
+                            <input class="form-control" id="batchIdInput" type="text" placeholder="e.g. CCNA-B01"
+                              required>
                             <div class="form-text small text-muted">A unique identifier for this batch.</div>
                           </div>
 
                           <div class="mb-3">
-                            <label class="form-label small fw-semibold mb-1" for="batchCourseSelect">Course <span class="text-danger">*</span></label>
+                            <label class="form-label small fw-semibold mb-1" for="batchCourseSelect">Course <span
+                                class="text-danger">*</span></label>
                             <select class="form-select" id="batchCourseSelect" required>
                               <option value="" disabled selected>Select a course</option>
                               <option value="CompTIA A+">CompTIA A+</option>
@@ -1780,7 +1964,8 @@
                           </div>
 
                           <div class="mb-3">
-                            <label class="form-label small fw-semibold mb-1" for="batchScheduleSelect">Schedule Slot <span class="text-danger">*</span></label>
+                            <label class="form-label small fw-semibold mb-1" for="batchScheduleSelect">Schedule Slot
+                              <span class="text-danger">*</span></label>
                             <select class="form-select" id="batchScheduleSelect" required>
                               <option value="" disabled selected>Select preferred slot</option>
                               <option value="Morning (9am – 12pm)">Morning (9am – 12pm)</option>
@@ -1791,13 +1976,16 @@
                           </div>
 
                           <div class="mb-3">
-                            <label class="form-label small fw-semibold mb-1" for="batchCapacityInput">Max Capacity (Students)</label>
-                            <input class="form-control bg-body-secondary" id="batchCapacityInput" type="number" value="10" disabled readonly>
+                            <label class="form-label small fw-semibold mb-1" for="batchCapacityInput">Max Capacity
+                              (Students)</label>
+                            <input class="form-control bg-body-secondary" id="batchCapacityInput" type="number"
+                              value="10" disabled readonly>
                             <div class="form-text small text-muted">Fixed at 10 students per batch.</div>
                           </div>
 
                           <div class="mb-4">
-                            <label class="form-label small fw-semibold mb-1" for="batchStatusSelect">Status <span class="text-danger">*</span></label>
+                            <label class="form-label small fw-semibold mb-1" for="batchStatusSelect">Status <span
+                                class="text-danger">*</span></label>
                             <select class="form-select" id="batchStatusSelect" required>
                               <option value="Active" selected>Active</option>
                               <option value="Upcoming">Upcoming</option>
@@ -1809,7 +1997,8 @@
                             <button type="submit" id="submitBatchBtn" class="btn btn-primary w-100 fw-semibold py-2">
                               <i class="bi bi-cloud-arrow-up me-2"></i>Save Batch
                             </button>
-                            <button type="button" id="cancelBatchEditBtn" class="btn btn-outline-secondary w-50 fw-semibold py-2 d-none">
+                            <button type="button" id="cancelBatchEditBtn"
+                              class="btn btn-outline-secondary w-50 fw-semibold py-2 d-none">
                               Cancel
                             </button>
                           </div>
@@ -1820,12 +2009,14 @@
                     <!-- Right: Table -->
                     <div class="col-lg-8">
                       <div class="card p-4 rounded-4 shadow-sm border h-100">
-                        <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom flex-wrap gap-2">
+                        <div
+                          class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom flex-wrap gap-2">
                           <h3 class="h5 fw-bold text-heading-color mb-0">
                             <i class="bi bi-list-stars me-2 text-primary"></i>Batches Registry
                           </h3>
                           <div class="d-flex align-items-center gap-2 flex-wrap">
-                            <select id="courseBatchFilter" class="form-select form-select-sm" style="width: auto; min-width: 140px;">
+                            <select id="courseBatchFilter" class="form-select form-select-sm"
+                              style="width: auto; min-width: 140px;">
                               <option value="all">All Courses</option>
                               <option value="CompTIA A+">CompTIA A+</option>
                               <option value="CompTIA Network+">CompTIA Network+</option>
@@ -1844,7 +2035,8 @@
                               <option value="FCP NSE5">FCP NSE5</option>
                               <option value="CCNA & MTCNA">CCNA &amp; MTCNA</option>
                             </select>
-                            <button id="refreshBatchListBtn" class="btn btn-sm btn-outline-secondary" type="button" title="Refresh List">
+                            <button id="refreshBatchListBtn" class="btn btn-sm btn-outline-secondary" type="button"
+                              title="Refresh List">
                               <i class="bi bi-arrow-clockwise"></i>
                             </button>
                           </div>
@@ -1878,22 +2070,30 @@
                 </div>
 
                 <!-- Sub-Page 6.45: Contact Directory -->
-                <div class="tab-pane fade" id="contactDirectoryPanel" role="tabpanel" aria-labelledby="contact-directory-tab">
+                <div class="tab-pane fade" id="contactDirectoryPanel" role="tabpanel"
+                  aria-labelledby="contact-directory-tab">
                   <!-- Sub Tabs Navigation Header -->
-                  <div class="d-flex justify-content-between align-items-center mb-4 pb-2 border-bottom flex-wrap gap-2">
+                  <div
+                    class="d-flex justify-content-between align-items-center mb-4 pb-2 border-bottom flex-wrap gap-2">
                     <ul class="nav nav-pills gap-2" id="directoryTabs" role="tablist">
                       <li class="nav-item" role="presentation">
-                        <button class="nav-link active px-4 py-2 fw-semibold rounded-3" id="sub-student-contacts-tab" data-bs-toggle="tab" data-bs-target="#studentContactsSubPanel" type="button" role="tab" aria-controls="studentContactsSubPanel" aria-selected="true">
+                        <button class="nav-link active px-4 py-2 fw-semibold rounded-3" id="sub-student-contacts-tab"
+                          data-bs-toggle="tab" data-bs-target="#studentContactsSubPanel" type="button" role="tab"
+                          aria-controls="studentContactsSubPanel" aria-selected="true">
                           <i class="bi bi-people-fill me-2"></i>Student Contacts
                         </button>
                       </li>
                       <li class="nav-item" role="presentation">
-                        <button class="nav-link px-4 py-2 fw-semibold rounded-3" id="sub-trainer-contacts-tab" data-bs-toggle="tab" data-bs-target="#trainerContactsSubPanel" type="button" role="tab" aria-controls="trainerContactsSubPanel" aria-selected="false">
+                        <button class="nav-link px-4 py-2 fw-semibold rounded-3" id="sub-trainer-contacts-tab"
+                          data-bs-toggle="tab" data-bs-target="#trainerContactsSubPanel" type="button" role="tab"
+                          aria-controls="trainerContactsSubPanel" aria-selected="false">
                           <i class="bi bi-person-badge-fill me-2"></i>Trainer Contacts
                         </button>
                       </li>
                       <li class="nav-item" role="presentation">
-                        <button class="nav-link px-4 py-2 fw-semibold rounded-3" id="sub-public-institutes-tab" data-bs-toggle="tab" data-bs-target="#publicInstitutesSubPanel" type="button" role="tab" aria-controls="publicInstitutesSubPanel" aria-selected="false">
+                        <button class="nav-link px-4 py-2 fw-semibold rounded-3" id="sub-public-institutes-tab"
+                          data-bs-toggle="tab" data-bs-target="#publicInstitutesSubPanel" type="button" role="tab"
+                          aria-controls="publicInstitutesSubPanel" aria-selected="false">
                           <i class="bi bi-building-fill me-2"></i>Public Institutes
                         </button>
                       </li>
@@ -1902,17 +2102,21 @@
 
                   <!-- Sub Tabs Contents -->
                   <div class="tab-content" id="directoryTabContent">
-                    
+
                     <!-- Sub-Tab 1: Student Contacts -->
-                    <div class="tab-pane fade show active" id="studentContactsSubPanel" role="tabpanel" aria-labelledby="sub-student-contacts-tab">
+                    <div class="tab-pane fade show active" id="studentContactsSubPanel" role="tabpanel"
+                      aria-labelledby="sub-student-contacts-tab">
                       <div class="card p-4 rounded-4 shadow-sm border">
-                        <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom flex-wrap gap-2">
+                        <div
+                          class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom flex-wrap gap-2">
                           <h3 class="h6 fw-bold text-heading-color mb-0">
                             <i class="bi bi-people me-2 text-primary"></i>Student Contact Directory
                           </h3>
                           <div class="d-flex align-items-center gap-2 flex-wrap">
-                            <input type="text" id="searchStudentContact" class="form-control form-control-sm" style="max-width: 240px;" placeholder="Search name, phone, email...">
-                            <select id="courseStudentContactFilter" class="form-select form-select-sm" style="width: auto; min-width: 140px;">
+                            <input type="text" id="searchStudentContact" class="form-control form-control-sm"
+                              style="max-width: 240px;" placeholder="Search name, phone, email...">
+                            <select id="courseStudentContactFilter" class="form-select form-select-sm"
+                              style="width: auto; min-width: 140px;">
                               <option value="all">All Courses</option>
                               <option value="CompTIA A+">CompTIA A+</option>
                               <option value="CompTIA Network+">CompTIA Network+</option>
@@ -1959,15 +2163,19 @@
                     </div>
 
                     <!-- Sub-Tab 2: Trainer Contacts -->
-                    <div class="tab-pane fade" id="trainerContactsSubPanel" role="tabpanel" aria-labelledby="sub-trainer-contacts-tab">
+                    <div class="tab-pane fade" id="trainerContactsSubPanel" role="tabpanel"
+                      aria-labelledby="sub-trainer-contacts-tab">
                       <div class="card p-4 rounded-4 shadow-sm border">
-                        <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom flex-wrap gap-2">
+                        <div
+                          class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom flex-wrap gap-2">
                           <h3 class="h6 fw-bold text-heading-color mb-0">
                             <i class="bi bi-person-badge me-2 text-primary"></i>Trainer Contact Directory
                           </h3>
                           <div class="d-flex align-items-center gap-2 flex-wrap">
-                            <input type="text" id="searchTrainerContact" class="form-control form-control-sm" style="max-width: 240px;" placeholder="Search name, phone, email...">
-                            <select id="typeTrainerContactFilter" class="form-select form-select-sm" style="width: auto;">
+                            <input type="text" id="searchTrainerContact" class="form-control form-control-sm"
+                              style="max-width: 240px;" placeholder="Search name, phone, email...">
+                            <select id="typeTrainerContactFilter" class="form-select form-select-sm"
+                              style="width: auto;">
                               <option value="all">All Types</option>
                               <option value="In-house Staff">In-house Staff</option>
                               <option value="External Professionals">External Professionals</option>
@@ -2000,7 +2208,8 @@
                     </div>
 
                     <!-- Sub-Tab 3: Public Institute Contacts -->
-                    <div class="tab-pane fade" id="publicInstitutesSubPanel" role="tabpanel" aria-labelledby="sub-public-institutes-tab">
+                    <div class="tab-pane fade" id="publicInstitutesSubPanel" role="tabpanel"
+                      aria-labelledby="sub-public-institutes-tab">
                       <div class="row g-4">
                         <!-- Left: Form -->
                         <div class="col-lg-4">
@@ -2009,42 +2218,56 @@
                               <i class="bi bi-building-add me-2 text-primary"></i>Add Institute Contact
                             </h3>
 
-                            <div id="instSuccess" class="alert alert-success d-none alert-dismissible fade show small" role="alert">
+                            <div id="instSuccess" class="alert alert-success d-none alert-dismissible fade show small"
+                              role="alert">
                               <span>Institute saved successfully!</span>
-                              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                              <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                aria-label="Close"></button>
                             </div>
-                            <div id="instError" class="alert alert-danger d-none alert-dismissible fade show small" role="alert">
+                            <div id="instError" class="alert alert-danger d-none alert-dismissible fade show small"
+                              role="alert">
                               <span>An error occurred. Please try again.</span>
-                              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                              <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                aria-label="Close"></button>
                             </div>
 
                             <form id="publicInstituteForm">
                               <div class="mb-3">
-                                <label class="form-label small fw-semibold mb-1" for="instNameInput">Institute Name <span class="text-danger">*</span></label>
-                                <input class="form-control" id="instNameInput" type="text" placeholder="e.g. NACTAR" required>
+                                <label class="form-label small fw-semibold mb-1" for="instNameInput">Institute Name
+                                  <span class="text-danger">*</span></label>
+                                <input class="form-control" id="instNameInput" type="text" placeholder="e.g. NACTAR"
+                                  required>
                               </div>
 
                               <div class="mb-3">
-                                <label class="form-label small fw-semibold mb-1" for="instContactPersonInput">Contact Person</label>
-                                <input class="form-control" id="instContactPersonInput" type="text" placeholder="e.g. Director General">
+                                <label class="form-label small fw-semibold mb-1" for="instContactPersonInput">Contact
+                                  Person</label>
+                                <input class="form-control" id="instContactPersonInput" type="text"
+                                  placeholder="e.g. Director General">
                               </div>
 
                               <div class="row g-2 mb-3">
                                 <div class="col-md-6">
-                                  <label class="form-label small fw-semibold mb-1" for="instEmailInput">Email Address</label>
-                                  <input class="form-control" id="instEmailInput" type="email" placeholder="email@domain.com">
+                                  <label class="form-label small fw-semibold mb-1" for="instEmailInput">Email
+                                    Address</label>
+                                  <input class="form-control" id="instEmailInput" type="email"
+                                    placeholder="email@domain.com">
                                 </div>
                                 <div class="col-md-6">
-                                  <label class="form-label small fw-semibold mb-1" for="instPhoneInput">Mobile Phone</label>
-                                  <input class="form-control" id="instPhoneInput" type="tel" placeholder="+880 1XXX-XXXXXX">
+                                  <label class="form-label small fw-semibold mb-1" for="instPhoneInput">Mobile
+                                    Phone</label>
+                                  <input class="form-control" id="instPhoneInput" type="tel"
+                                    placeholder="+880 1XXX-XXXXXX">
                                 </div>
                               </div>
 
                               <div class="mb-3">
-                                <label class="form-label small fw-semibold mb-1" for="instTypeSelect">Institute Type <span class="text-danger">*</span></label>
+                                <label class="form-label small fw-semibold mb-1" for="instTypeSelect">Institute Type
+                                  <span class="text-danger">*</span></label>
                                 <select class="form-select" id="instTypeSelect" required>
                                   <option value="" disabled selected>Select type</option>
-                                  <option value="Professional Training Institute">Professional Training Institute</option>
+                                  <option value="Professional Training Institute">Professional Training Institute
+                                  </option>
                                   <option value="Government Training Institute">Government Training Institute</option>
                                   <option value="Academic University">Academic University</option>
                                   <option value="Other">Other</option>
@@ -2052,17 +2275,22 @@
                               </div>
 
                               <div class="mb-3">
-                                <label class="form-label small fw-semibold mb-1" for="instLocationInput">Location / Address</label>
-                                <input class="form-control" id="instLocationInput" type="text" placeholder="e.g. Bogura, Bangladesh">
+                                <label class="form-label small fw-semibold mb-1" for="instLocationInput">Location /
+                                  Address</label>
+                                <input class="form-control" id="instLocationInput" type="text"
+                                  placeholder="e.g. Bogura, Bangladesh">
                               </div>
 
                               <div class="mb-3">
-                                <label class="form-label small fw-semibold mb-1" for="instWebsiteInput">Website URL</label>
-                                <input class="form-control" id="instWebsiteInput" type="url" placeholder="http://nactar.gov.bd">
+                                <label class="form-label small fw-semibold mb-1" for="instWebsiteInput">Website
+                                  URL</label>
+                                <input class="form-control" id="instWebsiteInput" type="url"
+                                  placeholder="http://nactar.gov.bd">
                               </div>
 
                               <div class="mb-3">
-                                <label class="form-label small fw-semibold mb-1" for="instStatusSelect">Status <span class="text-danger">*</span></label>
+                                <label class="form-label small fw-semibold mb-1" for="instStatusSelect">Status <span
+                                    class="text-danger">*</span></label>
                                 <select class="form-select" id="instStatusSelect" required>
                                   <option value="Active" selected>Active</option>
                                   <option value="Inactive">Inactive</option>
@@ -2070,15 +2298,18 @@
                               </div>
 
                               <div class="mb-4">
-                                <label class="form-label small fw-semibold mb-1" for="instNotesTextarea">Additional Notes</label>
-                                <textarea class="form-control" id="instNotesTextarea" rows="3" placeholder="Details about collaboration, courses offered, etc..."></textarea>
+                                <label class="form-label small fw-semibold mb-1" for="instNotesTextarea">Additional
+                                  Notes</label>
+                                <textarea class="form-control" id="instNotesTextarea" rows="3"
+                                  placeholder="Details about collaboration, courses offered, etc..."></textarea>
                               </div>
 
                               <div class="d-flex gap-2">
                                 <button type="submit" id="submitInstBtn" class="btn btn-primary w-100 fw-semibold py-2">
                                   <i class="bi bi-cloud-arrow-up me-2"></i>Save Contact
                                 </button>
-                                <button type="button" id="cancelInstEditBtn" class="btn btn-outline-secondary w-50 fw-semibold py-2 d-none">
+                                <button type="button" id="cancelInstEditBtn"
+                                  class="btn btn-outline-secondary w-50 fw-semibold py-2 d-none">
                                   Cancel
                                 </button>
                               </div>
@@ -2089,20 +2320,24 @@
                         <!-- Right: Table -->
                         <div class="col-lg-8">
                           <div class="card p-4 rounded-4 shadow-sm border h-100">
-                            <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom flex-wrap gap-2">
+                            <div
+                              class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom flex-wrap gap-2">
                               <h3 class="h5 fw-bold text-heading-color mb-0">
                                 <i class="bi bi-building me-2 text-primary"></i>Public Institutes Directory
                               </h3>
                               <div class="d-flex align-items-center gap-2 flex-wrap">
-                                <input type="text" id="searchInstContact" class="form-control form-control-sm" style="max-width: 200px;" placeholder="Search name, location...">
+                                <input type="text" id="searchInstContact" class="form-control form-control-sm"
+                                  style="max-width: 200px;" placeholder="Search name, location...">
                                 <select id="filterInstType" class="form-select form-select-sm" style="width: auto;">
                                   <option value="all">All Types</option>
-                                  <option value="Professional Training Institute">Professional Training Institute</option>
+                                  <option value="Professional Training Institute">Professional Training Institute
+                                  </option>
                                   <option value="Government Training Institute">Government Training Institute</option>
                                   <option value="Academic University">Academic University</option>
                                   <option value="Other">Other</option>
                                 </select>
-                                <button id="refreshInstListBtn" class="btn btn-sm btn-outline-secondary" type="button" title="Refresh List">
+                                <button id="refreshInstListBtn" class="btn btn-sm btn-outline-secondary" type="button"
+                                  title="Refresh List">
                                   <i class="bi bi-arrow-clockwise"></i>
                                 </button>
                               </div>
@@ -2124,7 +2359,8 @@
                                 <tbody id="publicInstitutesTableBody">
                                   <tr>
                                     <td colspan="7" class="text-center py-4 text-muted">
-                                      <div class="spinner-border spinner-border-sm text-primary me-2" role="status"></div>
+                                      <div class="spinner-border spinner-border-sm text-primary me-2" role="status">
+                                      </div>
                                       Loading public institutes...
                                     </td>
                                   </tr>
@@ -2149,11 +2385,13 @@
                           <i class="bi bi-briefcase-fill me-2 text-primary"></i>Add Placement Record
                         </h3>
 
-                        <div id="placementSuccess" class="alert alert-success d-none alert-dismissible fade show small" role="alert">
+                        <div id="placementSuccess" class="alert alert-success d-none alert-dismissible fade show small"
+                          role="alert">
                           <span>Placement saved successfully!</span>
                           <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
-                        <div id="placementError" class="alert alert-danger d-none alert-dismissible fade show small" role="alert">
+                        <div id="placementError" class="alert alert-danger d-none alert-dismissible fade show small"
+                          role="alert">
                           <span>An error occurred. Please try again.</span>
                           <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
@@ -2161,56 +2399,72 @@
                         <form id="jobPlacementForm">
                           <!-- Student Verification Input -->
                           <div class="mb-3">
-                            <label class="form-label small fw-semibold mb-1" for="placementStudentId">Student ID <span class="text-danger">*</span></label>
+                            <label class="form-label small fw-semibold mb-1" for="placementStudentId">Student ID <span
+                                class="text-danger">*</span></label>
                             <div class="input-group">
-                              <input type="text" class="form-control" id="placementStudentId" placeholder="e.g. 495001" required>
+                              <input type="text" class="form-control" id="placementStudentId" placeholder="e.g. 495001"
+                                required>
                               <button id="lookupPlacementStudentBtn" class="btn btn-outline-primary" type="button">
                                 <i class="bi bi-search"></i> Verify
                               </button>
                             </div>
-                            <div id="placementStudentFeedback" class="small mt-1 text-muted">Enter student ID and verify.</div>
+                            <div id="placementStudentFeedback" class="small mt-1 text-muted">Enter student ID and
+                              verify.</div>
                           </div>
 
                           <!-- Read-only verified info -->
                           <div class="mb-3">
-                            <label class="form-label small fw-semibold mb-1" for="placementStudentName">Student Name</label>
-                            <input type="text" class="form-control bg-body-secondary" id="placementStudentName" readonly placeholder="Lookup verifies name">
+                            <label class="form-label small fw-semibold mb-1" for="placementStudentName">Student
+                              Name</label>
+                            <input type="text" class="form-control bg-body-secondary" id="placementStudentName" readonly
+                              placeholder="Lookup verifies name">
                           </div>
 
                           <div class="row g-2 mb-3">
                             <div class="col-md-6">
-                              <label class="form-label small fw-semibold mb-1" for="placementCourseName">Enrolled Course</label>
-                              <input type="text" class="form-control bg-body-secondary" id="placementCourseName" readonly placeholder="Course name">
+                              <label class="form-label small fw-semibold mb-1" for="placementCourseName">Enrolled
+                                Course</label>
+                              <input type="text" class="form-control bg-body-secondary" id="placementCourseName"
+                                readonly placeholder="Course name">
                             </div>
                             <div class="col-md-6">
                               <label class="form-label small fw-semibold mb-1" for="placementBatchId">Batch Name</label>
-                              <input type="text" class="form-control bg-body-secondary" id="placementBatchId" readonly placeholder="Batch ID">
+                              <input type="text" class="form-control bg-body-secondary" id="placementBatchId" readonly
+                                placeholder="Batch ID">
                             </div>
                           </div>
 
                           <div class="mb-3">
-                            <label class="form-label small fw-semibold mb-1" for="placementCompanyInput">Company Name <span class="text-danger">*</span></label>
-                            <input class="form-control" id="placementCompanyInput" type="text" placeholder="e.g. Intrex Digital" required>
+                            <label class="form-label small fw-semibold mb-1" for="placementCompanyInput">Company Name
+                              <span class="text-danger">*</span></label>
+                            <input class="form-control" id="placementCompanyInput" type="text"
+                              placeholder="e.g. Intrex Digital" required>
                           </div>
 
                           <div class="mb-3">
-                            <label class="form-label small fw-semibold mb-1" for="placementJobTitleInput">Job Title <span class="text-danger">*</span></label>
-                            <input class="form-control" id="placementJobTitleInput" type="text" placeholder="e.g. Associate Network Engineer" required>
+                            <label class="form-label small fw-semibold mb-1" for="placementJobTitleInput">Job Title
+                              <span class="text-danger">*</span></label>
+                            <input class="form-control" id="placementJobTitleInput" type="text"
+                              placeholder="e.g. Associate Network Engineer" required>
                           </div>
 
                           <div class="row g-2 mb-3">
                             <div class="col-md-6">
-                              <label class="form-label small fw-semibold mb-1" for="placementDateInput">Placement Date <span class="text-danger">*</span></label>
+                              <label class="form-label small fw-semibold mb-1" for="placementDateInput">Placement Date
+                                <span class="text-danger">*</span></label>
                               <input class="form-control" id="placementDateInput" type="date" required>
                             </div>
                             <div class="col-md-6">
-                              <label class="form-label small fw-semibold mb-1" for="placementSalaryInput">Salary (BDT / Month)</label>
-                              <input class="form-control" id="placementSalaryInput" type="number" min="0" placeholder="e.g. 25000">
+                              <label class="form-label small fw-semibold mb-1" for="placementSalaryInput">Salary (BDT /
+                                Month)</label>
+                              <input class="form-control" id="placementSalaryInput" type="number" min="0"
+                                placeholder="e.g. 25000">
                             </div>
                           </div>
 
                           <div class="mb-3">
-                            <label class="form-label small fw-semibold mb-1" for="placementTypeSelect">Placement Type <span class="text-danger">*</span></label>
+                            <label class="form-label small fw-semibold mb-1" for="placementTypeSelect">Placement Type
+                              <span class="text-danger">*</span></label>
                             <select class="form-select" id="placementTypeSelect" required>
                               <option value="" disabled selected>Select placement type</option>
                               <option value="Internship">Internship</option>
@@ -2221,15 +2475,19 @@
                           </div>
 
                           <div class="mb-4">
-                            <label class="form-label small fw-semibold mb-1" for="placementNotesTextarea">Remarks / Placement Notes</label>
-                            <textarea class="form-control" id="placementNotesTextarea" rows="3" placeholder="Job details, probation terms, or career services notes..."></textarea>
+                            <label class="form-label small fw-semibold mb-1" for="placementNotesTextarea">Remarks /
+                              Placement Notes</label>
+                            <textarea class="form-control" id="placementNotesTextarea" rows="3"
+                              placeholder="Job details, probation terms, or career services notes..."></textarea>
                           </div>
 
                           <div class="d-flex gap-2">
-                            <button type="submit" id="submitPlacementBtn" class="btn btn-primary w-100 fw-semibold py-2">
+                            <button type="submit" id="submitPlacementBtn"
+                              class="btn btn-primary w-100 fw-semibold py-2">
                               <i class="bi bi-cloud-arrow-up me-2"></i>Save Placement
                             </button>
-                            <button type="button" id="cancelPlacementEditBtn" class="btn btn-outline-secondary w-50 fw-semibold py-2 d-none">
+                            <button type="button" id="cancelPlacementEditBtn"
+                              class="btn btn-outline-secondary w-50 fw-semibold py-2 d-none">
                               Cancel
                             </button>
                           </div>
@@ -2240,12 +2498,14 @@
                     <!-- Right: Table -->
                     <div class="col-lg-8">
                       <div class="card p-4 rounded-4 shadow-sm border h-100">
-                        <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom flex-wrap gap-2">
+                        <div
+                          class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom flex-wrap gap-2">
                           <h3 class="h5 fw-bold text-heading-color mb-0">
                             <i class="bi bi-briefcase me-2 text-primary"></i>Job Placement Registry
                           </h3>
                           <div class="d-flex align-items-center gap-2 flex-wrap">
-                            <input type="text" id="searchPlacement" class="form-control form-control-sm" style="max-width: 200px;" placeholder="Search student, company...">
+                            <input type="text" id="searchPlacement" class="form-control form-control-sm"
+                              style="max-width: 200px;" placeholder="Search student, company...">
                             <select id="filterPlacementType" class="form-select form-select-sm" style="width: auto;">
                               <option value="all">All Types</option>
                               <option value="Internship">Internship</option>
@@ -2253,7 +2513,8 @@
                               <option value="Part-time">Part-time</option>
                               <option value="Contractual">Contractual</option>
                             </select>
-                            <button id="refreshPlacementListBtn" class="btn btn-sm btn-outline-secondary" type="button" title="Refresh List">
+                            <button id="refreshPlacementListBtn" class="btn btn-sm btn-outline-secondary" type="button"
+                              title="Refresh List">
                               <i class="bi bi-arrow-clockwise"></i>
                             </button>
                           </div>
@@ -2294,7 +2555,8 @@
                     <h3 id="empFormTitle" class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
                       <i class="bi bi-person-plus-fill me-2 text-primary"></i>Add Employee Record
                     </h3>
-                    <div id="empSuccess" class="alert alert-success d-none alert-dismissible fade show small" role="alert">
+                    <div id="empSuccess" class="alert alert-success d-none alert-dismissible fade show small"
+                      role="alert">
                       <span>Employee saved successfully!</span>
                       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
@@ -2305,11 +2567,14 @@
                     <form id="employeeForm">
                       <div class="row g-3">
                         <div class="col-md-6">
-                          <label class="form-label small fw-semibold mb-1" for="emp_employee_name">Full Name <span class="text-danger">*</span></label>
-                          <input class="form-control" id="emp_employee_name" type="text" placeholder="e.g. John Doe" required maxlength="100">
+                          <label class="form-label small fw-semibold mb-1" for="emp_employee_name">Full Name <span
+                              class="text-danger">*</span></label>
+                          <input class="form-control" id="emp_employee_name" type="text" placeholder="e.g. John Doe"
+                            required maxlength="100">
                         </div>
                         <div class="col-md-6">
-                          <label class="form-label small fw-semibold mb-1" for="emp_designation">Designation <span class="text-danger">*</span></label>
+                          <label class="form-label small fw-semibold mb-1" for="emp_designation">Designation <span
+                              class="text-danger">*</span></label>
                           <select class="form-select" id="emp_designation" required>
                             <option value="" disabled selected>Select Designation</option>
                             <option value="Finance Officer">Finance Officer</option>
@@ -2328,7 +2593,8 @@
                           </select>
                         </div>
                         <div class="col-md-4">
-                          <label class="form-label small fw-semibold mb-1" for="emp_employee_type">Employee Type <span class="text-danger">*</span></label>
+                          <label class="form-label small fw-semibold mb-1" for="emp_employee_type">Employee Type <span
+                              class="text-danger">*</span></label>
                           <select class="form-select" id="emp_employee_type" required>
                             <option value="In-house Staff" selected>In-house Staff</option>
                             <option value="External Professionals">External Professionals</option>
@@ -2336,7 +2602,8 @@
                         </div>
                         <div class="col-md-4">
                           <label class="form-label small fw-semibold mb-1" for="emp_mobile_phone">Mobile Number</label>
-                          <input class="form-control" id="emp_mobile_phone" type="tel" placeholder="e.g. +880 1XXX-XXXXXX">
+                          <input class="form-control" id="emp_mobile_phone" type="tel"
+                            placeholder="e.g. +880 1XXX-XXXXXX">
                         </div>
                         <div class="col-md-4">
                           <label class="form-label small fw-semibold mb-1" for="emp_email">E-mail Address</label>
@@ -2350,7 +2617,8 @@
                           </select>
                         </div>
                         <div class="col-md-6">
-                          <label class="form-label small fw-semibold mb-1" for="emp_employee_id">Employee ID <span class="text-muted">(auto-generated if blank)</span></label>
+                          <label class="form-label small fw-semibold mb-1" for="emp_employee_id">Employee ID <span
+                              class="text-muted">(auto-generated if blank)</span></label>
                           <input class="form-control" id="emp_employee_id" type="text" placeholder="e.g. EMP-0001">
                         </div>
                       </div>
@@ -2366,13 +2634,16 @@
                   </div>
                   <!-- Directory -->
                   <div class="card p-4 rounded-4 shadow-sm border">
-                    <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom flex-wrap gap-2">
+                    <div
+                      class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom flex-wrap gap-2">
                       <h3 class="h5 fw-bold text-heading-color mb-0">
                         <i class="bi bi-people me-2 text-primary"></i>Employee Directory
                       </h3>
                       <div class="d-flex align-items-center gap-2 flex-wrap">
-                        <input type="text" id="searchEmployee" class="form-control form-control-sm" style="max-width: 200px;" placeholder="Search employee...">
-                        <select id="filterDesignation" class="form-select form-select-sm" style="width: auto; min-width: 140px;">
+                        <input type="text" id="searchEmployee" class="form-control form-control-sm"
+                          style="max-width: 200px;" placeholder="Search employee...">
+                        <select id="filterDesignation" class="form-select form-select-sm"
+                          style="width: auto; min-width: 140px;">
                           <option value="all">All Designations</option>
                           <option value="Finance Officer">Finance Officer</option>
                           <option value="Business Development Executive">Business Development Executive</option>
@@ -2388,12 +2659,14 @@
                           <option value="Corporate Trainer">Corporate Trainer</option>
                           <option value="Industry Expert">Industry Expert</option>
                         </select>
-                        <select id="filterStatus" class="form-select form-select-sm" style="width: auto; min-width: 100px;">
+                        <select id="filterStatus" class="form-select form-select-sm"
+                          style="width: auto; min-width: 100px;">
                           <option value="all">All Status</option>
                           <option value="Active">Active</option>
                           <option value="Inactive">Inactive</option>
                         </select>
-                        <button id="refreshEmployeesBtn" class="btn btn-sm btn-outline-secondary" type="button" title="Refresh Directory">
+                        <button id="refreshEmployeesBtn" class="btn btn-sm btn-outline-secondary" type="button"
+                          title="Refresh Directory">
                           <i class="bi bi-arrow-clockwise"></i>
                         </button>
                       </div>
@@ -2488,47 +2761,59 @@
                           <i class="bi bi-wallet2 me-2 text-primary"></i>Record New Expense
                         </h3>
 
-                        <div id="expenseSuccess" class="alert alert-success d-none alert-dismissible fade show small" role="alert">
+                        <div id="expenseSuccess" class="alert alert-success d-none alert-dismissible fade show small"
+                          role="alert">
                           <span>Expense recorded successfully!</span>
                           <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
-                        <div id="expenseError" class="alert alert-danger d-none alert-dismissible fade show small" role="alert">
+                        <div id="expenseError" class="alert alert-danger d-none alert-dismissible fade show small"
+                          role="alert">
                           <span>An error occurred. Please try again.</span>
                           <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
 
                         <form id="expenseForm">
                           <div class="mb-3">
-                            <label class="form-label small fw-semibold mb-1" for="expenseCategory">Category <span class="text-danger">*</span></label>
+                            <label class="form-label small fw-semibold mb-1" for="expenseCategory">Category <span
+                                class="text-danger">*</span></label>
                             <select class="form-select" id="expenseCategory" required>
                               <option value="" disabled selected>Select category</option>
-                              <option value="Direct Training & Delivery Costs (Variable)">Direct Training & Delivery Costs (Variable)</option>
-                              <option value="Infrastructure & Technology (Fixed/Subscription)">Infrastructure & Technology (Fixed/Subscription)</option>
-                              <option value="Facilities & Utilities (Fixed Overhead)">Facilities & Utilities (Fixed Overhead)</option>
+                              <option value="Direct Training & Delivery Costs (Variable)">Direct Training & Delivery
+                                Costs (Variable)</option>
+                              <option value="Infrastructure & Technology (Fixed/Subscription)">Infrastructure &
+                                Technology (Fixed/Subscription)</option>
+                              <option value="Facilities & Utilities (Fixed Overhead)">Facilities & Utilities (Fixed
+                                Overhead)</option>
                               <option value="Marketing & Student Acquisition">Marketing & Student Acquisition</option>
-                              <option value="Administrative & Compliance Costs">Administrative & Compliance Costs</option>
+                              <option value="Administrative & Compliance Costs">Administrative & Compliance Costs
+                              </option>
                             </select>
                           </div>
 
                           <div class="mb-3">
-                            <label class="form-label small fw-semibold mb-1" for="expenseSubCategory">Sub-category <span class="text-danger">*</span></label>
+                            <label class="form-label small fw-semibold mb-1" for="expenseSubCategory">Sub-category <span
+                                class="text-danger">*</span></label>
                             <select class="form-select" id="expenseSubCategory" required disabled>
                               <option value="" disabled selected>Select sub-category</option>
                             </select>
                           </div>
 
                           <div class="mb-3">
-                            <label class="form-label small fw-semibold mb-1" for="expenseAmount">Amount (BDT) <span class="text-danger">*</span></label>
-                            <input type="number" class="form-control" id="expenseAmount" placeholder="e.g. 5000" min="1" required>
+                            <label class="form-label small fw-semibold mb-1" for="expenseAmount">Amount (BDT) <span
+                                class="text-danger">*</span></label>
+                            <input type="number" class="form-control" id="expenseAmount" placeholder="e.g. 5000" min="1"
+                              required>
                           </div>
 
                           <div class="mb-3">
-                            <label class="form-label small fw-semibold mb-1" for="expenseDate">Expense Date <span class="text-danger">*</span></label>
+                            <label class="form-label small fw-semibold mb-1" for="expenseDate">Expense Date <span
+                                class="text-danger">*</span></label>
                             <input type="date" class="form-control" id="expenseDate" required>
                           </div>
 
                           <div class="mb-3">
-                            <label class="form-label small fw-semibold mb-1" for="expensePaymentMethod">Payment Method <span class="text-danger">*</span></label>
+                            <label class="form-label small fw-semibold mb-1" for="expensePaymentMethod">Payment Method
+                              <span class="text-danger">*</span></label>
                             <select class="form-select" id="expensePaymentMethod" required>
                               <option value="Bank Transfer">Bank Transfer</option>
                               <option value="Cash">Cash</option>
@@ -2539,15 +2824,19 @@
                           </div>
 
                           <div class="mb-3">
-                            <label class="form-label small fw-semibold mb-1" for="expenseDescription">Description / Payee</label>
-                            <textarea class="form-control" id="expenseDescription" rows="3" placeholder="Additional details, vendor/payee name..."></textarea>
+                            <label class="form-label small fw-semibold mb-1" for="expenseDescription">Description /
+                              Payee</label>
+                            <textarea class="form-control" id="expenseDescription" rows="3"
+                              placeholder="Additional details, vendor/payee name..."></textarea>
                           </div>
 
                           <div class="d-flex gap-2 pt-2">
-                            <button type="submit" id="submitExpenseBtn" class="btn btn-primary w-100 py-2 d-flex align-items-center justify-content-center gap-2">
+                            <button type="submit" id="submitExpenseBtn"
+                              class="btn btn-primary w-100 py-2 d-flex align-items-center justify-content-center gap-2">
                               <i class="bi bi-cloud-arrow-up"></i> Save Expense
                             </button>
-                            <button type="button" id="cancelExpenseEditBtn" class="btn btn-outline-secondary w-50 py-2 d-none">
+                            <button type="button" id="cancelExpenseEditBtn"
+                              class="btn btn-outline-secondary w-50 py-2 d-none">
                               Cancel
                             </button>
                           </div>
@@ -2558,23 +2847,28 @@
                     <!-- Right: Table -->
                     <div class="col-lg-8">
                       <div class="card p-4 rounded-4 shadow-sm border">
-                        <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom flex-wrap gap-2">
+                        <div
+                          class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom flex-wrap gap-2">
                           <h3 class="h5 fw-bold text-heading-color mb-0">
                             <i class="bi bi-list-task me-2 text-primary"></i>Expense Records
                           </h3>
                           <div class="d-flex align-items-center gap-2 flex-wrap">
-                            <select id="expenseFilterCategory" class="form-select form-select-sm" style="width: auto; min-width: 150px;">
+                            <select id="expenseFilterCategory" class="form-select form-select-sm"
+                              style="width: auto; min-width: 150px;">
                               <option value="all">All Categories</option>
                               <option value="Direct Training & Delivery Costs (Variable)">Direct Training Costs</option>
-                              <option value="Infrastructure & Technology (Fixed/Subscription)">Infrastructure & Tech</option>
+                              <option value="Infrastructure & Technology (Fixed/Subscription)">Infrastructure & Tech
+                              </option>
                               <option value="Facilities & Utilities (Fixed Overhead)">Facilities & Utilities</option>
                               <option value="Marketing & Student Acquisition">Marketing</option>
                               <option value="Administrative & Compliance Costs">Administrative</option>
                             </select>
-                            <button id="exportExpensesBtn" class="btn btn-sm btn-outline-success d-flex align-items-center gap-1">
+                            <button id="exportExpensesBtn"
+                              class="btn btn-sm btn-outline-success d-flex align-items-center gap-1">
                               <i class="bi bi-file-earmark-excel"></i> Export CSV
                             </button>
-                            <button id="refreshExpensesBtn" class="btn btn-sm btn-outline-secondary" type="button" title="Refresh List">
+                            <button id="refreshExpensesBtn" class="btn btn-sm btn-outline-secondary" type="button"
+                              title="Refresh List">
                               <i class="bi bi-arrow-clockwise"></i>
                             </button>
                           </div>
@@ -3078,7 +3372,7 @@
                     family: 'Inter',
                     size: 10
                   },
-                  callback: function(value) {
+                  callback: function (value) {
                     return value.toLocaleString();
                   }
                 }
@@ -3984,11 +4278,11 @@
       }
     }
 
-    document.getElementById("regEmail").addEventListener("blur", function() {
+    document.getElementById("regEmail").addEventListener("blur", function () {
       checkExistingStudentMatch(this.value, 'email');
     });
 
-    document.getElementById("regPhone").addEventListener("blur", function() {
+    document.getElementById("regPhone").addEventListener("blur", function () {
       checkExistingStudentMatch(this.value, 'phone');
     });
 
@@ -4016,7 +4310,7 @@
       document.getElementById("regEmail").value = record.email || "";
       document.getElementById("regPhone").value = record.phone || "";
       document.getElementById("regEducation").value = record.education || "";
-      
+
       const isJobHolder = record.isJobHolder || false;
       if (regIsJobHolderSwitch) {
         regIsJobHolderSwitch.checked = isJobHolder;
@@ -4108,7 +4402,7 @@
       const paymentType = document.getElementById("regPaymentType").value;
       const transactionId = document.getElementById("regPaymentTxId").value.trim();
       const message = document.getElementById("regMessage").value.trim();
-      
+
       const enableInstallments = document.getElementById("regEnableInstallments").checked;
       const registrationFee = enableInstallments ? amountPaid : 0;
       let installments = [];
@@ -4630,7 +4924,7 @@
       if (type === 'payment' || type === 'installment') {
         const registrationFee = record.registrationFee || 0;
         const installments = record.installments || [];
-        
+
         let overdueTotal = 0;
         let pendingTotal = 0;
         let paidInstallmentsTotal = 0;
@@ -4641,7 +4935,7 @@
             const amt = Number(inst.amount) || 0;
             const status = inst.status || 'Pending';
             const dueDate = inst.dueDate || 'N/A';
-            
+
             let badgeClass = 'bg-secondary';
             let displayStatus = status;
             if (status === 'Paid') {
@@ -4656,7 +4950,7 @@
               displayStatus = 'Pending';
               pendingTotal += amt;
             }
-            
+
             return `
               <tr class="align-middle">
                 <td class="fw-semibold small">Installment #${index + 1}</td>
@@ -4734,7 +5028,7 @@
         if (studentRegistrations.length > 0) {
           coursesHtml = studentRegistrations.map((reg, index) => {
             const payRecord = studentPayments.find(p => (p.id || p.studentId) === (reg.id || reg.studentId) || p.courseName === reg.course);
-            
+
             let paymentSummaryHtml = '';
             let installmentsHtml = '';
 
@@ -4920,7 +5214,7 @@
       document.getElementById("editPaymentAmountPaid").value = record.amountPaid || 0;
 
       document.getElementById("editPaymentRegistrationFee").value = record.registrationFee || 0;
-      
+
       const payType = record.paymentType || "Cash";
       document.getElementById("editPaymentType").value = payType;
       const txContainer = document.getElementById("editPaymentTxIdContainer");
@@ -4934,7 +5228,7 @@
 
       const instCheckbox = document.getElementById("editPaymentEnableInstallments");
       const instContainer = document.getElementById("editPaymentInstallmentsContainer");
-      
+
       if (record.installments && record.installments.length > 0) {
         instCheckbox.checked = true;
         instContainer.classList.remove("d-none");
@@ -4991,24 +5285,24 @@
 
       const enabled = document.getElementById("regEnableInstallments").checked;
       const numInst = parseInt(document.getElementById("regNumInstallments").value) || 1;
-      
+
       const total = Number(document.getElementById("regFee").value) || 0;
       const discount = Number(document.getElementById("regDiscount").value) || 0;
       const regFeeVal = Number(document.getElementById("regAmountPaid").value) || 0;
       const due = Math.max(0, total - discount - regFeeVal);
-      
+
       const share = Math.floor(due / numInst);
       let remainder = due % numInst;
 
       container.innerHTML = "";
-      
+
       for (let i = 1; i <= numInst; i++) {
         const instAmount = share + (i === 1 ? remainder : 0);
-        
+
         const date = new Date();
         date.setMonth(date.getMonth() + i);
         const dateStr = date.toISOString().substring(0, 10);
-        
+
         const row = document.createElement("div");
         row.className = "col-12 border-bottom pb-2 mb-2 installment-row";
         row.innerHTML = `
@@ -5040,7 +5334,7 @@
       if (!container) return;
 
       const enabled = document.getElementById("editPaymentEnableInstallments").checked;
-      
+
       if (!enabled) {
         container.innerHTML = "";
         return;
@@ -5088,18 +5382,18 @@
       const discount = Number(document.getElementById("editPaymentDiscount").value) || 0;
       const regFeeVal = Number(document.getElementById("editPaymentRegistrationFee").value) || 0;
       const due = Math.max(0, total - discount - regFeeVal);
-      
+
       const share = Math.floor(due / numInst);
       let remainder = due % numInst;
 
       container.innerHTML = "";
-      
+
       for (let i = 1; i <= numInst; i++) {
         const instAmount = share + (i === 1 ? remainder : 0);
         const date = new Date();
         date.setMonth(date.getMonth() + i);
         const dateStr = date.toISOString().substring(0, 10);
-        
+
         const row = document.createElement("div");
         row.className = "col-12 border-bottom pb-2 mb-2 installment-row";
         row.innerHTML = `
@@ -5194,7 +5488,7 @@
       const paid = Number(document.getElementById("editPaymentAmountPaid").value) || 0;
       const payType = document.getElementById("editPaymentType").value;
       const txId = document.getElementById("editPaymentTxId").value.trim();
-      
+
       const registrationFee = Number(document.getElementById("editPaymentRegistrationFee").value) || 0;
       const enableInstallments = document.getElementById("editPaymentEnableInstallments").checked;
       let installments = [];
@@ -5207,7 +5501,7 @@
           installments.push({ amount, dueDate, status });
         });
       }
-      
+
       const errorDiv = document.getElementById("paymentModalError");
 
       errorDiv.classList.add("d-none");
@@ -5335,7 +5629,7 @@
             // If no item is active, search for a matching record from all available ones
             const query = input.value.trim().toLowerCase();
             if (query.length >= 2) {
-              const record = getRecords().find(r => 
+              const record = getRecords().find(r =>
                 (r.studentId && r.studentId.toLowerCase() === query) ||
                 (getLabel(r) && getLabel(r).toLowerCase() === query)
               );
@@ -5475,8 +5769,8 @@
       // Find if student already exists by Email or Phone
       const emailMatch = record.email ? record.email.trim().toLowerCase() : "";
       const phoneMatch = record.phone ? record.phone.trim() : "";
-      
-      const existingStudent = allRegistrations.find(r => 
+
+      const existingStudent = allRegistrations.find(r =>
         (emailMatch && r.email && r.email.trim().toLowerCase() === emailMatch) ||
         (phoneMatch && r.phone && r.phone.trim() === phoneMatch)
       );
@@ -5766,7 +6060,7 @@
       const discount = Number(document.getElementById("planDiscount").value) || 0;
       const regFeeVal = Number(document.getElementById("planRegistrationFee").value) || 0;
       const due = Math.max(0, total - discount - regFeeVal);
-      
+
       document.getElementById("displayRemainingDue").textContent = `${due.toLocaleString()} BDT`;
       validateInstallmentPlanTotals();
     }
@@ -5783,17 +6077,17 @@
       onPlanStudentSelect
     );
 
-    document.getElementById("installmentSearchBtn")?.addEventListener("click", function() {
+    document.getElementById("installmentSearchBtn")?.addEventListener("click", function () {
       const inputVal = document.getElementById("studentSearchInput").value.trim().toLowerCase();
       if (!inputVal) return;
-      const payRecord = allPayments.find(p => 
+      const payRecord = allPayments.find(p =>
         (p.studentId && p.studentId.toLowerCase() === inputVal) ||
         (p.studentName && p.studentName.toLowerCase() === inputVal)
       );
       if (payRecord) {
         onPlanStudentSelect(payRecord);
       } else {
-        const matches = allPayments.filter(p => 
+        const matches = allPayments.filter(p =>
           (p.studentId && p.studentId.toLowerCase().includes(inputVal)) ||
           (p.studentName && p.studentName.toLowerCase().includes(inputVal))
         );
@@ -5814,27 +6108,27 @@
         document.getElementById("displayStudentName").textContent = "-";
         document.getElementById("displayCourseBatch").textContent = "-";
         document.getElementById("displayEmail").textContent = "-";
-        
+
         document.getElementById("planTotalFee").value = 0;
         document.getElementById("planDiscount").value = 0;
         document.getElementById("planRegistrationFee").value = 0;
         updatePlanCalculations();
-        
+
         const container = document.getElementById("installmentsListContainer");
         if (container) {
           container.innerHTML = '<div class="col-12 text-center text-muted small py-4">No student loaded. Please search for a student.</div>';
         }
-        
+
         selectedStudent = null;
         document.getElementById("saveBtn").disabled = true;
-        
+
         alert("Please select a valid student from the autocomplete suggestions.");
         return;
       }
       selectedStudent = payRecord;
-      
+
       const regRecord = allRegistrations.find(r => r.studentId === payRecord.studentId) || {};
-      
+
       // Update displays
       document.getElementById("studentProfileCard").classList.remove("d-none");
       document.getElementById("displayStudentId").textContent = payRecord.studentId;
@@ -5866,7 +6160,7 @@
       const discount = Number(document.getElementById("planDiscount").value) || 0;
       const regFeeVal = Number(document.getElementById("planRegistrationFee").value) || 0;
       const due = Math.max(0, total - discount - regFeeVal);
-      
+
       const share = Math.floor(due / numInst);
       let remainder = due % numInst;
 
@@ -5876,11 +6170,11 @@
 
       for (let i = 1; i <= numInst; i++) {
         const instAmount = share + (i === 1 ? remainder : 0);
-        
+
         const date = new Date(baseDate);
         date.setMonth(baseDate.getMonth() + (i - 1));
         const dateStr = date.toISOString().substring(0, 10);
-        
+
         insts.push({
           amount: instAmount,
           dueDate: dateStr,
@@ -5898,7 +6192,7 @@
       if (!container) return;
 
       container.innerHTML = "";
-      
+
       installmentsArray.forEach((inst, idx) => {
         const row = document.createElement("div");
         row.className = "col-12 border-bottom pb-2 mb-2 installment-row";
@@ -5922,11 +6216,11 @@
             </div>
           </div>
         `;
-        
+
         row.querySelector(".inst-amount").addEventListener("input", validateInstallmentPlanTotals);
         row.querySelector(".inst-due-date").addEventListener("input", validateInstallmentPlanTotals);
         row.querySelector(".inst-status").addEventListener("change", validateInstallmentPlanTotals);
-        
+
         container.appendChild(row);
       });
 
@@ -5986,7 +6280,7 @@
         const total = Number(document.getElementById("planTotalFee").value) || 0;
         const discount = Number(document.getElementById("planDiscount").value) || 0;
         const regFeeVal = Number(document.getElementById("planRegistrationFee").value) || 0;
-        
+
         let amountPaid = regFeeVal;
         const installments = [];
         const instRows = document.querySelectorAll("#installmentsListContainer .installment-row");
@@ -5994,11 +6288,11 @@
           const amount = Number(row.querySelector(".inst-amount").value) || 0;
           const dueDate = row.querySelector(".inst-due-date").value;
           const status = row.querySelector(".inst-status").value;
-          
+
           if (status === "Paid") {
             amountPaid += amount;
           }
-          
+
           installments.push({ amount, dueDate, status });
         });
 
@@ -6029,7 +6323,7 @@
         refreshAuditLogs();
 
         alert("Installment plan saved successfully!");
-        
+
         // Refresh local memory and reload student details
         allPayments = await getAllPayments();
         const updatedRecord = allPayments.find(p => p.id === payDocId);
@@ -6157,7 +6451,7 @@
     // ============================================================
     // ALL STUDENTS INSTALLMENT LEDGER
     // ============================================================
-    window.loadAllInstallmentsLedger = function() {
+    window.loadAllInstallmentsLedger = function () {
       const tbody = document.getElementById("allInstallmentsLedgerBody");
       if (!tbody) return;
 
@@ -6194,7 +6488,7 @@
       }
 
       if (searchVal) {
-        filtered = filtered.filter(item => 
+        filtered = filtered.filter(item =>
           (item.studentName || '').toLowerCase().includes(searchVal) ||
           (item.studentId || '').toLowerCase().includes(searchVal) ||
           (item.courseName || '').toLowerCase().includes(searchVal) ||
@@ -6313,11 +6607,11 @@
       const batches = new Set();
       allRegistrations.forEach(r => { if (r.batch) batches.add(r.batch); });
       allRecords.forEach(r => { if (r.batch) batches.add(r.batch); });
-      
+
       const currentVal = select.value;
-      select.innerHTML = '<option value="all">All Batches</option>' + 
+      select.innerHTML = '<option value="all">All Batches</option>' +
         Array.from(batches).sort().map(b => `<option value="${b}">${b}</option>`).join('');
-      
+
       if (Array.from(batches).includes(currentVal)) {
         select.value = currentVal;
       }
@@ -6326,7 +6620,7 @@
     // Toggle filter visibility based on report type
     const reportTypeEl = document.getElementById("reportType");
     if (reportTypeEl) {
-      reportTypeEl.addEventListener("change", function() {
+      reportTypeEl.addEventListener("change", function () {
         const type = this.value;
         const courseContainer = document.getElementById("reportCourseContainer");
         const batchContainer = document.getElementById("reportBatchContainer");
@@ -6579,7 +6873,7 @@
           const amt = Number(e.amount) || 0;
           const cat = e.category || '';
           const isFixed = cat.toLowerCase().includes('fixed') || cat.toLowerCase().includes('infrastructure') || cat.toLowerCase().includes('facilities') || cat.toLowerCase().includes('administrative');
-          
+
           if (isFixed) {
             fixedTotal += amt;
           } else {
@@ -7365,7 +7659,7 @@
 
     // Designation change auto-fill logic:
     // "Corporate Trainer & Industry Expert is not in-house training so when add them, keep the employee type External Professionals"
-    document.getElementById("emp_designation")?.addEventListener("change", function(e) {
+    document.getElementById("emp_designation")?.addEventListener("change", function (e) {
       const designation = e.target.value;
       const typeSelect = document.getElementById("emp_employee_type");
       if (typeSelect) {
@@ -7409,8 +7703,8 @@
         return;
       }
       tbody.innerHTML = list.map(emp => {
-        const statusBadge = emp.status === "Active" 
-          ? `<span class="badge bg-success-subtle text-success px-2 py-1">Active</span>` 
+        const statusBadge = emp.status === "Active"
+          ? `<span class="badge bg-success-subtle text-success px-2 py-1">Active</span>`
           : `<span class="badge bg-danger-subtle text-danger px-2 py-1">Inactive</span>`;
         return `
           <tr>
@@ -7435,7 +7729,7 @@
 
       // Bind actions
       tbody.querySelectorAll(".emp-edit-btn").forEach(btn => {
-        btn.onclick = function() {
+        btn.onclick = function () {
           const id = this.getAttribute("data-id");
           const emp = allEmployees.find(e => e.employee_id === id);
           if (emp) editEmployee(emp);
@@ -7443,7 +7737,7 @@
       });
 
       tbody.querySelectorAll(".emp-delete-btn").forEach(btn => {
-        btn.onclick = function() {
+        btn.onclick = function () {
           const id = this.getAttribute("data-id");
           const emp = allEmployees.find(e => e.employee_id === id);
           if (emp && confirm(`Are you sure you want to delete employee "${emp.employee_name}" (${id})?`)) {
@@ -7536,10 +7830,10 @@
 
       try {
         const savedId = await addEmployee(employeeData);
-        
+
         // Audit log
         const action = isNew ? "CREATE" : "UPDATE";
-        const details = isNew 
+        const details = isNew
           ? `Created employee record for "${name}" (${savedId}), designation: "${designation}", type: "${employee_type}", status: "${status}"`
           : `Updated employee record for "${name}" (${savedId}), designation: "${designation}", type: "${employee_type}", status: "${status}"`;
 
@@ -7571,7 +7865,7 @@
     async function deleteEmployeeRecord(empId, empName) {
       try {
         await deleteEmployee(empId);
-        
+
         await addAuditLog({
           user_email: currentUserEmail || "admin@intrex-digital.com",
           action_type: "DELETE",
@@ -7610,7 +7904,7 @@
     document.getElementById("searchEmployee")?.addEventListener("input", applyEmployeeFilters);
     document.getElementById("filterDesignation")?.addEventListener("change", applyEmployeeFilters);
     document.getElementById("filterStatus")?.addEventListener("change", applyEmployeeFilters);
-    
+
     // Globally register loadEmployees function in window just in case
     window.loadEmployees = loadEmployees;
 
@@ -7637,11 +7931,11 @@
       courseBatches.forEach(b => {
         // Calculate student count for this batch
         const enrolledCount = allRegistrations.filter(r => r.batch === b.batchId).length;
-        
+
         const opt = document.createElement("option");
         opt.value = b.batchId;
         opt.textContent = `${b.batchId} (${enrolledCount}/${b.capacity || 10} students) - ${b.schedule}`;
-        
+
         // Disable option if it has 10 or more students, UNLESS it's the currently selected batch
         if (enrolledCount >= (b.capacity || 10) && b.batchId !== selectedBatchId) {
           opt.disabled = true;
@@ -7700,7 +7994,7 @@
         const enrolledStudents = allRegistrations.filter(r => r.batch === b.batchId);
         const enrolledCount = enrolledStudents.length;
         const capacity = b.capacity || 10;
-        
+
         let progressClass = "bg-success";
         if (enrolledCount >= capacity) progressClass = "bg-danger";
         else if (enrolledCount >= 7) progressClass = "bg-warning";
@@ -7747,14 +8041,14 @@
 
       // Bind buttons
       tbody.querySelectorAll(".batch-view-btn").forEach(btn => {
-        btn.onclick = function() {
+        btn.onclick = function () {
           const id = this.getAttribute("data-id");
           showBatchStudentsModal(id);
         };
       });
 
       tbody.querySelectorAll(".batch-edit-btn").forEach(btn => {
-        btn.onclick = function() {
+        btn.onclick = function () {
           const id = this.getAttribute("data-id");
           const batch = allBatches.find(b => b.batchId === id);
           if (batch) editBatch(batch);
@@ -7762,7 +8056,7 @@
       });
 
       tbody.querySelectorAll(".batch-delete-btn").forEach(btn => {
-        btn.onclick = async function() {
+        btn.onclick = async function () {
           const id = this.getAttribute("data-id");
           const enrolled = allRegistrations.filter(r => r.batch === id).length;
           if (enrolled > 0) {
@@ -7899,7 +8193,7 @@
           // Cross reference with payment record
           const payment = allPayments.find(p => p.studentId === student.studentId);
           const payStatus = payment ? payment.status : "Unpaid";
-          
+
           let badgeClass = "bg-danger";
           if (payStatus === "Fully Paid") {
             badgeClass = "bg-success";
@@ -8058,7 +8352,7 @@
     function autoGenerateBatchId(courseName) {
       const prefix = getCoursePrefix(courseName);
       const prefixPattern = new RegExp("^" + prefix + "-B(\\d+)$", "i");
-      
+
       let maxNum = 0;
       allBatches.forEach(b => {
         if (b.batchId) {
@@ -8071,7 +8365,7 @@
           }
         }
       });
-      
+
       const nextNum = maxNum + 1;
       const numStr = String(nextNum).padStart(2, "0");
       return `${prefix}-B${numStr}`;
@@ -8080,7 +8374,7 @@
     // Auto-generate Batch ID when course is selected in Batch Form
     document.getElementById("batchCourseSelect")?.addEventListener("change", function () {
       if (editingBatchId) return; // Do not auto-generate when editing an existing batch
-      
+
       const courseName = this.value;
       if (courseName) {
         const generatedId = autoGenerateBatchId(courseName);
@@ -8113,12 +8407,12 @@
       const courseFilter = document.getElementById("courseStudentContactFilter")?.value || "all";
 
       const filtered = allRegistrations.filter(r => {
-        const matchesSearch = 
+        const matchesSearch =
           (r.fullName && r.fullName.toLowerCase().includes(searchQuery)) ||
           (r.studentId && r.studentId.toLowerCase().includes(searchQuery)) ||
           (r.email && r.email.toLowerCase().includes(searchQuery)) ||
           (r.phone && r.phone.toLowerCase().includes(searchQuery));
-        
+
         const matchesCourse = courseFilter === "all" || r.course === courseFilter;
         return matchesSearch && matchesCourse;
       });
@@ -8132,7 +8426,7 @@
         // Cross reference with payment record
         const payment = allPayments.find(p => p.studentId === r.studentId);
         const payStatus = payment ? payment.status : "Unpaid";
-        
+
         let badgeClass = "bg-danger";
         if (payStatus === "Fully Paid") {
           badgeClass = "bg-success";
@@ -8191,12 +8485,12 @@
       });
 
       const filtered = trainers.filter(emp => {
-        const matchesSearch = 
+        const matchesSearch =
           (emp.employee_name && emp.employee_name.toLowerCase().includes(searchQuery)) ||
           (emp.employee_id && emp.employee_id.toLowerCase().includes(searchQuery)) ||
           (emp.email && emp.email.toLowerCase().includes(searchQuery)) ||
           (emp.mobile_phone && emp.mobile_phone.toLowerCase().includes(searchQuery));
-        
+
         const matchesType = typeFilter === "all" || emp.employee_type === typeFilter;
         return matchesSearch && matchesType;
       });
@@ -8207,8 +8501,8 @@
       }
 
       tbody.innerHTML = filtered.map(emp => {
-        const statusBadge = emp.status === "Active" 
-          ? `<span class="badge bg-success-subtle text-success px-2 py-1">Active</span>` 
+        const statusBadge = emp.status === "Active"
+          ? `<span class="badge bg-success-subtle text-success px-2 py-1">Active</span>`
           : `<span class="badge bg-danger-subtle text-danger px-2 py-1">Inactive</span>`;
 
         return `
@@ -8282,13 +8576,13 @@
       const typeFilter = document.getElementById("filterInstType")?.value || "all";
 
       const filtered = allPublicInstitutes.filter(inst => {
-        const matchesSearch = 
+        const matchesSearch =
           (inst.name && inst.name.toLowerCase().includes(searchQuery)) ||
           (inst.contactPerson && inst.contactPerson.toLowerCase().includes(searchQuery)) ||
           (inst.location && inst.location.toLowerCase().includes(searchQuery)) ||
           (inst.email && inst.email.toLowerCase().includes(searchQuery)) ||
           (inst.phone && inst.phone.includes(searchQuery));
-        
+
         const matchesType = typeFilter === "all" || inst.type === typeFilter;
         return matchesSearch && matchesType;
       });
@@ -8299,8 +8593,8 @@
       }
 
       tbody.innerHTML = filtered.map(inst => {
-        const statusBadge = inst.status === "Active" 
-          ? `<span class="badge bg-success-subtle text-success px-2 py-1">Active</span>` 
+        const statusBadge = inst.status === "Active"
+          ? `<span class="badge bg-success-subtle text-success px-2 py-1">Active</span>`
           : `<span class="badge bg-danger-subtle text-danger px-2 py-1">Inactive</span>`;
 
         let contactInfo = '';
@@ -8314,7 +8608,7 @@
           contactInfo = '—';
         }
 
-        const nameHtml = inst.website 
+        const nameHtml = inst.website
           ? `<a href="${inst.website}" target="_blank" class="text-decoration-none text-dark fw-bold">${inst.name} <i class="bi bi-box-arrow-up-right small ms-1 text-muted" style="font-size:0.75rem;"></i></a>`
           : `<strong>${inst.name}</strong>`;
 
@@ -8345,14 +8639,14 @@
 
       // Bind buttons
       tbody.querySelectorAll(".inst-view-btn").forEach(btn => {
-        btn.onclick = function() {
+        btn.onclick = function () {
           const id = this.getAttribute("data-id");
           showRecordDetails("public_institute", id);
         };
       });
 
       tbody.querySelectorAll(".inst-edit-btn").forEach(btn => {
-        btn.onclick = function() {
+        btn.onclick = function () {
           const id = this.getAttribute("data-id");
           const inst = allPublicInstitutes.find(i => i.id === id);
           if (inst) editPublicInstitute(inst);
@@ -8360,7 +8654,7 @@
       });
 
       tbody.querySelectorAll(".inst-delete-btn").forEach(btn => {
-        btn.onclick = async function() {
+        btn.onclick = async function () {
           const id = this.getAttribute("data-id");
           const inst = allPublicInstitutes.find(i => i.id === id);
           if (inst && confirm(`Are you sure you want to delete institute contact "${inst.name}"?`)) {
@@ -8532,12 +8826,12 @@
       const typeFilter = document.getElementById("filterPlacementType")?.value || "all";
 
       const filtered = allJobPlacements.filter(p => {
-        const matchesSearch = 
+        const matchesSearch =
           (p.studentName && p.studentName.toLowerCase().includes(searchQuery)) ||
           (p.studentId && p.studentId.toLowerCase().includes(searchQuery)) ||
           (p.company && p.company.toLowerCase().includes(searchQuery)) ||
           (p.jobTitle && p.jobTitle.toLowerCase().includes(searchQuery));
-        
+
         const matchesType = typeFilter === "all" || p.placementType === typeFilter;
         return matchesSearch && matchesType;
       });
@@ -8591,14 +8885,14 @@
 
       // Bind events
       tbody.querySelectorAll(".placement-view-btn").forEach(btn => {
-        btn.onclick = function() {
+        btn.onclick = function () {
           const id = this.getAttribute("data-id");
           showRecordDetails("job_placement", id);
         };
       });
 
       tbody.querySelectorAll(".placement-edit-btn").forEach(btn => {
-        btn.onclick = function() {
+        btn.onclick = function () {
           const id = this.getAttribute("data-id");
           const p = allJobPlacements.find(item => item.id === id);
           if (p) editJobPlacement(p);
@@ -8606,7 +8900,7 @@
       });
 
       tbody.querySelectorAll(".placement-delete-btn").forEach(btn => {
-        btn.onclick = async function() {
+        btn.onclick = async function () {
           const id = this.getAttribute("data-id");
           const p = allJobPlacements.find(item => item.id === id);
           if (p && confirm(`Are you sure you want to delete job placement for "${p.studentName}" at "${p.company}"?`)) {
@@ -8661,7 +8955,7 @@
     function editJobPlacement(p) {
       editingPlacementId = p.id;
       document.getElementById("placementFormTitle").innerHTML = `<i class="bi bi-pencil-square me-2 text-primary"></i>Edit Placement Record`;
-      
+
       const studentIdInput = document.getElementById("placementStudentId");
       studentIdInput.value = p.studentId;
       studentIdInput.disabled = true; // Cannot edit student ID of existing placement
@@ -8687,16 +8981,16 @@
     function resetJobPlacementForm() {
       editingPlacementId = null;
       document.getElementById("placementFormTitle").innerHTML = `<i class="bi bi-briefcase-fill me-2 text-primary"></i>Add Placement Record`;
-      
+
       const studentIdInput = document.getElementById("placementStudentId");
       if (studentIdInput) {
         studentIdInput.value = "";
         studentIdInput.disabled = false;
       }
-      
+
       document.getElementById("jobPlacementForm")?.reset();
       document.getElementById("placementStudentFeedback").innerHTML = `Enter student ID and verify.`;
-      
+
       const cancelBtn = document.getElementById("cancelPlacementEditBtn");
       if (cancelBtn) cancelBtn.classList.add("d-none");
     }
@@ -8836,7 +9130,7 @@
       const subSelect = document.getElementById("expenseSubCategory");
       if (!subSelect) return;
       subSelect.innerHTML = '<option value="" disabled selected>Select sub-category</option>';
-      
+
       if (category in subCategoriesMap) {
         subSelect.disabled = false;
         subCategoriesMap[category].forEach(sub => {
@@ -8883,7 +9177,7 @@
       allExpenses.forEach(e => {
         const amt = Number(e.amount) || 0;
         total += amt;
-        
+
         const cat = e.category;
         if (cat === "Direct Training & Delivery Costs (Variable)" || cat === "Marketing & Student Acquisition") {
           variable += amt;
@@ -8969,7 +9263,7 @@
               btn.disabled = true;
               btn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status"></span>';
               await deleteExpense(id);
-              
+
               await addAuditLog({
                 user_email: currentUserEmail || "admin@intrex-digital.com",
                 action_type: "DELETE",
@@ -8978,7 +9272,7 @@
                 details: `Deleted expense record "${id}"`
               });
               refreshAuditLogs();
-              
+
               await loadExpenses();
             } catch (err) {
               alert("Failed to delete expense: " + err.message);
@@ -8994,7 +9288,7 @@
       editingExpenseId = exp.id;
       document.getElementById("expenseFormTitle").innerHTML = `<i class="bi bi-pencil-square me-2 text-primary"></i>Edit Expense: ${exp.id}`;
       document.getElementById("expenseCategory").value = exp.category;
-      
+
       const subSelect = document.getElementById("expenseSubCategory");
       subSelect.innerHTML = '<option value="" disabled selected>Select sub-category</option>';
       if (exp.category in subCategoriesMap) {
@@ -9024,13 +9318,13 @@
       editingExpenseId = null;
       document.getElementById("expenseFormTitle").innerHTML = `<i class="bi bi-wallet2 me-2 text-primary"></i>Record New Expense`;
       document.getElementById("expenseForm")?.reset();
-      
+
       const subSelect = document.getElementById("expenseSubCategory");
       if (subSelect) {
         subSelect.innerHTML = '<option value="" disabled selected>Select sub-category</option>';
         subSelect.disabled = true;
       }
-      
+
       document.getElementById("expenseDate").value = new Date().toISOString().substring(0, 10);
       document.getElementById("submitExpenseBtn").innerHTML = `<i class="bi bi-cloud-arrow-up"></i> Save Expense`;
       document.getElementById("cancelExpenseEditBtn").classList.add("d-none");
@@ -9098,10 +9392,10 @@
         alert("No expense records available to export.");
         return;
       }
-      
+
       let csvContent = "data:text/csv;charset=utf-8,";
       csvContent += "Expense ID,Date,Category,Sub-category,Amount (BDT),Payment Method,Description\n";
-      
+
       allExpenses.forEach(e => {
         const desc = (e.description || "").replace(/"/g, '""');
         csvContent += `"${e.id}","${e.date}","${e.category}","${e.subCategory}",${e.amount},"${e.paymentMethod}","${desc}"\n`;
@@ -9125,7 +9419,7 @@
     document.getElementById("expenseForm")?.addEventListener("submit", handleExpenseSubmit);
     document.getElementById("cancelExpenseEditBtn")?.addEventListener("click", resetExpenseForm);
     document.getElementById("exportExpensesBtn")?.addEventListener("click", exportExpensesToCSV);
-    
+
     // Set default date
     const expDateInput = document.getElementById("expenseDate");
     if (expDateInput) {
@@ -9178,13 +9472,15 @@
 
             <div class="row g-3 mb-3">
               <div class="col-md-6">
-                <label for="editPaymentRegistrationFee" class="form-label small fw-semibold mb-1">Registration Fee (BDT)</label>
+                <label for="editPaymentRegistrationFee" class="form-label small fw-semibold mb-1">Registration Fee
+                  (BDT)</label>
                 <input type="number" min="0" class="form-control" id="editPaymentRegistrationFee" value="0">
               </div>
               <div class="col-md-6 d-flex align-items-end">
                 <div class="form-check form-switch mb-2">
                   <input class="form-check-input" type="checkbox" id="editPaymentEnableInstallments">
-                  <label class="form-check-label small fw-semibold" for="editPaymentEnableInstallments">Enable Installments</label>
+                  <label class="form-check-label small fw-semibold" for="editPaymentEnableInstallments">Enable
+                    Installments</label>
                 </div>
               </div>
             </div>
@@ -9193,7 +9489,8 @@
             <div id="editPaymentInstallmentsContainer" class="d-none border p-3 rounded-3 mb-3 bg-light">
               <div class="row g-2 align-items-center mb-3">
                 <div class="col-md-6">
-                  <label class="form-label small fw-semibold mb-1" for="editPaymentNumInstallments">Number of Installments</label>
+                  <label class="form-label small fw-semibold mb-1" for="editPaymentNumInstallments">Number of
+                    Installments</label>
                   <select class="form-select form-select-sm" id="editPaymentNumInstallments">
                     <option value="1">1 Installment</option>
                     <option value="2">2 Installments</option>
@@ -9218,40 +9515,41 @@
                     class="text-danger">*</span></label>
                 <input type="number" min="0" class="form-control" id="editPaymentAmountPaid" required>
               </div>
-
-              <div class="row g-3 mb-3">
-                <div class="col-md-6">
-                  <label for="editPaymentType" class="form-label small fw-semibold mb-1">Payment Method</label>
-                  <select class="form-select" id="editPaymentType">
-                    <option value="Cash" selected>Cash</option>
-                    <option value="Bkash">Bkash</option>
-                    <option value="Rocket">Rocket</option>
-                    <option value="Nagad">Nagad</option>
-                    <option value="Bank Transfer">Bank Transfer</option>
-                  </select>
-                </div>
-                <div class="col-md-6 d-none" id="editPaymentTxIdContainer">
-                  <label for="editPaymentTxId" class="form-label small fw-semibold mb-1">Transaction ID</label>
-                  <input type="text" class="form-control" id="editPaymentTxId" placeholder="e.g. TRX100293">
-                </div>
-              </div>
-
-              <div class="alert alert-info py-2 px-3 mb-0 small">
-                <div class="d-flex justify-content-between mb-1">
-                  <span>Calculated Due:</span>
-                  <strong id="editPaymentDueLabel">0 BDT</strong>
-                </div>
-                <div class="d-flex justify-content-between">
-                  <span>Calculated Status:</span>
-                  <strong id="editPaymentStatusLabel" class="text-danger">Unpaid</strong>
-                </div>
-              </div>
-
             </div>
-            <div class="modal-footer border-top px-4 py-3">
-              <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
-              <button type="submit" class="btn btn-primary btn-sm px-4">Save Changes</button>
+
+            <div class="row g-3 mb-3">
+              <div class="col-md-6">
+                <label for="editPaymentType" class="form-label small fw-semibold mb-1">Payment Method</label>
+                <select class="form-select" id="editPaymentType">
+                  <option value="Cash" selected>Cash</option>
+                  <option value="Bkash">Bkash</option>
+                  <option value="Rocket">Rocket</option>
+                  <option value="Nagad">Nagad</option>
+                  <option value="Bank Transfer">Bank Transfer</option>
+                </select>
+              </div>
+              <div class="col-md-6 d-none" id="editPaymentTxIdContainer">
+                <label for="editPaymentTxId" class="form-label small fw-semibold mb-1">Transaction ID</label>
+                <input type="text" class="form-control" id="editPaymentTxId" placeholder="e.g. TRX100293">
+              </div>
             </div>
+
+            <div class="alert alert-info py-2 px-3 mb-0 small">
+              <div class="d-flex justify-content-between mb-1">
+                <span>Calculated Due:</span>
+                <strong id="editPaymentDueLabel">0 BDT</strong>
+              </div>
+              <div class="d-flex justify-content-between">
+                <span>Calculated Status:</span>
+                <strong id="editPaymentStatusLabel" class="text-danger">Unpaid</strong>
+              </div>
+            </div>
+
+          </div>
+          <div class="modal-footer border-top px-4 py-3">
+            <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-primary btn-sm px-4">Save Changes</button>
+          </div>
         </form>
       </div>
     </div>
@@ -9303,25 +9601,29 @@
           <div class="row g-3 mb-4">
             <div class="col-md-6 col-lg-3">
               <div class="p-2 border rounded bg-light text-center">
-                <span class="small text-muted d-block text-uppercase fw-semibold" style="font-size: 0.65rem;">Batch ID</span>
+                <span class="small text-muted d-block text-uppercase fw-semibold" style="font-size: 0.65rem;">Batch
+                  ID</span>
                 <strong id="modalBatchId" class="text-dark font-monospace">—</strong>
               </div>
             </div>
             <div class="col-md-6 col-lg-3">
               <div class="p-2 border rounded bg-light text-center">
-                <span class="small text-muted d-block text-uppercase fw-semibold" style="font-size: 0.65rem;">Course</span>
+                <span class="small text-muted d-block text-uppercase fw-semibold"
+                  style="font-size: 0.65rem;">Course</span>
                 <strong id="modalBatchCourse" class="text-dark">—</strong>
               </div>
             </div>
             <div class="col-md-6 col-lg-3">
               <div class="p-2 border rounded bg-light text-center">
-                <span class="small text-muted d-block text-uppercase fw-semibold" style="font-size: 0.65rem;">Schedule</span>
+                <span class="small text-muted d-block text-uppercase fw-semibold"
+                  style="font-size: 0.65rem;">Schedule</span>
                 <strong id="modalBatchSchedule" class="text-dark">—</strong>
               </div>
             </div>
             <div class="col-md-6 col-lg-3">
               <div class="p-2 border rounded bg-light text-center">
-                <span class="small text-muted d-block text-uppercase fw-semibold" style="font-size: 0.65rem;">Students Count</span>
+                <span class="small text-muted d-block text-uppercase fw-semibold" style="font-size: 0.65rem;">Students
+                  Count</span>
                 <strong id="modalBatchCount" class="text-dark">—</strong>
               </div>
             </div>
@@ -9358,19 +9660,22 @@
   <!-- ============================================================ -->
   <!-- Pay Installment Modal                                        -->
   <!-- ============================================================ -->
-  <div class="modal fade" id="payInstallmentModal" tabindex="-1" aria-labelledby="payInstallmentModalLabel" aria-hidden="true">
+  <div class="modal fade" id="payInstallmentModal" tabindex="-1" aria-labelledby="payInstallmentModalLabel"
+    aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content rounded-4 border-0 shadow-lg overflow-hidden">
 
         <!-- Header -->
         <div class="modal-header border-0 px-4 pt-4 pb-3" style="background-color: #215C5C;">
           <div>
-            <span class="badge bg-white text-primary fw-bold mb-2 px-3 py-1" style="font-size:0.7rem; border-radius:30px; letter-spacing:0.05em;">INSTALLMENT PAYMENT</span>
+            <span class="badge bg-white text-primary fw-bold mb-2 px-3 py-1"
+              style="font-size:0.7rem; border-radius:30px; letter-spacing:0.05em;">INSTALLMENT PAYMENT</span>
             <h5 class="modal-title fw-bold text-white mb-0" id="payInstallmentModalLabel">
               <i class="bi bi-credit-card-2-front me-2"></i>Record Installment Payment
             </h5>
           </div>
-          <button type="button" class="btn-close btn-close-white ms-auto" data-bs-dismiss="modal" aria-label="Close"></button>
+          <button type="button" class="btn-close btn-close-white ms-auto" data-bs-dismiss="modal"
+            aria-label="Close"></button>
         </div>
 
         <form id="payInstallmentForm">
@@ -9400,7 +9705,8 @@
               <div class="row g-2">
                 <div class="col-sm-6">
                   <span class="text-muted small d-block" style="font-size:0.72rem;">INSTALLMENT</span>
-                  <span class="badge bg-primary-subtle text-primary fw-bold" id="payInstModalInstLabel">Installment #-</span>
+                  <span class="badge bg-primary-subtle text-primary fw-bold" id="payInstModalInstLabel">Installment
+                    #-</span>
                 </div>
                 <div class="col-sm-6 text-sm-end">
                   <span class="text-muted small d-block" style="font-size:0.72rem;">AMOUNT DUE</span>
@@ -9434,7 +9740,8 @@
 
             <!-- Notes (optional) -->
             <div class="mb-1">
-              <label for="payInstModalNotes" class="form-label small fw-semibold mb-1">Notes <span class="text-muted fw-normal">(optional)</span></label>
+              <label for="payInstModalNotes" class="form-label small fw-semibold mb-1">Notes <span
+                  class="text-muted fw-normal">(optional)</span></label>
               <input type="text" class="form-control" id="payInstModalNotes" placeholder="Any additional remark...">
             </div>
 
@@ -9520,12 +9827,12 @@
         const errorDiv = document.getElementById("payInstallmentError");
         errorDiv.classList.add("d-none");
 
-        const payId      = document.getElementById("payInstModalPayId").value;
-        const instIndex  = parseInt(document.getElementById("payInstModalIndex").value);
-        const method     = document.getElementById("payInstModalMethod").value;
-        const txId       = document.getElementById("payInstModalTxId").value.trim();
-        const notes      = document.getElementById("payInstModalNotes").value.trim();
-        const submitBtn  = document.getElementById("payInstModalSubmitBtn");
+        const payId = document.getElementById("payInstModalPayId").value;
+        const instIndex = parseInt(document.getElementById("payInstModalIndex").value);
+        const method = document.getElementById("payInstModalMethod").value;
+        const txId = document.getElementById("payInstModalTxId").value.trim();
+        const notes = document.getElementById("payInstModalNotes").value.trim();
+        const submitBtn = document.getElementById("payInstModalSubmitBtn");
 
         // Validate transaction ID when required
         if (method !== "Cash" && !txId) {
@@ -9557,8 +9864,8 @@
           }, 0);
           const newAmountPaid = regFee + totalPaidFromInst;
 
-          const totalFee     = Number(record.totalFee) || 0;
-          const discount     = Number(record.discount) || 0;
+          const totalFee = Number(record.totalFee) || 0;
+          const discount = Number(record.discount) || 0;
 
           // Determine effective transaction ID to store
           const effectiveTxId = method !== "Cash" ? txId : (record.transactionId || "");
