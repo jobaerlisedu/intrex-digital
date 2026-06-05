@@ -248,6 +248,11 @@
                   <i class="bi bi-person-lines-fill"></i> Contact Directory
                 </button>
                 <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
+                  id="job-placement-tab" data-bs-toggle="tab" data-bs-target="#jobPlacementPanel" type="button" role="tab"
+                  aria-controls="jobPlacementPanel" aria-selected="false">
+                  <i class="bi bi-briefcase"></i> Job Placement
+                </button>
+                <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
                   id="employees-tab" data-bs-toggle="tab" data-bs-target="#employeesPanel" type="button" role="tab"
                   aria-controls="employeesPanel" aria-selected="false">
                   <i class="bi bi-person-badge"></i> Employee Database
@@ -1846,6 +1851,154 @@
                   </div>
                 </div>
 
+                <!-- Sub-Page 6.48: Student Job Placement -->
+                <div class="tab-pane fade" id="jobPlacementPanel" role="tabpanel" aria-labelledby="job-placement-tab">
+                  <div class="row g-4">
+                    <!-- Left: Form -->
+                    <div class="col-lg-4">
+                      <div class="card p-4 rounded-4 shadow-sm border">
+                        <h3 id="placementFormTitle" class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
+                          <i class="bi bi-briefcase-fill me-2 text-primary"></i>Add Placement Record
+                        </h3>
+
+                        <div id="placementSuccess" class="alert alert-success d-none alert-dismissible fade show small" role="alert">
+                          <span>Placement saved successfully!</span>
+                          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                        <div id="placementError" class="alert alert-danger d-none alert-dismissible fade show small" role="alert">
+                          <span>An error occurred. Please try again.</span>
+                          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+
+                        <form id="jobPlacementForm">
+                          <!-- Student Verification Input -->
+                          <div class="mb-3">
+                            <label class="form-label small fw-semibold mb-1" for="placementStudentId">Student ID <span class="text-danger">*</span></label>
+                            <div class="input-group">
+                              <input type="text" class="form-control" id="placementStudentId" placeholder="e.g. 495001" required>
+                              <button id="lookupPlacementStudentBtn" class="btn btn-outline-primary" type="button">
+                                <i class="bi bi-search"></i> Verify
+                              </button>
+                            </div>
+                            <div id="placementStudentFeedback" class="small mt-1 text-muted">Enter student ID and verify.</div>
+                          </div>
+
+                          <!-- Read-only verified info -->
+                          <div class="mb-3">
+                            <label class="form-label small fw-semibold mb-1" for="placementStudentName">Student Name</label>
+                            <input type="text" class="form-control bg-body-secondary" id="placementStudentName" readonly placeholder="Lookup verifies name">
+                          </div>
+
+                          <div class="row g-2 mb-3">
+                            <div class="col-md-6">
+                              <label class="form-label small fw-semibold mb-1" for="placementCourseName">Enrolled Course</label>
+                              <input type="text" class="form-control bg-body-secondary" id="placementCourseName" readonly placeholder="Course name">
+                            </div>
+                            <div class="col-md-6">
+                              <label class="form-label small fw-semibold mb-1" for="placementBatchId">Batch Name</label>
+                              <input type="text" class="form-control bg-body-secondary" id="placementBatchId" readonly placeholder="Batch ID">
+                            </div>
+                          </div>
+
+                          <div class="mb-3">
+                            <label class="form-label small fw-semibold mb-1" for="placementCompanyInput">Company Name <span class="text-danger">*</span></label>
+                            <input class="form-control" id="placementCompanyInput" type="text" placeholder="e.g. Intrex Digital" required>
+                          </div>
+
+                          <div class="mb-3">
+                            <label class="form-label small fw-semibold mb-1" for="placementJobTitleInput">Job Title <span class="text-danger">*</span></label>
+                            <input class="form-control" id="placementJobTitleInput" type="text" placeholder="e.g. Associate Network Engineer" required>
+                          </div>
+
+                          <div class="row g-2 mb-3">
+                            <div class="col-md-6">
+                              <label class="form-label small fw-semibold mb-1" for="placementDateInput">Placement Date <span class="text-danger">*</span></label>
+                              <input class="form-control" id="placementDateInput" type="date" required>
+                            </div>
+                            <div class="col-md-6">
+                              <label class="form-label small fw-semibold mb-1" for="placementSalaryInput">Salary (BDT / Month)</label>
+                              <input class="form-control" id="placementSalaryInput" type="number" min="0" placeholder="e.g. 25000">
+                            </div>
+                          </div>
+
+                          <div class="mb-3">
+                            <label class="form-label small fw-semibold mb-1" for="placementTypeSelect">Placement Type <span class="text-danger">*</span></label>
+                            <select class="form-select" id="placementTypeSelect" required>
+                              <option value="" disabled selected>Select placement type</option>
+                              <option value="Internship">Internship</option>
+                              <option value="Full-time Permanent">Full-time Permanent</option>
+                              <option value="Part-time">Part-time</option>
+                              <option value="Contractual">Contractual</option>
+                            </select>
+                          </div>
+
+                          <div class="mb-4">
+                            <label class="form-label small fw-semibold mb-1" for="placementNotesTextarea">Remarks / Placement Notes</label>
+                            <textarea class="form-control" id="placementNotesTextarea" rows="3" placeholder="Job details, probation terms, or career services notes..."></textarea>
+                          </div>
+
+                          <div class="d-flex gap-2">
+                            <button type="submit" id="submitPlacementBtn" class="btn btn-primary w-100 fw-semibold py-2">
+                              <i class="bi bi-cloud-arrow-up me-2"></i>Save Placement
+                            </button>
+                            <button type="button" id="cancelPlacementEditBtn" class="btn btn-outline-secondary w-50 fw-semibold py-2 d-none">
+                              Cancel
+                            </button>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+
+                    <!-- Right: Table -->
+                    <div class="col-lg-8">
+                      <div class="card p-4 rounded-4 shadow-sm border h-100">
+                        <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom flex-wrap gap-2">
+                          <h3 class="h5 fw-bold text-heading-color mb-0">
+                            <i class="bi bi-briefcase me-2 text-primary"></i>Job Placement Registry
+                          </h3>
+                          <div class="d-flex align-items-center gap-2 flex-wrap">
+                            <input type="text" id="searchPlacement" class="form-control form-control-sm" style="max-width: 200px;" placeholder="Search student, company...">
+                            <select id="filterPlacementType" class="form-select form-select-sm" style="width: auto;">
+                              <option value="all">All Types</option>
+                              <option value="Internship">Internship</option>
+                              <option value="Full-time Permanent">Full-time Permanent</option>
+                              <option value="Part-time">Part-time</option>
+                              <option value="Contractual">Contractual</option>
+                            </select>
+                            <button id="refreshPlacementListBtn" class="btn btn-sm btn-outline-secondary" type="button" title="Refresh List">
+                              <i class="bi bi-arrow-clockwise"></i>
+                            </button>
+                          </div>
+                        </div>
+
+                        <div class="table-responsive" style="max-height: 620px; overflow-y: auto;">
+                          <table class="table table-hover align-middle mb-0" id="jobPlacementTable">
+                            <thead class="table-light">
+                              <tr>
+                                <th class="small fw-semibold">Student Name & ID</th>
+                                <th class="small fw-semibold">Course & Batch</th>
+                                <th class="small fw-semibold">Company & Job Title</th>
+                                <th class="small fw-semibold">Placement Date</th>
+                                <th class="small fw-semibold">Salary</th>
+                                <th class="small fw-semibold text-center">Type</th>
+                                <th class="small fw-semibold text-center">Actions</th>
+                              </tr>
+                            </thead>
+                            <tbody id="jobPlacementTableBody">
+                              <tr>
+                                <td colspan="7" class="text-center py-4 text-muted">
+                                  <div class="spinner-border spinner-border-sm text-primary me-2" role="status"></div>
+                                  Loading job placements...
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
                 <!-- Sub-Page 6.5: Employee Database -->
                 <div class="tab-pane fade" id="employeesPanel" role="tabpanel" aria-labelledby="employees-tab">
                   <!-- Form -->
@@ -2038,7 +2191,7 @@
   <script src="assets/vendors/bootstrap/bootstrap.bundle.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script type="module">
-    import { loginAdmin, logoutAdmin, onAdminAuthStateChanged, addCertificate, getAllCertificates, deleteCertificate, addRegistration, getAllRegistrations, updateRegistration, deleteRegistration, getAllPayments, updatePayment, addAuditLog, getAllAuditLogs, getAllOnlineRegistrations, getOnlineRegistration, deleteOnlineRegistration, getAllOnlineInquiries, deleteOnlineInquiry, addEmployee, getAllEmployees, deleteEmployee, getAllBatches, addBatch, updateBatch, deleteBatch, getAllPublicInstitutes, addPublicInstitute, updatePublicInstitute, deletePublicInstitute } from "./assets/js/training.js";
+    import { loginAdmin, logoutAdmin, onAdminAuthStateChanged, addCertificate, getAllCertificates, deleteCertificate, addRegistration, getAllRegistrations, updateRegistration, deleteRegistration, getAllPayments, updatePayment, addAuditLog, getAllAuditLogs, getAllOnlineRegistrations, getOnlineRegistration, deleteOnlineRegistration, getAllOnlineInquiries, deleteOnlineInquiry, addEmployee, getAllEmployees, deleteEmployee, getAllBatches, addBatch, updateBatch, deleteBatch, getAllPublicInstitutes, addPublicInstitute, updatePublicInstitute, deletePublicInstitute, getAllJobPlacements, addJobPlacement, updateJobPlacement, deleteJobPlacement } from "./assets/js/training.js";
 
     // Initialize AOS
     if (window.AOS) {
@@ -2066,8 +2219,10 @@
     let allEmployees = [];
     let allBatches = [];
     let allPublicInstitutes = [];
+    let allJobPlacements = [];
     let editingBatchId = null;
     let editingInstId = null;
+    let editingPlacementId = null;
     let loadedOnlineKey = null;
     let editingStudentId = null;
     let editingCertId = null;
@@ -2638,6 +2793,7 @@
         loadEmployees();
         loadBatches();
         loadPublicInstitutes();
+        loadJobPlacements();
         resetInactivityTimer();
       } else {
         // Unauthenticated
@@ -3546,6 +3702,25 @@
             { label: "Status", key: "status", type: "badge", cols: 6 },
             { label: "Additional Notes", key: "notes", type: "textarea", cols: 12 }
           ]
+        },
+        job_placement: {
+          title: "Job Placement Details",
+          badge: "Placement Record",
+          getRecords: () => allJobPlacements,
+          idField: "id",
+          fields: [
+            { label: "Placement ID", key: "id", type: "code", cols: 6 },
+            { label: "Student ID", key: "studentId", type: "code", cols: 6 },
+            { label: "Student Name", key: "studentName", type: "text", cols: 6 },
+            { label: "Enrolled Course", key: "courseName", type: "text", cols: 6 },
+            { label: "Batch Name", key: "batchId", type: "badge", cols: 6 },
+            { label: "Company Name", key: "company", type: "text", cols: 6 },
+            { label: "Job Title", key: "jobTitle", type: "text", cols: 6 },
+            { label: "Placement Date", key: "placementDate", type: "date", cols: 6 },
+            { label: "Monthly Salary", key: "salary", type: "currency", cols: 6 },
+            { label: "Placement Type", key: "placementType", type: "badge", cols: 6 },
+            { label: "Remarks / Notes", key: "notes", type: "textarea", cols: 12 }
+          ]
         }
       };
 
@@ -3568,6 +3743,7 @@
       else if (type === "certificate") subtitleText = record.studentName;
       else if (type === "inquiry") subtitleText = record.name;
       else if (type === "public_institute") subtitleText = record.name;
+      else if (type === "job_placement") subtitleText = `${record.studentName} at ${record.company}`;
       document.getElementById("detailsModalSubtitle").textContent = subtitleText;
 
       // Status Badge Style Resolver
@@ -6759,6 +6935,297 @@
     document.getElementById("refreshInstListBtn")?.addEventListener("click", loadPublicInstitutes);
     document.getElementById("publicInstituteForm")?.addEventListener("submit", handlePublicInstituteSubmit);
     document.getElementById("cancelInstEditBtn")?.addEventListener("click", resetPublicInstituteForm);
+
+    // ============================================================
+    // STUDENT JOB PLACEMENT SYSTEM
+    // ============================================================
+    async function loadJobPlacements() {
+      const tbody = document.getElementById("jobPlacementTableBody");
+      if (tbody) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="7" class="text-center py-4 text-muted">
+              <div class="spinner-border spinner-border-sm text-primary me-2" role="status"></div>
+              Loading job placements...
+            </td>
+          </tr>
+        `;
+      }
+      try {
+        allJobPlacements = await getAllJobPlacements();
+        renderJobPlacements();
+      } catch (err) {
+        console.error("Error loading job placements: ", err);
+        if (tbody) {
+          tbody.innerHTML = `<tr><td colspan="7" class="text-center py-4 text-danger">Failed to load job placements.</td></tr>`;
+        }
+      }
+    }
+
+    function renderJobPlacements() {
+      const tbody = document.getElementById("jobPlacementTableBody");
+      if (!tbody) return;
+
+      const searchQuery = document.getElementById("searchPlacement")?.value.toLowerCase().trim() || "";
+      const typeFilter = document.getElementById("filterPlacementType")?.value || "all";
+
+      const filtered = allJobPlacements.filter(p => {
+        const matchesSearch = 
+          (p.studentName && p.studentName.toLowerCase().includes(searchQuery)) ||
+          (p.studentId && p.studentId.toLowerCase().includes(searchQuery)) ||
+          (p.company && p.company.toLowerCase().includes(searchQuery)) ||
+          (p.jobTitle && p.jobTitle.toLowerCase().includes(searchQuery));
+        
+        const matchesType = typeFilter === "all" || p.placementType === typeFilter;
+        return matchesSearch && matchesType;
+      });
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="7" class="text-center py-4 text-muted">No job placements found.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = filtered.map(p => {
+        let typeBadgeClass = 'bg-secondary';
+        if (p.placementType === 'Full-time Permanent') typeBadgeClass = 'bg-success text-white';
+        else if (p.placementType === 'Internship') typeBadgeClass = 'bg-info text-dark';
+        else if (p.placementType === 'Contractual') typeBadgeClass = 'bg-warning text-dark';
+
+        const salaryText = p.salary ? `${Number(p.salary).toLocaleString()} BDT` : '—';
+
+        return `
+          <tr>
+            <td>
+              <div class="fw-bold text-heading-color">${p.studentName}</div>
+              <code class="text-muted font-monospace" style="font-size:0.75rem;">${p.studentId}</code>
+            </td>
+            <td>
+              <div class="small">${p.courseName || '—'}</div>
+              <div class="small text-muted">${p.batchId || '—'}</div>
+            </td>
+            <td>
+              <div class="fw-bold text-heading-color">${p.company}</div>
+              <div class="small text-muted">${p.jobTitle}</div>
+            </td>
+            <td><span class="small">${p.placementDate}</span></td>
+            <td><span class="small fw-semibold text-success">${salaryText}</span></td>
+            <td class="text-center"><span class="badge ${typeBadgeClass} px-2 py-1" style="font-size:0.7rem;">${p.placementType}</span></td>
+            <td class="text-center">
+              <div class="btn-group gap-1">
+                <button class="btn btn-sm btn-outline-info placement-view-btn py-1 px-2" data-id="${p.id}" title="View Details">
+                  <i class="bi bi-eye"></i>
+                </button>
+                <button class="btn btn-sm btn-outline-primary placement-edit-btn py-1 px-2" data-id="${p.id}" title="Edit">
+                  <i class="bi bi-pencil-square"></i>
+                </button>
+                <button class="btn btn-sm btn-outline-danger placement-delete-btn py-1 px-2" data-id="${p.id}" title="Delete">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join("");
+
+      // Bind events
+      tbody.querySelectorAll(".placement-view-btn").forEach(btn => {
+        btn.onclick = function() {
+          const id = this.getAttribute("data-id");
+          showRecordDetails("job_placement", id);
+        };
+      });
+
+      tbody.querySelectorAll(".placement-edit-btn").forEach(btn => {
+        btn.onclick = function() {
+          const id = this.getAttribute("data-id");
+          const p = allJobPlacements.find(item => item.id === id);
+          if (p) editJobPlacement(p);
+        };
+      });
+
+      tbody.querySelectorAll(".placement-delete-btn").forEach(btn => {
+        btn.onclick = async function() {
+          const id = this.getAttribute("data-id");
+          const p = allJobPlacements.find(item => item.id === id);
+          if (p && confirm(`Are you sure you want to delete job placement for "${p.studentName}" at "${p.company}"?`)) {
+            try {
+              await deleteJobPlacement(id);
+              await addAuditLog({
+                user_email: currentUserEmail || "admin@intrex-digital.com",
+                action_type: "DELETE",
+                collection_name: "job_placements",
+                record_id: id,
+                details: `Deleted job placement record for student "${p.studentName}" (${p.studentId}) at "${p.company}"`
+              });
+              refreshAuditLogs();
+              await loadJobPlacements();
+            } catch (err) {
+              alert("Failed to delete placement: " + err.message);
+            }
+          }
+        };
+      });
+    }
+
+    function verifyPlacementStudent() {
+      const studentIdInput = document.getElementById("placementStudentId");
+      const feedback = document.getElementById("placementStudentFeedback");
+      const nameInput = document.getElementById("placementStudentName");
+      const courseInput = document.getElementById("placementCourseName");
+      const batchInput = document.getElementById("placementBatchId");
+
+      if (!studentIdInput || !feedback) return;
+
+      const studentId = studentIdInput.value.trim();
+      if (!studentId) {
+        feedback.innerHTML = `<span class="text-warning fw-semibold">Please enter a student ID.</span>`;
+        return;
+      }
+
+      const student = allRegistrations.find(r => r.studentId === studentId);
+      if (student) {
+        nameInput.value = student.fullName;
+        courseInput.value = student.course;
+        batchInput.value = student.batch || "N/A";
+        feedback.innerHTML = `<span class="text-success fw-semibold"><i class="bi bi-check-circle-fill me-1"></i>Verified: ${student.fullName} (${student.course})</span>`;
+      } else {
+        nameInput.value = "";
+        courseInput.value = "";
+        batchInput.value = "";
+        feedback.innerHTML = `<span class="text-danger fw-semibold"><i class="bi bi-x-circle-fill me-1"></i>Student ID not found.</span>`;
+      }
+    }
+
+    function editJobPlacement(p) {
+      editingPlacementId = p.id;
+      document.getElementById("placementFormTitle").innerHTML = `<i class="bi bi-pencil-square me-2 text-primary"></i>Edit Placement Record`;
+      
+      const studentIdInput = document.getElementById("placementStudentId");
+      studentIdInput.value = p.studentId;
+      studentIdInput.disabled = true; // Cannot edit student ID of existing placement
+
+      document.getElementById("placementStudentName").value = p.studentName;
+      document.getElementById("placementCourseName").value = p.courseName || "";
+      document.getElementById("placementBatchId").value = p.batchId || "";
+      document.getElementById("placementCompanyInput").value = p.company;
+      document.getElementById("placementJobTitleInput").value = p.jobTitle;
+      document.getElementById("placementDateInput").value = p.placementDate;
+      document.getElementById("placementSalaryInput").value = p.salary || "";
+      document.getElementById("placementTypeSelect").value = p.placementType;
+      document.getElementById("placementNotesTextarea").value = p.notes || "";
+
+      document.getElementById("placementStudentFeedback").innerHTML = `<span class="text-success fw-semibold"><i class="bi bi-shield-lock-fill me-1"></i>Student ID locked during edit.</span>`;
+
+      const cancelBtn = document.getElementById("cancelPlacementEditBtn");
+      if (cancelBtn) cancelBtn.classList.remove("d-none");
+
+      document.getElementById("placementFormTitle")?.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function resetJobPlacementForm() {
+      editingPlacementId = null;
+      document.getElementById("placementFormTitle").innerHTML = `<i class="bi bi-briefcase-fill me-2 text-primary"></i>Add Placement Record`;
+      
+      const studentIdInput = document.getElementById("placementStudentId");
+      if (studentIdInput) {
+        studentIdInput.value = "";
+        studentIdInput.disabled = false;
+      }
+      
+      document.getElementById("jobPlacementForm")?.reset();
+      document.getElementById("placementStudentFeedback").innerHTML = `Enter student ID and verify.`;
+      
+      const cancelBtn = document.getElementById("cancelPlacementEditBtn");
+      if (cancelBtn) cancelBtn.classList.add("d-none");
+    }
+
+    async function handleJobPlacementSubmit(e) {
+      e.preventDefault();
+      const studentId = document.getElementById("placementStudentId").value.trim();
+      const studentName = document.getElementById("placementStudentName").value.trim();
+      const courseName = document.getElementById("placementCourseName").value.trim();
+      const batchId = document.getElementById("placementBatchId").value.trim();
+      const company = document.getElementById("placementCompanyInput").value.trim();
+      const jobTitle = document.getElementById("placementJobTitleInput").value.trim();
+      const placementDate = document.getElementById("placementDateInput").value;
+      const salary = document.getElementById("placementSalaryInput").value;
+      const placementType = document.getElementById("placementTypeSelect").value;
+      const notes = document.getElementById("placementNotesTextarea").value.trim();
+
+      const successAlert = document.getElementById("placementSuccess");
+      const errorAlert = document.getElementById("placementError");
+
+      if (successAlert) successAlert.classList.add("d-none");
+      if (errorAlert) errorAlert.classList.add("d-none");
+
+      if (!studentName) {
+        alert("Please verify the Student ID before saving.");
+        return;
+      }
+
+      const placementData = {
+        studentId,
+        studentName,
+        courseName,
+        batchId,
+        company,
+        jobTitle,
+        placementDate,
+        salary: salary ? Number(salary) : 0,
+        placementType,
+        notes
+      };
+
+      try {
+        if (editingPlacementId) {
+          await updateJobPlacement(editingPlacementId, placementData);
+          await addAuditLog({
+            user_email: currentUserEmail || "admin@intrex-digital.com",
+            action_type: "UPDATE",
+            collection_name: "job_placements",
+            record_id: editingPlacementId,
+            details: `Updated job placement record for student "${studentName}" (${studentId}) at "${company}": ${jobTitle}`
+          });
+        } else {
+          const savedId = await addJobPlacement(placementData);
+          await addAuditLog({
+            user_email: currentUserEmail || "admin@intrex-digital.com",
+            action_type: "CREATE",
+            collection_name: "job_placements",
+            record_id: savedId,
+            details: `Created job placement record for student "${studentName}" (${studentId}) at "${company}": ${jobTitle}`
+          });
+        }
+
+        refreshAuditLogs();
+
+        if (successAlert) {
+          successAlert.querySelector("span").textContent = `Job placement record saved successfully!`;
+          successAlert.classList.remove("d-none");
+          setTimeout(() => successAlert.classList.add("d-none"), 4000);
+        }
+
+        resetJobPlacementForm();
+        await loadJobPlacements();
+      } catch (err) {
+        console.error("Error saving job placement: ", err);
+        if (errorAlert) {
+          errorAlert.querySelector("span").textContent = err.message || "An error occurred while saving the placement.";
+          errorAlert.classList.remove("d-none");
+        }
+      }
+    }
+
+    // Attach Job Placement events
+    document.getElementById("job-placement-tab")?.addEventListener("click", () => {
+      loadJobPlacements();
+    });
+    document.getElementById("lookupPlacementStudentBtn")?.addEventListener("click", verifyPlacementStudent);
+    document.getElementById("searchPlacement")?.addEventListener("input", renderJobPlacements);
+    document.getElementById("filterPlacementType")?.addEventListener("change", renderJobPlacements);
+    document.getElementById("refreshPlacementListBtn")?.addEventListener("click", loadJobPlacements);
+    document.getElementById("jobPlacementForm")?.addEventListener("submit", handleJobPlacementSubmit);
+    document.getElementById("cancelPlacementEditBtn")?.addEventListener("click", resetJobPlacementForm);
 
   </script>
 

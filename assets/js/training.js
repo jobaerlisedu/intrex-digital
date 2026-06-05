@@ -1398,6 +1398,182 @@ export async function deletePublicInstitute(instId) {
   }
 }
 
+let mockJobPlacements = null;
+
+export async function getAllJobPlacements() {
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('mock') === '1') {
+    if (!mockJobPlacements) {
+      mockJobPlacements = [
+        {
+          id: "PLACE-0001",
+          studentId: "495001",
+          studentName: "Jobaer Hossain",
+          courseName: "CCNA",
+          batchId: "CCNA-B01",
+          company: "Intrex Digital",
+          jobTitle: "Network Specialist",
+          placementDate: "2026-05-15",
+          salary: 35000,
+          placementType: "Full-time Permanent",
+          notes: "Placed successfully through corporate partners.",
+          createdAt: new Date(Date.now() - 20 * 24 * 60 * 60 * 1000)
+        },
+        {
+          id: "PLACE-0002",
+          studentId: "495002",
+          studentName: "Rahat Kabir",
+          courseName: "CompTIA Security+",
+          batchId: "SEC-B01",
+          company: "Grameenphone",
+          jobTitle: "SOC Analyst Intern",
+          placementDate: "2026-06-01",
+          salary: 18000,
+          placementType: "Internship",
+          notes: "3-month probation period.",
+          createdAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000)
+        }
+      ];
+    }
+    return mockJobPlacements;
+  }
+
+  if (!checkConfiguration()) return [];
+  try {
+    const querySnapshot = await getDocs(collection(db, "job_placements"));
+    const placements = [];
+    querySnapshot.forEach((docSnap) => {
+      if (docSnap.exists()) {
+        placements.push(docSnap.data());
+      }
+    });
+    placements.sort((a, b) => a.id.localeCompare(b.id));
+    return placements;
+  } catch (error) {
+    console.error("Error fetching job placements: ", error);
+    throw error;
+  }
+}
+
+export async function addJobPlacement(placementData) {
+  const { studentId, studentName, courseName, batchId, company, jobTitle, placementDate, salary, placementType, notes } = placementData;
+  if (!studentId || !studentName || !company || !jobTitle || !placementDate || !placementType) {
+    throw new Error("Missing required placement fields: studentId, studentName, company, jobTitle, placementDate, placementType");
+  }
+
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('mock') === '1') {
+    if (!mockJobPlacements) {
+      await getAllJobPlacements();
+    }
+    const id = "PLACE-" + String(mockJobPlacements.length + 1).padStart(4, '0');
+    const newPlacement = {
+      id,
+      studentId: studentId.trim(),
+      studentName: studentName.trim(),
+      courseName: courseName ? courseName.trim() : "",
+      batchId: batchId ? batchId.trim() : "",
+      company: company.trim(),
+      jobTitle: jobTitle.trim(),
+      placementDate,
+      salary: salary ? Number(salary) : 0,
+      placementType: placementType.trim(),
+      notes: notes ? notes.trim() : "",
+      createdAt: new Date()
+    };
+    mockJobPlacements.push(newPlacement);
+    return id;
+  }
+
+  if (!checkConfiguration()) return null;
+
+  try {
+    const id = await getNextSeqId("job_placements", "PLACE-", "id", 4);
+    const docRef = doc(db, "job_placements", id);
+    await setDoc(docRef, {
+      id,
+      studentId: studentId.trim(),
+      studentName: studentName.trim(),
+      courseName: courseName ? courseName.trim() : "",
+      batchId: batchId ? batchId.trim() : "",
+      company: company.trim(),
+      jobTitle: jobTitle.trim(),
+      placementDate,
+      salary: salary ? Number(salary) : 0,
+      placementType: placementType.trim(),
+      notes: notes ? notes.trim() : "",
+      createdAt: serverTimestamp()
+    });
+    return id;
+  } catch (error) {
+    console.error("Error saving job placement: ", error);
+    throw error;
+  }
+}
+
+export async function updateJobPlacement(placementId, placementData) {
+  const { company, jobTitle, placementDate, salary, placementType, notes } = placementData;
+
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('mock') === '1') {
+    if (!mockJobPlacements) {
+      await getAllJobPlacements();
+    }
+    const index = mockJobPlacements.findIndex(p => p.id === placementId.trim());
+    if (index > -1) {
+      mockJobPlacements[index] = {
+        ...mockJobPlacements[index],
+        company: company ? company.trim() : mockJobPlacements[index].company,
+        jobTitle: jobTitle ? jobTitle.trim() : mockJobPlacements[index].jobTitle,
+        placementDate: placementDate ? placementDate : mockJobPlacements[index].placementDate,
+        salary: salary !== undefined ? Number(salary) : mockJobPlacements[index].salary,
+        placementType: placementType ? placementType.trim() : mockJobPlacements[index].placementType,
+        notes: notes !== undefined ? notes.trim() : mockJobPlacements[index].notes,
+        updatedAt: new Date()
+      };
+    }
+    return placementId;
+  }
+
+  if (!checkConfiguration()) return;
+
+  try {
+    const docRef = doc(db, "job_placements", placementId.trim());
+    await setDoc(docRef, {
+      company: company.trim(),
+      jobTitle: jobTitle.trim(),
+      placementDate,
+      salary: salary ? Number(salary) : 0,
+      placementType: placementType.trim(),
+      notes: notes ? notes.trim() : "",
+      updatedAt: serverTimestamp()
+    }, { merge: true });
+  } catch (error) {
+    console.error("Error updating job placement: ", error);
+    throw error;
+  }
+}
+
+export async function deleteJobPlacement(placementId) {
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('mock') === '1') {
+    if (!mockJobPlacements) {
+      await getAllJobPlacements();
+    }
+    mockJobPlacements = mockJobPlacements.filter(p => p.id !== placementId);
+    return;
+  }
+
+  if (!checkConfiguration()) return;
+  try {
+    const docRef = doc(db, "job_placements", placementId.trim());
+    await deleteDoc(docRef);
+  } catch (error) {
+    console.error("Error deleting job placement: ", error);
+    throw error;
+  }
+}
+
 
 
 
