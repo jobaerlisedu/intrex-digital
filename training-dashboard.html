@@ -35,6 +35,73 @@
   <link href="assets/vendors/aos/aos.css" rel="stylesheet">
   <link href="assets/css/style.css" rel="stylesheet">
   <style>
+    /* ── Split Screen Dashboard Layout (MD & Up) ── */
+    @media (min-width: 768px) {
+      html, body {
+        height: 100vh;
+        overflow: hidden;
+      }
+      .site-wrap {
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
+      section.section {
+        flex: 1;
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
+        padding: 24px 0 !important;
+      }
+      section.section > .container-fluid {
+        flex: 1;
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
+        padding-right: 0 !important;
+      }
+      #dashboardSection {
+        flex: 1;
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
+      }
+      .dashboard-main-row {
+        flex: 1;
+        min-height: 0;
+        display: flex;
+        margin-right: 0 !important; /* Make sure row aligns to the very right edge */
+      }
+      .sidebar-container {
+        height: 100%;
+        overflow-y: auto;
+        padding-right: 15px;
+        overscroll-behavior: contain;
+      }
+      .content-container {
+        height: 100%;
+        overflow-y: auto;
+        padding-right: 24px; /* Breathing room between cards and the rightmost scrollbar */
+      }
+    }
+
+    /* Custom thin scrollbars */
+    .sidebar-container, .content-container {
+      scrollbar-width: thin;                        /* Firefox */
+      scrollbar-color: var(--bs-primary) transparent;
+    }
+    .sidebar-container::-webkit-scrollbar, .content-container::-webkit-scrollbar {
+      width: 5px;
+    }
+    .sidebar-container::-webkit-scrollbar-track, .content-container::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .sidebar-container::-webkit-scrollbar-thumb, .content-container::-webkit-scrollbar-thumb {
+      background-color: var(--bs-primary);
+      border-radius: 10px;
+    }
+
     /* ── Quick-fill autocomplete dropdown ── */
     .qf-wrapper {
       position: relative;
@@ -267,7 +334,7 @@
 
         <!-- 2. DASHBOARD PANEL (HIDDEN BY DEFAULT) -->
         <div id="dashboardSection" class="d-none">
-          <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2 pb-3 border-bottom">
+          <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2 pb-3 border-bottom" style="padding-right: 24px;">
             <div>
               <span class="badge bg-primary text-white mb-1">INTREX DIGITAL HUB SYSTEM</span>
               <h2 class="h3 fw-bold text-heading-color mb-0">Student Management Dashboard</h2>
@@ -278,9 +345,9 @@
           </div>
 
           <!-- Sidebar Layout Row -->
-          <div class="row g-4 mt-2">
+          <div class="row g-4 mt-2 dashboard-main-row">
             <!-- Left Sidebar Tabs Navigation -->
-            <div class="col-12 col-md-3 col-lg-2 border-end pe-md-4">
+            <div class="col-12 col-md-3 col-lg-2 border-end pe-md-4 sidebar-container">
               <div class="nav flex-column nav-pills gap-2" id="dashboardTabs" role="tablist"
                 aria-orientation="vertical">
                 <button class="nav-link active text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
@@ -364,7 +431,7 @@
             </div>
 
             <!-- Right Content Panel -->
-            <div class="col-12 col-md-9 col-lg-10">
+            <div class="col-12 col-md-9 col-lg-10 content-container">
               <div class="tab-content" id="dashboardTabContent">
 
                 <!-- Sub-Page 0: Overview / Analytics -->
@@ -3211,7 +3278,7 @@
       }
 
       // Sort by student name
-      filtered.sort((a, b) => a.studentName.localeCompare(b.studentName));
+      filtered.sort((a, b) => (a.studentName || '').localeCompare(b.studentName || ''));
 
       if (filtered.length === 0) {
         tbody.innerHTML = `
@@ -3664,7 +3731,7 @@
       }
 
       // Sort by name
-      filtered.sort((a, b) => a.fullName.localeCompare(b.fullName));
+      filtered.sort((a, b) => (a.fullName || '').localeCompare(b.fullName || ''));
 
       if (filtered.length === 0) {
         tbody.innerHTML = `
@@ -4248,7 +4315,7 @@
       }
 
       // Sort by student name
-      filtered.sort((a, b) => a.studentName.localeCompare(b.studentName));
+      filtered.sort((a, b) => (a.studentName || '').localeCompare(b.studentName || ''));
 
       if (filtered.length === 0) {
         tbody.innerHTML = `
@@ -6183,7 +6250,8 @@
               <span class="badge ${badgeClass} fw-bold" style="font-size:0.75rem;">${item.status}</span>
             </td>
             <td class="text-center">
-              <button type="button" class="btn btn-xs ${btnClass} fw-semibold load-installment-student-btn" data-id="${item.id}">
+              <button type="button" class="btn btn-xs ${btnClass} fw-semibold load-installment-student-btn"
+                data-id="${item.id}" data-index="${item.installmentIndex - 1}" data-is-paid="${isPaid}">
                 <i class="bi ${btnIcon} me-1"></i>${btnText}
               </button>
             </td>
@@ -6194,15 +6262,14 @@
       tbody.querySelectorAll(".load-installment-student-btn").forEach(btn => {
         btn.addEventListener("click", () => {
           const payId = btn.dataset.id;
+          const instIndex = parseInt(btn.dataset.index);
+          const isPaidBtn = btn.dataset.isPaid === "true";
           const record = allPayments.find(p => p.id === payId);
           if (record) {
-            const isViewAction = btn.textContent.includes("View");
-            if (isViewAction) {
+            if (isPaidBtn) {
               showRecordDetails("installment", payId);
             } else {
-              document.getElementById("studentSearchInput").value = record.studentId;
-              onPlanStudentSelect(record);
-              document.getElementById("studentSearchInput").scrollIntoView({ behavior: "smooth", block: "center" });
+              openPayInstallmentModal(record, instIndex);
             }
           }
         });
@@ -9287,6 +9354,255 @@
       </div>
     </div>
   </div>
+
+  <!-- ============================================================ -->
+  <!-- Pay Installment Modal                                        -->
+  <!-- ============================================================ -->
+  <div class="modal fade" id="payInstallmentModal" tabindex="-1" aria-labelledby="payInstallmentModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content rounded-4 border-0 shadow-lg overflow-hidden">
+
+        <!-- Header -->
+        <div class="modal-header border-0 px-4 pt-4 pb-3" style="background-color: #215C5C;">
+          <div>
+            <span class="badge bg-white text-primary fw-bold mb-2 px-3 py-1" style="font-size:0.7rem; border-radius:30px; letter-spacing:0.05em;">INSTALLMENT PAYMENT</span>
+            <h5 class="modal-title fw-bold text-white mb-0" id="payInstallmentModalLabel">
+              <i class="bi bi-credit-card-2-front me-2"></i>Record Installment Payment
+            </h5>
+          </div>
+          <button type="button" class="btn-close btn-close-white ms-auto" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <form id="payInstallmentForm">
+          <div class="modal-body p-4">
+
+            <!-- Error alert -->
+            <div id="payInstallmentError" class="alert alert-danger d-none small py-2 mb-3"></div>
+
+            <!-- Hidden fields -->
+            <input type="hidden" id="payInstModalPayId">
+            <input type="hidden" id="payInstModalIndex">
+
+            <!-- Student summary card -->
+            <div class="rounded-3 p-3 mb-4" style="background: #f0f7ff; border: 1px solid #bcd4f0;">
+              <div class="row g-2 align-items-center">
+                <div class="col-sm-6">
+                  <span class="text-muted small d-block" style="font-size:0.72rem;">STUDENT</span>
+                  <strong id="payInstModalStudentName" class="text-dark">-</strong>
+                  <code class="d-block text-muted small" id="payInstModalStudentId">-</code>
+                </div>
+                <div class="col-sm-6">
+                  <span class="text-muted small d-block" style="font-size:0.72rem;">COURSE / BATCH</span>
+                  <span id="payInstModalCourse" class="small fw-semibold text-secondary">-</span>
+                </div>
+              </div>
+              <hr class="my-2">
+              <div class="row g-2">
+                <div class="col-sm-6">
+                  <span class="text-muted small d-block" style="font-size:0.72rem;">INSTALLMENT</span>
+                  <span class="badge bg-primary-subtle text-primary fw-bold" id="payInstModalInstLabel">Installment #-</span>
+                </div>
+                <div class="col-sm-6 text-sm-end">
+                  <span class="text-muted small d-block" style="font-size:0.72rem;">AMOUNT DUE</span>
+                  <strong class="text-dark fs-5" id="payInstModalAmount">0 BDT</strong>
+                </div>
+              </div>
+            </div>
+
+            <!-- Payment Method -->
+            <div class="mb-3">
+              <label for="payInstModalMethod" class="form-label small fw-semibold mb-1">
+                Payment Method <span class="text-danger">*</span>
+              </label>
+              <select class="form-select" id="payInstModalMethod" required>
+                <option value="Cash" selected>💵 Cash</option>
+                <option value="Bkash">📱 Bkash</option>
+                <option value="Nagad">📱 Nagad</option>
+                <option value="Rocket">📱 Rocket</option>
+                <option value="Bank Transfer">🏦 Bank Transfer</option>
+                <option value="Card">💳 Card</option>
+              </select>
+            </div>
+
+            <!-- Transaction ID (conditional) -->
+            <div class="mb-3 d-none" id="payInstModalTxIdContainer">
+              <label for="payInstModalTxId" class="form-label small fw-semibold mb-1">
+                Transaction / Reference ID <span class="text-danger">*</span>
+              </label>
+              <input type="text" class="form-control" id="payInstModalTxId" placeholder="e.g. BKS-12345678">
+            </div>
+
+            <!-- Notes (optional) -->
+            <div class="mb-1">
+              <label for="payInstModalNotes" class="form-label small fw-semibold mb-1">Notes <span class="text-muted fw-normal">(optional)</span></label>
+              <input type="text" class="form-control" id="payInstModalNotes" placeholder="Any additional remark...">
+            </div>
+
+          </div><!-- /modal-body -->
+
+          <div class="modal-footer border-top px-4 py-3 justify-content-between">
+            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-primary px-4 fw-semibold" id="payInstModalSubmitBtn">
+              <i class="bi bi-check-circle me-2"></i>Confirm Payment
+            </button>
+          </div>
+        </form>
+
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ============================================================
+    // PAY INSTALLMENT MODAL LOGIC
+    // ============================================================
+    (function () {
+      const modalEl = document.getElementById("payInstallmentModal");
+      let modalInstance = null;
+      let _currentRecord = null;
+      let _currentIndex = null;
+
+      function getModal() {
+        if (!modalInstance) {
+          modalInstance = bootstrap.Modal.getOrCreateInstance(modalEl);
+        }
+        return modalInstance;
+      }
+
+      // Expose opener so the ledger renderer can call it
+      window.openPayInstallmentModal = function (record, instIndex) {
+        _currentRecord = record;
+        _currentIndex = instIndex;
+
+        const inst = (record.installments || [])[instIndex] || {};
+        const instNum = instIndex + 1;
+
+        // Populate read-only info
+        document.getElementById("payInstModalPayId").value = record.id || record.studentId;
+        document.getElementById("payInstModalIndex").value = instIndex;
+        document.getElementById("payInstModalStudentName").textContent = record.studentName || "-";
+        document.getElementById("payInstModalStudentId").textContent = record.studentId || "-";
+        document.getElementById("payInstModalCourse").textContent =
+          `${record.courseName || "-"} / ${record.batch || "-"}`;
+        document.getElementById("payInstModalInstLabel").textContent = `Installment #${instNum}`;
+        document.getElementById("payInstModalAmount").textContent =
+          `${Number(inst.amount || 0).toLocaleString()} BDT`;
+
+        // Reset form
+        document.getElementById("payInstModalMethod").value = "Cash";
+        document.getElementById("payInstModalTxId").value = "";
+        document.getElementById("payInstModalNotes").value = "";
+        document.getElementById("payInstModalTxIdContainer").classList.add("d-none");
+        document.getElementById("payInstallmentError").classList.add("d-none");
+        const submitBtn = document.getElementById("payInstModalSubmitBtn");
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<i class="bi bi-check-circle me-2"></i>Confirm Payment';
+
+        getModal().show();
+      };
+
+      // Toggle Transaction ID field based on method
+      document.getElementById("payInstModalMethod").addEventListener("change", function () {
+        const txContainer = document.getElementById("payInstModalTxIdContainer");
+        if (this.value === "Cash") {
+          txContainer.classList.add("d-none");
+          document.getElementById("payInstModalTxId").required = false;
+        } else {
+          txContainer.classList.remove("d-none");
+          document.getElementById("payInstModalTxId").required = true;
+        }
+      });
+
+      // Form submit – mark installment as Paid and save
+      document.getElementById("payInstallmentForm").addEventListener("submit", async function (e) {
+        e.preventDefault();
+
+        const errorDiv = document.getElementById("payInstallmentError");
+        errorDiv.classList.add("d-none");
+
+        const payId      = document.getElementById("payInstModalPayId").value;
+        const instIndex  = parseInt(document.getElementById("payInstModalIndex").value);
+        const method     = document.getElementById("payInstModalMethod").value;
+        const txId       = document.getElementById("payInstModalTxId").value.trim();
+        const notes      = document.getElementById("payInstModalNotes").value.trim();
+        const submitBtn  = document.getElementById("payInstModalSubmitBtn");
+
+        // Validate transaction ID when required
+        if (method !== "Cash" && !txId) {
+          errorDiv.textContent = "Please enter a Transaction / Reference ID for non-cash payments.";
+          errorDiv.classList.remove("d-none");
+          return;
+        }
+
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status"></span>Processing...';
+
+        try {
+          // Clone payment record to avoid mutating the in-memory object prematurely
+          const record = _currentRecord;
+          const installments = JSON.parse(JSON.stringify(record.installments || []));
+
+          if (!installments[instIndex]) {
+            throw new Error("Installment record not found. Please refresh and try again.");
+          }
+
+          // Mark targeted installment as Paid
+          installments[instIndex].status = "Paid";
+          if (notes) installments[instIndex].notes = notes;
+
+          // Recalculate amountPaid (reg fee + all paid installments)
+          const regFee = Number(record.registrationFee) || 0;
+          const totalPaidFromInst = installments.reduce((sum, inst) => {
+            return sum + (inst.status === "Paid" ? Number(inst.amount) || 0 : 0);
+          }, 0);
+          const newAmountPaid = regFee + totalPaidFromInst;
+
+          const totalFee     = Number(record.totalFee) || 0;
+          const discount     = Number(record.discount) || 0;
+
+          // Determine effective transaction ID to store
+          const effectiveTxId = method !== "Cash" ? txId : (record.transactionId || "");
+
+          // Persist to Firestore via existing helper
+          await updatePayment(
+            payId,
+            totalFee,
+            discount,
+            newAmountPaid,
+            method,
+            effectiveTxId,
+            regFee,
+            installments
+          );
+
+          // Audit log
+          const instNum = instIndex + 1;
+          await addAuditLog({
+            user_email: currentUserEmail || "admin@intrex-digital.com",
+            action_type: "UPDATE",
+            collection_name: "payments",
+            record_id: payId,
+            details: `Installment #${instNum} of ${Number(installments[instIndex].amount || 0).toLocaleString()} BDT marked as Paid for student "${record.studentName}" (${record.studentId}). Method: ${method}${txId ? `, TxID: ${txId}` : ''}.${notes ? ` Notes: ${notes}` : ''}`
+          });
+          refreshAuditLogs();
+
+          // Refresh in-memory data and UI
+          allPayments = await getAllPayments();
+          window.loadAllInstallmentsLedger();
+          await loadPayments();
+
+          getModal().hide();
+
+        } catch (err) {
+          errorDiv.textContent = "Failed to record payment: " + (err.message || err);
+          errorDiv.classList.remove("d-none");
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = '<i class="bi bi-check-circle me-2"></i>Confirm Payment';
+        }
+      });
+
+    })();
+  </script>
 
 </body>
 
