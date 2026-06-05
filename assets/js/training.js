@@ -869,3 +869,340 @@ export async function addNewsletterSubscription(email) {
   }
 }
 
+// ==========================================
+// 8. EMPLOYEE DATABASE OPERATIONS (tbl_employees)
+// ==========================================
+let mockEmployees = null;
+
+export async function addEmployee(employeeData) {
+  const { employee_id, employee_name, designation, employee_type, mobile_phone, email, status } = employeeData;
+  if (!employee_name || !designation || !employee_type || !status) {
+    throw new Error("Missing required employee fields");
+  }
+
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('mock') === '1') {
+    if (!mockEmployees) {
+      await getAllEmployees();
+    }
+    // Check email uniqueness if provided
+    if (email) {
+      const emailExists = mockEmployees.some(emp => emp.email && emp.email.toLowerCase() === email.toLowerCase() && emp.employee_id !== employee_id);
+      if (emailExists) {
+        throw new Error(`Email ${email} is already in use by another employee.`);
+      }
+    }
+    const id = employee_id || "EMP-" + String(mockEmployees.length + 1).padStart(4, '0');
+    const existingIndex = mockEmployees.findIndex(emp => emp.employee_id === id);
+    const newEmp = {
+      employee_id: id,
+      employee_name: employee_name.trim(),
+      designation: designation.trim(),
+      employee_type: employee_type.trim(),
+      mobile_phone: mobile_phone ? mobile_phone.trim() : "",
+      email: email ? email.trim() : "",
+      status: status || "Active",
+      updatedAt: new Date()
+    };
+    if (existingIndex > -1) {
+      newEmp.createdAt = mockEmployees[existingIndex].createdAt || new Date();
+      mockEmployees[existingIndex] = newEmp;
+    } else {
+      newEmp.createdAt = new Date();
+      mockEmployees.push(newEmp);
+    }
+    return id;
+  }
+
+  if (!checkConfiguration()) return null;
+
+  // Check email uniqueness if provided
+  if (email) {
+    const querySnapshot = await getDocs(collection(db, "tbl_employees"));
+    let emailExists = false;
+    querySnapshot.forEach(docSnap => {
+      const data = docSnap.data();
+      if (data.email && data.email.toLowerCase() === email.toLowerCase() && data.employee_id !== employee_id) {
+        emailExists = true;
+      }
+    });
+    if (emailExists) {
+      throw new Error(`Email ${email} is already in use by another employee.`);
+    }
+  }
+
+  try {
+    const id = employee_id || await getNextSeqId("tbl_employees", "EMP-", "employee_id", 4);
+    const docRef = doc(db, "tbl_employees", id);
+    let originalCreatedAt = null;
+    if (employee_id) {
+      const snap = await getDoc(docRef);
+      if (snap.exists()) {
+        originalCreatedAt = snap.data().createdAt;
+      }
+    }
+    await setDoc(docRef, {
+      employee_id: id,
+      employee_name: employee_name.trim(),
+      designation: designation.trim(),
+      employee_type: employee_type.trim(),
+      mobile_phone: mobile_phone ? mobile_phone.trim() : "",
+      email: email ? email.trim() : "",
+      status: status || "Active",
+      createdAt: originalCreatedAt || serverTimestamp(),
+      updatedAt: serverTimestamp()
+    }, { merge: true });
+    return id;
+  } catch (error) {
+    console.error("Error saving employee: ", error);
+    throw error;
+  }
+}
+
+export async function getAllEmployees() {
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('mock') === '1') {
+    if (!mockEmployees) {
+      mockEmployees = [
+        {
+          employee_id: "EMP-0001",
+          employee_name: "Jobaer Hossain",
+          designation: "Operations Manager",
+          employee_type: "In-house Staff",
+          mobile_phone: "+8801711223344",
+          email: "jobaer@intrex-digital.com",
+          status: "Active",
+          createdAt: new Date(),
+          updatedAt: new Date()
+        },
+        {
+          employee_id: "EMP-0002",
+          employee_name: "Sarah Jenkins",
+          designation: "Corporate Trainer",
+          employee_type: "External Professionals",
+          mobile_phone: "+8801799887766",
+          email: "sarah.j@intrex-digital.com",
+          status: "Active",
+          createdAt: new Date(),
+          updatedAt: new Date()
+        },
+        {
+          employee_id: "EMP-0003",
+          employee_name: "Tariqul Islam",
+          designation: "Finance Officer",
+          employee_type: "In-house Staff",
+          mobile_phone: "+8801555443322",
+          email: "tariqul@intrex-digital.com",
+          status: "Active",
+          createdAt: new Date(),
+          updatedAt: new Date()
+        }
+      ];
+    }
+    return mockEmployees;
+  }
+
+  if (!checkConfiguration()) return [];
+  try {
+    const querySnapshot = await getDocs(collection(db, "tbl_employees"));
+    const employees = [];
+    querySnapshot.forEach((docSnap) => {
+      if (docSnap.exists()) {
+        employees.push(docSnap.data());
+      }
+    });
+    employees.sort((a, b) => a.employee_id.localeCompare(b.employee_id));
+    return employees;
+  } catch (error) {
+    console.error("Error fetching employees: ", error);
+    throw error;
+  }
+}
+
+export async function deleteEmployee(employeeId) {
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('mock') === '1') {
+    if (!mockEmployees) {
+      await getAllEmployees();
+    }
+    mockEmployees = mockEmployees.filter(emp => emp.employee_id !== employeeId);
+    return;
+  }
+
+  if (!checkConfiguration()) return;
+  try {
+    const docRef = doc(db, "tbl_employees", employeeId);
+    await deleteDoc(docRef);
+  } catch (error) {
+    console.error("Error deleting employee: ", error);
+    throw error;
+  }
+}
+
+// ==========================================
+// 9. TRAINING BATCHES OPERATIONS (batches)
+// ==========================================
+let mockBatches = null;
+
+export async function getAllBatches() {
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('mock') === '1') {
+    if (!mockBatches) {
+      mockBatches = [
+        {
+          batchId: "CCNA-B01",
+          courseName: "CCNA",
+          schedule: "Morning (9am – 12pm)",
+          capacity: 10,
+          status: "Active",
+          createdAt: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)
+        },
+        {
+          batchId: "SEC-B01",
+          courseName: "CompTIA Security+",
+          schedule: "Evening (5pm – 8pm)",
+          capacity: 10,
+          status: "Active",
+          createdAt: new Date(Date.now() - 15 * 24 * 60 * 60 * 1000)
+        },
+        {
+          batchId: "NET-B01",
+          courseName: "CompTIA Network+",
+          schedule: "Weekend Batch",
+          capacity: 10,
+          status: "Upcoming",
+          createdAt: new Date()
+        }
+      ];
+    }
+    return mockBatches;
+  }
+
+  if (!checkConfiguration()) return [];
+  try {
+    const querySnapshot = await getDocs(collection(db, "batches"));
+    const batches = [];
+    querySnapshot.forEach((docSnap) => {
+      if (docSnap.exists()) {
+        batches.push(docSnap.data());
+      }
+    });
+    batches.sort((a, b) => a.batchId.localeCompare(b.batchId));
+    return batches;
+  } catch (error) {
+    console.error("Error fetching batches: ", error);
+    throw error;
+  }
+}
+
+export async function addBatch(batchData) {
+  const { batchId, courseName, schedule, capacity, status } = batchData;
+  if (!batchId || !courseName || !status) {
+    throw new Error("Missing required batch fields");
+  }
+
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('mock') === '1') {
+    if (!mockBatches) {
+      await getAllBatches();
+    }
+    const existingIndex = mockBatches.findIndex(b => b.batchId.toLowerCase() === batchId.trim().toLowerCase());
+    if (existingIndex > -1) {
+      throw new Error(`Batch ID ${batchId} already exists.`);
+    }
+    const newBatch = {
+      batchId: batchId.trim(),
+      courseName: courseName.trim(),
+      schedule: schedule || "Morning (9am – 12pm)",
+      capacity: Number(capacity) || 10,
+      status: status || "Active",
+      createdAt: new Date()
+    };
+    mockBatches.push(newBatch);
+    return batchId;
+  }
+
+  if (!checkConfiguration()) return null;
+
+  try {
+    const docRef = doc(db, "batches", batchId.trim());
+    const snap = await getDoc(docRef);
+    if (snap.exists()) {
+      throw new Error(`Batch ID ${batchId} already exists.`);
+    }
+    await setDoc(docRef, {
+      batchId: batchId.trim(),
+      courseName: courseName.trim(),
+      schedule: schedule || "Morning (9am – 12pm)",
+      capacity: Number(capacity) || 10,
+      status: status || "Active",
+      createdAt: serverTimestamp()
+    });
+    return batchId;
+  } catch (error) {
+    console.error("Error saving batch: ", error);
+    throw error;
+  }
+}
+
+export async function updateBatch(batchId, batchData) {
+  const { courseName, schedule, capacity, status } = batchData;
+
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('mock') === '1') {
+    if (!mockBatches) {
+      await getAllBatches();
+    }
+    const existingIndex = mockBatches.findIndex(b => b.batchId === batchId.trim());
+    if (existingIndex > -1) {
+      mockBatches[existingIndex] = {
+        ...mockBatches[existingIndex],
+        courseName: courseName ? courseName.trim() : mockBatches[existingIndex].courseName,
+        schedule: schedule ? schedule.trim() : mockBatches[existingIndex].schedule,
+        capacity: capacity !== undefined ? Number(capacity) : mockBatches[existingIndex].capacity,
+        status: status ? status.trim() : mockBatches[existingIndex].status,
+        updatedAt: new Date()
+      };
+    }
+    return batchId;
+  }
+
+  if (!checkConfiguration()) return;
+
+  try {
+    const docRef = doc(db, "batches", batchId.trim());
+    await setDoc(docRef, {
+      courseName: courseName.trim(),
+      schedule: schedule || "Morning (9am – 12pm)",
+      capacity: Number(capacity) || 10,
+      status: status || "Active",
+      updatedAt: serverTimestamp()
+    }, { merge: true });
+  } catch (error) {
+    console.error("Error updating batch: ", error);
+    throw error;
+  }
+}
+
+export async function deleteBatch(batchId) {
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('mock') === '1') {
+    if (!mockBatches) {
+      await getAllBatches();
+    }
+    mockBatches = mockBatches.filter(b => b.batchId !== batchId);
+    return;
+  }
+
+  if (!checkConfiguration()) return;
+  try {
+    const docRef = doc(db, "batches", batchId.trim());
+    await deleteDoc(docRef);
+  } catch (error) {
+    console.error("Error deleting batch: ", error);
+    throw error;
+  }
+}
+
+
+

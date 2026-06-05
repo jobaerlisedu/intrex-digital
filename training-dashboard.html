@@ -238,6 +238,16 @@
                   <i class="bi bi-people"></i> Student List
                 </button>
                 <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
+                  id="batch-management-tab" data-bs-toggle="tab" data-bs-target="#batchPanel" type="button" role="tab"
+                  aria-controls="batchPanel" aria-selected="false">
+                  <i class="bi bi-collection"></i> Batch Management
+                </button>
+                <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
+                  id="employees-tab" data-bs-toggle="tab" data-bs-target="#employeesPanel" type="button" role="tab"
+                  aria-controls="employeesPanel" aria-selected="false">
+                  <i class="bi bi-person-badge"></i> Employee Database
+                </button>
+                <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
                   id="payment-tab" data-bs-toggle="tab" data-bs-target="#paymentPanel" type="button" role="tab"
                   aria-controls="paymentPanel" aria-selected="false">
                   <i class="bi bi-credit-card"></i> Payment Records
@@ -567,8 +577,9 @@
                             <div class="col-md-4">
                               <label class="form-label small fw-semibold mb-1" for="regBatch">Batch <span
                                   class="text-danger">*</span></label>
-                              <input class="form-control" id="regBatch" type="text" placeholder="e.g. Batch-01"
-                                required>
+                              <select class="form-select" id="regBatch" required>
+                                <option value="" disabled selected>Select a batch</option>
+                              </select>
                             </div>
                           </div>
 
@@ -1421,6 +1432,291 @@
                   </div>
                 </div>
 
+                <!-- Sub-Page 6.4: Batch Management -->
+                <div class="tab-pane fade" id="batchPanel" role="tabpanel" aria-labelledby="batch-management-tab">
+                  <div class="row g-4">
+                    <!-- Left: Form -->
+                    <div class="col-lg-4">
+                      <div class="card p-4 rounded-4 shadow-sm border">
+                        <h3 id="batchFormTitle" class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
+                          <i class="bi bi-collection-play me-2 text-primary"></i>Create New Batch
+                        </h3>
+
+                        <div id="batchSuccess" class="alert alert-success d-none alert-dismissible fade show small" role="alert">
+                          <span>Batch created successfully!</span>
+                          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                        <div id="batchError" class="alert alert-danger d-none alert-dismissible fade show small" role="alert">
+                          <span>An error occurred. Please try again.</span>
+                          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+
+                        <form id="batchForm">
+                          <div class="mb-3">
+                            <label class="form-label small fw-semibold mb-1" for="batchIdInput">Batch ID <span class="text-danger">*</span></label>
+                            <input class="form-control" id="batchIdInput" type="text" placeholder="e.g. CCNA-B01" required>
+                            <div class="form-text small text-muted">A unique identifier for this batch.</div>
+                          </div>
+
+                          <div class="mb-3">
+                            <label class="form-label small fw-semibold mb-1" for="batchCourseSelect">Course <span class="text-danger">*</span></label>
+                            <select class="form-select" id="batchCourseSelect" required>
+                              <option value="" disabled selected>Select a course</option>
+                              <option value="CompTIA A+">CompTIA A+</option>
+                              <option value="CompTIA Network+">CompTIA Network+</option>
+                              <option value="CompTIA Security+">CompTIA Security+</option>
+                              <option value="CompTIA Linux+">CompTIA Linux+</option>
+                              <option value="CompTIA Server+">CompTIA Server+</option>
+                              <option value="CCNA">CCNA</option>
+                              <option value="CCNP - Enterprise">CCNP - Enterprise</option>
+                              <option value="CCNP - Security">CCNP - Security</option>
+                              <option value="MTCNA">MTCNA</option>
+                              <option value="MTCRE">MTCRE</option>
+                              <option value="MTCSE">MTCSE</option>
+                              <option value="RHCSA">RHCSA</option>
+                              <option value="RHCE">RHCE</option>
+                              <option value="FCP NSE4">FCP NSE4</option>
+                              <option value="FCP NSE5">FCP NSE5</option>
+                              <option value="CCNA & MTCNA">CCNA &amp; MTCNA</option>
+                            </select>
+                          </div>
+
+                          <div class="mb-3">
+                            <label class="form-label small fw-semibold mb-1" for="batchScheduleSelect">Schedule Slot <span class="text-danger">*</span></label>
+                            <select class="form-select" id="batchScheduleSelect" required>
+                              <option value="" disabled selected>Select preferred slot</option>
+                              <option value="Morning (9am – 12pm)">Morning (9am – 12pm)</option>
+                              <option value="Afternoon (1pm – 4pm)">Afternoon (1pm – 4pm)</option>
+                              <option value="Evening (5pm – 8pm)">Evening (5pm – 8pm)</option>
+                              <option value="Weekend Batch">Weekend Batch</option>
+                            </select>
+                          </div>
+
+                          <div class="mb-3">
+                            <label class="form-label small fw-semibold mb-1" for="batchCapacityInput">Max Capacity (Students)</label>
+                            <input class="form-control bg-body-secondary" id="batchCapacityInput" type="number" value="10" disabled readonly>
+                            <div class="form-text small text-muted">Fixed at 10 students per batch.</div>
+                          </div>
+
+                          <div class="mb-4">
+                            <label class="form-label small fw-semibold mb-1" for="batchStatusSelect">Status <span class="text-danger">*</span></label>
+                            <select class="form-select" id="batchStatusSelect" required>
+                              <option value="Active" selected>Active</option>
+                              <option value="Upcoming">Upcoming</option>
+                              <option value="Completed">Completed</option>
+                            </select>
+                          </div>
+
+                          <div class="d-flex gap-2">
+                            <button type="submit" id="submitBatchBtn" class="btn btn-primary w-100 fw-semibold py-2">
+                              <i class="bi bi-cloud-arrow-up me-2"></i>Save Batch
+                            </button>
+                            <button type="button" id="cancelBatchEditBtn" class="btn btn-outline-secondary w-50 fw-semibold py-2 d-none">
+                              Cancel
+                            </button>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+
+                    <!-- Right: Table -->
+                    <div class="col-lg-8">
+                      <div class="card p-4 rounded-4 shadow-sm border h-100">
+                        <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom flex-wrap gap-2">
+                          <h3 class="h5 fw-bold text-heading-color mb-0">
+                            <i class="bi bi-list-stars me-2 text-primary"></i>Batches Registry
+                          </h3>
+                          <div class="d-flex align-items-center gap-2 flex-wrap">
+                            <select id="courseBatchFilter" class="form-select form-select-sm" style="width: auto; min-width: 140px;">
+                              <option value="all">All Courses</option>
+                              <option value="CompTIA A+">CompTIA A+</option>
+                              <option value="CompTIA Network+">CompTIA Network+</option>
+                              <option value="CompTIA Security+">CompTIA Security+</option>
+                              <option value="CompTIA Linux+">CompTIA Linux+</option>
+                              <option value="CompTIA Server+">CompTIA Server+</option>
+                              <option value="CCNA">CCNA</option>
+                              <option value="CCNP - Enterprise">CCNP - Enterprise</option>
+                              <option value="CCNP - Security">CCNP - Security</option>
+                              <option value="MTCNA">MTCNA</option>
+                              <option value="MTCRE">MTCRE</option>
+                              <option value="MTCSE">MTCSE</option>
+                              <option value="RHCSA">RHCSA</option>
+                              <option value="RHCE">RHCE</option>
+                              <option value="FCP NSE4">FCP NSE4</option>
+                              <option value="FCP NSE5">FCP NSE5</option>
+                              <option value="CCNA & MTCNA">CCNA &amp; MTCNA</option>
+                            </select>
+                            <button id="refreshBatchListBtn" class="btn btn-sm btn-outline-secondary" type="button" title="Refresh List">
+                              <i class="bi bi-arrow-clockwise"></i>
+                            </button>
+                          </div>
+                        </div>
+
+                        <div class="table-responsive" style="max-height: 620px; overflow-y: auto;">
+                          <table class="table table-hover align-middle mb-0" id="batchesTable">
+                            <thead class="table-light">
+                              <tr>
+                                <th class="small fw-semibold text-center">Batch ID</th>
+                                <th class="small fw-semibold text-center">Course</th>
+                                <th class="small fw-semibold text-center">Schedule</th>
+                                <th class="small fw-semibold text-center">Students Count</th>
+                                <th class="small fw-semibold text-center">Status</th>
+                                <th class="small fw-semibold text-center">Actions</th>
+                              </tr>
+                            </thead>
+                            <tbody id="batchesTableBody">
+                              <tr>
+                                <td colspan="6" class="text-center py-4 text-muted">
+                                  <div class="spinner-border spinner-border-sm text-primary me-2" role="status"></div>
+                                  Loading training batches...
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Sub-Page 6.5: Employee Database -->
+                <div class="tab-pane fade" id="employeesPanel" role="tabpanel" aria-labelledby="employees-tab">
+                  <!-- Form -->
+                  <div class="card p-4 rounded-4 shadow-sm border mb-4">
+                    <h3 id="empFormTitle" class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
+                      <i class="bi bi-person-plus-fill me-2 text-primary"></i>Add Employee Record
+                    </h3>
+                    <div id="empSuccess" class="alert alert-success d-none alert-dismissible fade show small" role="alert">
+                      <span>Employee saved successfully!</span>
+                      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    <div id="empError" class="alert alert-danger d-none alert-dismissible fade show small" role="alert">
+                      <span>An error occurred. Please try again.</span>
+                      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    <form id="employeeForm">
+                      <div class="row g-3">
+                        <div class="col-md-6">
+                          <label class="form-label small fw-semibold mb-1" for="emp_employee_name">Full Name <span class="text-danger">*</span></label>
+                          <input class="form-control" id="emp_employee_name" type="text" placeholder="e.g. John Doe" required maxlength="100">
+                        </div>
+                        <div class="col-md-6">
+                          <label class="form-label small fw-semibold mb-1" for="emp_designation">Designation <span class="text-danger">*</span></label>
+                          <select class="form-select" id="emp_designation" required>
+                            <option value="" disabled selected>Select Designation</option>
+                            <option value="Finance Officer">Finance Officer</option>
+                            <option value="Business Development Executive">Business Development Executive</option>
+                            <option value="Business Development Manager">Business Development Manager</option>
+                            <option value="Career Services Manager">Career Services Manager</option>
+                            <option value="Admissions Counselor">Admissions Counselor</option>
+                            <option value="Training Coordinator">Training Coordinator</option>
+                            <option value="Lab Administrator">Lab Administrator</option>
+                            <option value="Operations Manager">Operations Manager</option>
+                            <option value="Lab Demonstrator">Lab Demonstrator</option>
+                            <option value="Technical Trainer">Technical Trainer</option>
+                            <option value="Principal Trainer">Principal Trainer</option>
+                            <option value="Corporate Trainer">Corporate Trainer</option>
+                            <option value="Industry Expert">Industry Expert</option>
+                          </select>
+                        </div>
+                        <div class="col-md-4">
+                          <label class="form-label small fw-semibold mb-1" for="emp_employee_type">Employee Type <span class="text-danger">*</span></label>
+                          <select class="form-select" id="emp_employee_type" required>
+                            <option value="In-house Staff" selected>In-house Staff</option>
+                            <option value="External Professionals">External Professionals</option>
+                          </select>
+                        </div>
+                        <div class="col-md-4">
+                          <label class="form-label small fw-semibold mb-1" for="emp_mobile_phone">Mobile Number</label>
+                          <input class="form-control" id="emp_mobile_phone" type="tel" placeholder="e.g. +880 1XXX-XXXXXX">
+                        </div>
+                        <div class="col-md-4">
+                          <label class="form-label small fw-semibold mb-1" for="emp_email">E-mail Address</label>
+                          <input class="form-control" id="emp_email" type="email" placeholder="e.g. name@domain.com">
+                        </div>
+                        <div class="col-md-6">
+                          <label class="form-label small fw-semibold mb-1" for="emp_status">Employment Status</label>
+                          <select class="form-select" id="emp_status">
+                            <option value="Active" selected>Active</option>
+                            <option value="Inactive">Inactive</option>
+                          </select>
+                        </div>
+                        <div class="col-md-6">
+                          <label class="form-label small fw-semibold mb-1" for="emp_employee_id">Employee ID <span class="text-muted">(auto-generated if blank)</span></label>
+                          <input class="form-control" id="emp_employee_id" type="text" placeholder="e.g. EMP-0001">
+                        </div>
+                      </div>
+                      <div class="d-flex gap-2 mt-3">
+                        <button type="submit" id="empSubmitBtn" class="btn btn-primary fw-semibold py-2 px-4">
+                          <i class="bi bi-save me-2"></i>Save Employee Record
+                        </button>
+                        <button type="button" id="cancelEmpEditBtn" class="btn btn-outline-secondary py-2 px-3 d-none">
+                          Cancel Edit
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                  <!-- Directory -->
+                  <div class="card p-4 rounded-4 shadow-sm border">
+                    <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom flex-wrap gap-2">
+                      <h3 class="h5 fw-bold text-heading-color mb-0">
+                        <i class="bi bi-people me-2 text-primary"></i>Employee Directory
+                      </h3>
+                      <div class="d-flex align-items-center gap-2 flex-wrap">
+                        <input type="text" id="searchEmployee" class="form-control form-control-sm" style="max-width: 200px;" placeholder="Search employee...">
+                        <select id="filterDesignation" class="form-select form-select-sm" style="width: auto; min-width: 140px;">
+                          <option value="all">All Designations</option>
+                          <option value="Finance Officer">Finance Officer</option>
+                          <option value="Business Development Executive">Business Development Executive</option>
+                          <option value="Business Development Manager">Business Development Manager</option>
+                          <option value="Career Services Manager">Career Services Manager</option>
+                          <option value="Admissions Counselor">Admissions Counselor</option>
+                          <option value="Training Coordinator">Training Coordinator</option>
+                          <option value="Lab Administrator">Lab Administrator</option>
+                          <option value="Operations Manager">Operations Manager</option>
+                          <option value="Lab Demonstrator">Lab Demonstrator</option>
+                          <option value="Technical Trainer">Technical Trainer</option>
+                          <option value="Principal Trainer">Principal Trainer</option>
+                          <option value="Corporate Trainer">Corporate Trainer</option>
+                          <option value="Industry Expert">Industry Expert</option>
+                        </select>
+                        <select id="filterStatus" class="form-select form-select-sm" style="width: auto; min-width: 100px;">
+                          <option value="all">All Status</option>
+                          <option value="Active">Active</option>
+                          <option value="Inactive">Inactive</option>
+                        </select>
+                        <button id="refreshEmployeesBtn" class="btn btn-sm btn-outline-secondary" type="button" title="Refresh Directory">
+                          <i class="bi bi-arrow-clockwise"></i>
+                        </button>
+                      </div>
+                    </div>
+                    <div class="table-responsive">
+                      <table class="table table-hover align-middle mb-0" id="employeesTable">
+                        <thead class="table-light">
+                          <tr>
+                            <th class="small fw-semibold">Employee ID</th>
+                            <th class="small fw-semibold">Name</th>
+                            <th class="small fw-semibold">Designation</th>
+                            <th class="small fw-semibold">Employee Type</th>
+                            <th class="small fw-semibold">Mobile</th>
+                            <th class="small fw-semibold">Email</th>
+                            <th class="small fw-semibold text-center">Status</th>
+                            <th class="small fw-semibold text-center" style="min-width: 100px;">Actions</th>
+                          </tr>
+                        </thead>
+                        <tbody id="employeesTableBody">
+                          <tr>
+                            <td colspan="8" class="text-center py-4 text-muted">
+                              <div class="spinner-border spinner-border-sm text-primary me-2" role="status"></div>
+                              Loading employees...
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+
                 <!-- Sub-Page 7: System Audit Logs -->
                 <div class="tab-pane fade" id="logsPanel" role="tabpanel" aria-labelledby="logs-tab">
                   <div class="card p-4 rounded-4 shadow-sm border">
@@ -1475,7 +1771,7 @@
   <script src="assets/vendors/bootstrap/bootstrap.bundle.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script type="module">
-    import { loginAdmin, logoutAdmin, onAdminAuthStateChanged, addCertificate, getAllCertificates, deleteCertificate, addRegistration, getAllRegistrations, updateRegistration, deleteRegistration, getAllPayments, updatePayment, addAuditLog, getAllAuditLogs, getAllOnlineRegistrations, getOnlineRegistration, deleteOnlineRegistration, getAllOnlineInquiries, deleteOnlineInquiry } from "./assets/js/training.js";
+    import { loginAdmin, logoutAdmin, onAdminAuthStateChanged, addCertificate, getAllCertificates, deleteCertificate, addRegistration, getAllRegistrations, updateRegistration, deleteRegistration, getAllPayments, updatePayment, addAuditLog, getAllAuditLogs, getAllOnlineRegistrations, getOnlineRegistration, deleteOnlineRegistration, getAllOnlineInquiries, deleteOnlineInquiry, addEmployee, getAllEmployees, deleteEmployee, getAllBatches, addBatch, updateBatch, deleteBatch } from "./assets/js/training.js";
 
     // Initialize AOS
     if (window.AOS) {
@@ -1500,9 +1796,13 @@
     let allOnlineRegistrations = [];
     let allInquiries = [];
     let allAuditLogs = [];
+    let allEmployees = [];
+    let allBatches = [];
+    let editingBatchId = null;
     let loadedOnlineKey = null;
     let editingStudentId = null;
     let editingCertId = null;
+    let editingEmployeeId = null;
     let currentUserEmail = "";
 
     // Inactivity Auto-logout (3 minutes)
@@ -2066,6 +2366,8 @@
         loadOnlineRegistrations();
         loadInquiries();
         refreshAuditLogs();
+        loadEmployees();
+        loadBatches();
         resetInactivityTimer();
       } else {
         // Unauthenticated
@@ -2290,6 +2592,7 @@
       if (selectedCourse in courseFees && !editingStudentId) {
         feeInput.value = courseFees[selectedCourse];
       }
+      updateRegistrationBatchDropdown(selectedCourse);
     });
 
     // Dynamic show/hide of TxID field based on Registration Payment Method
@@ -2484,7 +2787,7 @@
       document.getElementById("regEmail").value = record.email;
       document.getElementById("regPhone").value = record.phone;
       document.getElementById("regCourse").value = record.course;
-      document.getElementById("regBatch").value = record.batch || "";
+      updateRegistrationBatchDropdown(record.course, record.batch);
       document.getElementById("regEducation").value = record.education || "";
       document.getElementById("regSchedule").value = record.schedule;
       document.getElementById("regMessage").value = record.message || "";
@@ -2620,6 +2923,16 @@
           const status = row.querySelector(".inst-status").value;
           installments.push({ amount, dueDate, status });
         });
+      }
+
+      // Validate batch limit (max 10 students)
+      const foundBatch = allBatches.find(b => b.batchId === batch);
+      if (foundBatch) {
+        const enrolledCount = allRegistrations.filter(r => r.batch === batch && r.studentId !== editingStudentId).length;
+        if (enrolledCount >= (foundBatch.capacity || 10)) {
+          alert(`Error: The selected batch "${batch}" is already full (10/10 students). Please select or create another batch.`);
+          return;
+        }
       }
 
       const successAlert = document.getElementById("regSuccess");
@@ -3770,8 +4083,10 @@
         if (matchedValue in courseFees) {
           document.getElementById("regFee").value = courseFees[matchedValue];
         }
+        updateRegistrationBatchDropdown(matchedValue);
       } else {
         regCourseSelect.value = "";
+        updateRegistrationBatchDropdown("");
       }
 
       document.getElementById("regEducation").value = record.education || "";
@@ -5173,6 +5488,590 @@
       }
     });
 
+    // ============================================================
+    // EMPLOYEE DATABASE MANAGEMENT
+    // ============================================================
+
+    // Designation change auto-fill logic:
+    // "Corporate Trainer & Industry Expert is not in-house training so when add them, keep the employee type External Professionals"
+    document.getElementById("emp_designation")?.addEventListener("change", function(e) {
+      const designation = e.target.value;
+      const typeSelect = document.getElementById("emp_employee_type");
+      if (typeSelect) {
+        if (designation === "Corporate Trainer" || designation === "Industry Expert") {
+          typeSelect.value = "External Professionals";
+        } else {
+          typeSelect.value = "In-house Staff";
+        }
+      }
+    });
+
+    async function loadEmployees() {
+      const tbody = document.getElementById("employeesTableBody");
+      if (tbody) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="8" class="text-center py-4 text-muted">
+              <div class="spinner-border spinner-border-sm text-primary me-2" role="status"></div>
+              Loading employees...
+            </td>
+          </tr>
+        `;
+      }
+      try {
+        allEmployees = await getAllEmployees();
+        applyEmployeeFilters();
+      } catch (err) {
+        console.error("Error loading employees: ", err);
+        if (tbody) {
+          tbody.innerHTML = `<tr><td colspan="8" class="text-center py-4 text-danger">Failed to load employee records.</td></tr>`;
+        }
+      }
+    }
+
+    function renderEmployeesTable(list) {
+      const tbody = document.getElementById("employeesTableBody");
+      if (!tbody) return;
+      if (list.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="8" class="text-center py-4 text-muted">No employee records found.</td></tr>`;
+        return;
+      }
+      tbody.innerHTML = list.map(emp => {
+        const statusBadge = emp.status === "Active" 
+          ? `<span class="badge bg-success-subtle text-success px-2 py-1">Active</span>` 
+          : `<span class="badge bg-danger-subtle text-danger px-2 py-1">Inactive</span>`;
+        return `
+          <tr>
+            <td><code class="text-dark fw-bold font-monospace">${emp.employee_id}</code></td>
+            <td><strong>${emp.employee_name}</strong></td>
+            <td>${emp.designation}</td>
+            <td><span class="badge bg-secondary text-dark">${emp.employee_type}</span></td>
+            <td>${emp.mobile_phone || "—"}</td>
+            <td>${emp.email || "—"}</td>
+            <td class="text-center">${statusBadge}</td>
+            <td class="text-center">
+              <button class="btn btn-sm btn-outline-primary me-1 emp-edit-btn py-1 px-2" data-id="${emp.employee_id}" title="Edit">
+                <i class="bi bi-pencil-square"></i>
+              </button>
+              <button class="btn btn-sm btn-outline-danger emp-delete-btn py-1 px-2" data-id="${emp.employee_id}" title="Delete">
+                <i class="bi bi-trash"></i>
+              </button>
+            </td>
+          </tr>
+        `;
+      }).join("");
+
+      // Bind actions
+      tbody.querySelectorAll(".emp-edit-btn").forEach(btn => {
+        btn.onclick = function() {
+          const id = this.getAttribute("data-id");
+          const emp = allEmployees.find(e => e.employee_id === id);
+          if (emp) editEmployee(emp);
+        };
+      });
+
+      tbody.querySelectorAll(".emp-delete-btn").forEach(btn => {
+        btn.onclick = function() {
+          const id = this.getAttribute("data-id");
+          const emp = allEmployees.find(e => e.employee_id === id);
+          if (emp && confirm(`Are you sure you want to delete employee "${emp.employee_name}" (${id})?`)) {
+            deleteEmployeeRecord(id, emp.employee_name);
+          }
+        };
+      });
+    }
+
+    function applyEmployeeFilters() {
+      const searchQuery = document.getElementById("searchEmployee")?.value.toLowerCase().trim() || "";
+      const designationFilter = document.getElementById("filterDesignation")?.value || "all";
+      const statusFilter = document.getElementById("filterStatus")?.value || "all";
+
+      const filtered = allEmployees.filter(emp => {
+        const nameMatch = emp.employee_name.toLowerCase().includes(searchQuery);
+        const idMatch = emp.employee_id.toLowerCase().includes(searchQuery);
+        const emailMatch = emp.email ? emp.email.toLowerCase().includes(searchQuery) : false;
+        const phoneMatch = emp.mobile_phone ? emp.mobile_phone.toLowerCase().includes(searchQuery) : false;
+
+        const matchesSearch = nameMatch || idMatch || emailMatch || phoneMatch;
+        const matchesDesignation = designationFilter === "all" || emp.designation === designationFilter;
+        const matchesStatus = statusFilter === "all" || emp.status === statusFilter;
+
+        return matchesSearch && matchesDesignation && matchesStatus;
+      });
+
+      renderEmployeesTable(filtered);
+    }
+
+    function editEmployee(emp) {
+      editingEmployeeId = emp.employee_id;
+      document.getElementById("empFormTitle").innerHTML = `<i class="bi bi-pencil-square me-2 text-primary"></i>Edit Employee Record: ${emp.employee_id}`;
+      document.getElementById("emp_employee_name").value = emp.employee_name;
+      document.getElementById("emp_designation").value = emp.designation;
+      document.getElementById("emp_employee_type").value = emp.employee_type;
+      document.getElementById("emp_mobile_phone").value = emp.mobile_phone || "";
+      document.getElementById("emp_email").value = emp.email || "";
+      document.getElementById("emp_status").value = emp.status || "Active";
+      document.getElementById("emp_employee_id").value = emp.employee_id;
+      document.getElementById("emp_employee_id").setAttribute("readonly", "true");
+
+      const cancelBtn = document.getElementById("cancelEmpEditBtn");
+      if (cancelBtn) cancelBtn.classList.remove("d-none");
+
+      document.getElementById("employeesPanel")?.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function resetEmployeeForm() {
+      editingEmployeeId = null;
+      document.getElementById("empFormTitle").innerHTML = `<i class="bi bi-person-plus-fill me-2 text-primary"></i>Add Employee Record`;
+      document.getElementById("employeeForm")?.reset();
+      document.getElementById("emp_employee_id")?.removeAttribute("readonly");
+      const cancelBtn = document.getElementById("cancelEmpEditBtn");
+      if (cancelBtn) cancelBtn.classList.add("d-none");
+    }
+
+    async function handleEmployeeSubmit(e) {
+      e.preventDefault();
+      const name = document.getElementById("emp_employee_name").value.trim();
+      const designation = document.getElementById("emp_designation").value;
+      const employee_type = document.getElementById("emp_employee_type").value;
+      const mobile_phone = document.getElementById("emp_mobile_phone").value.trim();
+      const email = document.getElementById("emp_email").value.trim();
+      const status = document.getElementById("emp_status").value;
+      const employee_id = document.getElementById("emp_employee_id").value.trim();
+
+      const successAlert = document.getElementById("empSuccess");
+      const errorAlert = document.getElementById("empError");
+
+      if (successAlert) successAlert.classList.add("d-none");
+      if (errorAlert) errorAlert.classList.add("d-none");
+
+      const employeeData = {
+        employee_name: name,
+        designation,
+        employee_type,
+        mobile_phone,
+        email,
+        status
+      };
+
+      if (editingEmployeeId) {
+        employeeData.employee_id = editingEmployeeId;
+      } else if (employee_id) {
+        employeeData.employee_id = employee_id;
+      }
+
+      const isNew = !editingEmployeeId;
+
+      try {
+        const savedId = await addEmployee(employeeData);
+        
+        // Audit log
+        const action = isNew ? "CREATE" : "UPDATE";
+        const details = isNew 
+          ? `Created employee record for "${name}" (${savedId}), designation: "${designation}", type: "${employee_type}", status: "${status}"`
+          : `Updated employee record for "${name}" (${savedId}), designation: "${designation}", type: "${employee_type}", status: "${status}"`;
+
+        await addAuditLog({
+          user_email: currentUserEmail || "admin@intrex-digital.com",
+          action_type: action,
+          collection_name: "tbl_employees",
+          record_id: savedId,
+          details: details
+        });
+
+        if (successAlert) {
+          successAlert.querySelector("span").textContent = `Employee "${name}" (${savedId}) saved successfully!`;
+          successAlert.classList.remove("d-none");
+          setTimeout(() => successAlert.classList.add("d-none"), 4000);
+        }
+
+        resetEmployeeForm();
+        await loadEmployees();
+      } catch (err) {
+        console.error("Error saving employee: ", err);
+        if (errorAlert) {
+          errorAlert.querySelector("span").textContent = err.message || "An error occurred while saving the employee record.";
+          errorAlert.classList.remove("d-none");
+        }
+      }
+    }
+
+    async function deleteEmployeeRecord(empId, empName) {
+      try {
+        await deleteEmployee(empId);
+        
+        await addAuditLog({
+          user_email: currentUserEmail || "admin@intrex-digital.com",
+          action_type: "DELETE",
+          collection_name: "tbl_employees",
+          record_id: empId,
+          details: `Deleted employee record for "${empName}" (${empId})`
+        });
+
+        const successAlert = document.getElementById("empSuccess");
+        if (successAlert) {
+          successAlert.querySelector("span").textContent = `Deleted employee "${empName}" (${empId}) successfully.`;
+          successAlert.classList.remove("d-none");
+          setTimeout(() => successAlert.classList.add("d-none"), 4000);
+        }
+
+        if (editingEmployeeId === empId) {
+          resetEmployeeForm();
+        }
+
+        await loadEmployees();
+      } catch (err) {
+        console.error("Error deleting employee: ", err);
+        const errorAlert = document.getElementById("empError");
+        if (errorAlert) {
+          errorAlert.querySelector("span").textContent = err.message || "Failed to delete employee.";
+          errorAlert.classList.remove("d-none");
+        }
+      }
+    }
+
+    // Attach employee events
+    document.getElementById("employees-tab")?.addEventListener("click", loadEmployees);
+    document.getElementById("refreshEmployeesBtn")?.addEventListener("click", loadEmployees);
+    document.getElementById("employeeForm")?.addEventListener("submit", handleEmployeeSubmit);
+    document.getElementById("cancelEmpEditBtn")?.addEventListener("click", resetEmployeeForm);
+    document.getElementById("searchEmployee")?.addEventListener("input", applyEmployeeFilters);
+    document.getElementById("filterDesignation")?.addEventListener("change", applyEmployeeFilters);
+    document.getElementById("filterStatus")?.addEventListener("change", applyEmployeeFilters);
+    
+    // Globally register loadEmployees function in window just in case
+    window.loadEmployees = loadEmployees;
+
+    // ============================================================
+    // BATCH MANAGEMENT SYSTEM
+    // ============================================================
+    function updateRegistrationBatchDropdown(selectedCourse, selectedBatchId = "") {
+      const selectEl = document.getElementById("regBatch");
+      if (!selectEl) return;
+
+      selectEl.innerHTML = '<option value="" disabled selected>Select a batch</option>';
+
+      // Filter active/upcoming batches for the selected course
+      const courseBatches = allBatches.filter(b => b.courseName === selectedCourse);
+
+      if (courseBatches.length === 0) {
+        const opt = document.createElement("option");
+        opt.value = "";
+        opt.textContent = "No batches found. Please create a batch first.";
+        selectEl.appendChild(opt);
+        return;
+      }
+
+      courseBatches.forEach(b => {
+        // Calculate student count for this batch
+        const enrolledCount = allRegistrations.filter(r => r.batch === b.batchId).length;
+        
+        const opt = document.createElement("option");
+        opt.value = b.batchId;
+        opt.textContent = `${b.batchId} (${enrolledCount}/${b.capacity || 10} students) - ${b.schedule}`;
+        
+        // Disable option if it has 10 or more students, UNLESS it's the currently selected batch
+        if (enrolledCount >= (b.capacity || 10) && b.batchId !== selectedBatchId) {
+          opt.disabled = true;
+          opt.textContent += " [Full]";
+        }
+
+        if (b.batchId === selectedBatchId) {
+          opt.selected = true;
+        }
+
+        selectEl.appendChild(opt);
+      });
+    }
+
+    async function loadBatches() {
+      const tbody = document.getElementById("batchesTableBody");
+      if (tbody) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="6" class="text-center py-4 text-muted">
+              <div class="spinner-border spinner-border-sm text-primary me-2" role="status"></div>
+              Loading batches...
+            </td>
+          </tr>
+        `;
+      }
+      try {
+        allBatches = await getAllBatches();
+        renderBatches();
+      } catch (err) {
+        console.error("Error loading batches: ", err);
+        if (tbody) {
+          tbody.innerHTML = `<tr><td colspan="6" class="text-center py-4 text-danger">Failed to load training batches.</td></tr>`;
+        }
+      }
+    }
+
+    function renderBatches() {
+      const tbody = document.getElementById("batchesTableBody");
+      if (!tbody) return;
+
+      const courseFilter = document.getElementById("courseBatchFilter").value;
+      let filtered = allBatches;
+
+      if (courseFilter !== "all") {
+        filtered = allBatches.filter(b => b.courseName === courseFilter);
+      }
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="6" class="text-center py-4 text-muted">No training batches found.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = filtered.map(b => {
+        // Calculate dynamic student count
+        const enrolledStudents = allRegistrations.filter(r => r.batch === b.batchId);
+        const enrolledCount = enrolledStudents.length;
+        const capacity = b.capacity || 10;
+        
+        let progressClass = "bg-success";
+        if (enrolledCount >= capacity) progressClass = "bg-danger";
+        else if (enrolledCount >= 7) progressClass = "bg-warning";
+
+        const percent = Math.min(100, (enrolledCount / capacity) * 100);
+
+        const statusBadges = {
+          "Active": `<span class="badge bg-success-subtle text-success px-2 py-1">Active</span>`,
+          "Upcoming": `<span class="badge bg-info-subtle text-info px-2 py-1">Upcoming</span>`,
+          "Completed": `<span class="badge bg-secondary-subtle text-secondary px-2 py-1">Completed</span>`
+        };
+        const statusBadge = statusBadges[b.status] || `<span class="badge bg-secondary px-2 py-1">${b.status}</span>`;
+
+        return `
+          <tr>
+            <td class="text-center"><code class="text-dark fw-bold font-monospace">${b.batchId}</code></td>
+            <td><strong>${b.courseName}</strong></td>
+            <td><span class="small">${b.schedule}</span></td>
+            <td>
+              <div class="d-flex align-items-center justify-content-center gap-2">
+                <span class="small fw-semibold">${enrolledCount} / ${capacity}</span>
+                <div class="progress" style="width: 70px; height: 6px;">
+                  <div class="progress-bar ${progressClass}" role="progressbar" style="width: ${percent}%;" aria-valuenow="${enrolledCount}" aria-valuemin="0" aria-valuemax="${capacity}"></div>
+                </div>
+              </div>
+            </td>
+            <td class="text-center">${statusBadge}</td>
+            <td class="text-center">
+              <div class="btn-group gap-1">
+                <button class="btn btn-sm btn-outline-info batch-view-btn py-1 px-2" data-id="${b.batchId}" title="View Students">
+                  <i class="bi bi-eye"></i> View
+                </button>
+                <button class="btn btn-sm btn-outline-primary batch-edit-btn py-1 px-2" data-id="${b.batchId}" title="Edit">
+                  <i class="bi bi-pencil-square"></i>
+                </button>
+                <button class="btn btn-sm btn-outline-danger batch-delete-btn py-1 px-2" data-id="${b.batchId}" title="Delete">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join("");
+
+      // Bind buttons
+      tbody.querySelectorAll(".batch-view-btn").forEach(btn => {
+        btn.onclick = function() {
+          const id = this.getAttribute("data-id");
+          showBatchStudentsModal(id);
+        };
+      });
+
+      tbody.querySelectorAll(".batch-edit-btn").forEach(btn => {
+        btn.onclick = function() {
+          const id = this.getAttribute("data-id");
+          const batch = allBatches.find(b => b.batchId === id);
+          if (batch) editBatch(batch);
+        };
+      });
+
+      tbody.querySelectorAll(".batch-delete-btn").forEach(btn => {
+        btn.onclick = async function() {
+          const id = this.getAttribute("data-id");
+          const enrolled = allRegistrations.filter(r => r.batch === id).length;
+          if (enrolled > 0) {
+            alert(`Cannot delete Batch "${id}" because it contains ${enrolled} enrolled students. Reassign students before deleting.`);
+            return;
+          }
+          if (confirm(`Are you sure you want to delete training batch "${id}"?`)) {
+            try {
+              await deleteBatch(id);
+              await addAuditLog({
+                user_email: currentUserEmail || "admin@intrex-digital.com",
+                action_type: "DELETE",
+                collection_name: "batches",
+                record_id: id,
+                details: `Deleted training batch "${id}"`
+              });
+              refreshAuditLogs();
+              await loadBatches();
+            } catch (err) {
+              alert("Failed to delete batch: " + err.message);
+            }
+          }
+        };
+      });
+    }
+
+    function editBatch(batch) {
+      editingBatchId = batch.batchId;
+      document.getElementById("batchFormTitle").innerHTML = `<i class="bi bi-pencil-square me-2 text-primary"></i>Edit Batch: ${batch.batchId}`;
+      document.getElementById("batchIdInput").value = batch.batchId;
+      document.getElementById("batchIdInput").setAttribute("readonly", "true");
+      document.getElementById("batchCourseSelect").value = batch.courseName;
+      document.getElementById("batchScheduleSelect").value = batch.schedule;
+      document.getElementById("batchStatusSelect").value = batch.status;
+
+      const cancelBtn = document.getElementById("cancelBatchEditBtn");
+      if (cancelBtn) cancelBtn.classList.remove("d-none");
+
+      document.getElementById("batchFormTitle")?.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function resetBatchForm() {
+      editingBatchId = null;
+      document.getElementById("batchFormTitle").innerHTML = `<i class="bi bi-collection-play me-2 text-primary"></i>Create New Batch`;
+      document.getElementById("batchForm")?.reset();
+      document.getElementById("batchIdInput")?.removeAttribute("readonly");
+      const cancelBtn = document.getElementById("cancelBatchEditBtn");
+      if (cancelBtn) cancelBtn.classList.add("d-none");
+    }
+
+    async function handleBatchSubmit(e) {
+      e.preventDefault();
+      const batchId = document.getElementById("batchIdInput").value.trim();
+      const courseName = document.getElementById("batchCourseSelect").value;
+      const schedule = document.getElementById("batchScheduleSelect").value;
+      const status = document.getElementById("batchStatusSelect").value;
+
+      const successAlert = document.getElementById("batchSuccess");
+      const errorAlert = document.getElementById("batchError");
+
+      if (successAlert) successAlert.classList.add("d-none");
+      if (errorAlert) errorAlert.classList.add("d-none");
+
+      const batchData = {
+        batchId,
+        courseName,
+        schedule,
+        capacity: 10,
+        status
+      };
+
+      try {
+        if (editingBatchId) {
+          await updateBatch(editingBatchId, batchData);
+          await addAuditLog({
+            user_email: currentUserEmail || "admin@intrex-digital.com",
+            action_type: "UPDATE",
+            collection_name: "batches",
+            record_id: editingBatchId,
+            details: `Updated training batch "${editingBatchId}": Course: "${courseName}", Schedule: "${schedule}", Status: "${status}"`
+          });
+        } else {
+          await addBatch(batchData);
+          await addAuditLog({
+            user_email: currentUserEmail || "admin@intrex-digital.com",
+            action_type: "CREATE",
+            collection_name: "batches",
+            record_id: batchId,
+            details: `Created training batch "${batchId}": Course: "${courseName}", Schedule: "${schedule}", Status: "${status}"`
+          });
+        }
+
+        refreshAuditLogs();
+
+        if (successAlert) {
+          successAlert.querySelector("span").textContent = `Batch "${batchId}" saved successfully!`;
+          successAlert.classList.remove("d-none");
+          setTimeout(() => successAlert.classList.add("d-none"), 4000);
+        }
+
+        resetBatchForm();
+        await loadBatches();
+      } catch (err) {
+        console.error("Error saving batch: ", err);
+        if (errorAlert) {
+          errorAlert.querySelector("span").textContent = err.message || "An error occurred while saving the batch.";
+          errorAlert.classList.remove("d-none");
+        }
+      }
+    }
+
+    function showBatchStudentsModal(batchId) {
+      const batch = allBatches.find(b => b.batchId === batchId);
+      if (!batch) return;
+
+      document.getElementById("modalBatchId").textContent = batch.batchId;
+      document.getElementById("modalBatchCourse").textContent = batch.courseName;
+      document.getElementById("modalBatchSchedule").textContent = batch.schedule;
+
+      const enrolled = allRegistrations.filter(r => r.batch === batch.batchId);
+      document.getElementById("modalBatchCount").textContent = `${enrolled.length} / ${batch.capacity || 10}`;
+
+      const tbody = document.getElementById("batchStudentsTableBody");
+      if (!tbody) return;
+
+      if (enrolled.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="4" class="text-center py-4 text-muted small">No students enrolled in this batch yet.</td>
+          </tr>
+        `;
+      } else {
+        tbody.innerHTML = enrolled.map(student => {
+          // Cross reference with payment record
+          const payment = allPayments.find(p => p.studentId === student.studentId);
+          const payStatus = payment ? payment.status : "Unpaid";
+          
+          let badgeClass = "bg-danger";
+          if (payStatus === "Fully Paid") {
+            badgeClass = "bg-success";
+          } else if (payStatus === "Partially Paid") {
+            badgeClass = "bg-warning text-dark";
+          }
+
+          return `
+            <tr>
+              <td><code class="text-dark font-monospace fw-bold">${student.studentId}</code></td>
+              <td>
+                <div class="d-flex align-items-center gap-2">
+                  <span class="fw-bold text-heading-color">${student.fullName}</span>
+                  <span class="badge ${badgeClass} ms-2" style="font-size:0.65rem;">${payStatus}</span>
+                </div>
+              </td>
+              <td>
+                <div class="small text-muted"><i class="bi bi-envelope me-1"></i>${student.email}</div>
+                <div class="small text-muted"><i class="bi bi-telephone me-1"></i>${student.phone}</div>
+              </td>
+              <td>
+                <span class="badge ${badgeClass} fw-bold" style="font-size:0.75rem;">${payStatus}</span>
+              </td>
+            </tr>
+          `;
+        }).join("");
+      }
+
+      const modalEl = document.getElementById("batchDetailsModal");
+      const modalInst = bootstrap.Modal.getOrCreateInstance(modalEl);
+      modalInst.show();
+    }
+
+    // Attach batch events
+    document.getElementById("batch-management-tab")?.addEventListener("click", loadBatches);
+    document.getElementById("refreshBatchListBtn")?.addEventListener("click", loadBatches);
+    document.getElementById("batchForm")?.addEventListener("submit", handleBatchSubmit);
+    document.getElementById("cancelBatchEditBtn")?.addEventListener("click", resetBatchForm);
+    document.getElementById("courseBatchFilter")?.addEventListener("change", renderBatches);
+
+    // Globally register loadBatches and updateRegistrationBatchDropdown functions in window just in case
+    window.loadBatches = loadBatches;
+    window.updateRegistrationBatchDropdown = updateRegistrationBatchDropdown;
+
   </script>
 
   <!-- Edit Payment Modal -->
@@ -5321,6 +6220,69 @@
           <button type="button" class="btn btn-primary px-3 fw-semibold rounded-3" id="detailsPrintBtn">
             <i class="bi bi-printer me-2"></i>Print Details
           </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Batch Details Modal -->
+  <div class="modal fade" id="batchDetailsModal" tabindex="-1" aria-labelledby="batchDetailsModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content rounded-4 border-0 shadow-lg">
+        <div class="modal-header border-bottom px-4">
+          <h5 class="modal-title fw-bold" id="batchDetailsModalLabel">
+            <i class="bi bi-collection me-2 text-primary"></i>Batch Details
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body p-4">
+          <div class="row g-3 mb-4">
+            <div class="col-md-6 col-lg-3">
+              <div class="p-2 border rounded bg-light text-center">
+                <span class="small text-muted d-block text-uppercase fw-semibold" style="font-size: 0.65rem;">Batch ID</span>
+                <strong id="modalBatchId" class="text-dark font-monospace">—</strong>
+              </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+              <div class="p-2 border rounded bg-light text-center">
+                <span class="small text-muted d-block text-uppercase fw-semibold" style="font-size: 0.65rem;">Course</span>
+                <strong id="modalBatchCourse" class="text-dark">—</strong>
+              </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+              <div class="p-2 border rounded bg-light text-center">
+                <span class="small text-muted d-block text-uppercase fw-semibold" style="font-size: 0.65rem;">Schedule</span>
+                <strong id="modalBatchSchedule" class="text-dark">—</strong>
+              </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+              <div class="p-2 border rounded bg-light text-center">
+                <span class="small text-muted d-block text-uppercase fw-semibold" style="font-size: 0.65rem;">Students Count</span>
+                <strong id="modalBatchCount" class="text-dark">—</strong>
+              </div>
+            </div>
+          </div>
+
+          <h6 class="fw-bold mb-3"><i class="bi bi-people me-2 text-primary"></i>Enrolled Students (Max 10)</h6>
+          <div class="table-responsive border rounded bg-white shadow-sm" style="max-height: 350px; overflow-y: auto;">
+            <table class="table table-hover align-middle mb-0">
+              <thead class="table-light sticky-top">
+                <tr>
+                  <th class="small fw-semibold py-2">Student ID</th>
+                  <th class="small fw-semibold py-2">Student Name</th>
+                  <th class="small fw-semibold py-2">Contact Details</th>
+                  <th class="small fw-semibold py-2">Payment Status</th>
+                </tr>
+              </thead>
+              <tbody id="batchStudentsTableBody">
+                <!-- Filled dynamically -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="modal-footer border-top p-3">
+          <button type="button" class="btn btn-outline-secondary px-4" data-bs-dismiss="modal">Close</button>
         </div>
       </div>
     </div>
