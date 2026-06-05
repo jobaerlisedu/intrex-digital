@@ -593,6 +593,31 @@
                             </div>
                           </div>
 
+                          <!-- Row 3.5: Job Holder Check -->
+                          <div class="row g-3 mb-3">
+                            <div class="col-12">
+                              <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" role="switch" id="regIsJobHolder">
+                                <label class="form-check-label small fw-semibold text-heading-color" for="regIsJobHolder">Are they currently a job holder?</label>
+                              </div>
+                            </div>
+                          </div>
+
+                          <!-- Job Profile Details (Hidden by default) -->
+                          <div id="regJobProfileFields" class="d-none border p-3 rounded-4 mb-3 bg-light">
+                            <h6 class="small fw-bold mb-3 text-primary"><i class="bi bi-briefcase-fill me-1"></i>Job Profile Details</h6>
+                            <div class="row g-3">
+                              <div class="col-md-6">
+                                <label class="form-label small fw-semibold mb-1" for="regCompany">Company Name <span class="text-danger">*</span></label>
+                                <input class="form-control" id="regCompany" type="text" placeholder="e.g. Intrex Digital">
+                              </div>
+                              <div class="col-md-6">
+                                <label class="form-label small fw-semibold mb-1" for="regDesignation">Designation <span class="text-danger">*</span></label>
+                                <input class="form-control" id="regDesignation" type="text" placeholder="e.g. Network Engineer">
+                              </div>
+                            </div>
+                          </div>
+
                           <!-- Row 4: Course Fee, Discount & Amount Paid -->
                           <div class="row g-3 mb-3">
                             <div class="col-md-4">
@@ -607,20 +632,16 @@
                                 placeholder="e.g. 0">
                             </div>
                             <div class="col-md-4">
-                              <label class="form-label small fw-semibold mb-1" for="regAmountPaid">Amount Paid (BDT)
+                              <label class="form-label small fw-semibold mb-1" id="regAmountPaidLabel" for="regAmountPaid">Amount Paid (BDT)
                                 <span class="text-danger">*</span></label>
                               <input class="form-control" id="regAmountPaid" type="number" min="0" value="0"
                                 placeholder="e.g. 0" required>
                             </div>
                           </div>
 
-                          <!-- Row 4.5: Registration Fee & Installments Switch -->
+                          <!-- Row 4.5: Installments Switch -->
                           <div class="row g-3 mb-3">
-                            <div class="col-md-6">
-                              <label class="form-label small fw-semibold mb-1" for="regRegistrationFee">Registration Fee (BDT)</label>
-                              <input class="form-control" id="regRegistrationFee" type="number" min="0" value="0" placeholder="e.g. 2000">
-                            </div>
-                            <div class="col-md-6 d-flex align-items-end">
+                            <div class="col-12">
                               <div class="form-check form-switch mb-2">
                                 <input class="form-check-input" type="checkbox" id="regEnableInstallments">
                                 <label class="form-check-label small fw-semibold" for="regEnableInstallments">Enable Installment Plan</label>
@@ -3121,7 +3142,10 @@
 
         tr.innerHTML = `
           <td class="text-center"><code class="text-dark font-monospace">${record.studentId}</code></td>
-          <td class="text-center"><strong>${record.fullName}</strong></td>
+          <td class="text-center">
+            <strong>${record.fullName}</strong>
+            ${record.isJobHolder ? `<i class="bi bi-briefcase-fill text-primary small ms-1" style="font-size: 0.85rem;" title="${record.designation} at ${record.companyName}"></i>` : ''}
+          </td>
           <td class="text-center">
             <span class="small d-block text-muted"><i class="bi bi-envelope me-1"></i>${record.email}</span>
             <span class="small d-block text-muted"><i class="bi bi-telephone me-1"></i>${record.phone}</span>
@@ -3219,6 +3243,15 @@
       document.getElementById("regSchedule").value = record.schedule;
       document.getElementById("regMessage").value = record.message || "";
 
+      if (regIsJobHolderSwitch) {
+        regIsJobHolderSwitch.checked = record.isJobHolder || false;
+        regIsJobHolderSwitch.dispatchEvent(new Event("change"));
+        if (record.isJobHolder) {
+          regCompany.value = record.companyName || "";
+          regDesignation.value = record.designation || "";
+        }
+      }
+
       // Find matching payment record to disable/enable and populate course fee
       const payRecord = allPayments.find(p => p.studentId === record.studentId);
       if (payRecord) {
@@ -3266,6 +3299,12 @@
       editingStudentId = null;
       loadedOnlineKey = null;
       document.getElementById("regForm").reset();
+
+      if (regIsJobHolderSwitch) {
+        regIsJobHolderSwitch.checked = false;
+        regIsJobHolderSwitch.dispatchEvent(new Event("change"));
+      }
+
       document.getElementById("regFee").disabled = false;
       document.getElementById("regAmountPaid").disabled = false;
       document.getElementById("regPaymentType").disabled = false;
@@ -3275,6 +3314,28 @@
       document.getElementById("regFormTitle").innerHTML = `<i class="bi bi-pencil-square me-2 text-primary"></i>Course Registration Form`;
       document.getElementById("submitRegBtn").innerHTML = `<i class="bi bi-cloud-arrow-up me-2"></i>Save Registration & Payment Record`;
       document.getElementById("cancelRegEditBtn").classList.add("d-none");
+    }
+
+    // Job Holder switch toggling visibility of job profile inputs
+    const regIsJobHolderSwitch = document.getElementById("regIsJobHolder");
+    const regJobFieldsContainer = document.getElementById("regJobProfileFields");
+    const regCompany = document.getElementById("regCompany");
+    const regDesignation = document.getElementById("regDesignation");
+
+    if (regIsJobHolderSwitch && regJobFieldsContainer) {
+      regIsJobHolderSwitch.addEventListener("change", function () {
+        if (this.checked) {
+          regJobFieldsContainer.classList.remove("d-none");
+          regCompany.setAttribute("required", "");
+          regDesignation.setAttribute("required", "");
+        } else {
+          regJobFieldsContainer.classList.add("d-none");
+          regCompany.removeAttribute("required");
+          regDesignation.removeAttribute("required");
+          regCompany.value = "";
+          regDesignation.value = "";
+        }
+      });
     }
 
     // Cancel registration edit button
@@ -3332,6 +3393,16 @@
       const batch = document.getElementById("regBatch").value.trim();
       const education = document.getElementById("regEducation").value;
       const schedule = document.getElementById("regSchedule").value;
+
+      const isJobHolder = regIsJobHolderSwitch ? regIsJobHolderSwitch.checked : false;
+      const companyName = isJobHolder ? regCompany.value.trim() : "";
+      const designation = isJobHolder ? regDesignation.value.trim() : "";
+
+      if (isJobHolder && (!companyName || !designation)) {
+        alert("Please fill in Company Name and Designation for the job profile.");
+        return;
+      }
+
       const totalFee = Number(document.getElementById("regFee").value) || 0;
       const discount = Number(document.getElementById("regDiscount").value) || 0;
       const amountPaid = Number(document.getElementById("regAmountPaid").value) || 0;
@@ -3339,8 +3410,8 @@
       const transactionId = document.getElementById("regPaymentTxId").value.trim();
       const message = document.getElementById("regMessage").value.trim();
       
-      const registrationFee = Number(document.getElementById("regRegistrationFee").value) || 0;
       const enableInstallments = document.getElementById("regEnableInstallments").checked;
+      const registrationFee = enableInstallments ? amountPaid : 0;
       let installments = [];
       if (enableInstallments) {
         const rows = document.querySelectorAll("#regInstallmentsList .installment-row");
@@ -3376,7 +3447,7 @@
 
         if (editingStudentId) {
           // Update
-          await updateRegistration(editingStudentId, { fullName, email, phone, course, batch, education, schedule, message });
+          await updateRegistration(editingStudentId, { fullName, email, phone, course, batch, education, schedule, message, isJobHolder, companyName, designation });
 
           // Audit Logging
           await addAuditLog({
@@ -3392,7 +3463,7 @@
           cancelRegEditMode();
         } else {
           // Create
-          const generatedId = await addRegistration({ fullName, email, phone, course, batch, education, schedule, message, totalFee, discount, amountPaid, paymentType, transactionId, registrationFee, installments });
+          const generatedId = await addRegistration({ fullName, email, phone, course, batch, education, schedule, message, totalFee, discount, amountPaid, paymentType, transactionId, registrationFee, installments, isJobHolder, companyName, designation });
 
           // Audit Logging
           await addAuditLog({
@@ -3627,7 +3698,10 @@
             { label: "Batch Name", key: "batch", type: "badge", cols: 6 },
             { label: "Education Level", key: "education", type: "badge", cols: 6 },
             { label: "Preferred Schedule", key: "schedule", type: "text", cols: 6 },
-            { label: "Registration Date", key: "createdAt", type: "datetime", cols: 12 },
+            { label: "Job Holder Status", key: "isJobHolder", type: "badge", cols: 6 },
+            { label: "Company Name", key: "companyName", type: "text", cols: 6 },
+            { label: "Designation", key: "designation", type: "text", cols: 6 },
+            { label: "Registration Date", key: "createdAt", type: "datetime", cols: 6 },
             { label: "Inquiry Message", key: "message", type: "textarea", cols: 12 }
           ]
         },
@@ -3763,6 +3837,9 @@
       const gridBody = document.getElementById("detailsViewModalBody");
       gridBody.innerHTML = cfg.fields.map(f => {
         let val = record[f.key];
+        if (f.key === 'isJobHolder') {
+          val = val ? 'Yes' : 'No';
+        }
         let displayHtml = '';
 
         if (val === undefined || val === null || val === '') {
@@ -4052,7 +4129,7 @@
       
       const total = Number(document.getElementById("regFee").value) || 0;
       const discount = Number(document.getElementById("regDiscount").value) || 0;
-      const regFeeVal = Number(document.getElementById("regRegistrationFee").value) || 0;
+      const regFeeVal = Number(document.getElementById("regAmountPaid").value) || 0;
       const due = Math.max(0, total - discount - regFeeVal);
       
       const share = Math.floor(due / numInst);
@@ -4187,11 +4264,14 @@
     // Event listeners wiring
     document.getElementById("regEnableInstallments").addEventListener("change", function () {
       const container = document.getElementById("regInstallmentsPlanContainer");
+      const amountPaidLabel = document.getElementById("regAmountPaidLabel");
       if (this.checked) {
         container.classList.remove("d-none");
+        if (amountPaidLabel) amountPaidLabel.innerHTML = 'Registration Fee (BDT) <span class="text-danger">*</span>';
         renderRegInstallments();
       } else {
         container.classList.add("d-none");
+        if (amountPaidLabel) amountPaidLabel.innerHTML = 'Amount Paid (BDT) <span class="text-danger">*</span>';
       }
     });
 
@@ -4203,7 +4283,7 @@
     document.getElementById("regDiscount").addEventListener("input", () => {
       if (document.getElementById("regEnableInstallments").checked) renderRegInstallments();
     });
-    document.getElementById("regRegistrationFee").addEventListener("input", () => {
+    document.getElementById("regAmountPaid").addEventListener("input", () => {
       if (document.getElementById("regEnableInstallments").checked) renderRegInstallments();
     });
 
@@ -4559,6 +4639,15 @@
       document.getElementById("regEducation").value = record.education || "";
       document.getElementById("regSchedule").value = record.schedule || "";
       document.getElementById("regMessage").value = record.message || "";
+
+      if (regIsJobHolderSwitch) {
+        regIsJobHolderSwitch.checked = record.isJobHolder || false;
+        regIsJobHolderSwitch.dispatchEvent(new Event("change"));
+        if (record.isJobHolder) {
+          regCompany.value = record.companyName || "";
+          regDesignation.value = record.designation || "";
+        }
+      }
 
       // Update Form Title & Button
       document.getElementById("regFormTitle").innerHTML = `
@@ -5446,6 +5535,9 @@
             batch: r.batch,
             schedule: r.schedule || '-',
             education: r.education || '-',
+            isJobHolder: r.isJobHolder || false,
+            companyName: r.companyName || '',
+            designation: r.designation || '',
             date: getRecordDate(r)
           });
         });
@@ -5598,7 +5690,10 @@
         tbody.innerHTML = compiledReportData.map(r => `
           <tr>
             <td><code class="text-dark fw-bold font-monospace">${r.studentId}</code></td>
-            <td><strong>${r.fullName}</strong></td>
+            <td>
+              <strong>${r.fullName}</strong>
+              ${r.isJobHolder ? `<i class="bi bi-briefcase-fill text-primary small ms-1" style="font-size: 0.85rem;" title="${r.designation} at ${r.companyName}"></i>` : ''}
+            </td>
             <td><span class="small">${r.email}</span></td>
             <td><span class="small font-monospace">${r.phone}</span></td>
             <td><span class="small">${r.course}</span></td>
@@ -5700,7 +5795,7 @@
       let rows = [];
 
       if (compiledReportType === 'registrations') {
-        headers = ["Student ID", "Full Name", "Email", "Phone", "Course", "Batch", "Schedule", "Education", "Registered Date"];
+        headers = ["Student ID", "Full Name", "Email", "Phone", "Course", "Batch", "Schedule", "Education", "Job Holder Status", "Company Name", "Designation", "Registered Date"];
         rows = compiledReportData.map(r => [
           r.studentId,
           r.fullName,
@@ -5710,6 +5805,9 @@
           r.batch,
           r.schedule,
           r.education,
+          r.isJobHolder ? "Yes" : "No",
+          r.companyName || "-",
+          r.designation || "-",
           r.date ? r.date.toISOString().split('T')[0] : '-'
         ]);
       } else if (compiledReportType === 'financials') {
@@ -5801,7 +5899,10 @@
         tableRowsHtml = compiledReportData.map(r => `
           <tr>
             <td><code class="font-monospace text-dark">${r.studentId}</code></td>
-            <td><strong>${r.fullName}</strong></td>
+            <td>
+              <strong>${r.fullName}</strong>
+              ${r.isJobHolder ? ` <span style="font-size: 0.85em; font-weight: normal; color: #555;">(${r.designation} @ ${r.companyName})</span>` : ''}
+            </td>
             <td>${r.email}<br><span class="small font-monospace text-muted">${r.phone}</span></td>
             <td>${r.course}</td>
             <td>${r.batch}</td>

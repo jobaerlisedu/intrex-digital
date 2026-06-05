@@ -204,7 +204,7 @@ function generateStudentId(courseName, batchName, registrationsList) {
 export async function addRegistration(regData) {
   if (!checkConfiguration()) return null;
 
-  const { fullName, email, phone, course, batch, education, schedule, message, totalFee, discount, amountPaid, paymentType, transactionId, registrationFee, installments } = regData;
+  const { fullName, email, phone, course, batch, education, schedule, message, totalFee, discount, amountPaid, paymentType, transactionId, registrationFee, installments, isJobHolder, companyName, designation } = regData;
 
   if (!fullName || !email || !phone || !course || !batch || !schedule) {
     throw new Error("Missing required registration fields");
@@ -234,6 +234,9 @@ export async function addRegistration(regData) {
       education: education || "",
       schedule: schedule || "",
       message: message ? message.trim() : "",
+      isJobHolder: isJobHolder || false,
+      companyName: companyName || "",
+      designation: designation || "",
       createdAt: serverTimestamp()
     });
 
@@ -314,7 +317,7 @@ export async function getAllRegistrations() {
 export async function updateRegistration(studentId, regData) {
   if (!checkConfiguration()) return;
 
-  const { fullName, email, phone, course, batch, education, schedule, message } = regData;
+  const { fullName, email, phone, course, batch, education, schedule, message, isJobHolder, companyName, designation } = regData;
 
   if (!fullName || !email || !phone || !course || !batch || !schedule) {
     throw new Error("Missing required registration fields");
@@ -330,7 +333,10 @@ export async function updateRegistration(studentId, regData) {
       batch: batch.trim(),
       education: education || "",
       schedule: schedule || "",
-      message: message ? message.trim() : ""
+      message: message ? message.trim() : "",
+      isJobHolder: isJobHolder || false,
+      companyName: companyName || "",
+      designation: designation || ""
     }, { merge: true });
 
     // Sync student name, email, course and batch to the payment record
@@ -635,7 +641,7 @@ export async function getAllAuditLogs() {
 export async function addOnlineRegistration(regData) {
   if (!checkConfiguration()) return null;
 
-  const { fullName, email, phone, course, education, schedule, message } = regData;
+  const { fullName, email, phone, course, education, schedule, message, isJobHolder, companyName, designation } = regData;
 
   if (!fullName || !email || !phone || !course || !schedule) {
     throw new Error("Missing required registration fields");
@@ -670,6 +676,9 @@ export async function addOnlineRegistration(regData) {
       education: education || "",
       schedule: schedule || "",
       message: message ? message.trim() : "",
+      isJobHolder: isJobHolder || false,
+      companyName: companyName || "",
+      designation: designation || "",
       createdAt: serverTimestamp()
     });
 
