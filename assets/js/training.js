@@ -1603,6 +1603,184 @@ export async function deleteJobPlacement(placementId) {
   }
 }
 
+// ==========================================
+// 12. EXPENSE TRACKER OPERATIONS (expenses)
+// ==========================================
+let mockExpenses = null;
+
+export async function getAllExpenses() {
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('mock') === '1') {
+    if (!mockExpenses) {
+      mockExpenses = [
+        {
+          id: "EXP-0001",
+          category: "Direct Training & Delivery Costs (Variable)",
+          subCategory: "Instructor & Facilitator Fees",
+          description: "Payment to CCNA trainer for May 2026 batch",
+          amount: 15000,
+          date: "2026-05-15",
+          paymentMethod: "Bank Transfer",
+          createdAt: new Date(Date.now() - 20 * 24 * 60 * 60 * 1000)
+        },
+        {
+          id: "EXP-0002",
+          category: "Infrastructure & Technology (Fixed/Subscription)",
+          subCategory: "Software & Virtual Lab Licensing",
+          description: "AWS Sandbox environment usage fee",
+          amount: 8500,
+          date: "2026-05-28",
+          paymentMethod: "Card",
+          createdAt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
+        },
+        {
+          id: "EXP-0003",
+          category: "Facilities & Utilities (Fixed Overhead)",
+          subCategory: "Physical Space Rent or Lease Payments",
+          description: "Office rent for June 2026",
+          amount: 25000,
+          date: "2026-06-01",
+          paymentMethod: "Bank Transfer",
+          createdAt: new Date()
+        }
+      ];
+    }
+    return mockExpenses;
+  }
+
+  if (!checkConfiguration()) return [];
+  try {
+    const querySnapshot = await getDocs(collection(db, "expenses"));
+    const expenses = [];
+    querySnapshot.forEach((docSnap) => {
+      if (docSnap.exists()) {
+        expenses.push(docSnap.data());
+      }
+    });
+    expenses.sort((a, b) => b.date.localeCompare(a.date));
+    return expenses;
+  } catch (error) {
+    console.error("Error fetching expenses: ", error);
+    throw error;
+  }
+}
+
+export async function addExpense(expenseData) {
+  const { category, subCategory, description, amount, date, paymentMethod } = expenseData;
+  if (!category || !subCategory || !amount || !date || !paymentMethod) {
+    throw new Error("Missing required expense fields");
+  }
+
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('mock') === '1') {
+    if (!mockExpenses) {
+      await getAllExpenses();
+    }
+    const id = "EXP-" + String(mockExpenses.length + 1).padStart(4, '0');
+    const newExpense = {
+      id,
+      category: category.trim(),
+      subCategory: subCategory.trim(),
+      description: description ? description.trim() : "",
+      amount: Number(amount),
+      date: date,
+      paymentMethod: paymentMethod.trim(),
+      createdAt: new Date()
+    };
+    mockExpenses.push(newExpense);
+    return id;
+  }
+
+  if (!checkConfiguration()) return null;
+
+  try {
+    const id = await getNextSeqId("expenses", "EXP-", "id", 4);
+    const docRef = doc(db, "expenses", id);
+    await setDoc(docRef, {
+      id,
+      category: category.trim(),
+      subCategory: subCategory.trim(),
+      description: description ? description.trim() : "",
+      amount: Number(amount),
+      date: date,
+      paymentMethod: paymentMethod.trim(),
+      createdAt: serverTimestamp()
+    });
+    return id;
+  } catch (error) {
+    console.error("Error saving expense: ", error);
+    throw error;
+  }
+}
+
+export async function updateExpense(id, expenseData) {
+  const { category, subCategory, description, amount, date, paymentMethod } = expenseData;
+
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('mock') === '1') {
+    if (!mockExpenses) {
+      await getAllExpenses();
+    }
+    const existingIndex = mockExpenses.findIndex(e => e.id === id);
+    if (existingIndex > -1) {
+      mockExpenses[existingIndex] = {
+        ...mockExpenses[existingIndex],
+        category: category.trim(),
+        subCategory: subCategory.trim(),
+        description: description ? description.trim() : "",
+        amount: Number(amount),
+        date: date,
+        paymentMethod: paymentMethod.trim()
+      };
+      return id;
+    }
+    throw new Error(`Expense with ID ${id} not found.`);
+  }
+
+  if (!checkConfiguration()) return;
+
+  try {
+    const docRef = doc(db, "expenses", id.trim());
+    await setDoc(docRef, {
+      category: category.trim(),
+      subCategory: subCategory.trim(),
+      description: description ? description.trim() : "",
+      amount: Number(amount),
+      date: date,
+      paymentMethod: paymentMethod.trim(),
+      updatedAt: serverTimestamp()
+    }, { merge: true });
+  } catch (error) {
+    console.error("Error updating expense: ", error);
+    throw error;
+  }
+}
+
+export async function deleteExpense(id) {
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('mock') === '1') {
+    if (!mockExpenses) {
+      await getAllExpenses();
+    }
+    const existingIndex = mockExpenses.findIndex(e => e.id === id);
+    if (existingIndex > -1) {
+      mockExpenses.splice(existingIndex, 1);
+      return;
+    }
+    throw new Error(`Expense with ID ${id} not found.`);
+  }
+
+  if (!checkConfiguration()) return;
+
+  try {
+    const docRef = doc(db, "expenses", id.trim());
+    await deleteDoc(docRef);
+  } catch (error) {
+    console.error("Error deleting expense: ", error);
+    throw error;
+  }
+}
+
 
 
 

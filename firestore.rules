@@ -57,6 +57,12 @@ service cloud.firestore {
       allow read, write: if request.auth != null;
     }
 
+    // Expenses collection:
+    // Only logged-in administrators can view or update expenses.
+    match /expenses/{id} {
+      allow read, write: if request.auth != null;
+    }
+
     // Solution Dashboard collections:
     // Only logged-in administrators can view or update these documents.
     match /tbl_projects/{id} {

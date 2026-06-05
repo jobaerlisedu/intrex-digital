@@ -141,6 +141,74 @@
       color: var(--bs-heading-color);
       word-break: break-word;
     }
+
+    /* ── Print styles ── */
+    @media print {
+      body > *:not(#printSection) {
+        display: none !important;
+      }
+      #printSection, #printSection * {
+        display: block !important;
+      }
+      #printSection {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        background: #ffffff !important;
+        color: #000000 !important;
+        padding: 0;
+        margin: 0;
+      }
+      .btn-print-hide {
+        display: none !important;
+      }
+      /* Ensure Bootstrap grid prints correctly */
+      .row {
+        display: flex !important;
+        flex-wrap: wrap !important;
+        margin-right: -15px !important;
+        margin-left: -15px !important;
+      }
+      .col-1 { width: 8.33333333%; }
+      .col-2 { width: 16.66666667%; }
+      .col-3 { width: 25%; }
+      .col-4 { width: 33.33333333%; }
+      .col-5 { width: 41.66666667%; }
+      .col-6 { width: 50%; }
+      .col-7 { width: 58.33333333%; }
+      .col-8 { width: 66.66666667%; }
+      .col-9 { width: 75%; }
+      .col-10 { width: 83.33333333%; }
+      .col-11 { width: 91.66666667%; }
+      .col-12 { width: 100%; }
+      
+      .col-sm-1 { width: 8.33333333%; }
+      .col-sm-2 { width: 16.66666667%; }
+      .col-sm-3 { width: 25%; }
+      .col-sm-4 { width: 33.33333333%; }
+      .col-sm-5 { width: 41.66666667%; }
+      .col-sm-6 { width: 50%; }
+      .col-sm-7 { width: 58.33333333%; }
+      .col-sm-8 { width: 66.66666667%; }
+      .col-sm-9 { width: 75%; }
+      .col-sm-10 { width: 83.33333333%; }
+      .col-sm-11 { width: 91.66666667%; }
+      .col-sm-12 { width: 100%; }
+      
+      .col-md-1 { width: 8.33333333%; }
+      .col-md-2 { width: 16.66666667%; }
+      .col-md-3 { width: 25%; }
+      .col-md-4 { width: 33.33333333%; }
+      .col-md-5 { width: 41.66666667%; }
+      .col-md-6 { width: 50%; }
+      .col-md-7 { width: 58.33333333%; }
+      .col-md-8 { width: 66.66666667%; }
+      .col-md-9 { width: 75%; }
+      .col-md-10 { width: 83.33333333%; }
+      .col-md-11 { width: 91.66666667%; }
+      .col-md-12 { width: 100%; }
+    }
   </style>
 
   <script>
@@ -282,6 +350,11 @@
                   aria-controls="reportPanel" aria-selected="false">
                   <i class="bi bi-file-earmark-bar-graph"></i> Reports
                 </button>
+                <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
+                  id="expense-tab" data-bs-toggle="tab" data-bs-target="#expensePanel" type="button" role="tab"
+                  aria-controls="expensePanel" aria-selected="false">
+                  <i class="bi bi-wallet2"></i> Expense Tracker
+                </button>
                 <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2" id="logs-tab"
                   data-bs-toggle="tab" data-bs-target="#logsPanel" type="button" role="tab" aria-controls="logsPanel"
                   aria-selected="false">
@@ -369,44 +442,168 @@
                   <!-- Second row: payment status breakdown & collection rate -->
                   <div class="row g-3 mb-4">
                     <div class="col-6 col-md-3">
-                      <div class="card border-0 rounded-4 shadow-sm h-100">
-                        <div class="card-body p-3 text-center">
-                          <div class="small text-muted fw-semibold mb-1">Fully Paid</div>
-                          <div class="h3 fw-bold text-success" id="kpiFullyPaid">—</div>
-                          <div class="small text-muted">students</div>
+                      <div class="card border-0 rounded-4 shadow-sm h-100"
+                        style="background-color: var(--bs-primary) !important;">
+                        <div class="card-body p-3 text-white">
+                          <div class="d-flex align-items-center justify-content-between mb-2">
+                            <span class="small fw-semibold opacity-75">Fully Paid</span>
+                            <div class="rounded-circle d-flex align-items-center justify-content-center"
+                              style="width:36px;height:36px;background:rgba(255,255,255,0.15);">
+                              <i class="bi bi-check-circle-fill"></i>
+                            </div>
+                          </div>
+                          <div class="h2 fw-bold mb-0 text-white" id="kpiFullyPaid">—</div>
+                          <div class="small opacity-75 mt-1">students</div>
                         </div>
                       </div>
                     </div>
                     <div class="col-6 col-md-3">
-                      <div class="card border-0 rounded-4 shadow-sm h-100">
-                        <div class="card-body p-3 text-center">
-                          <div class="small text-muted fw-semibold mb-1">Partially Paid</div>
-                          <div class="h3 fw-bold text-warning" id="kpiPartiallyPaid">—</div>
-                          <div class="small text-muted">students</div>
+                      <div class="card border-0 rounded-4 shadow-sm h-100"
+                        style="background-color: var(--bs-primary) !important;">
+                        <div class="card-body p-3 text-white">
+                          <div class="d-flex align-items-center justify-content-between mb-2">
+                            <span class="small fw-semibold opacity-75">Partially Paid</span>
+                            <div class="rounded-circle d-flex align-items-center justify-content-center"
+                              style="width:36px;height:36px;background:rgba(255,255,255,0.15);">
+                              <i class="bi bi-hourglass-split"></i>
+                            </div>
+                          </div>
+                          <div class="h2 fw-bold mb-0 text-white" id="kpiPartiallyPaid">—</div>
+                          <div class="small opacity-75 mt-1">students</div>
                         </div>
                       </div>
                     </div>
                     <div class="col-6 col-md-3">
-                      <div class="card border-0 rounded-4 shadow-sm h-100">
-                        <div class="card-body p-3 text-center">
-                          <div class="small text-muted fw-semibold mb-1">Unpaid</div>
-                          <div class="h3 fw-bold text-danger" id="kpiUnpaid">—</div>
-                          <div class="small text-muted">students</div>
+                      <div class="card border-0 rounded-4 shadow-sm h-100"
+                        style="background-color: var(--bs-primary) !important;">
+                        <div class="card-body p-3 text-white">
+                          <div class="d-flex align-items-center justify-content-between mb-2">
+                            <span class="small fw-semibold opacity-75">Unpaid</span>
+                            <div class="rounded-circle d-flex align-items-center justify-content-center"
+                              style="width:36px;height:36px;background:rgba(255,255,255,0.15);">
+                              <i class="bi bi-x-circle-fill"></i>
+                            </div>
+                          </div>
+                          <div class="h2 fw-bold mb-0 text-white" id="kpiUnpaid">—</div>
+                          <div class="small opacity-75 mt-1">students</div>
                         </div>
                       </div>
                     </div>
                     <div class="col-6 col-md-3">
-                      <div class="card border-0 rounded-4 shadow-sm h-100">
-                        <div class="card-body p-3 text-center">
-                          <div class="small text-muted fw-semibold mb-1">Collection Rate</div>
-                          <div class="h3 fw-bold text-primary" id="kpiCollectionRate">—</div>
-                          <div class="small text-muted">of total fees</div>
+                      <div class="card border-0 rounded-4 shadow-sm h-100"
+                        style="background-color: var(--bs-primary) !important;">
+                        <div class="card-body p-3 text-white">
+                          <div class="d-flex align-items-center justify-content-between mb-2">
+                            <span class="small fw-semibold opacity-75">Collection Rate</span>
+                            <div class="rounded-circle d-flex align-items-center justify-content-center"
+                              style="width:36px;height:36px;background:rgba(255,255,255,0.15);">
+                              <i class="bi bi-percent"></i>
+                            </div>
+                          </div>
+                          <div class="h2 fw-bold mb-0 text-white" id="kpiCollectionRate">—</div>
+                          <div class="small opacity-75 mt-1">of total fees</div>
                         </div>
                       </div>
                     </div>
                   </div>
 
-                  <!-- Charts Row -->
+                  <!-- Third row: expenses, net income, placements, active batches -->
+                  <div class="row g-3 mb-4">
+                    <div class="col-6 col-md-3">
+                      <div class="card border-0 rounded-4 shadow-sm h-100"
+                        style="background-color: var(--bs-primary) !important;">
+                        <div class="card-body p-3 text-white">
+                          <div class="d-flex align-items-center justify-content-between mb-2">
+                            <span class="small fw-semibold opacity-75">Total Expenses</span>
+                            <div class="rounded-circle d-flex align-items-center justify-content-center"
+                              style="width:36px;height:36px;background:rgba(255,255,255,0.15);">
+                              <i class="bi bi-wallet2"></i>
+                            </div>
+                          </div>
+                          <div class="h2 fw-bold mb-0 text-white" id="kpiTotalExpensesOverview">—</div>
+                          <div class="small opacity-75 mt-1">Total operational outlays</div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-6 col-md-3">
+                      <div class="card border-0 rounded-4 shadow-sm h-100"
+                        style="background-color: var(--bs-primary) !important;">
+                        <div class="card-body p-3 text-white">
+                          <div class="d-flex align-items-center justify-content-between mb-2">
+                            <span class="small fw-semibold opacity-75">Net Income</span>
+                            <div class="rounded-circle d-flex align-items-center justify-content-center"
+                              style="width:36px;height:36px;background:rgba(255,255,255,0.15);">
+                              <i class="bi bi-graph-up-arrow"></i>
+                            </div>
+                          </div>
+                          <div class="h2 fw-bold mb-0 text-white" id="kpiNetIncome">—</div>
+                          <div class="small opacity-75 mt-1">Revenue minus expenses</div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-6 col-md-3">
+                      <div class="card border-0 rounded-4 shadow-sm h-100"
+                        style="background-color: var(--bs-primary) !important;">
+                        <div class="card-body p-3 text-white">
+                          <div class="d-flex align-items-center justify-content-between mb-2">
+                            <span class="small fw-semibold opacity-75">Placed Students</span>
+                            <div class="rounded-circle d-flex align-items-center justify-content-center"
+                              style="width:36px;height:36px;background:rgba(255,255,255,0.15);">
+                              <i class="bi bi-briefcase-fill"></i>
+                            </div>
+                          </div>
+                          <div class="h2 fw-bold mb-0 text-white" id="kpiPlacedStudents">—</div>
+                          <div class="small opacity-75 mt-1">Job placements recorded</div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-6 col-md-3">
+                      <div class="card border-0 rounded-4 shadow-sm h-100"
+                        style="background-color: var(--bs-primary) !important;">
+                        <div class="card-body p-3 text-white">
+                          <div class="d-flex align-items-center justify-content-between mb-2">
+                            <span class="small fw-semibold opacity-75">Active Batches</span>
+                            <div class="rounded-circle d-flex align-items-center justify-content-center"
+                              style="width:36px;height:36px;background:rgba(255,255,255,0.15);">
+                              <i class="bi bi-collection-play-fill"></i>
+                            </div>
+                          </div>
+                          <div class="h2 fw-bold mb-0 text-white" id="kpiActiveBatches">—</div>
+                          <div class="small opacity-75 mt-1">Batches currently active</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Charts Row 1 -->
+                  <div class="row g-4 mb-4">
+                    <!-- Course Enrollment Bar -->
+                    <div class="col-md-6">
+                      <div class="card border-0 rounded-4 shadow-sm h-100">
+                        <div class="card-body p-4">
+                          <h6 class="fw-bold text-heading-color mb-3"><i
+                              class="bi bi-bar-chart-fill me-2 text-primary"></i>Enrollment by Course</h6>
+                          <div style="position:relative;height:240px;">
+                            <canvas id="chartCourseEnrollment"></canvas>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- Monthly Cash Flow Bar -->
+                    <div class="col-md-6">
+                      <div class="card border-0 rounded-4 shadow-sm h-100">
+                        <div class="card-body p-4">
+                          <h6 class="fw-bold text-heading-color mb-3"><i
+                              class="bi bi-cash me-2 text-primary"></i>Monthly Cash Flow (Collections vs Expenses)</h6>
+                          <div style="position:relative;height:240px;">
+                            <canvas id="chartCashFlow"></canvas>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Charts Row 2 -->
                   <div class="row g-4 mb-4">
                     <!-- Payment Status Donut -->
                     <div class="col-md-4">
@@ -426,42 +623,42 @@
                       </div>
                     </div>
 
-                    <!-- Course Enrollment Bar -->
+                    <!-- Revenue vs Due stacked bar -->
                     <div class="col-md-8">
                       <div class="card border-0 rounded-4 shadow-sm h-100">
                         <div class="card-body p-4">
                           <h6 class="fw-bold text-heading-color mb-3"><i
-                              class="bi bi-bar-chart-fill me-2 text-primary"></i>Enrollment by Course</h6>
+                              class="bi bi-graph-up-arrow me-2 text-primary"></i>Revenue vs Due by Course</h6>
                           <div style="position:relative;height:220px;">
-                            <canvas id="chartCourseEnrollment"></canvas>
+                            <canvas id="chartRevenueByCourse"></canvas>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
 
-                  <!-- Revenue by course & recent activity -->
+                  <!-- Recent Activity Row -->
                   <div class="row g-4">
-                    <!-- Revenue by course -->
-                    <div class="col-md-6">
-                      <div class="card border-0 rounded-4 shadow-sm h-100">
-                        <div class="card-body p-4">
-                          <h6 class="fw-bold text-heading-color mb-3"><i
-                              class="bi bi-graph-up-arrow me-2 text-primary"></i>Revenue vs Due by Course</h6>
-                          <div style="position:relative;height:240px;">
-                            <canvas id="chartRevenueByCourse"></canvas>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
                     <!-- Recent Registrations -->
                     <div class="col-md-6">
                       <div class="card border-0 rounded-4 shadow-sm h-100">
                         <div class="card-body p-4">
                           <h6 class="fw-bold text-heading-color mb-3"><i
                               class="bi bi-clock-history me-2 text-primary"></i>Recent Registrations</h6>
-                          <div id="recentRegistrationsList" style="max-height:260px;overflow-y:auto;">
+                          <div id="recentRegistrationsList" style="max-height:300px;overflow-y:auto;">
+                            <div class="text-muted small text-center py-4">Loading...</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Recent Placements -->
+                    <div class="col-md-6">
+                      <div class="card border-0 rounded-4 shadow-sm h-100">
+                        <div class="card-body p-4">
+                          <h6 class="fw-bold text-heading-color mb-3"><i
+                              class="bi bi-briefcase me-2 text-primary"></i>Recent Placement Successes</h6>
+                          <div id="recentPlacementsList" style="max-height:300px;overflow-y:auto;">
                             <div class="text-muted small text-center py-4">Loading...</div>
                           </div>
                         </div>
@@ -1352,9 +1549,12 @@
                           <option value="registrations" selected>Student Registration Summary</option>
                           <option value="financials">Financial & Dues Statement</option>
                           <option value="certificates">Certificates Registry</option>
+                          <option value="expenses">Detailed Business Expenses</option>
+                          <option value="placements">Job Placement Success Registry</option>
+                          <option value="profit_loss">Income Statement (Profit & Loss)</option>
                         </select>
                       </div>
-                      <div class="col-md-2 col-sm-6">
+                      <div class="col-md-2 col-sm-6" id="reportCourseContainer">
                         <label for="reportCourseFilter" class="form-label small fw-semibold">Course</label>
                         <select id="reportCourseFilter" class="form-select form-select-sm">
                           <option value="all">All Courses</option>
@@ -1376,7 +1576,7 @@
                           <option value="CCNA & MTCNA">CCNA &amp; MTCNA</option>
                         </select>
                       </div>
-                      <div class="col-md-2 col-sm-6">
+                      <div class="col-md-2 col-sm-6" id="reportBatchContainer">
                         <label for="reportBatchFilter" class="form-label small fw-semibold">Batch</label>
                         <select id="reportBatchFilter" class="form-select form-select-sm">
                           <option value="all">All Batches</option>
@@ -1421,25 +1621,25 @@
                     <div class="row g-3 mb-4" id="reportSummaryCards">
                       <div class="col-sm-6 col-md-3">
                         <div class="p-3 bg-light border rounded-3 text-center">
-                          <span class="text-muted small fw-semibold d-block text-uppercase mb-1" style="font-size:0.65rem; letter-spacing:0.05em;">Total Records</span>
+                          <span class="text-muted small fw-semibold d-block text-uppercase mb-1" style="font-size:0.65rem; letter-spacing:0.05em;" id="lblReportStatRecords">Total Records</span>
                           <strong class="fs-4 text-dark" id="reportStatRecords">0</strong>
                         </div>
                       </div>
                       <div class="col-sm-6 col-md-3">
                         <div class="p-3 bg-light border rounded-3 text-center">
-                          <span class="text-muted small fw-semibold d-block text-uppercase mb-1" style="font-size:0.65rem; letter-spacing:0.05em;">Total Fees</span>
+                          <span class="text-muted small fw-semibold d-block text-uppercase mb-1" style="font-size:0.65rem; letter-spacing:0.05em;" id="lblReportStatFees">Total Fees</span>
                           <strong class="fs-4 text-dark" id="reportStatFees">0 BDT</strong>
                         </div>
                       </div>
                       <div class="col-sm-6 col-md-3">
                         <div class="p-3 bg-light border rounded-3 text-center">
-                          <span class="text-muted small fw-semibold d-block text-uppercase mb-1" style="font-size:0.65rem; letter-spacing:0.05em;">Total Collected</span>
+                          <span class="text-muted small fw-semibold d-block text-uppercase mb-1" style="font-size:0.65rem; letter-spacing:0.05em;" id="lblReportStatCollected">Total Collected</span>
                           <strong class="fs-4 text-success" id="reportStatCollected">0 BDT</strong>
                         </div>
                       </div>
                       <div class="col-sm-6 col-md-3">
                         <div class="p-3 bg-light border rounded-3 text-center">
-                          <span class="text-muted small fw-semibold d-block text-uppercase mb-1" style="font-size:0.65rem; letter-spacing:0.05em;">Total Outstanding</span>
+                          <span class="text-muted small fw-semibold d-block text-uppercase mb-1" style="font-size:0.65rem; letter-spacing:0.05em;" id="lblReportStatOutstanding">Total Outstanding</span>
                           <strong class="fs-4 text-danger" id="reportStatOutstanding">0 BDT</strong>
                         </div>
                       </div>
@@ -2158,6 +2358,189 @@
                   </div>
                 </div>
 
+                <!-- Sub-Page 11: Expense Tracker -->
+                <div class="tab-pane fade" id="expensePanel" role="tabpanel" aria-labelledby="expense-tab">
+                  <!-- KPI Row -->
+                  <div class="row g-3 mb-4">
+                    <div class="col-md-4">
+                      <div class="card border-0 rounded-4 shadow-sm h-100"
+                        style="background-color: var(--bs-primary) !important;">
+                        <div class="card-body p-3 text-white">
+                          <div class="d-flex align-items-center justify-content-between mb-2">
+                            <span class="small fw-semibold opacity-75">Total Expenses</span>
+                            <div class="rounded-circle d-flex align-items-center justify-content-center"
+                              style="width:36px;height:36px;background:rgba(255,255,255,0.15);">
+                              <i class="bi bi-wallet2"></i>
+                            </div>
+                          </div>
+                          <div class="h2 fw-bold mb-0 text-white" id="kpiTotalExpenses">—</div>
+                          <div class="small opacity-75 mt-1">Total outgoings</div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="card border-0 rounded-4 shadow-sm h-100"
+                        style="background-color: var(--bs-primary) !important;">
+                        <div class="card-body p-3 text-white">
+                          <div class="d-flex align-items-center justify-content-between mb-2">
+                            <span class="small fw-semibold opacity-75">Fixed / Subscription Costs</span>
+                            <div class="rounded-circle d-flex align-items-center justify-content-center"
+                              style="width:36px;height:36px;background:rgba(255,255,255,0.15);">
+                              <i class="bi bi-gear-fill"></i>
+                            </div>
+                          </div>
+                          <div class="h2 fw-bold mb-0 text-white" id="kpiFixedExpenses">—</div>
+                          <div class="small opacity-75 mt-1">Fixed overheads</div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="card border-0 rounded-4 shadow-sm h-100"
+                        style="background-color: var(--bs-primary) !important;">
+                        <div class="card-body p-3 text-white">
+                          <div class="d-flex align-items-center justify-content-between mb-2">
+                            <span class="small fw-semibold opacity-75">Variable / Operational Costs</span>
+                            <div class="rounded-circle d-flex align-items-center justify-content-center"
+                              style="width:36px;height:36px;background:rgba(255,255,255,0.15);">
+                              <i class="bi bi-lightning-fill"></i>
+                            </div>
+                          </div>
+                          <div class="h2 fw-bold mb-0 text-white" id="kpiVariableExpenses">—</div>
+                          <div class="small opacity-75 mt-1">Variable operational outlays</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Main Content Row -->
+                  <div class="row g-4">
+                    <!-- Left: Form -->
+                    <div class="col-lg-4">
+                      <div class="card p-4 rounded-4 shadow-sm border">
+                        <h3 id="expenseFormTitle" class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
+                          <i class="bi bi-wallet2 me-2 text-primary"></i>Record New Expense
+                        </h3>
+
+                        <div id="expenseSuccess" class="alert alert-success d-none alert-dismissible fade show small" role="alert">
+                          <span>Expense recorded successfully!</span>
+                          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                        <div id="expenseError" class="alert alert-danger d-none alert-dismissible fade show small" role="alert">
+                          <span>An error occurred. Please try again.</span>
+                          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+
+                        <form id="expenseForm">
+                          <div class="mb-3">
+                            <label class="form-label small fw-semibold mb-1" for="expenseCategory">Category <span class="text-danger">*</span></label>
+                            <select class="form-select" id="expenseCategory" required>
+                              <option value="" disabled selected>Select category</option>
+                              <option value="Direct Training & Delivery Costs (Variable)">Direct Training & Delivery Costs (Variable)</option>
+                              <option value="Infrastructure & Technology (Fixed/Subscription)">Infrastructure & Technology (Fixed/Subscription)</option>
+                              <option value="Facilities & Utilities (Fixed Overhead)">Facilities & Utilities (Fixed Overhead)</option>
+                              <option value="Marketing & Student Acquisition">Marketing & Student Acquisition</option>
+                              <option value="Administrative & Compliance Costs">Administrative & Compliance Costs</option>
+                            </select>
+                          </div>
+
+                          <div class="mb-3">
+                            <label class="form-label small fw-semibold mb-1" for="expenseSubCategory">Sub-category <span class="text-danger">*</span></label>
+                            <select class="form-select" id="expenseSubCategory" required disabled>
+                              <option value="" disabled selected>Select sub-category</option>
+                            </select>
+                          </div>
+
+                          <div class="mb-3">
+                            <label class="form-label small fw-semibold mb-1" for="expenseAmount">Amount (BDT) <span class="text-danger">*</span></label>
+                            <input type="number" class="form-control" id="expenseAmount" placeholder="e.g. 5000" min="1" required>
+                          </div>
+
+                          <div class="mb-3">
+                            <label class="form-label small fw-semibold mb-1" for="expenseDate">Expense Date <span class="text-danger">*</span></label>
+                            <input type="date" class="form-control" id="expenseDate" required>
+                          </div>
+
+                          <div class="mb-3">
+                            <label class="form-label small fw-semibold mb-1" for="expensePaymentMethod">Payment Method <span class="text-danger">*</span></label>
+                            <select class="form-select" id="expensePaymentMethod" required>
+                              <option value="Bank Transfer">Bank Transfer</option>
+                              <option value="Cash">Cash</option>
+                              <option value="bKash">bKash</option>
+                              <option value="Card">Card</option>
+                              <option value="Cheque">Cheque</option>
+                            </select>
+                          </div>
+
+                          <div class="mb-3">
+                            <label class="form-label small fw-semibold mb-1" for="expenseDescription">Description / Payee</label>
+                            <textarea class="form-control" id="expenseDescription" rows="3" placeholder="Additional details, vendor/payee name..."></textarea>
+                          </div>
+
+                          <div class="d-flex gap-2 pt-2">
+                            <button type="submit" id="submitExpenseBtn" class="btn btn-primary w-100 py-2 d-flex align-items-center justify-content-center gap-2">
+                              <i class="bi bi-cloud-arrow-up"></i> Save Expense
+                            </button>
+                            <button type="button" id="cancelExpenseEditBtn" class="btn btn-outline-secondary w-50 py-2 d-none">
+                              Cancel
+                            </button>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+
+                    <!-- Right: Table -->
+                    <div class="col-lg-8">
+                      <div class="card p-4 rounded-4 shadow-sm border">
+                        <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom flex-wrap gap-2">
+                          <h3 class="h5 fw-bold text-heading-color mb-0">
+                            <i class="bi bi-list-task me-2 text-primary"></i>Expense Records
+                          </h3>
+                          <div class="d-flex align-items-center gap-2 flex-wrap">
+                            <select id="expenseFilterCategory" class="form-select form-select-sm" style="width: auto; min-width: 150px;">
+                              <option value="all">All Categories</option>
+                              <option value="Direct Training & Delivery Costs (Variable)">Direct Training Costs</option>
+                              <option value="Infrastructure & Technology (Fixed/Subscription)">Infrastructure & Tech</option>
+                              <option value="Facilities & Utilities (Fixed Overhead)">Facilities & Utilities</option>
+                              <option value="Marketing & Student Acquisition">Marketing</option>
+                              <option value="Administrative & Compliance Costs">Administrative</option>
+                            </select>
+                            <button id="exportExpensesBtn" class="btn btn-sm btn-outline-success d-flex align-items-center gap-1">
+                              <i class="bi bi-file-earmark-excel"></i> Export CSV
+                            </button>
+                            <button id="refreshExpensesBtn" class="btn btn-sm btn-outline-secondary" type="button" title="Refresh List">
+                              <i class="bi bi-arrow-clockwise"></i>
+                            </button>
+                          </div>
+                        </div>
+
+                        <div class="table-responsive">
+                          <table class="table table-hover align-middle mb-0" id="expensesTable">
+                            <thead class="table-light">
+                              <tr>
+                                <th class="small fw-semibold">Expense ID</th>
+                                <th class="small fw-semibold">Date</th>
+                                <th class="small fw-semibold">Category</th>
+                                <th class="small fw-semibold">Sub-category</th>
+                                <th class="small fw-semibold text-end">Amount</th>
+                                <th class="small fw-semibold">Method</th>
+                                <th class="small fw-semibold text-center" style="min-width: 100px;">Actions</th>
+                              </tr>
+                            </thead>
+                            <tbody id="expensesTableBody">
+                              <tr>
+                                <td colspan="7" class="text-center py-4 text-muted">
+                                  <div class="spinner-border spinner-border-sm text-primary me-2" role="status"></div>
+                                  Loading expenses...
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
                 <!-- Sub-Page 7: System Audit Logs -->
                 <div class="tab-pane fade" id="logsPanel" role="tabpanel" aria-labelledby="logs-tab">
                   <div class="card p-4 rounded-4 shadow-sm border">
@@ -2212,7 +2595,7 @@
   <script src="assets/vendors/bootstrap/bootstrap.bundle.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script type="module">
-    import { loginAdmin, logoutAdmin, onAdminAuthStateChanged, addCertificate, getAllCertificates, deleteCertificate, addRegistration, getAllRegistrations, updateRegistration, deleteRegistration, getAllPayments, updatePayment, addAuditLog, getAllAuditLogs, getAllOnlineRegistrations, getOnlineRegistration, deleteOnlineRegistration, getAllOnlineInquiries, deleteOnlineInquiry, addEmployee, getAllEmployees, deleteEmployee, getAllBatches, addBatch, updateBatch, deleteBatch, getAllPublicInstitutes, addPublicInstitute, updatePublicInstitute, deletePublicInstitute, getAllJobPlacements, addJobPlacement, updateJobPlacement, deleteJobPlacement } from "./assets/js/training.js";
+    import { loginAdmin, logoutAdmin, onAdminAuthStateChanged, addCertificate, getAllCertificates, deleteCertificate, addRegistration, getAllRegistrations, updateRegistration, deleteRegistration, getAllPayments, updatePayment, addAuditLog, getAllAuditLogs, getAllOnlineRegistrations, getOnlineRegistration, deleteOnlineRegistration, getAllOnlineInquiries, deleteOnlineInquiry, addEmployee, getAllEmployees, deleteEmployee, getAllBatches, addBatch, updateBatch, deleteBatch, getAllPublicInstitutes, addPublicInstitute, updatePublicInstitute, deletePublicInstitute, getAllJobPlacements, addJobPlacement, updateJobPlacement, deleteJobPlacement, getAllExpenses, addExpense, updateExpense, deleteExpense } from "./assets/js/training.js";
 
     // Initialize AOS
     if (window.AOS) {
@@ -2223,6 +2606,18 @@
     function getVerifyUrl(certificateId) {
       const origin = "https://intrex-digital.com";
       return `${origin}/verify-certificate.html?id=${certificateId}`;
+    }
+
+    function printContentDirectly(printHTML) {
+      let printSec = document.getElementById("printSection");
+      if (!printSec) {
+        printSec = document.createElement("div");
+        printSec.id = "printSection";
+        document.body.appendChild(printSec);
+      }
+      printSec.innerHTML = printHTML;
+      window.print();
+      printSec.innerHTML = "";
     }
 
     // Set today's date in form by default
@@ -2288,6 +2683,7 @@
     let chartPaymentStatusInstance = null;
     let chartCourseEnrollmentInstance = null;
     let chartRevenueByCourseInstance = null;
+    let chartCashFlowInstance = null;
 
     const courseFees = {
       "CompTIA A+": 8000,
@@ -2322,7 +2718,7 @@
       const totalDiscount = allPayments.reduce((sum, p) => sum + (Number(p.discount) || 0), 0);
       document.getElementById("kpiTotalDiscount").textContent = `${totalDiscount.toLocaleString()} BDT`;
 
-      // 2. Breakdown counts
+      // 2. Breakdown counts (Fully Paid, Partially Paid, Unpaid, Collection Rate)
       const fullyPaidCount = allPayments.filter(p => p.status === "Fully Paid").length;
       document.getElementById("kpiFullyPaid").textContent = fullyPaidCount.toLocaleString();
 
@@ -2336,7 +2732,21 @@
       const collectionRate = totalBilled > 0 ? ((totalCollected / totalBilled) * 100).toFixed(1) : "0.0";
       document.getElementById("kpiCollectionRate").textContent = `${collectionRate}%`;
 
-      // 3. Render Recent Activity List
+      // 3. New row KPIs: Expenses, Net Profit/Income, Placed Students, Active Batches
+      const totalExpenses = allExpenses.reduce((sum, e) => sum + (Number(e.amount) || 0), 0);
+      document.getElementById("kpiTotalExpensesOverview").textContent = `${totalExpenses.toLocaleString()} BDT`;
+
+      const netIncome = totalCollected - totalExpenses;
+      document.getElementById("kpiNetIncome").textContent = `${netIncome.toLocaleString()} BDT`;
+
+      const totalPlacements = allJobPlacements.length;
+      document.getElementById("kpiPlacedStudents").textContent = totalPlacements.toLocaleString();
+
+      const activeBatchesCount = allBatches.filter(b => b.status === "Active" || !b.status).length;
+      document.getElementById("kpiActiveBatches").textContent = activeBatchesCount.toLocaleString();
+
+      // 4. Render Recent Activity Lists
+      // A. Recent Registrations
       const recentList = document.getElementById("recentRegistrationsList");
       if (recentList) {
         const sortedRegs = [...allRegistrations].sort((a, b) => {
@@ -2370,7 +2780,37 @@
         }
       }
 
-      // 4. Render Charts (if Chart.js is loaded)
+      // B. Recent Placements
+      const recentPlacementsList = document.getElementById("recentPlacementsList");
+      if (recentPlacementsList) {
+        const sortedPlacements = [...allJobPlacements].sort((a, b) => {
+          const timeA = a.placementDate ? new Date(a.placementDate).getTime() : 0;
+          const timeB = b.placementDate ? new Date(b.placementDate).getTime() : 0;
+          return timeB - timeA;
+        }).slice(0, 5);
+
+        if (sortedPlacements.length === 0) {
+          recentPlacementsList.innerHTML = `<div class="text-muted small text-center py-4">No recent job placements.</div>`;
+        } else {
+          recentPlacementsList.innerHTML = sortedPlacements.map(p => {
+            const salStr = p.salary ? `${Number(p.salary).toLocaleString()} BDT` : 'Unpaid/N/A';
+            return `
+              <div class="d-flex align-items-center justify-content-between py-2 border-bottom" style="border-color: rgba(0,0,0,0.05) !important;">
+                <div>
+                  <div class="fw-bold small text-heading-color" style="font-size: 0.85rem;">${p.studentName}</div>
+                  <div class="text-muted" style="font-size:0.75rem;">${p.jobTitle} • ${p.company}</div>
+                </div>
+                <div class="text-end">
+                  <span class="badge bg-success text-white" style="font-size:0.7rem;">${salStr}</span>
+                  <div class="text-muted" style="font-size:0.7rem; margin-top: 2px;">${p.placementDate}</div>
+                </div>
+              </div>
+            `;
+          }).join('');
+        }
+      }
+
+      // 5. Render Charts (if Chart.js is loaded)
       if (typeof Chart === 'undefined') return;
 
       const isDark = document.documentElement.getAttribute('data-bs-theme') === 'dark';
@@ -2441,7 +2881,7 @@
               data: courseData,
               backgroundColor: primaryColor,
               borderRadius: 6,
-              barThickness: 24
+              barThickness: 20
             }]
           },
           options: {
@@ -2455,7 +2895,7 @@
                   color: chartTextColor,
                   font: {
                     family: 'Inter',
-                    size: 11
+                    size: 9
                   }
                 }
               },
@@ -2468,7 +2908,7 @@
                   precision: 0,
                   font: {
                     family: 'Inter',
-                    size: 11
+                    size: 10
                   }
                 }
               }
@@ -2477,13 +2917,115 @@
         });
       }
 
-      // C. Revenue & Due by Course (Stacked/Grouped Bar Chart)
+      // C. Monthly Cash Flow (Collections vs Expenses)
+      // Group collections by month (YYYY-MM)
+      const monthlyCollections = {};
+      allPayments.forEach(p => {
+        const dt = p.createdAt?.toDate ? p.createdAt.toDate() : (p.createdAt ? new Date(p.createdAt) : null);
+        if (!dt || isNaN(dt.getTime())) return;
+        const yyyymm = dt.toISOString().substring(0, 7); // "YYYY-MM"
+        monthlyCollections[yyyymm] = (monthlyCollections[yyyymm] || 0) + (Number(p.amountPaid) || 0);
+      });
+
+      // Group expenses by month (YYYY-MM)
+      const monthlyExpenses = {};
+      allExpenses.forEach(e => {
+        if (!e.date) return;
+        const yyyymm = e.date.substring(0, 7); // "YYYY-MM"
+        monthlyExpenses[yyyymm] = (monthlyExpenses[yyyymm] || 0) + (Number(e.amount) || 0);
+      });
+
+      // Extract unique months, sort chronologically
+      const allMonthsSet = new Set([...Object.keys(monthlyCollections), ...Object.keys(monthlyExpenses)]);
+      const sortedMonths = Array.from(allMonthsSet).sort();
+      const collectionsData = sortedMonths.map(m => monthlyCollections[m] || 0);
+      const expensesData = sortedMonths.map(m => monthlyExpenses[m] || 0);
+
+      // Friendly month labels (e.g. "Jun '26")
+      const friendlyMonthLabels = sortedMonths.map(m => {
+        const [year, month] = m.split('-');
+        const dateObj = new Date(Number(year), Number(month) - 1, 1);
+        return dateObj.toLocaleDateString('en-US', { month: 'short', year: '2-digit' });
+      });
+
+      const ctxCashFlow = document.getElementById("chartCashFlow")?.getContext("2d");
+      if (ctxCashFlow) {
+        if (chartCashFlowInstance) {
+          chartCashFlowInstance.destroy();
+        }
+        chartCashFlowInstance = new Chart(ctxCashFlow, {
+          type: 'bar',
+          data: {
+            labels: friendlyMonthLabels,
+            datasets: [
+              {
+                label: 'Collections',
+                data: collectionsData,
+                backgroundColor: '#28a745',
+                borderRadius: 4
+              },
+              {
+                label: 'Expenses',
+                data: expensesData,
+                backgroundColor: '#dc3545',
+                borderRadius: 4
+              }
+            ]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                display: true,
+                position: 'top',
+                labels: {
+                  color: chartTextColor,
+                  font: {
+                    family: 'Inter',
+                    size: 9
+                  }
+                }
+              }
+            },
+            scales: {
+              x: {
+                grid: {
+                  display: false
+                },
+                ticks: {
+                  color: chartTextColor,
+                  font: {
+                    family: 'Inter',
+                    size: 10
+                  }
+                }
+              },
+              y: {
+                grid: {
+                  color: chartGridColor
+                },
+                ticks: {
+                  color: chartTextColor,
+                  font: {
+                    family: 'Inter',
+                    size: 10
+                  },
+                  callback: function(value) {
+                    return value.toLocaleString();
+                  }
+                }
+              }
+            }
+          }
+        });
+      }
+
+      // D. Revenue & Due by Course (Stacked/Grouped Bar Chart)
       const courseRevenue = {};
-      // Initialize courses
       courseLabels.forEach(c => {
         courseRevenue[c] = { collected: 0, due: 0 };
       });
-      // Sum values
       allPayments.forEach(p => {
         const course = p.courseName || "Unknown Course";
         if (!courseRevenue[course]) {
@@ -2817,6 +3359,7 @@
         loadBatches();
         loadPublicInstitutes();
         loadJobPlacements();
+        loadExpenses();
         resetInactivityTimer();
       } else {
         // Unauthenticated
@@ -3823,6 +4366,18 @@
             { label: "Last Updated", key: "updatedAt", type: "datetime", cols: 12 }
           ]
         },
+        installment: {
+          title: "Installment Details",
+          badge: "Installment Info",
+          getRecords: () => allPayments,
+          idField: "studentId",
+          fields: [
+            { label: "Student ID", key: "studentId", type: "code", cols: 3 },
+            { label: "Student Name", key: "studentName", type: "text", cols: 3 },
+            { label: "Course Name", key: "courseName", type: "text", cols: 3 },
+            { label: "Batch Name", key: "batch", type: "badge", cols: 3 }
+          ]
+        },
         certificate: {
           title: "Issued Certificate Details",
           badge: "Academic Credential",
@@ -3898,19 +4453,25 @@
       const cfg = typeConfigs[type];
       if (!cfg) return;
 
-      const record = cfg.getRecords().find(r => r[cfg.idField] === id);
+      const record = cfg.getRecords().find(r => r[cfg.idField] === id || (r.id && r.id === id) || (r.studentId && r.studentId === id));
       if (!record) {
         alert("Record not found in dataset.");
         return;
       }
 
+      if (type === 'installment' && record) {
+        const reg = allRegistrations.find(r => r.studentId === record.studentId) || {};
+        if (!record.courseName) record.courseName = reg.course || "";
+        if (!record.batch) record.batch = reg.batch || "";
+      }
+
       // Populate Modal Headers
       document.getElementById("detailsModalBadge").textContent = cfg.badge;
-      document.getElementById("detailsViewModalLabel").textContent = `${cfg.title} - ${id}`;
+      document.getElementById("detailsViewModalLabel").textContent = `${cfg.title} - ${record[cfg.idField] || id}`;
 
       let subtitleText = "Detailed registry information and audit fields.";
       if (type === "registration") subtitleText = record.fullName;
-      else if (type === "payment") subtitleText = record.studentName;
+      else if (type === "payment" || type === "installment") subtitleText = record.studentName;
       else if (type === "certificate") subtitleText = record.studentName;
       else if (type === "inquiry") subtitleText = record.name;
       else if (type === "public_institute") subtitleText = record.name;
@@ -3985,8 +4546,12 @@
 
         const isFullWidth = f.cols === 12 || f.type === 'textarea';
         const cardStyle = f.type === 'textarea' ? 'background: #fdfdfd; border-color: rgba(33,92,92,0.1);' : '';
+        let colClass = `col-${isFullWidth ? '12' : f.cols || '6'}`;
+        if (f.cols === 3) {
+          colClass = 'col-sm-6 col-md-3';
+        }
         return `
-          <div class="col-${isFullWidth ? '12' : f.cols || '6'}">
+          <div class="${colClass}">
             <div class="detail-card" style="${cardStyle}">
               <div class="detail-card-label">${f.label}</div>
               <div class="detail-card-value">${displayHtml}</div>
@@ -3995,12 +4560,13 @@
         `;
       }).join('');
 
-      if (type === 'payment') {
+      if (type === 'payment' || type === 'installment') {
         const registrationFee = record.registrationFee || 0;
         const installments = record.installments || [];
         
         let overdueTotal = 0;
         let pendingTotal = 0;
+        let paidInstallmentsTotal = 0;
         let installmentsHtml = '';
 
         if (installments.length > 0) {
@@ -4013,6 +4579,7 @@
             let displayStatus = status;
             if (status === 'Paid') {
               badgeClass = 'bg-success text-white';
+              paidInstallmentsTotal += amt;
             } else if (status === 'Staled' || status === 'Overdue') {
               badgeClass = 'bg-danger text-white';
               displayStatus = 'Overdue';
@@ -4044,21 +4611,27 @@
             
             <!-- Summary Row -->
             <div class="row g-3 mb-3">
-              <div class="col-md-4">
-                <div class="card bg-light border-light-subtle rounded-3 p-3 shadow-sm text-center">
-                  <span class="text-muted small fw-semibold d-block text-uppercase mb-1" style="font-size: 0.7rem; letter-spacing: 0.05em;">Registration Fee</span>
+              <div class="col-md-3 col-sm-6">
+                <div class="card bg-light border-light-subtle rounded-3 p-3 shadow-sm text-center h-100">
+                  <span class="text-muted small fw-semibold d-block text-uppercase mb-1" style="font-size: 0.65rem; letter-spacing: 0.05em;">Registration Fee</span>
                   <strong class="text-primary fs-5">${registrationFee.toLocaleString()} BDT</strong>
                 </div>
               </div>
-              <div class="col-md-4">
-                <div class="card bg-danger-subtle border-danger-subtle rounded-3 p-3 shadow-sm text-center">
-                  <span class="text-danger small fw-semibold d-block text-uppercase mb-1" style="font-size: 0.7rem; letter-spacing: 0.05em;">Overdue Installments</span>
+              <div class="col-md-3 col-sm-6">
+                <div class="card bg-success-subtle border-success-subtle rounded-3 p-3 shadow-sm text-center h-100">
+                  <span class="text-success small fw-semibold d-block text-uppercase mb-1" style="font-size: 0.65rem; letter-spacing: 0.05em;">Paid Installments</span>
+                  <strong class="text-success fs-5">${paidInstallmentsTotal.toLocaleString()} BDT</strong>
+                </div>
+              </div>
+              <div class="col-md-3 col-sm-6">
+                <div class="card bg-danger-subtle border-danger-subtle rounded-3 p-3 shadow-sm text-center h-100">
+                  <span class="text-danger small fw-semibold d-block text-uppercase mb-1" style="font-size: 0.65rem; letter-spacing: 0.05em;">Overdue Installments</span>
                   <strong class="text-danger fs-5">${overdueTotal.toLocaleString()} BDT</strong>
                 </div>
               </div>
-              <div class="col-md-4">
-                <div class="card bg-info-subtle border-info-subtle rounded-3 p-3 shadow-sm text-center">
-                  <span class="text-info-emphasis small fw-semibold d-block text-uppercase mb-1" style="font-size: 0.7rem; letter-spacing: 0.05em;">Pending Installments</span>
+              <div class="col-md-3 col-sm-6">
+                <div class="card bg-info-subtle border-info-subtle rounded-3 p-3 shadow-sm text-center h-100">
+                  <span class="text-info-emphasis small fw-semibold d-block text-uppercase mb-1" style="font-size: 0.65rem; letter-spacing: 0.05em;">Pending Installments</span>
                   <strong class="text-info-emphasis fs-5">${pendingTotal.toLocaleString()} BDT</strong>
                 </div>
               </div>
@@ -4246,43 +4819,22 @@
       const modalBadge = document.getElementById("detailsModalBadge").textContent;
       const modalSubtitle = document.getElementById("detailsModalSubtitle").textContent;
 
-      const printWindow = window.open('', '_blank');
-      const printHTML = [
-        '<html><head>',
-        '<title>Print - ' + modalTitle + '<\/title>',
-        '<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">',
-        '<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">',
-        '<style>',
-        'body { font-family: "Inter", sans-serif; background: #fff; color: #212529; padding: 40px; }',
-        '.detail-card { background: #f8f9fa; border: 1px solid #dee2e6; border-radius: 8px; padding: 12px 16px; margin-bottom: 15px; page-break-inside: avoid; }',
-        '.detail-card-label { font-size: 0.7rem; font-weight: 700; color: #6c757d; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }',
-        '.detail-card-value { font-size: 0.925rem; font-weight: 600; color: #212529; word-break: break-word; }',
-        '@media print { body { padding: 0; } .btn-print-hide { display: none; } }',
-        '<\/style><\/head><body>',
-        '<div class="d-flex justify-content-between align-items-start border-bottom pb-3 mb-4">',
-        '  <div>',
-        '    <span class="badge bg-dark mb-2 px-3 py-1 font-monospace text-uppercase" style="font-size: 0.7rem;">' + modalBadge + '<\/span>',
-        '    <h2 class="h3 fw-bold mb-1">' + modalTitle + '<\/h2>',
-        '    <p class="text-muted mb-0 small">' + modalSubtitle + '<\/p>',
-        '  <\/div>',
-        '  <button class="btn btn-primary btn-print-hide" onclick="window.print()"><i class="bi bi-printer me-2"><\/i>Print<\/button>',
-        '<\/div>',
-        '<div class="row g-3">',
-        modalBody,
-        '<\/div>',
-        '<\/body><\/html>'
-      ].join('\n');
-      printWindow.document.write(printHTML);
-
-      const script = printWindow.document.createElement("script");
-      script.textContent = `
-        window.onload = function() {
-          window.print();
-          setTimeout(function() { window.close(); }, 500);
-        };
+      const printHTML = `
+        <div class="p-4 bg-white text-dark">
+          <div class="d-flex justify-content-between align-items-start border-bottom pb-3 mb-4 flex-wrap gap-2">
+            <div>
+              <span class="badge bg-dark mb-2 px-3 py-1 font-monospace text-uppercase" style="font-size: 0.7rem;">${modalBadge}</span>
+              <h2 class="h3 fw-bold mb-1">${modalTitle}</h2>
+              <p class="text-muted mb-0 small">${modalSubtitle}</p>
+            </div>
+            <button class="btn btn-primary btn-print-hide" onclick="window.print()"><i class="bi bi-printer me-2"></i>Print</button>
+          </div>
+          <div class="row g-3">
+            ${modalBody}
+          </div>
+        </div>
       `;
-      printWindow.document.body.appendChild(script);
-      printWindow.document.close();
+      printContentDirectly(printHTML);
     };
 
     const editPaymentModalEl = document.getElementById("editPaymentModal");
@@ -5386,8 +5938,10 @@
         const method = selectedStudent.paymentType || "Cash";
         const txId = selectedStudent.transactionId || "";
 
+        const payDocId = selectedStudent.id || selectedStudent.studentId;
+
         await updatePayment(
-          selectedStudent.studentId,
+          payDocId,
           total,
           discount,
           amountPaid,
@@ -5402,7 +5956,7 @@
           user_email: currentUserEmail || "admin@intrex-digital.com",
           action_type: "UPDATE",
           collection_name: "payments",
-          record_id: selectedStudent.studentId,
+          record_id: payDocId,
           details: `Updated custom installment schedule for student "${selectedStudent.studentName}" (${selectedStudent.studentId}): Total Fee ${total} BDT, Paid ${amountPaid} BDT, Discount ${discount} BDT, Reg Fee: ${regFeeVal} BDT, Installments count: ${installments.length}.`
         });
         refreshAuditLogs();
@@ -5411,7 +5965,7 @@
         
         // Refresh local memory and reload student details
         allPayments = await getAllPayments();
-        const updatedRecord = allPayments.find(p => p.studentId === selectedStudent.studentId);
+        const updatedRecord = allPayments.find(p => p.id === payDocId);
         onPlanStudentSelect(updatedRecord);
         await loadPayments();
 
@@ -5455,17 +6009,9 @@
         `;
       });
 
-      const printWindow = window.open('', '_blank');
       const printHTML = `
-        <html><head>
-        <title>Print - Installment Agreement - ${selectedStudent.studentId}</title>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-        <style>
-          body { font-family: "Inter", sans-serif; background: #fff; color: #333; padding: 40px; }
-          @media print { body { padding: 0; } .btn-print-hide { display: none; } }
-        </style>
-        </head><body>
-          <div class="d-flex justify-content-between align-items-center mb-4 pb-3 border-bottom">
+        <div class="p-4 bg-white text-dark">
+          <div class="d-flex justify-content-between align-items-center mb-4 pb-3 border-bottom flex-wrap gap-2">
             <div>
               <h2 class="fw-bold text-uppercase mb-1">Intrex Digital Hub</h2>
               <p class="text-muted small mb-0">100/2, Chowdhury Para, Malibagh, Dhaka 1219 | Phone: +8809678529839</p>
@@ -5536,20 +6082,9 @@
               </div>
             </div>
           </div>
-        </body></html>
+        </div>
       `;
-
-      printWindow.document.write(printHTML);
-      printWindow.document.close();
-      
-      const script = printWindow.document.createElement("script");
-      script.textContent = `
-        window.onload = function() {
-          window.print();
-          setTimeout(function() { window.close(); }, 500);
-        };
-      `;
-      printWindow.document.body.appendChild(script);
+      printContentDirectly(printHTML);
     });
 
     // ============================================================
@@ -5572,6 +6107,7 @@
           if (status === "Staled") status = "Overdue";
 
           flatList.push({
+            id: pay.id || pay.studentId,
             studentId: pay.studentId,
             studentName: pay.studentName,
             courseName: pay.courseName || reg.course || "N/A",
@@ -5592,10 +6128,10 @@
 
       if (searchVal) {
         filtered = filtered.filter(item => 
-          item.studentName.toLowerCase().includes(searchVal) ||
-          item.studentId.toLowerCase().includes(searchVal) ||
-          item.courseName.toLowerCase().includes(searchVal) ||
-          item.batch.toLowerCase().includes(searchVal)
+          (item.studentName || '').toLowerCase().includes(searchVal) ||
+          (item.studentId || '').toLowerCase().includes(searchVal) ||
+          (item.courseName || '').toLowerCase().includes(searchVal) ||
+          (item.batch || '').toLowerCase().includes(searchVal)
         );
       }
 
@@ -5623,6 +6159,11 @@
         else if (item.status === "Overdue") badgeClass = "bg-danger text-white";
         else if (item.status === "Pending") badgeClass = "bg-info text-dark";
 
+        const isPaid = item.status === "Paid";
+        const btnText = isPaid ? "View" : "Pay";
+        const btnIcon = isPaid ? "bi-eye" : "bi-credit-card";
+        const btnClass = isPaid ? "btn-outline-secondary" : "btn-outline-primary";
+
         return `
           <tr>
             <td>
@@ -5642,8 +6183,8 @@
               <span class="badge ${badgeClass} fw-bold" style="font-size:0.75rem;">${item.status}</span>
             </td>
             <td class="text-center">
-              <button type="button" class="btn btn-xs btn-outline-primary fw-semibold load-installment-student-btn" data-id="${item.studentId}">
-                <i class="bi bi-pencil-square me-1"></i>Edit Plan
+              <button type="button" class="btn btn-xs ${btnClass} fw-semibold load-installment-student-btn" data-id="${item.id}">
+                <i class="bi ${btnIcon} me-1"></i>${btnText}
               </button>
             </td>
           </tr>
@@ -5652,12 +6193,17 @@
 
       tbody.querySelectorAll(".load-installment-student-btn").forEach(btn => {
         btn.addEventListener("click", () => {
-          const studentId = btn.dataset.id;
-          const record = allPayments.find(p => p.studentId === studentId);
+          const payId = btn.dataset.id;
+          const record = allPayments.find(p => p.id === payId);
           if (record) {
-            document.getElementById("studentSearchInput").value = record.studentId;
-            onPlanStudentSelect(record);
-            document.getElementById("studentSearchInput").scrollIntoView({ behavior: "smooth", block: "center" });
+            const isViewAction = btn.textContent.includes("View");
+            if (isViewAction) {
+              showRecordDetails("installment", payId);
+            } else {
+              document.getElementById("studentSearchInput").value = record.studentId;
+              onPlanStudentSelect(record);
+              document.getElementById("studentSearchInput").scrollIntoView({ behavior: "smooth", block: "center" });
+            }
           }
         });
       });
@@ -5710,18 +6256,43 @@
       }
     }
 
-    // Toggle Payment Status visibility based on report type
-    document.getElementById("reportType")?.addEventListener("change", function() {
-      const type = this.value;
-      const statusContainer = document.getElementById("reportPaymentStatusContainer");
-      if (statusContainer) {
-        if (type === 'certificates') {
-          statusContainer.classList.add("d-none");
-        } else {
-          statusContainer.classList.remove("d-none");
+    // Toggle filter visibility based on report type
+    const reportTypeEl = document.getElementById("reportType");
+    if (reportTypeEl) {
+      reportTypeEl.addEventListener("change", function() {
+        const type = this.value;
+        const courseContainer = document.getElementById("reportCourseContainer");
+        const batchContainer = document.getElementById("reportBatchContainer");
+        const statusContainer = document.getElementById("reportPaymentStatusContainer");
+
+        // Course & Batch filter visibility
+        if (courseContainer) {
+          if (type === 'expenses') {
+            courseContainer.classList.add("d-none");
+          } else {
+            courseContainer.classList.remove("d-none");
+          }
         }
-      }
-    });
+        if (batchContainer) {
+          if (type === 'expenses') {
+            batchContainer.classList.add("d-none");
+          } else {
+            batchContainer.classList.remove("d-none");
+          }
+        }
+
+        // Payment Status visibility
+        if (statusContainer) {
+          if (type === 'registrations' || type === 'financials') {
+            statusContainer.classList.remove("d-none");
+          } else {
+            statusContainer.classList.add("d-none");
+          }
+        }
+      });
+      // Initial sync
+      reportTypeEl.dispatchEvent(new Event("change"));
+    }
 
     // Generate Report logic
     async function generateReport() {
@@ -5741,6 +6312,13 @@
       let totalFees = 0;
       let totalCollected = 0;
       let totalOutstanding = 0;
+
+      // Reset Default KPI labels
+      document.getElementById("lblReportStatRecords").textContent = "Total Records";
+      document.getElementById("lblReportStatFees").textContent = "Total Fees";
+      document.getElementById("lblReportStatCollected").textContent = "Total Collected";
+      document.getElementById("lblReportStatOutstanding").textContent = "Total Outstanding";
+      document.getElementById("reportStatOutstanding").className = "fs-4 text-danger";
 
       const getRecordDate = (rec) => {
         if (!rec) return null;
@@ -5911,13 +6489,212 @@
             status: c.status || 'Verified'
           });
         });
+
+      } else if (type === 'expenses') {
+        let filteredExpenses = allExpenses;
+
+        // Filter by date range
+        if (startDate || endDate) {
+          filteredExpenses = filteredExpenses.filter(e => {
+            if (!e.date) return false;
+            const d = new Date(e.date + "T12:00:00");
+            if (isNaN(d.getTime())) return false;
+            if (startDate && d < startDate) return false;
+            if (endDate && d > endDate) return false;
+            return true;
+          });
+        }
+
+        let fixedTotal = 0;
+        let variableTotal = 0;
+
+        filteredExpenses.forEach(e => {
+          const amt = Number(e.amount) || 0;
+          const cat = e.category || '';
+          const isFixed = cat.toLowerCase().includes('fixed') || cat.toLowerCase().includes('infrastructure') || cat.toLowerCase().includes('facilities') || cat.toLowerCase().includes('administrative');
+          
+          if (isFixed) {
+            fixedTotal += amt;
+          } else {
+            variableTotal += amt;
+          }
+
+          compiledReportData.push({
+            id: e.id,
+            date: e.date,
+            category: e.category,
+            subCategory: e.subCategory,
+            amount: amt,
+            paymentMethod: e.paymentMethod,
+            description: e.description || '-'
+          });
+        });
+
+        totalFees = fixedTotal + variableTotal; // Total expenses
+        totalCollected = fixedTotal;
+        totalOutstanding = variableTotal;
+
+      } else if (type === 'placements') {
+        let filteredPlacements = allJobPlacements;
+
+        // Filter by course
+        if (course !== 'all') {
+          filteredPlacements = filteredPlacements.filter(p => p.courseName === course);
+        }
+
+        // Filter by batch
+        if (batch !== 'all') {
+          filteredPlacements = filteredPlacements.filter(p => p.batchId === batch);
+        }
+
+        // Filter by date range
+        if (startDate || endDate) {
+          filteredPlacements = filteredPlacements.filter(p => {
+            if (!p.placementDate) return false;
+            const d = new Date(p.placementDate + "T12:00:00");
+            if (isNaN(d.getTime())) return false;
+            if (startDate && d < startDate) return false;
+            if (endDate && d > endDate) return false;
+            return true;
+          });
+        }
+
+        let salarySum = 0;
+        let ftCount = 0;
+        let otherCount = 0;
+
+        filteredPlacements.forEach(p => {
+          const sal = Number(p.salary) || 0;
+          salarySum += sal;
+          if (p.placementType === 'Full-time Permanent') {
+            ftCount++;
+          } else {
+            otherCount++;
+          }
+
+          compiledReportData.push({
+            studentId: p.studentId,
+            studentName: p.studentName,
+            courseName: p.courseName || '—',
+            batchId: p.batchId || '—',
+            company: p.company,
+            jobTitle: p.jobTitle,
+            placementDate: p.placementDate,
+            salary: sal,
+            placementType: p.placementType,
+            notes: p.notes || '—'
+          });
+        });
+
+        totalFees = salarySum;
+        totalCollected = ftCount;
+        totalOutstanding = otherCount;
+
+      } else if (type === 'profit_loss') {
+        // Financial Statement: Net Income = Revenues - Expenses
+        // Calculate Revenues (Total amountPaid from payments in the range)
+        let totalRevenue = 0;
+        allPayments.forEach(p => {
+          if (course !== 'all' && p.courseName !== course) return;
+          if (batch !== 'all' && p.batch !== batch) return;
+
+          const d = getRecordDate(p);
+          if (d) {
+            if (startDate && d < startDate) return;
+            if (endDate && d > endDate) return;
+          }
+          totalRevenue += (Number(p.amountPaid) || 0);
+        });
+
+        // Calculate Expenses (Total amount from expenses in the range)
+        let totalExp = 0;
+        const catSums = {};
+        allExpenses.forEach(e => {
+          if (e.date) {
+            const d = new Date(e.date + "T12:00:00");
+            if (!isNaN(d.getTime())) {
+              if (startDate && d < startDate) return;
+              if (endDate && d > endDate) return;
+            }
+          }
+          const amt = Number(e.amount) || 0;
+          totalExp += amt;
+          catSums[e.category] = (catSums[e.category] || 0) + amt;
+        });
+
+        const netProfit = totalRevenue - totalExp;
+
+        totalFees = totalRevenue;
+        totalCollected = totalExp;
+        totalOutstanding = netProfit;
+
+        // Structured statement list
+        compiledReportData = [
+          { type: 'header', label: 'REVENUE' },
+          { type: 'item', label: 'Course Enrollment Fees (Collected BDT)', value: totalRevenue },
+          { type: 'total', label: 'Total Revenues', value: totalRevenue },
+          { type: 'header', label: 'OPERATING EXPENSES' },
+          { type: 'item', label: 'Direct Training & Delivery Costs (Variable)', value: catSums['Direct Training & Delivery Costs (Variable)'] || 0 },
+          { type: 'item', label: 'Infrastructure & Technology (Fixed/Subscription)', value: catSums['Infrastructure & Technology (Fixed/Subscription)'] || 0 },
+          { type: 'item', label: 'Facilities & Utilities (Fixed Overhead)', value: catSums['Facilities & Utilities (Fixed Overhead)'] || 0 },
+          { type: 'item', label: 'Marketing & Student Acquisition', value: catSums['Marketing & Student Acquisition'] || 0 },
+          { type: 'item', label: 'Administrative & Compliance Costs', value: catSums['Administrative & Compliance Costs'] || 0 },
+          { type: 'total', label: 'Total Operating Expenses', value: totalExp },
+          { type: 'net', label: 'NET PROFIT / (LOSS)', value: netProfit }
+        ];
       }
 
-      // Update summary stat counts
-      document.getElementById("reportStatRecords").textContent = compiledReportData.length;
-      document.getElementById("reportStatFees").textContent = `${totalFees.toLocaleString()} BDT`;
-      document.getElementById("reportStatCollected").textContent = `${totalCollected.toLocaleString()} BDT`;
-      document.getElementById("reportStatOutstanding").textContent = `${totalOutstanding.toLocaleString()} BDT`;
+      // Update summary stat counts with dynamic labels
+      if (type === 'expenses') {
+        document.getElementById("lblReportStatRecords").textContent = "Total Transactions";
+        document.getElementById("lblReportStatFees").textContent = "Total Expenses";
+        document.getElementById("lblReportStatCollected").textContent = "Fixed Costs";
+        document.getElementById("lblReportStatOutstanding").textContent = "Variable Costs";
+
+        document.getElementById("reportStatRecords").textContent = compiledReportData.length.toLocaleString();
+        document.getElementById("reportStatFees").textContent = `${totalFees.toLocaleString()} BDT`;
+        document.getElementById("reportStatCollected").textContent = `${totalCollected.toLocaleString()} BDT`;
+        document.getElementById("reportStatOutstanding").textContent = `${totalOutstanding.toLocaleString()} BDT`;
+
+      } else if (type === 'placements') {
+        document.getElementById("lblReportStatRecords").textContent = "Students Placed";
+        document.getElementById("lblReportStatFees").textContent = "Average Salary";
+        document.getElementById("lblReportStatCollected").textContent = "Full-time Roles";
+        document.getElementById("lblReportStatOutstanding").textContent = "Intern/Other Roles";
+
+        const avgSalary = compiledReportData.length > 0 ? Math.round(totalFees / compiledReportData.length) : 0;
+
+        document.getElementById("reportStatRecords").textContent = compiledReportData.length.toLocaleString();
+        document.getElementById("reportStatFees").textContent = `${avgSalary.toLocaleString()} BDT`;
+        document.getElementById("reportStatCollected").textContent = totalCollected.toLocaleString();
+        document.getElementById("reportStatOutstanding").textContent = totalOutstanding.toLocaleString();
+
+      } else if (type === 'profit_loss') {
+        document.getElementById("lblReportStatRecords").textContent = "Financial Period";
+        document.getElementById("lblReportStatFees").textContent = "Total Revenues";
+        document.getElementById("lblReportStatCollected").textContent = "Total Expenses";
+        document.getElementById("lblReportStatOutstanding").textContent = "Net Profit / (Loss)";
+
+        const periodStr = (startDateStr || endDateStr) ? `${startDateStr || 'Start'} to ${endDateStr || 'End'}` : "All-Time Statement";
+
+        document.getElementById("reportStatRecords").textContent = periodStr;
+        document.getElementById("reportStatFees").textContent = `${totalFees.toLocaleString()} BDT`;
+        document.getElementById("reportStatCollected").textContent = `${totalCollected.toLocaleString()} BDT`;
+
+        const outstandingEl = document.getElementById("reportStatOutstanding");
+        outstandingEl.textContent = `${totalOutstanding.toLocaleString()} BDT`;
+        if (totalOutstanding >= 0) {
+          outstandingEl.className = "fs-4 text-success fw-bold";
+        } else {
+          outstandingEl.className = "fs-4 text-danger fw-bold";
+        }
+
+      } else {
+        document.getElementById("reportStatRecords").textContent = compiledReportData.length.toLocaleString();
+        document.getElementById("reportStatFees").textContent = `${totalFees.toLocaleString()} BDT`;
+        document.getElementById("reportStatCollected").textContent = `${totalCollected.toLocaleString()} BDT`;
+        document.getElementById("reportStatOutstanding").textContent = `${totalOutstanding.toLocaleString()} BDT`;
+      }
 
       // Render the table
       renderReportTable();
@@ -6040,6 +6817,98 @@
             </tr>
           `;
         }).join('');
+
+      } else if (compiledReportType === 'expenses') {
+        thead.innerHTML = `
+          <tr>
+            <th class="small fw-semibold py-2">Date</th>
+            <th class="small fw-semibold py-2">Category</th>
+            <th class="small fw-semibold py-2">Sub-Category</th>
+            <th class="small fw-semibold py-2">Description</th>
+            <th class="small fw-semibold py-2">Payment Method</th>
+            <th class="small fw-semibold py-2 text-end">Amount</th>
+          </tr>
+        `;
+        tbody.innerHTML = compiledReportData.map(e => `
+          <tr>
+            <td class="small text-muted font-monospace">${e.date || '-'}</td>
+            <td><strong>${e.category}</strong></td>
+            <td><span class="small">${e.subCategory || '-'}</span></td>
+            <td><span class="small text-muted">${e.description}</span></td>
+            <td><span class="badge bg-light text-dark border small">${e.paymentMethod || '-'}</span></td>
+            <td class="text-end fw-semibold font-monospace">${e.amount.toLocaleString()} BDT</td>
+          </tr>
+        `).join('');
+
+      } else if (compiledReportType === 'placements') {
+        thead.innerHTML = `
+          <tr>
+            <th class="small fw-semibold py-2">Student ID</th>
+            <th class="small fw-semibold py-2">Student Name</th>
+            <th class="small fw-semibold py-2">Course & Batch</th>
+            <th class="small fw-semibold py-2">Company & Job Title</th>
+            <th class="small fw-semibold py-2">Type</th>
+            <th class="small fw-semibold py-2 text-end">Salary</th>
+            <th class="small fw-semibold py-2 text-center">Date</th>
+          </tr>
+        `;
+        tbody.innerHTML = compiledReportData.map(p => `
+          <tr>
+            <td><code class="text-dark fw-bold font-monospace">${p.studentId}</code></td>
+            <td><strong>${p.studentName}</strong></td>
+            <td>
+              <span class="small d-block text-secondary">${p.courseName}</span>
+              <span class="badge bg-light text-dark border small" style="font-size:0.65rem;">${p.batchId}</span>
+            </td>
+            <td>
+              <strong>${p.company}</strong>
+              <span class="small d-block text-muted">${p.jobTitle}</span>
+            </td>
+            <td><span class="badge bg-info text-dark small">${p.placementType}</span></td>
+            <td class="text-end fw-semibold font-monospace">${p.salary > 0 ? p.salary.toLocaleString() + ' BDT' : '-'}</td>
+            <td class="text-center small text-muted font-monospace">${p.placementDate || '-'}</td>
+          </tr>
+        `).join('');
+
+      } else if (compiledReportType === 'profit_loss') {
+        thead.innerHTML = `
+          <tr>
+            <th class="small fw-semibold py-2">Line Item</th>
+            <th class="small fw-semibold py-2 text-end">Amount (BDT)</th>
+          </tr>
+        `;
+        tbody.innerHTML = compiledReportData.map(row => {
+          if (row.type === 'header') {
+            return `
+              <tr class="table-light fw-bold">
+                <td colspan="2" class="py-2 text-uppercase text-secondary small" style="letter-spacing: 0.5px;">${row.label}</td>
+              </tr>
+            `;
+          } else if (row.type === 'total') {
+            return `
+              <tr class="fw-bold border-top border-bottom">
+                <td class="py-2 ps-3">${row.label}</td>
+                <td class="text-end py-2 font-monospace">${row.value.toLocaleString()} BDT</td>
+              </tr>
+            `;
+          } else if (row.type === 'net') {
+            const isProfit = row.value >= 0;
+            const textClass = isProfit ? "text-success" : "text-danger";
+            return `
+              <tr class="fw-bold fs-6" style="border-bottom: 3px double #333; border-top: 1px solid #dee2e6;">
+                <td class="py-3 text-uppercase">${row.label}</td>
+                <td class="text-end py-3 font-monospace ${textClass}">${row.value.toLocaleString()} BDT</td>
+              </tr>
+            `;
+          } else {
+            return `
+              <tr>
+                <td class="py-2 ps-4 text-muted">${row.label}</td>
+                <td class="text-end py-2 font-monospace">${row.value.toLocaleString()} BDT</td>
+              </tr>
+            `;
+          }
+        }).join('');
       }
     }
 
@@ -6103,6 +6972,39 @@
           c.grade,
           c.status
         ]);
+      } else if (compiledReportType === 'expenses') {
+        headers = ["Date", "Category", "Sub-Category", "Description", "Payment Method", "Amount (BDT)"];
+        rows = compiledReportData.map(e => [
+          e.date || '-',
+          e.category || '',
+          e.subCategory || '',
+          e.description || '-',
+          e.paymentMethod || '-',
+          e.amount
+        ]);
+      } else if (compiledReportType === 'placements') {
+        headers = ["Student ID", "Student Name", "Course", "Batch ID", "Company", "Job Title", "Placement Type", "Salary (BDT)", "Placement Date", "Notes"];
+        rows = compiledReportData.map(p => [
+          p.studentId,
+          p.studentName,
+          p.courseName,
+          p.batchId,
+          p.company,
+          p.jobTitle,
+          p.placementType,
+          p.salary,
+          p.placementDate,
+          p.notes || '-'
+        ]);
+      } else if (compiledReportType === 'profit_loss') {
+        headers = ["Line Item", "Amount (BDT)"];
+        rows = compiledReportData.map(row => {
+          if (row.type === 'header') {
+            return [row.label, ""];
+          } else {
+            return [row.label, row.value];
+          }
+        });
       }
 
       const csvContent = [
@@ -6131,7 +7033,10 @@
       const typeTitle = {
         'registrations': 'Student Registrations Summary Report',
         'financials': 'Financial & Dues Statement Report',
-        'certificates': 'Issued Certificates Registry Report'
+        'certificates': 'Issued Certificates Registry Report',
+        'expenses': 'Detailed Business Expenses Report',
+        'placements': 'Job Placement Success Registry',
+        'profit_loss': 'Profit & Loss Statement (Income Statement)'
       }[compiledReportType];
 
       const courseVal = document.getElementById("reportCourseFilter").value;
@@ -6140,11 +7045,12 @@
       const startVal = document.getElementById("reportStartDate").value;
       const endVal = document.getElementById("reportEndDate").value;
 
-      const filters = [
-        `Course: ${courseVal === 'all' ? 'All' : courseVal}`,
-        `Batch: ${batchVal === 'all' ? 'All' : batchVal}`
-      ];
-      if (compiledReportType !== 'certificates') {
+      const filters = [];
+      if (compiledReportType !== 'expenses') {
+        filters.push(`Course: ${courseVal === 'all' ? 'All' : courseVal}`);
+        filters.push(`Batch: ${batchVal === 'all' ? 'All' : batchVal}`);
+      }
+      if (compiledReportType !== 'certificates' && compiledReportType !== 'expenses' && compiledReportType !== 'profit_loss' && compiledReportType !== 'placements') {
         filters.push(`Payment Status: ${paymentStatusVal === 'all' ? 'All' : paymentStatusVal}`);
       }
       if (startVal || endVal) {
@@ -6222,24 +7128,97 @@
             <td class="text-center">${c.status}</td>
           </tr>
         `).join('');
+      } else if (compiledReportType === 'expenses') {
+        tableHeadersHtml = `
+          <th>Date</th>
+          <th>Category</th>
+          <th>Sub-Category</th>
+          <th>Description</th>
+          <th>Payment Method</th>
+          <th class="text-end">Amount</th>
+        `;
+        tableRowsHtml = compiledReportData.map(e => `
+          <tr>
+            <td><span class="font-monospace">${e.date || '-'}</span></td>
+            <td><strong>${e.category}</strong></td>
+            <td>${e.subCategory || '-'}</td>
+            <td>${e.description}</td>
+            <td>${e.paymentMethod || '-'}</td>
+            <td class="text-end fw-semibold font-monospace">${e.amount.toLocaleString()} BDT</td>
+          </tr>
+        `).join('');
+      } else if (compiledReportType === 'placements') {
+        tableHeadersHtml = `
+          <th>Student ID</th>
+          <th>Student Name</th>
+          <th>Course & Batch</th>
+          <th>Company & Job Title</th>
+          <th>Placement Type</th>
+          <th class="text-end">Salary</th>
+          <th class="text-center">Date</th>
+        `;
+        tableRowsHtml = compiledReportData.map(p => `
+          <tr>
+            <td><code class="font-monospace text-dark">${p.studentId}</code></td>
+            <td><strong>${p.studentName}</strong></td>
+            <td>${p.courseName} (${p.batchId})</td>
+            <td><strong>${p.company}</strong><br><span class="small text-muted">${p.jobTitle}</span></td>
+            <td>${p.placementType}</td>
+            <td class="text-end fw-semibold font-monospace">${p.salary > 0 ? p.salary.toLocaleString() + ' BDT' : '-'}</td>
+            <td class="text-center font-monospace">${p.placementDate || '-'}</td>
+          </tr>
+        `).join('');
+      } else if (compiledReportType === 'profit_loss') {
+        tableHeadersHtml = `
+          <th>Line Item</th>
+          <th class="text-end">Amount</th>
+        `;
+        tableRowsHtml = compiledReportData.map(row => {
+          if (row.type === 'header') {
+            return `
+              <tr class="table-light fw-bold">
+                <td colspan="2" class="text-uppercase text-secondary py-2" style="font-size: 0.85rem; letter-spacing: 0.5px;">${row.label}</td>
+              </tr>
+            `;
+          } else if (row.type === 'total') {
+            return `
+              <tr class="fw-bold" style="border-top: 1px solid #dee2e6; border-bottom: 1px solid #dee2e6;">
+                <td class="ps-3 py-2">${row.label}</td>
+                <td class="text-end py-2 font-monospace">${row.value.toLocaleString()} BDT</td>
+              </tr>
+            `;
+          } else if (row.type === 'net') {
+            const isProfit = row.value >= 0;
+            const textClass = isProfit ? "text-success" : "text-danger";
+            return `
+              <tr class="fw-bold" style="font-size: 1rem; border-bottom: 3px double #333; border-top: 1px solid #dee2e6;">
+                <td class="py-3 text-uppercase">${row.label}</td>
+                <td class="text-end py-3 font-monospace ${textClass}">${row.value.toLocaleString()} BDT</td>
+              </tr>
+            `;
+          } else {
+            return `
+              <tr>
+                <td class="ps-4 py-2 text-muted">${row.label}</td>
+                <td class="text-end py-2 font-monospace">${row.value.toLocaleString()} BDT</td>
+              </tr>
+            `;
+          }
+        }).join('');
       }
 
-      const totalFeeSum = document.getElementById("reportStatFees").textContent;
-      const totalCollectedSum = document.getElementById("reportStatCollected").textContent;
-      const totalOutstandingSum = document.getElementById("reportStatOutstanding").textContent;
+      const lbl1 = document.getElementById("lblReportStatRecords").textContent;
+      const val1 = document.getElementById("reportStatRecords").textContent;
+      const lbl2 = document.getElementById("lblReportStatFees").textContent;
+      const val2 = document.getElementById("reportStatFees").textContent;
+      const lbl3 = document.getElementById("lblReportStatCollected").textContent;
+      const val3 = document.getElementById("reportStatCollected").textContent;
+      const lbl4 = document.getElementById("lblReportStatOutstanding").textContent;
+      const val4 = document.getElementById("reportStatOutstanding").textContent;
 
-      const printWindow = window.open('', '_blank');
       const printHTML = `
-        <html><head>
-        <title>Print - ${typeTitle}</title>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-        <style>
-          body { font-family: "Inter", sans-serif; background: #fff; color: #333; padding: 40px; }
-          @media print { body { padding: 0; } .btn-print-hide { display: none; } }
-          table { font-size: 0.825rem; }
-        </style>
-        </head><body>
-          <div class="d-flex justify-content-between align-items-center mb-4 pb-3 border-bottom">
+        <div class="p-4 bg-white text-dark">
+          <div class="d-flex justify-content-between align-items-center mb-4 pb-3 border-bottom flex-wrap gap-2">
             <div>
               <h2 class="fw-bold text-uppercase mb-1">Intrex Digital Hub</h2>
               <p class="text-muted small mb-0">100/2, Chowdhury Para, Malibagh, Dhaka 1219 | Phone: +8809678529839</p>
@@ -6260,8 +7239,8 @@
               </div>
               <div class="col-6 text-end">
                 <ul class="mb-0 list-unstyled text-muted">
-                  <li><strong>Total Records Matched:</strong> ${compiledReportData.length}</li>
-                  <li><strong>Fees Total:</strong> ${totalFeeSum} | <strong>Collected:</strong> ${totalCollectedSum} | <strong>Due:</strong> ${totalOutstandingSum}</li>
+                  <li><strong>${lbl1}:</strong> ${val1}</li>
+                  <li><strong>${lbl2}:</strong> ${val2} | <strong>${lbl3}:</strong> ${val3} | <strong>${lbl4}:</strong> ${val4}</li>
                 </ul>
               </div>
             </div>
@@ -6292,20 +7271,9 @@
               </div>
             </div>
           </div>
-        </body></html>
+        </div>
       `;
-
-      printWindow.document.write(printHTML);
-      printWindow.document.close();
-
-      const printScript = printWindow.document.createElement("script");
-      printScript.textContent = `
-        window.onload = function() {
-          window.print();
-          setTimeout(function() { window.close(); }, 500);
-        };
-      `;
-      printWindow.document.body.appendChild(printScript);
+      printContentDirectly(printHTML);
     }
 
     // Bind Reports tab button event handlers
@@ -6424,8 +7392,8 @@
       const statusFilter = document.getElementById("filterStatus")?.value || "all";
 
       const filtered = allEmployees.filter(emp => {
-        const nameMatch = emp.employee_name.toLowerCase().includes(searchQuery);
-        const idMatch = emp.employee_id.toLowerCase().includes(searchQuery);
+        const nameMatch = (emp.employee_name || '').toLowerCase().includes(searchQuery);
+        const idMatch = (emp.employee_id || '').toLowerCase().includes(searchQuery);
         const emailMatch = emp.email ? emp.email.toLowerCase().includes(searchQuery) : false;
         const phoneMatch = emp.mobile_phone ? emp.mobile_phone.toLowerCase().includes(searchQuery) : false;
 
@@ -6898,12 +7866,170 @@
       modalInst.show();
     }
 
+    // Print Batch Details handler
+    const batchPrintBtn = document.getElementById("batchPrintBtn");
+    if (batchPrintBtn) {
+      batchPrintBtn.onclick = () => {
+        const batchId = document.getElementById("modalBatchId").textContent;
+        const course = document.getElementById("modalBatchCourse").textContent;
+        const schedule = document.getElementById("modalBatchSchedule").textContent;
+        const count = document.getElementById("modalBatchCount").textContent;
+        const tableBody = document.getElementById("batchStudentsTableBody").innerHTML;
+
+        const printHTML = `
+          <div class="p-4 bg-white text-dark">
+            <div class="d-flex justify-content-between align-items-center mb-4 pb-3 border-bottom flex-wrap gap-2">
+              <div>
+                <h2 class="fw-bold text-uppercase mb-1">Intrex Digital Hub</h2>
+                <p class="text-muted small mb-0">100/2, Chowdhury Para, Malibagh, Dhaka 1219 | Phone: +8809678529839</p>
+              </div>
+              <button class="btn btn-primary btn-print-hide" onclick="window.print()"><i class="bi bi-printer me-2"></i>Print</button>
+            </div>
+
+            <h3 class="fw-bold text-center text-uppercase my-4" style="color: #1a4a4a; letter-spacing: 1px;">Batch Enrollment Details</h3>
+
+            <div class="row g-3 mb-4">
+              <div class="col-3">
+                <div class="param-card text-center p-2 border rounded bg-light">
+                  <div class="param-label small text-muted text-uppercase fw-semibold" style="font-size: 0.65rem;">Batch ID</div>
+                  <div class="param-value font-monospace fw-bold">${batchId}</div>
+                </div>
+              </div>
+              <div class="col-3">
+                <div class="param-card text-center p-2 border rounded bg-light">
+                  <div class="param-label small text-muted text-uppercase fw-semibold" style="font-size: 0.65rem;">Course</div>
+                  <div class="param-value fw-bold">${course}</div>
+                </div>
+              </div>
+              <div class="col-3">
+                <div class="param-card text-center p-2 border rounded bg-light">
+                  <div class="param-label small text-muted text-uppercase fw-semibold" style="font-size: 0.65rem;">Schedule</div>
+                  <div class="param-value fw-bold">${schedule}</div>
+                </div>
+              </div>
+              <div class="col-3">
+                <div class="param-card text-center p-2 border rounded bg-light">
+                  <div class="param-label small text-muted text-uppercase fw-semibold" style="font-size: 0.65rem;">Students Count</div>
+                  <div class="param-value fw-bold">${count}</div>
+                </div>
+              </div>
+            </div>
+
+            <h5 class="fw-bold mb-3"><i class="bi bi-people-fill me-2 text-primary"></i>Enrolled Students</h5>
+            <table class="table table-bordered table-striped align-middle small">
+              <thead class="table-light">
+                <tr>
+                  <th>Student ID</th>
+                  <th>Student Name</th>
+                  <th>Contact Details</th>
+                  <th>Payment Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${tableBody}
+              </tbody>
+            </table>
+
+            <div class="row pt-5 mt-5">
+              <div class="col-6 text-center">
+                <div class="border-top pt-2 mx-auto" style="width: 200px;">
+                  <p class="small fw-bold mb-0">Prepared By</p>
+                  <p class="text-muted" style="font-size: 0.7rem;">Date: ____ / ____ / ________</p>
+                </div>
+              </div>
+              <div class="col-6 text-center">
+                <div class="border-top pt-2 mx-auto" style="width: 200px;">
+                  <p class="small fw-bold mb-0">Authorized Representative</p>
+                  <p class="text-muted" style="font-size: 0.7rem;">Intrex Digital Hub</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+
+        printContentDirectly(printHTML);
+      };
+    }
+
     // Attach batch events
     document.getElementById("batch-management-tab")?.addEventListener("click", loadBatches);
     document.getElementById("refreshBatchListBtn")?.addEventListener("click", loadBatches);
     document.getElementById("batchForm")?.addEventListener("submit", handleBatchSubmit);
     document.getElementById("cancelBatchEditBtn")?.addEventListener("click", resetBatchForm);
     document.getElementById("courseBatchFilter")?.addEventListener("change", renderBatches);
+
+    // Course prefix map for auto-generating Batch ID
+    const coursePrefixes = {
+      "CompTIA A+": "APLUS",
+      "CompTIA Network+": "NET",
+      "CompTIA Security+": "SEC",
+      "CompTIA Linux+": "LIN",
+      "CompTIA Server+": "SRV",
+      "CCNA": "CCNA",
+      "CCNP - Enterprise": "CCNPE",
+      "CCNP - Security": "CCNPS",
+      "MTCNA": "MTCNA",
+      "MTCRE": "MTCRE",
+      "MTCSE": "MTCSE",
+      "RHCSA": "RHCSA",
+      "RHCE": "RHCE",
+      "FCP NSE4": "NSE4",
+      "FCP NSE5": "NSE5",
+      "CCNA & MTCNA": "CCMTC"
+    };
+
+    function getCoursePrefix(courseName) {
+      if (coursePrefixes[courseName]) return coursePrefixes[courseName];
+      const clean = courseName.toUpperCase().replace(/[^A-Z0-9\s]/g, "");
+      const words = clean.split(/\s+/).filter(w => w.length > 0);
+      if (words.length >= 2) {
+        return words.map(w => w[0]).join("");
+      }
+      return clean.substring(0, 5);
+    }
+
+    function autoGenerateBatchId(courseName) {
+      const prefix = getCoursePrefix(courseName);
+      const prefixPattern = new RegExp("^" + prefix + "-B(\\d+)$", "i");
+      
+      let maxNum = 0;
+      allBatches.forEach(b => {
+        if (b.batchId) {
+          const match = b.batchId.match(prefixPattern);
+          if (match) {
+            const num = parseInt(match[1], 10);
+            if (num > maxNum) {
+              maxNum = num;
+            }
+          }
+        }
+      });
+      
+      const nextNum = maxNum + 1;
+      const numStr = String(nextNum).padStart(2, "0");
+      return `${prefix}-B${numStr}`;
+    }
+
+    // Auto-generate Batch ID when course is selected in Batch Form
+    document.getElementById("batchCourseSelect")?.addEventListener("change", function () {
+      if (editingBatchId) return; // Do not auto-generate when editing an existing batch
+      
+      const courseName = this.value;
+      if (courseName) {
+        const generatedId = autoGenerateBatchId(courseName);
+        const batchInput = document.getElementById("batchIdInput");
+        if (batchInput) {
+          batchInput.value = generatedId;
+          batchInput.setAttribute("readonly", "true");
+        }
+      } else {
+        const batchInput = document.getElementById("batchIdInput");
+        if (batchInput) {
+          batchInput.value = "";
+          batchInput.removeAttribute("readonly");
+        }
+      }
+    });
 
     // Globally register loadBatches and updateRegistrationBatchDropdown functions in window just in case
     window.loadBatches = loadBatches;
@@ -7594,6 +8720,352 @@
     document.getElementById("filterPlacementType")?.addEventListener("change", renderJobPlacements);
     document.getElementById("refreshPlacementListBtn")?.addEventListener("click", loadJobPlacements);
     document.getElementById("jobPlacementForm")?.addEventListener("submit", handleJobPlacementSubmit);
+    // ============================================================
+    // EXPENSE TRACKER SYSTEM
+    // ============================================================
+    let allExpenses = [];
+    let editingExpenseId = null;
+
+    const subCategoriesMap = {
+      "Direct Training & Delivery Costs (Variable)": [
+        "Instructor & Facilitator Fees",
+        "Training Materials & Lab Supplies",
+        "Student Certification Vouchers",
+        "Student Catering"
+      ],
+      "Infrastructure & Technology (Fixed/Subscription)": [
+        "Software & Virtual Lab Licensing",
+        "Learning Management System (LMS)",
+        "High-Speed Redundant Internet Connections",
+        "Hardware Maintenance & Upgrades",
+        "Cloud Infrastructure & Sandbox Environment Fees"
+      ],
+      "Facilities & Utilities (Fixed Overhead)": [
+        "Physical Space Rent or Lease Payments",
+        "Utilities",
+        "Office & Classroom Furniture",
+        "Janitorial, Cleaning, & Security Services",
+        "Classroom Projectors & Audio-Visual Gear"
+      ],
+      "Marketing & Student Acquisition": [
+        "Digital Advertising",
+        "Content Production",
+        "Website Maintenance & Domain/Hosting Fees",
+        "Sales Team Salaries & Enrollment Commissions",
+        "Event Costs"
+      ],
+      "Administrative & Compliance Costs": [
+        "Support Staff Salaries",
+        "Accreditation & Official Training Partner Annual Fees",
+        "General Business Insurance & Legal Fees",
+        "Office Supplies & Administrative Overhead",
+        "Payment Gateway & Merchant Transaction Fees"
+      ]
+    };
+
+    // Category -> Sub-category dynamic update
+    document.getElementById("expenseCategory")?.addEventListener("change", function () {
+      const category = this.value;
+      const subSelect = document.getElementById("expenseSubCategory");
+      if (!subSelect) return;
+      subSelect.innerHTML = '<option value="" disabled selected>Select sub-category</option>';
+      
+      if (category in subCategoriesMap) {
+        subSelect.disabled = false;
+        subCategoriesMap[category].forEach(sub => {
+          const opt = document.createElement("option");
+          opt.value = sub;
+          opt.textContent = sub;
+          subSelect.appendChild(opt);
+        });
+      } else {
+        subSelect.disabled = true;
+      }
+    });
+
+    async function loadExpenses() {
+      const tbody = document.getElementById("expensesTableBody");
+      if (tbody) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="7" class="text-center py-4 text-muted">
+              <div class="spinner-border spinner-border-sm text-primary me-2" role="status"></div>
+              Loading expenses...
+            </td>
+          </tr>
+        `;
+      }
+      try {
+        allExpenses = await getAllExpenses();
+        renderExpenses();
+        updateExpenseKPIs();
+        updateOverview();
+      } catch (err) {
+        console.error("Error loading expenses: ", err);
+        if (tbody) {
+          tbody.innerHTML = `<tr><td colspan="7" class="text-center py-4 text-danger">Failed to load expenses.</td></tr>`;
+        }
+      }
+    }
+
+    function updateExpenseKPIs() {
+      let total = 0;
+      let fixed = 0;
+      let variable = 0;
+
+      allExpenses.forEach(e => {
+        const amt = Number(e.amount) || 0;
+        total += amt;
+        
+        const cat = e.category;
+        if (cat === "Direct Training & Delivery Costs (Variable)" || cat === "Marketing & Student Acquisition") {
+          variable += amt;
+        } else {
+          fixed += amt;
+        }
+      });
+
+      const kpiTotal = document.getElementById("kpiTotalExpenses");
+      const kpiFixed = document.getElementById("kpiFixedExpenses");
+      const kpiVariable = document.getElementById("kpiVariableExpenses");
+
+      if (kpiTotal) kpiTotal.textContent = `${total.toLocaleString()} BDT`;
+      if (kpiFixed) kpiFixed.textContent = `${fixed.toLocaleString()} BDT`;
+      if (kpiVariable) kpiVariable.textContent = `${variable.toLocaleString()} BDT`;
+    }
+
+    function renderExpenses() {
+      const tbody = document.getElementById("expensesTableBody");
+      if (!tbody) return;
+
+      const catFilter = document.getElementById("expenseFilterCategory").value;
+      let filtered = allExpenses;
+
+      if (catFilter !== "all") {
+        filtered = allExpenses.filter(e => e.category === catFilter);
+      }
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="7" class="text-center py-4 text-muted">No expenses recorded.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = "";
+      filtered.forEach(exp => {
+        const tr = document.createElement("tr");
+
+        let dateStr = exp.date || "N/A";
+        if (exp.createdAt && typeof exp.createdAt === 'object' && exp.createdAt.toDate) {
+          if (!exp.date) {
+            const dt = exp.createdAt.toDate();
+            dateStr = dt.toISOString().substring(0, 10);
+          }
+        }
+
+        tr.innerHTML = `
+          <td><code class="text-dark font-monospace fw-bold">${exp.id}</code></td>
+          <td><span class="small text-muted">${dateStr}</span></td>
+          <td><span class="small">${exp.category}</span></td>
+          <td><span class="small fw-medium text-secondary">${exp.subCategory}</span></td>
+          <td class="text-end fw-bold text-dark"><span class="small">${Number(exp.amount).toLocaleString()} BDT</span></td>
+          <td><span class="badge bg-secondary text-dark">${exp.paymentMethod}</span></td>
+          <td class="text-center">
+            <div class="btn-group gap-1">
+              <button class="btn btn-sm btn-outline-secondary edit-expense-btn" data-id="${exp.id}">
+                <i class="bi bi-pencil"></i> Edit
+              </button>
+              <button class="btn btn-sm btn-outline-danger delete-expense-btn" data-id="${exp.id}">
+                <i class="bi bi-trash"></i> Delete
+              </button>
+            </div>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      // Bind actions
+      tbody.querySelectorAll(".edit-expense-btn").forEach(btn => {
+        btn.onclick = function () {
+          const id = btn.getAttribute("data-id");
+          const found = allExpenses.find(e => e.id === id);
+          if (found) {
+            editExpense(found);
+          }
+        };
+      });
+
+      tbody.querySelectorAll(".delete-expense-btn").forEach(btn => {
+        btn.onclick = async function () {
+          const id = btn.getAttribute("data-id");
+          if (confirm(`Are you sure you want to delete expense record ${id}?`)) {
+            try {
+              btn.disabled = true;
+              btn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status"></span>';
+              await deleteExpense(id);
+              
+              await addAuditLog({
+                user_email: currentUserEmail || "admin@intrex-digital.com",
+                action_type: "DELETE",
+                collection_name: "expenses",
+                record_id: id,
+                details: `Deleted expense record "${id}"`
+              });
+              refreshAuditLogs();
+              
+              await loadExpenses();
+            } catch (err) {
+              alert("Failed to delete expense: " + err.message);
+              btn.disabled = false;
+              btn.innerHTML = '<i class="bi bi-trash"></i> Delete';
+            }
+          }
+        };
+      });
+    }
+
+    function editExpense(exp) {
+      editingExpenseId = exp.id;
+      document.getElementById("expenseFormTitle").innerHTML = `<i class="bi bi-pencil-square me-2 text-primary"></i>Edit Expense: ${exp.id}`;
+      document.getElementById("expenseCategory").value = exp.category;
+      
+      const subSelect = document.getElementById("expenseSubCategory");
+      subSelect.innerHTML = '<option value="" disabled selected>Select sub-category</option>';
+      if (exp.category in subCategoriesMap) {
+        subSelect.disabled = false;
+        subCategoriesMap[exp.category].forEach(sub => {
+          const opt = document.createElement("option");
+          opt.value = sub;
+          opt.textContent = sub;
+          if (sub === exp.subCategory) {
+            opt.selected = true;
+          }
+          subSelect.appendChild(opt);
+        });
+      }
+
+      document.getElementById("expenseAmount").value = exp.amount;
+      document.getElementById("expenseDate").value = exp.date;
+      document.getElementById("expensePaymentMethod").value = exp.paymentMethod;
+      document.getElementById("expenseDescription").value = exp.description || "";
+
+      document.getElementById("submitExpenseBtn").innerHTML = `<i class="bi bi-check-lg me-2"></i>Update Expense`;
+      document.getElementById("cancelExpenseEditBtn").classList.remove("d-none");
+      document.getElementById("expenseFormTitle")?.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function resetExpenseForm() {
+      editingExpenseId = null;
+      document.getElementById("expenseFormTitle").innerHTML = `<i class="bi bi-wallet2 me-2 text-primary"></i>Record New Expense`;
+      document.getElementById("expenseForm")?.reset();
+      
+      const subSelect = document.getElementById("expenseSubCategory");
+      if (subSelect) {
+        subSelect.innerHTML = '<option value="" disabled selected>Select sub-category</option>';
+        subSelect.disabled = true;
+      }
+      
+      document.getElementById("expenseDate").value = new Date().toISOString().substring(0, 10);
+      document.getElementById("submitExpenseBtn").innerHTML = `<i class="bi bi-cloud-arrow-up"></i> Save Expense`;
+      document.getElementById("cancelExpenseEditBtn").classList.add("d-none");
+    }
+
+    async function handleExpenseSubmit(e) {
+      e.preventDefault();
+      const category = document.getElementById("expenseCategory").value;
+      const subCategory = document.getElementById("expenseSubCategory").value;
+      const amount = Number(document.getElementById("expenseAmount").value) || 0;
+      const date = document.getElementById("expenseDate").value;
+      const paymentMethod = document.getElementById("expensePaymentMethod").value;
+      const description = document.getElementById("expenseDescription").value.trim();
+
+      const successAlert = document.getElementById("expenseSuccess");
+      const errorAlert = document.getElementById("expenseError");
+
+      if (successAlert) successAlert.classList.add("d-none");
+      if (errorAlert) errorAlert.classList.add("d-none");
+
+      const expenseData = { category, subCategory, amount, date, paymentMethod, description };
+
+      try {
+        if (editingExpenseId) {
+          await updateExpense(editingExpenseId, expenseData);
+          await addAuditLog({
+            user_email: currentUserEmail || "admin@intrex-digital.com",
+            action_type: "UPDATE",
+            collection_name: "expenses",
+            record_id: editingExpenseId,
+            details: `Updated expense record "${editingExpenseId}": Category: "${category}", Amount BDT: ${amount}`
+          });
+        } else {
+          const savedId = await addExpense(expenseData);
+          await addAuditLog({
+            user_email: currentUserEmail || "admin@intrex-digital.com",
+            action_type: "CREATE",
+            collection_name: "expenses",
+            record_id: savedId,
+            details: `Recorded new expense "${savedId}": Category: "${category}", Amount BDT: ${amount}`
+          });
+        }
+
+        refreshAuditLogs();
+
+        if (successAlert) {
+          successAlert.querySelector("span").textContent = `Expense saved successfully!`;
+          successAlert.classList.remove("d-none");
+          setTimeout(() => successAlert.classList.add("d-none"), 4000);
+        }
+
+        resetExpenseForm();
+        await loadExpenses();
+      } catch (err) {
+        console.error("Error saving expense: ", err);
+        if (errorAlert) {
+          errorAlert.querySelector("span").textContent = err.message || "An error occurred while saving the expense.";
+          errorAlert.classList.remove("d-none");
+        }
+      }
+    }
+
+    function exportExpensesToCSV() {
+      if (allExpenses.length === 0) {
+        alert("No expense records available to export.");
+        return;
+      }
+      
+      let csvContent = "data:text/csv;charset=utf-8,";
+      csvContent += "Expense ID,Date,Category,Sub-category,Amount (BDT),Payment Method,Description\n";
+      
+      allExpenses.forEach(e => {
+        const desc = (e.description || "").replace(/"/g, '""');
+        csvContent += `"${e.id}","${e.date}","${e.category}","${e.subCategory}",${e.amount},"${e.paymentMethod}","${desc}"\n`;
+      });
+
+      const encodedUri = encodeURI(csvContent);
+      const link = document.createElement("a");
+      link.setAttribute("href", encodedUri);
+      link.setAttribute("download", `expenses_export_${new Date().toISOString().substring(0, 10)}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
+    // Attach Expense events
+    document.getElementById("expense-tab")?.addEventListener("click", () => {
+      loadExpenses();
+    });
+    document.getElementById("refreshExpensesBtn")?.addEventListener("click", loadExpenses);
+    document.getElementById("expenseFilterCategory")?.addEventListener("change", renderExpenses);
+    document.getElementById("expenseForm")?.addEventListener("submit", handleExpenseSubmit);
+    document.getElementById("cancelExpenseEditBtn")?.addEventListener("click", resetExpenseForm);
+    document.getElementById("exportExpensesBtn")?.addEventListener("click", exportExpensesToCSV);
+    
+    // Set default date
+    const expDateInput = document.getElementById("expenseDate");
+    if (expDateInput) {
+      expDateInput.value = new Date().toISOString().substring(0, 10);
+    }
+
+    // Cancel Job Placement edit button
     document.getElementById("cancelPlacementEditBtn")?.addEventListener("click", resetJobPlacementForm);
 
   </script>
@@ -7805,8 +9277,12 @@
             </table>
           </div>
         </div>
-        <div class="modal-footer border-top p-3">
-          <button type="button" class="btn btn-outline-secondary px-4" data-bs-dismiss="modal">Close</button>
+        <div class="modal-footer border-top-0 p-3 bg-light-subtle rounded-bottom-4 justify-content-between">
+          <button type="button" class="btn btn-outline-secondary px-3 fw-semibold rounded-3"
+            data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary px-3 fw-semibold rounded-3" id="batchPrintBtn">
+            <i class="bi bi-printer me-2"></i>Print Details
+          </button>
         </div>
       </div>
     </div>
