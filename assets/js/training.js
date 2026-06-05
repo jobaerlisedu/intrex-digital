@@ -1204,5 +1204,200 @@ export async function deleteBatch(batchId) {
   }
 }
 
+// ==========================================
+// 10. PUBLIC INSTITUTES OPERATIONS (public_institutes)
+// ==========================================
+let mockPublicInstitutes = null;
+
+export async function getAllPublicInstitutes() {
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('mock') === '1') {
+    if (!mockPublicInstitutes) {
+      mockPublicInstitutes = [
+        {
+          id: "INST-0001",
+          name: "National Academy for Computer Training and Research (NACTAR)",
+          contactPerson: "Dr. MD. Omar Faruque",
+          email: "nactar@gov.bd",
+          phone: "+8801711223344",
+          type: "Government Training Institute",
+          location: "Bogura, Bangladesh",
+          website: "http://nactar.gov.bd",
+          status: "Active",
+          notes: "NACTAR is an apex training institute of Ministry of Education.",
+          createdAt: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)
+        },
+        {
+          id: "INST-0002",
+          name: "Bangladesh Industrial Technical Assistance Center (BITAC)",
+          contactPerson: "Engr. MD. Anwar Hossain",
+          email: "info@bitac.gov.bd",
+          phone: "+8801555667788",
+          type: "Government Training Institute",
+          location: "Tejgaon Industrial Area, Dhaka",
+          website: "http://bitac.gov.bd",
+          status: "Active",
+          notes: "BITAC offers various technical training courses for industry workers.",
+          createdAt: new Date(Date.now() - 15 * 24 * 60 * 60 * 1000)
+        },
+        {
+          id: "INST-0003",
+          name: "Intrex Digital Professional Training Academy",
+          contactPerson: "Sarah Jenkins",
+          email: "academy@intrex-digital.com",
+          phone: "+8801799887766",
+          type: "Professional Training Institute",
+          location: "Mirpur-10, Dhaka",
+          website: "https://intrex-digital.com",
+          status: "Active",
+          notes: "Our internal professional training academy partners.",
+          createdAt: new Date()
+        }
+      ];
+    }
+    return mockPublicInstitutes;
+  }
+
+  if (!checkConfiguration()) return [];
+  try {
+    const querySnapshot = await getDocs(collection(db, "public_institutes"));
+    const institutes = [];
+    querySnapshot.forEach((docSnap) => {
+      if (docSnap.exists()) {
+        institutes.push(docSnap.data());
+      }
+    });
+    institutes.sort((a, b) => a.id.localeCompare(b.id));
+    return institutes;
+  } catch (error) {
+    console.error("Error fetching public institutes: ", error);
+    throw error;
+  }
+}
+
+export async function addPublicInstitute(instData) {
+  const { name, contactPerson, email, phone, type, location, website, status, notes } = instData;
+  if (!name || !type || !status) {
+    throw new Error("Missing required institute fields: name, type, status");
+  }
+
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('mock') === '1') {
+    if (!mockPublicInstitutes) {
+      await getAllPublicInstitutes();
+    }
+    const id = "INST-" + String(mockPublicInstitutes.length + 1).padStart(4, '0');
+    const newInst = {
+      id,
+      name: name.trim(),
+      contactPerson: contactPerson ? contactPerson.trim() : "",
+      email: email ? email.trim() : "",
+      phone: phone ? phone.trim() : "",
+      type: type.trim(),
+      location: location ? location.trim() : "",
+      website: website ? website.trim() : "",
+      status: status || "Active",
+      notes: notes ? notes.trim() : "",
+      createdAt: new Date()
+    };
+    mockPublicInstitutes.push(newInst);
+    return id;
+  }
+
+  if (!checkConfiguration()) return null;
+
+  try {
+    const id = await getNextSeqId("public_institutes", "INST-", "id", 4);
+    const docRef = doc(db, "public_institutes", id);
+    await setDoc(docRef, {
+      id,
+      name: name.trim(),
+      contactPerson: contactPerson ? contactPerson.trim() : "",
+      email: email ? email.trim() : "",
+      phone: phone ? phone.trim() : "",
+      type: type.trim(),
+      location: location ? location.trim() : "",
+      website: website ? website.trim() : "",
+      status: status || "Active",
+      notes: notes ? notes.trim() : "",
+      createdAt: serverTimestamp()
+    });
+    return id;
+  } catch (error) {
+    console.error("Error saving public institute: ", error);
+    throw error;
+  }
+}
+
+export async function updatePublicInstitute(instId, instData) {
+  const { name, contactPerson, email, phone, type, location, website, status, notes } = instData;
+
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('mock') === '1') {
+    if (!mockPublicInstitutes) {
+      await getAllPublicInstitutes();
+    }
+    const index = mockPublicInstitutes.findIndex(inst => inst.id === instId.trim());
+    if (index > -1) {
+      mockPublicInstitutes[index] = {
+        ...mockPublicInstitutes[index],
+        name: name ? name.trim() : mockPublicInstitutes[index].name,
+        contactPerson: contactPerson !== undefined ? contactPerson.trim() : mockPublicInstitutes[index].contactPerson,
+        email: email !== undefined ? email.trim() : mockPublicInstitutes[index].email,
+        phone: phone !== undefined ? phone.trim() : mockPublicInstitutes[index].phone,
+        type: type ? type.trim() : mockPublicInstitutes[index].type,
+        location: location !== undefined ? location.trim() : mockPublicInstitutes[index].location,
+        website: website !== undefined ? website.trim() : mockPublicInstitutes[index].website,
+        status: status ? status.trim() : mockPublicInstitutes[index].status,
+        notes: notes !== undefined ? notes.trim() : mockPublicInstitutes[index].notes,
+        updatedAt: new Date()
+      };
+    }
+    return instId;
+  }
+
+  if (!checkConfiguration()) return;
+
+  try {
+    const docRef = doc(db, "public_institutes", instId.trim());
+    await setDoc(docRef, {
+      name: name.trim(),
+      contactPerson: contactPerson ? contactPerson.trim() : "",
+      email: email ? email.trim() : "",
+      phone: phone ? phone.trim() : "",
+      type: type.trim(),
+      location: location ? location.trim() : "",
+      website: website ? website.trim() : "",
+      status: status || "Active",
+      notes: notes ? notes.trim() : "",
+      updatedAt: serverTimestamp()
+    }, { merge: true });
+  } catch (error) {
+    console.error("Error updating public institute: ", error);
+    throw error;
+  }
+}
+
+export async function deletePublicInstitute(instId) {
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('mock') === '1') {
+    if (!mockPublicInstitutes) {
+      await getAllPublicInstitutes();
+    }
+    mockPublicInstitutes = mockPublicInstitutes.filter(inst => inst.id !== instId);
+    return;
+  }
+
+  if (!checkConfiguration()) return;
+  try {
+    const docRef = doc(db, "public_institutes", instId.trim());
+    await deleteDoc(docRef);
+  } catch (error) {
+    console.error("Error deleting public institute: ", error);
+    throw error;
+  }
+}
+
+
 
 

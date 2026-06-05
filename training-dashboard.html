@@ -243,6 +243,11 @@
                   <i class="bi bi-collection"></i> Batch Management
                 </button>
                 <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
+                  id="contact-directory-tab" data-bs-toggle="tab" data-bs-target="#contactDirectoryPanel" type="button" role="tab"
+                  aria-controls="contactDirectoryPanel" aria-selected="false">
+                  <i class="bi bi-person-lines-fill"></i> Contact Directory
+                </button>
+                <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
                   id="employees-tab" data-bs-toggle="tab" data-bs-target="#employeesPanel" type="button" role="tab"
                   aria-controls="employeesPanel" aria-selected="false">
                   <i class="bi bi-person-badge"></i> Employee Database
@@ -1579,6 +1584,268 @@
                   </div>
                 </div>
 
+                <!-- Sub-Page 6.45: Contact Directory -->
+                <div class="tab-pane fade" id="contactDirectoryPanel" role="tabpanel" aria-labelledby="contact-directory-tab">
+                  <!-- Sub Tabs Navigation Header -->
+                  <div class="d-flex justify-content-between align-items-center mb-4 pb-2 border-bottom flex-wrap gap-2">
+                    <ul class="nav nav-pills gap-2" id="directoryTabs" role="tablist">
+                      <li class="nav-item" role="presentation">
+                        <button class="nav-link active px-4 py-2 fw-semibold rounded-3" id="sub-student-contacts-tab" data-bs-toggle="tab" data-bs-target="#studentContactsSubPanel" type="button" role="tab" aria-controls="studentContactsSubPanel" aria-selected="true">
+                          <i class="bi bi-people-fill me-2"></i>Student Contacts
+                        </button>
+                      </li>
+                      <li class="nav-item" role="presentation">
+                        <button class="nav-link px-4 py-2 fw-semibold rounded-3" id="sub-trainer-contacts-tab" data-bs-toggle="tab" data-bs-target="#trainerContactsSubPanel" type="button" role="tab" aria-controls="trainerContactsSubPanel" aria-selected="false">
+                          <i class="bi bi-person-badge-fill me-2"></i>Trainer Contacts
+                        </button>
+                      </li>
+                      <li class="nav-item" role="presentation">
+                        <button class="nav-link px-4 py-2 fw-semibold rounded-3" id="sub-public-institutes-tab" data-bs-toggle="tab" data-bs-target="#publicInstitutesSubPanel" type="button" role="tab" aria-controls="publicInstitutesSubPanel" aria-selected="false">
+                          <i class="bi bi-building-fill me-2"></i>Public Institutes
+                        </button>
+                      </li>
+                    </ul>
+                  </div>
+
+                  <!-- Sub Tabs Contents -->
+                  <div class="tab-content" id="directoryTabContent">
+                    
+                    <!-- Sub-Tab 1: Student Contacts -->
+                    <div class="tab-pane fade show active" id="studentContactsSubPanel" role="tabpanel" aria-labelledby="sub-student-contacts-tab">
+                      <div class="card p-4 rounded-4 shadow-sm border">
+                        <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom flex-wrap gap-2">
+                          <h3 class="h6 fw-bold text-heading-color mb-0">
+                            <i class="bi bi-people me-2 text-primary"></i>Student Contact Directory
+                          </h3>
+                          <div class="d-flex align-items-center gap-2 flex-wrap">
+                            <input type="text" id="searchStudentContact" class="form-control form-control-sm" style="max-width: 240px;" placeholder="Search name, phone, email...">
+                            <select id="courseStudentContactFilter" class="form-select form-select-sm" style="width: auto; min-width: 140px;">
+                              <option value="all">All Courses</option>
+                              <option value="CompTIA A+">CompTIA A+</option>
+                              <option value="CompTIA Network+">CompTIA Network+</option>
+                              <option value="CompTIA Security+">CompTIA Security+</option>
+                              <option value="CompTIA Linux+">CompTIA Linux+</option>
+                              <option value="CompTIA Server+">CompTIA Server+</option>
+                              <option value="CCNA">CCNA</option>
+                              <option value="CCNP - Enterprise">CCNP - Enterprise</option>
+                              <option value="CCNP - Security">CCNP - Security</option>
+                              <option value="MTCNA">MTCNA</option>
+                              <option value="MTCRE">MTCRE</option>
+                              <option value="MTCSE">MTCSE</option>
+                              <option value="RHCSA">RHCSA</option>
+                              <option value="RHCE">RHCE</option>
+                              <option value="FCP NSE4">FCP NSE4</option>
+                              <option value="FCP NSE5">FCP NSE5</option>
+                              <option value="CCNA & MTCNA">CCNA &amp; MTCNA</option>
+                            </select>
+                          </div>
+                        </div>
+
+                        <div class="table-responsive" style="max-height: 550px; overflow-y: auto;">
+                          <table class="table table-hover align-middle mb-0" id="studentContactsTable">
+                            <thead class="table-light">
+                              <tr>
+                                <th class="small fw-semibold text-center">Student ID</th>
+                                <th class="small fw-semibold">Name</th>
+                                <th class="small fw-semibold">Email</th>
+                                <th class="small fw-semibold">Phone</th>
+                                <th class="small fw-semibold">Course</th>
+                                <th class="small fw-semibold text-center">Batch</th>
+                                <th class="small fw-semibold">Schedule</th>
+                                <th class="small fw-semibold text-center">Actions</th>
+                              </tr>
+                            </thead>
+                            <tbody id="studentContactsTableBody">
+                              <tr>
+                                <td colspan="8" class="text-center py-4 text-muted">Loading student contacts...</td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Sub-Tab 2: Trainer Contacts -->
+                    <div class="tab-pane fade" id="trainerContactsSubPanel" role="tabpanel" aria-labelledby="sub-trainer-contacts-tab">
+                      <div class="card p-4 rounded-4 shadow-sm border">
+                        <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom flex-wrap gap-2">
+                          <h3 class="h6 fw-bold text-heading-color mb-0">
+                            <i class="bi bi-person-badge me-2 text-primary"></i>Trainer Contact Directory
+                          </h3>
+                          <div class="d-flex align-items-center gap-2 flex-wrap">
+                            <input type="text" id="searchTrainerContact" class="form-control form-control-sm" style="max-width: 240px;" placeholder="Search name, phone, email...">
+                            <select id="typeTrainerContactFilter" class="form-select form-select-sm" style="width: auto;">
+                              <option value="all">All Types</option>
+                              <option value="In-house Staff">In-house Staff</option>
+                              <option value="External Professionals">External Professionals</option>
+                            </select>
+                          </div>
+                        </div>
+
+                        <div class="table-responsive" style="max-height: 550px; overflow-y: auto;">
+                          <table class="table table-hover align-middle mb-0" id="trainerContactsTable">
+                            <thead class="table-light">
+                              <tr>
+                                <th class="small fw-semibold text-center">Trainer ID</th>
+                                <th class="small fw-semibold">Trainer Name</th>
+                                <th class="small fw-semibold">Designation</th>
+                                <th class="small fw-semibold">Email</th>
+                                <th class="small fw-semibold">Phone</th>
+                                <th class="small fw-semibold">Type</th>
+                                <th class="small fw-semibold text-center">Status</th>
+                                <th class="small fw-semibold text-center">Actions</th>
+                              </tr>
+                            </thead>
+                            <tbody id="trainerContactsTableBody">
+                              <tr>
+                                <td colspan="8" class="text-center py-4 text-muted">Loading trainer contacts...</td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Sub-Tab 3: Public Institute Contacts -->
+                    <div class="tab-pane fade" id="publicInstitutesSubPanel" role="tabpanel" aria-labelledby="sub-public-institutes-tab">
+                      <div class="row g-4">
+                        <!-- Left: Form -->
+                        <div class="col-lg-4">
+                          <div class="card p-4 rounded-4 shadow-sm border">
+                            <h3 id="instFormTitle" class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
+                              <i class="bi bi-building-add me-2 text-primary"></i>Add Institute Contact
+                            </h3>
+
+                            <div id="instSuccess" class="alert alert-success d-none alert-dismissible fade show small" role="alert">
+                              <span>Institute saved successfully!</span>
+                              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                            <div id="instError" class="alert alert-danger d-none alert-dismissible fade show small" role="alert">
+                              <span>An error occurred. Please try again.</span>
+                              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+
+                            <form id="publicInstituteForm">
+                              <div class="mb-3">
+                                <label class="form-label small fw-semibold mb-1" for="instNameInput">Institute Name <span class="text-danger">*</span></label>
+                                <input class="form-control" id="instNameInput" type="text" placeholder="e.g. NACTAR" required>
+                              </div>
+
+                              <div class="mb-3">
+                                <label class="form-label small fw-semibold mb-1" for="instContactPersonInput">Contact Person</label>
+                                <input class="form-control" id="instContactPersonInput" type="text" placeholder="e.g. Director General">
+                              </div>
+
+                              <div class="row g-2 mb-3">
+                                <div class="col-md-6">
+                                  <label class="form-label small fw-semibold mb-1" for="instEmailInput">Email Address</label>
+                                  <input class="form-control" id="instEmailInput" type="email" placeholder="email@domain.com">
+                                </div>
+                                <div class="col-md-6">
+                                  <label class="form-label small fw-semibold mb-1" for="instPhoneInput">Mobile Phone</label>
+                                  <input class="form-control" id="instPhoneInput" type="tel" placeholder="+880 1XXX-XXXXXX">
+                                </div>
+                              </div>
+
+                              <div class="mb-3">
+                                <label class="form-label small fw-semibold mb-1" for="instTypeSelect">Institute Type <span class="text-danger">*</span></label>
+                                <select class="form-select" id="instTypeSelect" required>
+                                  <option value="" disabled selected>Select type</option>
+                                  <option value="Professional Training Institute">Professional Training Institute</option>
+                                  <option value="Government Training Institute">Government Training Institute</option>
+                                  <option value="Academic University">Academic University</option>
+                                  <option value="Other">Other</option>
+                                </select>
+                              </div>
+
+                              <div class="mb-3">
+                                <label class="form-label small fw-semibold mb-1" for="instLocationInput">Location / Address</label>
+                                <input class="form-control" id="instLocationInput" type="text" placeholder="e.g. Bogura, Bangladesh">
+                              </div>
+
+                              <div class="mb-3">
+                                <label class="form-label small fw-semibold mb-1" for="instWebsiteInput">Website URL</label>
+                                <input class="form-control" id="instWebsiteInput" type="url" placeholder="http://nactar.gov.bd">
+                              </div>
+
+                              <div class="mb-3">
+                                <label class="form-label small fw-semibold mb-1" for="instStatusSelect">Status <span class="text-danger">*</span></label>
+                                <select class="form-select" id="instStatusSelect" required>
+                                  <option value="Active" selected>Active</option>
+                                  <option value="Inactive">Inactive</option>
+                                </select>
+                              </div>
+
+                              <div class="mb-4">
+                                <label class="form-label small fw-semibold mb-1" for="instNotesTextarea">Additional Notes</label>
+                                <textarea class="form-control" id="instNotesTextarea" rows="3" placeholder="Details about collaboration, courses offered, etc..."></textarea>
+                              </div>
+
+                              <div class="d-flex gap-2">
+                                <button type="submit" id="submitInstBtn" class="btn btn-primary w-100 fw-semibold py-2">
+                                  <i class="bi bi-cloud-arrow-up me-2"></i>Save Contact
+                                </button>
+                                <button type="button" id="cancelInstEditBtn" class="btn btn-outline-secondary w-50 fw-semibold py-2 d-none">
+                                  Cancel
+                                </button>
+                              </div>
+                            </form>
+                          </div>
+                        </div>
+
+                        <!-- Right: Table -->
+                        <div class="col-lg-8">
+                          <div class="card p-4 rounded-4 shadow-sm border h-100">
+                            <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom flex-wrap gap-2">
+                              <h3 class="h5 fw-bold text-heading-color mb-0">
+                                <i class="bi bi-building me-2 text-primary"></i>Public Institutes Directory
+                              </h3>
+                              <div class="d-flex align-items-center gap-2 flex-wrap">
+                                <input type="text" id="searchInstContact" class="form-control form-control-sm" style="max-width: 200px;" placeholder="Search name, location...">
+                                <select id="filterInstType" class="form-select form-select-sm" style="width: auto;">
+                                  <option value="all">All Types</option>
+                                  <option value="Professional Training Institute">Professional Training Institute</option>
+                                  <option value="Government Training Institute">Government Training Institute</option>
+                                  <option value="Academic University">Academic University</option>
+                                  <option value="Other">Other</option>
+                                </select>
+                                <button id="refreshInstListBtn" class="btn btn-sm btn-outline-secondary" type="button" title="Refresh List">
+                                  <i class="bi bi-arrow-clockwise"></i>
+                                </button>
+                              </div>
+                            </div>
+
+                            <div class="table-responsive" style="max-height: 620px; overflow-y: auto;">
+                              <table class="table table-hover align-middle mb-0" id="publicInstitutesTable">
+                                <thead class="table-light">
+                                  <tr>
+                                    <th class="small fw-semibold">Institute Name</th>
+                                    <th class="small fw-semibold">Type</th>
+                                    <th class="small fw-semibold">Contact Person</th>
+                                    <th class="small fw-semibold">Contact Info</th>
+                                    <th class="small fw-semibold">Location</th>
+                                    <th class="small fw-semibold text-center">Status</th>
+                                    <th class="small fw-semibold text-center">Actions</th>
+                                  </tr>
+                                </thead>
+                                <tbody id="publicInstitutesTableBody">
+                                  <tr>
+                                    <td colspan="7" class="text-center py-4 text-muted">
+                                      <div class="spinner-border spinner-border-sm text-primary me-2" role="status"></div>
+                                      Loading public institutes...
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+
                 <!-- Sub-Page 6.5: Employee Database -->
                 <div class="tab-pane fade" id="employeesPanel" role="tabpanel" aria-labelledby="employees-tab">
                   <!-- Form -->
@@ -1771,7 +2038,7 @@
   <script src="assets/vendors/bootstrap/bootstrap.bundle.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script type="module">
-    import { loginAdmin, logoutAdmin, onAdminAuthStateChanged, addCertificate, getAllCertificates, deleteCertificate, addRegistration, getAllRegistrations, updateRegistration, deleteRegistration, getAllPayments, updatePayment, addAuditLog, getAllAuditLogs, getAllOnlineRegistrations, getOnlineRegistration, deleteOnlineRegistration, getAllOnlineInquiries, deleteOnlineInquiry, addEmployee, getAllEmployees, deleteEmployee, getAllBatches, addBatch, updateBatch, deleteBatch } from "./assets/js/training.js";
+    import { loginAdmin, logoutAdmin, onAdminAuthStateChanged, addCertificate, getAllCertificates, deleteCertificate, addRegistration, getAllRegistrations, updateRegistration, deleteRegistration, getAllPayments, updatePayment, addAuditLog, getAllAuditLogs, getAllOnlineRegistrations, getOnlineRegistration, deleteOnlineRegistration, getAllOnlineInquiries, deleteOnlineInquiry, addEmployee, getAllEmployees, deleteEmployee, getAllBatches, addBatch, updateBatch, deleteBatch, getAllPublicInstitutes, addPublicInstitute, updatePublicInstitute, deletePublicInstitute } from "./assets/js/training.js";
 
     // Initialize AOS
     if (window.AOS) {
@@ -1798,7 +2065,9 @@
     let allAuditLogs = [];
     let allEmployees = [];
     let allBatches = [];
+    let allPublicInstitutes = [];
     let editingBatchId = null;
+    let editingInstId = null;
     let loadedOnlineKey = null;
     let editingStudentId = null;
     let editingCertId = null;
@@ -2368,6 +2637,7 @@
         refreshAuditLogs();
         loadEmployees();
         loadBatches();
+        loadPublicInstitutes();
         resetInactivityTimer();
       } else {
         // Unauthenticated
@@ -2623,6 +2893,7 @@
       try {
         allRegistrations = await getAllRegistrations();
         renderFilteredRegistrations();
+        renderStudentContacts();
         updateOverview();
         if (typeof populateReportBatchFilter === 'function') {
           populateReportBatchFilter();
@@ -3063,6 +3334,7 @@
         allPayments = await getAllPayments();
         renderFilteredPayments();
         updateOverview();
+        renderStudentContacts();
         if (window.loadAllInstallmentsLedger) {
           window.loadAllInstallmentsLedger();
         }
@@ -3256,6 +3528,24 @@
             { label: "Submitted On", key: "createdAt", type: "datetime", cols: 12 },
             { label: "Message", key: "message", type: "textarea", cols: 12 }
           ]
+        },
+        public_institute: {
+          title: "Public Institute Details",
+          badge: "Institute Profile",
+          getRecords: () => allPublicInstitutes,
+          idField: "id",
+          fields: [
+            { label: "Institute ID", key: "id", type: "code", cols: 6 },
+            { label: "Institute Name", key: "name", type: "text", cols: 6 },
+            { label: "Contact Person", key: "contactPerson", type: "text", cols: 6 },
+            { label: "Institute Type", key: "type", type: "badge", cols: 6 },
+            { label: "Email Address", key: "email", type: "email", cols: 6 },
+            { label: "Mobile Phone", key: "phone", type: "phone", cols: 6 },
+            { label: "Location / Address", key: "location", type: "text", cols: 6 },
+            { label: "Website URL", key: "website", type: "text", cols: 6 },
+            { label: "Status", key: "status", type: "badge", cols: 6 },
+            { label: "Additional Notes", key: "notes", type: "textarea", cols: 12 }
+          ]
         }
       };
 
@@ -3277,6 +3567,7 @@
       else if (type === "payment") subtitleText = record.studentName;
       else if (type === "certificate") subtitleText = record.studentName;
       else if (type === "inquiry") subtitleText = record.name;
+      else if (type === "public_institute") subtitleText = record.name;
       document.getElementById("detailsModalSubtitle").textContent = subtitleText;
 
       // Status Badge Style Resolver
@@ -5521,6 +5812,7 @@
       try {
         allEmployees = await getAllEmployees();
         applyEmployeeFilters();
+        renderTrainerContacts();
       } catch (err) {
         console.error("Error loading employees: ", err);
         if (tbody) {
@@ -6071,6 +6363,402 @@
     // Globally register loadBatches and updateRegistrationBatchDropdown functions in window just in case
     window.loadBatches = loadBatches;
     window.updateRegistrationBatchDropdown = updateRegistrationBatchDropdown;
+
+    // ============================================================
+    // CONTACT DIRECTORY SYSTEM
+    // ============================================================
+    function renderStudentContacts() {
+      const tbody = document.getElementById("studentContactsTableBody");
+      if (!tbody) return;
+
+      const searchQuery = document.getElementById("searchStudentContact")?.value.toLowerCase().trim() || "";
+      const courseFilter = document.getElementById("courseStudentContactFilter")?.value || "all";
+
+      const filtered = allRegistrations.filter(r => {
+        const matchesSearch = 
+          (r.fullName && r.fullName.toLowerCase().includes(searchQuery)) ||
+          (r.studentId && r.studentId.toLowerCase().includes(searchQuery)) ||
+          (r.email && r.email.toLowerCase().includes(searchQuery)) ||
+          (r.phone && r.phone.toLowerCase().includes(searchQuery));
+        
+        const matchesCourse = courseFilter === "all" || r.course === courseFilter;
+        return matchesSearch && matchesCourse;
+      });
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="8" class="text-center py-4 text-muted">No student contacts found.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = filtered.map(r => {
+        // Cross reference with payment record
+        const payment = allPayments.find(p => p.studentId === r.studentId);
+        const payStatus = payment ? payment.status : "Unpaid";
+        
+        let badgeClass = "bg-danger";
+        if (payStatus === "Fully Paid") {
+          badgeClass = "bg-success";
+        } else if (payStatus === "Partially Paid") {
+          badgeClass = "bg-warning text-dark";
+        }
+
+        return `
+          <tr>
+            <td class="text-center"><code class="text-dark font-monospace">${r.studentId}</code></td>
+            <td>
+              <div class="d-flex align-items-center gap-2">
+                <strong>${r.fullName}</strong>
+                <span class="badge ${badgeClass}" style="font-size:0.65rem;">${payStatus}</span>
+              </div>
+            </td>
+            <td>
+              <a href="mailto:${r.email}" class="text-decoration-none text-heading-color fw-semibold">
+                <i class="bi bi-envelope me-1 text-primary"></i>${r.email}
+              </a>
+            </td>
+            <td>
+              <a href="tel:${r.phone}" class="text-decoration-none text-heading-color fw-semibold">
+                <i class="bi bi-telephone me-1 text-primary"></i>${r.phone}
+              </a>
+            </td>
+            <td><span class="small">${r.course}</span></td>
+            <td class="text-center"><span class="badge bg-secondary text-dark">${r.batch || 'N/A'}</span></td>
+            <td><span class="small">${r.schedule}</span></td>
+            <td class="text-center">
+              <div class="btn-group gap-1">
+                <a href="mailto:${r.email}" class="btn btn-sm btn-outline-primary py-1 px-2" title="Email Student">
+                  <i class="bi bi-envelope-at"></i>
+                </a>
+                <a href="tel:${r.phone}" class="btn btn-sm btn-outline-success py-1 px-2" title="Call Student">
+                  <i class="bi bi-telephone-outbound"></i>
+                </a>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join("");
+    }
+
+    function renderTrainerContacts() {
+      const tbody = document.getElementById("trainerContactsTableBody");
+      if (!tbody) return;
+
+      const searchQuery = document.getElementById("searchTrainerContact")?.value.toLowerCase().trim() || "";
+      const typeFilter = document.getElementById("typeTrainerContactFilter")?.value || "all";
+
+      // Filter employees to only show trainers (designation contains "Trainer" or "Expert")
+      const trainers = allEmployees.filter(emp => {
+        const designation = emp.designation ? emp.designation.toLowerCase() : "";
+        return designation.includes("trainer") || designation.includes("expert");
+      });
+
+      const filtered = trainers.filter(emp => {
+        const matchesSearch = 
+          (emp.employee_name && emp.employee_name.toLowerCase().includes(searchQuery)) ||
+          (emp.employee_id && emp.employee_id.toLowerCase().includes(searchQuery)) ||
+          (emp.email && emp.email.toLowerCase().includes(searchQuery)) ||
+          (emp.mobile_phone && emp.mobile_phone.toLowerCase().includes(searchQuery));
+        
+        const matchesType = typeFilter === "all" || emp.employee_type === typeFilter;
+        return matchesSearch && matchesType;
+      });
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="8" class="text-center py-4 text-muted">No trainer contacts found.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = filtered.map(emp => {
+        const statusBadge = emp.status === "Active" 
+          ? `<span class="badge bg-success-subtle text-success px-2 py-1">Active</span>` 
+          : `<span class="badge bg-danger-subtle text-danger px-2 py-1">Inactive</span>`;
+
+        return `
+          <tr>
+            <td class="text-center"><code class="text-dark font-monospace">${emp.employee_id}</code></td>
+            <td><strong>${emp.employee_name}</strong></td>
+            <td><span class="small">${emp.designation}</span></td>
+            <td>
+              ${emp.email ? `
+                <a href="mailto:${emp.email}" class="text-decoration-none text-heading-color fw-semibold">
+                  <i class="bi bi-envelope me-1 text-primary"></i>${emp.email}
+                </a>
+              ` : '—'}
+            </td>
+            <td>
+              ${emp.mobile_phone ? `
+                <a href="tel:${emp.mobile_phone}" class="text-decoration-none text-heading-color fw-semibold">
+                  <i class="bi bi-telephone me-1 text-primary"></i>${emp.mobile_phone}
+                </a>
+              ` : '—'}
+            </td>
+            <td><span class="badge bg-secondary text-dark">${emp.employee_type}</span></td>
+            <td class="text-center">${statusBadge}</td>
+            <td class="text-center">
+              <div class="btn-group gap-1">
+                ${emp.email ? `
+                  <a href="mailto:${emp.email}" class="btn btn-sm btn-outline-primary py-1 px-2" title="Email Trainer">
+                    <i class="bi bi-envelope-at"></i>
+                  </a>
+                ` : ''}
+                ${emp.mobile_phone ? `
+                  <a href="tel:${emp.mobile_phone}" class="btn btn-sm btn-outline-success py-1 px-2" title="Call Trainer">
+                    <i class="bi bi-telephone-outbound"></i>
+                  </a>
+                ` : ''}
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join("");
+    }
+
+    async function loadPublicInstitutes() {
+      const tbody = document.getElementById("publicInstitutesTableBody");
+      if (tbody) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="7" class="text-center py-4 text-muted">
+              <div class="spinner-border spinner-border-sm text-primary me-2" role="status"></div>
+              Loading public institutes...
+            </td>
+          </tr>
+        `;
+      }
+      try {
+        allPublicInstitutes = await getAllPublicInstitutes();
+        renderPublicInstitutes();
+      } catch (err) {
+        console.error("Error loading public institutes: ", err);
+        if (tbody) {
+          tbody.innerHTML = `<tr><td colspan="7" class="text-center py-4 text-danger">Failed to load public institutes.</td></tr>`;
+        }
+      }
+    }
+
+    function renderPublicInstitutes() {
+      const tbody = document.getElementById("publicInstitutesTableBody");
+      if (!tbody) return;
+
+      const searchQuery = document.getElementById("searchInstContact")?.value.toLowerCase().trim() || "";
+      const typeFilter = document.getElementById("filterInstType")?.value || "all";
+
+      const filtered = allPublicInstitutes.filter(inst => {
+        const matchesSearch = 
+          (inst.name && inst.name.toLowerCase().includes(searchQuery)) ||
+          (inst.contactPerson && inst.contactPerson.toLowerCase().includes(searchQuery)) ||
+          (inst.location && inst.location.toLowerCase().includes(searchQuery)) ||
+          (inst.email && inst.email.toLowerCase().includes(searchQuery)) ||
+          (inst.phone && inst.phone.includes(searchQuery));
+        
+        const matchesType = typeFilter === "all" || inst.type === typeFilter;
+        return matchesSearch && matchesType;
+      });
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="7" class="text-center py-4 text-muted">No public institutes found.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = filtered.map(inst => {
+        const statusBadge = inst.status === "Active" 
+          ? `<span class="badge bg-success-subtle text-success px-2 py-1">Active</span>` 
+          : `<span class="badge bg-danger-subtle text-danger px-2 py-1">Inactive</span>`;
+
+        let contactInfo = '';
+        if (inst.email) {
+          contactInfo += `<div class="small"><a href="mailto:${inst.email}" class="text-decoration-none text-muted"><i class="bi bi-envelope me-1"></i>${inst.email}</a></div>`;
+        }
+        if (inst.phone) {
+          contactInfo += `<div class="small"><a href="tel:${inst.phone}" class="text-decoration-none text-muted"><i class="bi bi-telephone me-1"></i>${inst.phone}</a></div>`;
+        }
+        if (!inst.email && !inst.phone) {
+          contactInfo = '—';
+        }
+
+        const nameHtml = inst.website 
+          ? `<a href="${inst.website}" target="_blank" class="text-decoration-none text-dark fw-bold">${inst.name} <i class="bi bi-box-arrow-up-right small ms-1 text-muted" style="font-size:0.75rem;"></i></a>`
+          : `<strong>${inst.name}</strong>`;
+
+        return `
+          <tr>
+            <td>${nameHtml}</td>
+            <td><span class="badge bg-secondary text-dark small">${inst.type}</span></td>
+            <td><span class="small">${inst.contactPerson || '—'}</span></td>
+            <td>${contactInfo}</td>
+            <td><span class="small">${inst.location || '—'}</span></td>
+            <td class="text-center">${statusBadge}</td>
+            <td class="text-center">
+              <div class="btn-group gap-1">
+                <button class="btn btn-sm btn-outline-info inst-view-btn py-1 px-2" data-id="${inst.id}" title="View Details">
+                  <i class="bi bi-eye"></i>
+                </button>
+                <button class="btn btn-sm btn-outline-primary inst-edit-btn py-1 px-2" data-id="${inst.id}" title="Edit">
+                  <i class="bi bi-pencil-square"></i>
+                </button>
+                <button class="btn btn-sm btn-outline-danger inst-delete-btn py-1 px-2" data-id="${inst.id}" title="Delete">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join("");
+
+      // Bind buttons
+      tbody.querySelectorAll(".inst-view-btn").forEach(btn => {
+        btn.onclick = function() {
+          const id = this.getAttribute("data-id");
+          showRecordDetails("public_institute", id);
+        };
+      });
+
+      tbody.querySelectorAll(".inst-edit-btn").forEach(btn => {
+        btn.onclick = function() {
+          const id = this.getAttribute("data-id");
+          const inst = allPublicInstitutes.find(i => i.id === id);
+          if (inst) editPublicInstitute(inst);
+        };
+      });
+
+      tbody.querySelectorAll(".inst-delete-btn").forEach(btn => {
+        btn.onclick = async function() {
+          const id = this.getAttribute("data-id");
+          const inst = allPublicInstitutes.find(i => i.id === id);
+          if (inst && confirm(`Are you sure you want to delete institute contact "${inst.name}"?`)) {
+            try {
+              await deletePublicInstitute(id);
+              await addAuditLog({
+                user_email: currentUserEmail || "admin@intrex-digital.com",
+                action_type: "DELETE",
+                collection_name: "public_institutes",
+                record_id: id,
+                details: `Deleted public institute contact "${inst.name}" (${id})`
+              });
+              refreshAuditLogs();
+              await loadPublicInstitutes();
+            } catch (err) {
+              alert("Failed to delete public institute: " + err.message);
+            }
+          }
+        };
+      });
+    }
+
+    function editPublicInstitute(inst) {
+      editingInstId = inst.id;
+      document.getElementById("instFormTitle").innerHTML = `<i class="bi bi-pencil-square me-2 text-primary"></i>Edit Institute Contact`;
+      document.getElementById("instNameInput").value = inst.name;
+      document.getElementById("instContactPersonInput").value = inst.contactPerson || "";
+      document.getElementById("instEmailInput").value = inst.email || "";
+      document.getElementById("instPhoneInput").value = inst.phone || "";
+      document.getElementById("instTypeSelect").value = inst.type;
+      document.getElementById("instLocationInput").value = inst.location || "";
+      document.getElementById("instWebsiteInput").value = inst.website || "";
+      document.getElementById("instStatusSelect").value = inst.status;
+      document.getElementById("instNotesTextarea").value = inst.notes || "";
+
+      const cancelBtn = document.getElementById("cancelInstEditBtn");
+      if (cancelBtn) cancelBtn.classList.remove("d-none");
+
+      document.getElementById("instFormTitle")?.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function resetPublicInstituteForm() {
+      editingInstId = null;
+      document.getElementById("instFormTitle").innerHTML = `<i class="bi bi-building-add me-2 text-primary"></i>Add Institute Contact`;
+      document.getElementById("publicInstituteForm")?.reset();
+      const cancelBtn = document.getElementById("cancelInstEditBtn");
+      if (cancelBtn) cancelBtn.classList.add("d-none");
+    }
+
+    async function handlePublicInstituteSubmit(e) {
+      e.preventDefault();
+      const name = document.getElementById("instNameInput").value.trim();
+      const contactPerson = document.getElementById("instContactPersonInput").value.trim();
+      const email = document.getElementById("instEmailInput").value.trim();
+      const phone = document.getElementById("instPhoneInput").value.trim();
+      const type = document.getElementById("instTypeSelect").value;
+      const location = document.getElementById("instLocationInput").value.trim();
+      const website = document.getElementById("instWebsiteInput").value.trim();
+      const status = document.getElementById("instStatusSelect").value;
+      const notes = document.getElementById("instNotesTextarea").value.trim();
+
+      const successAlert = document.getElementById("instSuccess");
+      const errorAlert = document.getElementById("instError");
+
+      if (successAlert) successAlert.classList.add("d-none");
+      if (errorAlert) errorAlert.classList.add("d-none");
+
+      const instData = {
+        name,
+        contactPerson,
+        email,
+        phone,
+        type,
+        location,
+        website,
+        status,
+        notes
+      };
+
+      try {
+        if (editingInstId) {
+          await updatePublicInstitute(editingInstId, instData);
+          await addAuditLog({
+            user_email: currentUserEmail || "admin@intrex-digital.com",
+            action_type: "UPDATE",
+            collection_name: "public_institutes",
+            record_id: editingInstId,
+            details: `Updated public institute contact "${name}" (${editingInstId})`
+          });
+        } else {
+          const savedId = await addPublicInstitute(instData);
+          await addAuditLog({
+            user_email: currentUserEmail || "admin@intrex-digital.com",
+            action_type: "CREATE",
+            collection_name: "public_institutes",
+            record_id: savedId,
+            details: `Created public institute contact "${name}" (${savedId})`
+          });
+        }
+
+        refreshAuditLogs();
+
+        if (successAlert) {
+          successAlert.querySelector("span").textContent = `Public institute contact saved successfully!`;
+          successAlert.classList.remove("d-none");
+          setTimeout(() => successAlert.classList.add("d-none"), 4000);
+        }
+
+        resetPublicInstituteForm();
+        await loadPublicInstitutes();
+      } catch (err) {
+        console.error("Error saving public institute: ", err);
+        if (errorAlert) {
+          errorAlert.querySelector("span").textContent = err.message || "An error occurred while saving the institute contact.";
+          errorAlert.classList.remove("d-none");
+        }
+      }
+    }
+
+    // Attach Contact Directory events
+    document.getElementById("contact-directory-tab")?.addEventListener("click", () => {
+      renderStudentContacts();
+      renderTrainerContacts();
+      loadPublicInstitutes();
+    });
+
+    document.getElementById("searchStudentContact")?.addEventListener("input", renderStudentContacts);
+    document.getElementById("courseStudentContactFilter")?.addEventListener("change", renderStudentContacts);
+    document.getElementById("searchTrainerContact")?.addEventListener("input", renderTrainerContacts);
+    document.getElementById("typeTrainerContactFilter")?.addEventListener("change", renderTrainerContacts);
+
+    document.getElementById("searchInstContact")?.addEventListener("input", renderPublicInstitutes);
+    document.getElementById("filterInstType")?.addEventListener("change", renderPublicInstitutes);
+    document.getElementById("refreshInstListBtn")?.addEventListener("click", loadPublicInstitutes);
+    document.getElementById("publicInstituteForm")?.addEventListener("submit", handlePublicInstituteSubmit);
+    document.getElementById("cancelInstEditBtn")?.addEventListener("click", resetPublicInstituteForm);
 
   </script>
 
