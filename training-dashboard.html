@@ -4085,6 +4085,155 @@
         gridBody.innerHTML += breakdownSectionHtml;
       }
 
+      if (type === 'registration') {
+        const studentId = record.studentId;
+        const studentRegistrations = allRegistrations.filter(r => r.studentId === studentId);
+        const studentPayments = allPayments.filter(p => p.studentId === studentId);
+
+        let coursesHtml = '';
+        if (studentRegistrations.length > 0) {
+          coursesHtml = studentRegistrations.map((reg, index) => {
+            const payRecord = studentPayments.find(p => (p.id || p.studentId) === (reg.id || reg.studentId) || p.courseName === reg.course);
+            
+            let paymentSummaryHtml = '';
+            let installmentsHtml = '';
+
+            if (payRecord) {
+              const fee = payRecord.totalFee || 0;
+              const disc = payRecord.discount || 0;
+              const paid = payRecord.amountPaid || 0;
+              const due = payRecord.dueAmount || 0;
+              const status = payRecord.status || 'Unpaid';
+              const payType = payRecord.paymentType || 'N/A';
+              const txId = payRecord.transactionId || 'N/A';
+              const regFee = payRecord.registrationFee || 0;
+              const installments = payRecord.installments || [];
+
+              // Render installments table if they exist
+              if (installments.length > 0) {
+                const rowsHtml = installments.map((inst, instIndex) => {
+                  const instAmt = Number(inst.amount) || 0;
+                  const instStatus = inst.status || 'Pending';
+                  const instDueDate = inst.dueDate || 'N/A';
+
+                  let instBadgeClass = 'bg-secondary';
+                  if (instStatus === 'Paid') instBadgeClass = 'bg-success text-white';
+                  else if (instStatus === 'Staled' || instStatus === 'Overdue') instBadgeClass = 'bg-danger text-white';
+                  else if (instStatus === 'Unstalled' || instStatus === 'Pending') instBadgeClass = 'bg-info text-dark';
+
+                  return `
+                    <tr>
+                      <td class="small text-muted py-1">Installment #${instIndex + 1}</td>
+                      <td class="fw-bold small py-1">${instAmt.toLocaleString()} BDT</td>
+                      <td class="small text-muted py-1">${instDueDate}</td>
+                      <td class="py-1"><span class="badge ${instBadgeClass} small px-2 py-1">${instStatus}</span></td>
+                    </tr>
+                  `;
+                }).join('');
+
+                installmentsHtml = `
+                  <div class="mt-3">
+                    <span class="text-muted small fw-bold d-block mb-1"><i class="bi bi-calendar3 me-1"></i>Installment Schedule:</span>
+                    <div class="table-responsive border rounded bg-white">
+                      <table class="table table-sm table-hover mb-0" style="font-size: 0.75rem;">
+                        <thead class="table-light">
+                          <tr>
+                            <th>Schedule</th>
+                            <th>Amount</th>
+                            <th>Due Date</th>
+                            <th>Status</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          ${rowsHtml}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                `;
+              }
+
+              paymentSummaryHtml = `
+                <div class="row g-2 mt-2 pt-2 border-top">
+                  <div class="col-md-3">
+                    <span class="text-muted small d-block" style="font-size: 0.7rem;">Course Fee</span>
+                    <strong class="text-dark small">${fee.toLocaleString()} BDT</strong>
+                  </div>
+                  <div class="col-md-3">
+                    <span class="text-muted small d-block" style="font-size: 0.7rem;">Discount</span>
+                    <strong class="text-danger small">${disc.toLocaleString()} BDT</strong>
+                  </div>
+                  <div class="col-md-3">
+                    <span class="text-muted small d-block" style="font-size: 0.7rem;">Amount Paid</span>
+                    <strong class="text-success small">${paid.toLocaleString()} BDT</strong>
+                  </div>
+                  <div class="col-md-3">
+                    <span class="text-muted small d-block" style="font-size: 0.7rem;">Due Amount</span>
+                    <strong class="text-warning-emphasis small">${due.toLocaleString()} BDT</strong>
+                  </div>
+                </div>
+                <div class="row g-2 mt-1">
+                  <div class="col-md-6">
+                    <span class="text-muted small d-block" style="font-size: 0.7rem;">Payment Method</span>
+                    <span class="small text-dark fw-medium">${payType}</span>
+                  </div>
+                  <div class="col-md-6">
+                    <span class="text-muted small d-block" style="font-size: 0.7rem;">Transaction ID</span>
+                    <code class="small text-dark font-monospace">${txId}</code>
+                  </div>
+                </div>
+                ${installmentsHtml}
+              `;
+            } else {
+              paymentSummaryHtml = `
+                <div class="alert alert-warning py-2 px-3 small mt-2 mb-0">
+                  <i class="bi bi-exclamation-triangle-fill me-2"></i>No payment record found for this course.
+                </div>
+              `;
+            }
+
+            let regDateStr = "N/A";
+            if (reg.createdAt) {
+              const dt = reg.createdAt.toDate ? reg.createdAt.toDate() : new Date(reg.createdAt);
+              regDateStr = dt.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+            }
+
+            return `
+              <div class="card border border-light-subtle rounded-3 p-3 shadow-sm mb-3" style="background: #fafafa;">
+                <div class="d-flex justify-content-between align-items-start flex-wrap gap-2 mb-2">
+                  <div>
+                    <h6 class="fw-bold mb-0 text-heading-color" style="font-size: 0.95rem;">
+                      <i class="bi bi-journal-bookmark-fill text-primary me-2"></i>${reg.course}
+                    </h6>
+                    <span class="text-muted small"><i class="bi bi-calendar3 me-1"></i>Enrolled on: ${regDateStr}</span>
+                  </div>
+                  <div class="d-flex gap-2">
+                    <span class="badge bg-secondary text-dark px-2 py-1 font-semibold" style="font-size: 0.725rem;">Batch: ${reg.batch || 'N/A'}</span>
+                    <span class="badge bg-secondary text-dark px-2 py-1 font-semibold" style="font-size: 0.725rem;">Schedule: ${reg.schedule || 'N/A'}</span>
+                    ${payRecord ? `<span class="badge ${getBadgeClass(payRecord.status)} px-2 py-1 fw-bold" style="font-size: 0.725rem;">${payRecord.status}</span>` : ''}
+                  </div>
+                </div>
+                ${paymentSummaryHtml}
+              </div>
+            `;
+          }).join('');
+        } else {
+          coursesHtml = `<div class="text-muted text-center py-3">No course enrollments found.</div>`;
+        }
+
+        const registrationBreakdownHtml = `
+          <div class="col-12 mt-4">
+            <h5 class="fw-bold text-heading-color mb-3 pb-2 border-bottom d-flex align-items-center gap-2">
+              <i class="bi bi-mortarboard-fill text-primary"></i> Course Enrollments & Billing Profile
+            </h5>
+            <div>
+              ${coursesHtml}
+            </div>
+          </div>
+        `;
+        gridBody.innerHTML += registrationBreakdownHtml;
+      }
+
       // Launch Modal
       const modalInst = bootstrap.Modal.getOrCreateInstance(document.getElementById('detailsViewModal'));
       modalInst.show();
