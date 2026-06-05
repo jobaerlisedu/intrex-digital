@@ -2246,6 +2246,8 @@
     let editingPlacementId = null;
     let loadedOnlineKey = null;
     let editingStudentId = null;
+    let editingDocId = null;
+    let reusedStudentId = null;
     let editingCertId = null;
     let editingEmployeeId = null;
     let currentUserEmail = "";
@@ -3156,13 +3158,13 @@
           <td class="text-center"><span class="small text-muted">${dateStr}</span></td>
           <td class="text-center">
             <div class="btn-group gap-1">
-              <button class="btn btn-sm btn-outline-info view-reg" data-id="${record.studentId}">
+              <button class="btn btn-sm btn-outline-info view-reg" data-id="${record.id || record.studentId}">
                 <i class="bi bi-eye"></i> View
               </button>
-              <button class="btn btn-sm btn-outline-secondary edit-reg" data-id="${record.studentId}">
+              <button class="btn btn-sm btn-outline-secondary edit-reg" data-id="${record.id || record.studentId}">
                 <i class="bi bi-pencil"></i> Edit
               </button>
-              <button class="btn btn-sm btn-outline-danger delete-reg" data-id="${record.studentId}" data-name="${record.fullName}">
+              <button class="btn btn-sm btn-outline-danger delete-reg" data-id="${record.id || record.studentId}" data-name="${record.fullName}">
                 <i class="bi bi-trash"></i> Delete
               </button>
             </div>
@@ -3174,16 +3176,16 @@
       // Bind view button actions
       tbody.querySelectorAll(".view-reg").forEach(btn => {
         btn.onclick = function () {
-          const regId = btn.getAttribute("data-id");
-          showRecordDetails("registration", regId);
+          const docId = btn.getAttribute("data-id");
+          showRecordDetails("registration", docId);
         };
       });
 
       // Bind edit button actions
       tbody.querySelectorAll(".edit-reg").forEach(btn => {
         btn.onclick = function () {
-          const regId = btn.getAttribute("data-id");
-          const record = allRegistrations.find(r => r.studentId === regId);
+          const docId = btn.getAttribute("data-id");
+          const record = allRegistrations.find(r => (r.id || r.studentId) === docId);
           if (record) {
             startRegEditMode(record);
           }
@@ -3226,6 +3228,7 @@
 
     function startRegEditMode(record) {
       editingStudentId = record.studentId;
+      editingDocId = record.id || record.studentId;
 
       // Switch tab to registration form
       const regTab = document.getElementById("registration-tab");
@@ -3297,7 +3300,9 @@
 
     function cancelRegEditMode() {
       editingStudentId = null;
+      editingDocId = null;
       loadedOnlineKey = null;
+      reusedStudentId = null;
       document.getElementById("regForm").reset();
 
       if (regIsJobHolderSwitch) {
@@ -3333,10 +3338,49 @@
           regCompany.removeAttribute("required");
           regDesignation.removeAttribute("required");
           regCompany.value = "";
-          regDesignation.value = "";
         }
       });
     }
+
+    // Dynamic matching of returning students when typing email/phone
+    function checkExistingStudentMatch(inputVal, type) {
+      // Do not match if we are already in edit mode or already reusing an ID
+      if (editingDocId || reusedStudentId) return;
+
+      const cleanVal = inputVal.trim();
+      if (!cleanVal || cleanVal.length < 5) return; // ignore short or empty inputs
+
+      const found = allRegistrations.find(r => {
+        if (type === 'email') {
+          return r.email && r.email.trim().toLowerCase() === cleanVal.toLowerCase();
+        } else if (type === 'phone') {
+          // Normalize phone inputs slightly to handle matches (e.g. remove spaces, dashes)
+          const cleanInput = cleanVal.replace(/[^0-9]/g, "");
+          const cleanRegPhone = r.phone ? r.phone.replace(/[^0-9]/g, "") : "";
+          return cleanInput && cleanRegPhone && (cleanRegPhone === cleanInput || cleanRegPhone.endsWith(cleanInput) || cleanInput.endsWith(cleanRegPhone));
+        }
+        return false;
+      });
+
+      if (found) {
+        // Use setTimeout to allow the input focus/blur cycle to complete and avoid prompt interrupts
+        setTimeout(() => {
+          // Double check the conditions in case they changed in between
+          if (editingDocId || reusedStudentId) return;
+          if (confirm(`A student with this ${type === 'email' ? 'email address' : 'phone number'} is already registered:\n\nName: ${found.fullName}\nStudent ID: ${found.studentId}\nCourse: ${found.course}\n\nWould you like to reuse this Student ID and autofill their details?`)) {
+            startNewCourseEnrollment(found);
+          }
+        }, 100);
+      }
+    }
+
+    document.getElementById("regEmail").addEventListener("blur", function() {
+      checkExistingStudentMatch(this.value, 'email');
+    });
+
+    document.getElementById("regPhone").addEventListener("blur", function() {
+      checkExistingStudentMatch(this.value, 'phone');
+    });
 
     // Cancel registration edit button
     document.getElementById("cancelRegEditBtn").addEventListener("click", function () {
@@ -3347,6 +3391,42 @@
       }
     });
 
+    function startNewCourseEnrollment(record) {
+      cancelRegEditMode();
+      reusedStudentId = record.studentId;
+
+      // Switch tab to registration form
+      const regTab = document.getElementById("registration-tab");
+      if (regTab) {
+        bootstrap.Tab.getOrCreateInstance(regTab).show();
+      }
+
+      // Populate student details
+      document.getElementById("regName").value = record.fullName || "";
+      document.getElementById("regEmail").value = record.email || "";
+      document.getElementById("regPhone").value = record.phone || "";
+      document.getElementById("regEducation").value = record.education || "";
+      
+      const isJobHolder = record.isJobHolder || false;
+      if (regIsJobHolderSwitch) {
+        regIsJobHolderSwitch.checked = isJobHolder;
+        regIsJobHolderSwitch.dispatchEvent(new Event("change"));
+        if (isJobHolder) {
+          document.getElementById("regCompany").value = record.companyName || "";
+          document.getElementById("regDesignation").value = record.designation || "";
+        }
+      }
+
+      // Update Form Titles & Buttons
+      document.getElementById("regFormTitle").innerHTML = `<i class="bi bi-pencil-square me-2 text-primary"></i>New Course Enrollment <span class="badge bg-info text-white ms-2">Reusing Student ID: ${record.studentId}</span>`;
+      document.getElementById("submitRegBtn").innerHTML = `<i class="bi bi-cloud-arrow-up me-2"></i>Save Registration & Payment Record`;
+      document.getElementById("cancelRegEditBtn").classList.remove("d-none");
+
+      // Focus
+      document.getElementById("regCourse").focus();
+      document.getElementById("regFormTitle").scrollIntoView({ behavior: "smooth" });
+    }
+
     // Lookup Student ID in Registration form
     document.getElementById("lookupStudentBtn").addEventListener("click", function () {
       const searchId = document.getElementById("lookupStudentId").value.trim().toUpperCase();
@@ -3355,9 +3435,18 @@
         return;
       }
 
-      const found = allRegistrations.find(r => r.studentId && r.studentId.toUpperCase() === searchId);
+      const cleanSearchId = searchId.replace(/[^0-9]/g, "");
+      const found = allRegistrations.find(r => {
+        if (!r.studentId) return false;
+        const cleanRegId = r.studentId.replace(/[^0-9]/g, "");
+        return (cleanSearchId && cleanRegId === cleanSearchId) || r.studentId.toUpperCase() === searchId;
+      });
       if (found) {
-        startRegEditMode(found);
+        if (confirm(`Student "${found.fullName}" (${found.studentId}) was found.\n\nClick "OK" to enroll this student in a new course (reusing this Student ID).\nClick "Cancel" to edit their existing registration.`)) {
+          startNewCourseEnrollment(found);
+        } else {
+          startRegEditMode(found);
+        }
       } else {
         alert("Student ID not found in registration records.");
       }
@@ -3433,6 +3522,15 @@
         }
       }
 
+      // Check if student is already enrolled in this course when creating a new registration
+      if (!editingDocId && reusedStudentId) {
+        const alreadyRegistered = allRegistrations.some(r => r.studentId === reusedStudentId && r.course === course);
+        if (alreadyRegistered) {
+          alert(`Error: This student (ID: ${reusedStudentId}) is already registered for the course "${course}".`);
+          return;
+        }
+      }
+
       const successAlert = document.getElementById("regSuccess");
       const errorAlert = document.getElementById("regError");
       const submitBtn = document.getElementById("submitRegBtn");
@@ -3445,9 +3543,9 @@
         const originalBtnContent = submitBtn.innerHTML;
         submitBtn.innerHTML = `<span class="spinner-border spinner-border-sm me-2" role="status"></span>Saving...`;
 
-        if (editingStudentId) {
+        if (editingDocId) {
           // Update
-          await updateRegistration(editingStudentId, { fullName, email, phone, course, batch, education, schedule, message, isJobHolder, companyName, designation });
+          await updateRegistration(editingDocId, { fullName, email, phone, course, batch, education, schedule, message, isJobHolder, companyName, designation });
 
           // Audit Logging
           await addAuditLog({
@@ -3463,7 +3561,7 @@
           cancelRegEditMode();
         } else {
           // Create
-          const generatedId = await addRegistration({ fullName, email, phone, course, batch, education, schedule, message, totalFee, discount, amountPaid, paymentType, transactionId, registrationFee, installments, isJobHolder, companyName, designation });
+          const generatedId = await addRegistration({ fullName, email, phone, course, batch, education, schedule, message, totalFee, discount, amountPaid, paymentType, transactionId, registrationFee, installments, isJobHolder, companyName, designation, studentId: reusedStudentId });
 
           // Audit Logging
           await addAuditLog({
@@ -3496,12 +3594,11 @@
             }
           }
 
-          successAlert.querySelector("span").innerHTML = `Student registered successfully!<br><strong>Generated Student ID:</strong> <code class="text-dark font-monospace">${generatedId}</code>`;
-          document.getElementById("regForm").reset();
-
-          // Reset title
-          document.getElementById("regFormTitle").innerHTML = `<i class="bi bi-pencil-square me-2 text-primary"></i>Course Registration Form`;
-          document.getElementById("cancelRegEditBtn").classList.add("d-none");
+          const wasReused = !!reusedStudentId;
+          successAlert.querySelector("span").innerHTML = wasReused
+            ? `Student registered successfully!<br><strong>Reused Student ID:</strong> <code class="text-dark font-monospace">${generatedId}</code>`
+            : `Student registered successfully!<br><strong>Generated Student ID:</strong> <code class="text-dark font-monospace">${generatedId}</code>`;
+          cancelRegEditMode();
         }
 
         successAlert.classList.remove("d-none");
@@ -3647,10 +3744,10 @@
           <td class="text-center"><span class="badge ${statusBadgeClass}">${record.status || 'Unpaid'}</span></td>
           <td class="text-center">
             <div class="btn-group gap-1">
-              <button class="btn btn-sm btn-outline-info view-payment" data-id="${record.studentId}">
+              <button class="btn btn-sm btn-outline-info view-payment" data-id="${record.id || record.studentId}">
                 <i class="bi bi-eye"></i> View
               </button>
-              <button class="btn btn-sm btn-outline-primary edit-payment" data-id="${record.studentId}">
+              <button class="btn btn-sm btn-outline-primary edit-payment" data-id="${record.id || record.studentId}">
                 <i class="bi bi-pencil-square"></i> Update
               </button>
             </div>
@@ -3662,16 +3759,16 @@
       // Bind view payment buttons
       tbody.querySelectorAll(".view-payment").forEach(btn => {
         btn.onclick = function () {
-          const regId = btn.getAttribute("data-id");
-          showRecordDetails("payment", regId);
+          const docId = btn.getAttribute("data-id");
+          showRecordDetails("payment", docId);
         };
       });
 
       // Bind update payment buttons
       tbody.querySelectorAll(".edit-payment").forEach(btn => {
         btn.onclick = function () {
-          const regId = btn.getAttribute("data-id");
-          const record = allPayments.find(p => p.studentId === regId);
+          const docId = btn.getAttribute("data-id");
+          const record = allPayments.find(p => (p.id || p.studentId) === docId);
           if (record) {
             openPaymentModal(record);
           }
@@ -4047,7 +4144,7 @@
         editPaymentModalInstance = bootstrap.Modal.getOrCreateInstance(editPaymentModalEl);
       }
 
-      document.getElementById("editPaymentRegId").value = record.studentId;
+      document.getElementById("editPaymentRegId").value = record.id || record.studentId;
       document.getElementById("editPaymentStudentName").value = record.studentName;
       document.getElementById("editPaymentCourse").value = record.courseName;
       document.getElementById("editPaymentTotalFee").value = record.totalFee || 0;
@@ -4607,6 +4704,19 @@
 
       loadedOnlineKey = record.registrationKey;
 
+      // Find if student already exists by Email or Phone
+      const emailMatch = record.email ? record.email.trim().toLowerCase() : "";
+      const phoneMatch = record.phone ? record.phone.trim() : "";
+      
+      const existingStudent = allRegistrations.find(r => 
+        (emailMatch && r.email && r.email.trim().toLowerCase() === emailMatch) ||
+        (phoneMatch && r.phone && r.phone.trim() === phoneMatch)
+      );
+
+      if (existingStudent) {
+        reusedStudentId = existingStudent.studentId;
+      }
+
       // Populate registration form fields
       document.getElementById("regName").value = record.fullName || "";
       document.getElementById("regEmail").value = record.email || "";
@@ -4650,12 +4760,21 @@
       }
 
       // Update Form Title & Button
-      document.getElementById("regFormTitle").innerHTML = `
-        <i class="bi bi-pencil-square me-2 text-primary"></i>Course Registration Form
-        <span class="badge bg-success text-white ms-2" style="font-size: 0.7rem;">
-          <i class="bi bi-lightning-charge-fill"></i> Loaded ${record.registrationKey}
-        </span>
-      `;
+      if (reusedStudentId) {
+        document.getElementById("regFormTitle").innerHTML = `
+          <i class="bi bi-pencil-square me-2 text-primary"></i>New Course Enrollment 
+          <span class="badge bg-info text-white ms-2" style="font-size: 0.7rem;">
+            Reusing Student ID: ${reusedStudentId} (Matched by Email/Phone)
+          </span>
+        `;
+      } else {
+        document.getElementById("regFormTitle").innerHTML = `
+          <i class="bi bi-pencil-square me-2 text-primary"></i>Course Registration Form
+          <span class="badge bg-success text-white ms-2" style="font-size: 0.7rem;">
+            <i class="bi bi-lightning-charge-fill"></i> Loaded ${record.registrationKey}
+          </span>
+        `;
+      }
       document.getElementById("cancelRegEditBtn").classList.remove("d-none");
 
       // Focus

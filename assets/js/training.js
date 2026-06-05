@@ -204,7 +204,7 @@ function generateStudentId(courseName, batchName, registrationsList) {
 export async function addRegistration(regData) {
   if (!checkConfiguration()) return null;
 
-  const { fullName, email, phone, course, batch, education, schedule, message, totalFee, discount, amountPaid, paymentType, transactionId, registrationFee, installments, isJobHolder, companyName, designation } = regData;
+  const { fullName, email, phone, course, batch, education, schedule, message, totalFee, discount, amountPaid, paymentType, transactionId, registrationFee, installments, isJobHolder, companyName, designation, studentId } = regData;
 
   if (!fullName || !email || !phone || !course || !batch || !schedule) {
     throw new Error("Missing required registration fields");
@@ -220,12 +220,14 @@ export async function addRegistration(regData) {
       }
     });
 
-    const studentId = generateStudentId(course, batch, regs);
+    const finalStudentId = studentId || generateStudentId(course, batch, regs);
+    const cleanCourse = course.trim().replace(/[^a-zA-Z0-9]/g, "");
+    const docId = finalStudentId + "_" + cleanCourse;
 
-    // 2. Save registration info using studentId as document ID
-    const regRef = doc(db, "registrations", studentId);
+    // 2. Save registration info using docId as document ID
+    const regRef = doc(db, "registrations", docId);
     await setDoc(regRef, {
-      studentId,
+      studentId: finalStudentId,
       fullName: fullName.trim(),
       email: email.trim(),
       phone: phone.trim(),
@@ -240,7 +242,7 @@ export async function addRegistration(regData) {
       createdAt: serverTimestamp()
     });
 
-    // 3. Create corresponding payment record linked by studentId as document ID
+    // 3. Create corresponding payment record linked by docId as document ID
     const fee = Number(totalFee) || 0;
     const disc = Number(discount) || 0;
     const paid = Number(amountPaid) || 0;
@@ -251,9 +253,9 @@ export async function addRegistration(regData) {
       status = paid >= effectiveFee ? "Fully Paid" : "Partially Paid";
     }
 
-    const payRef = doc(db, "payments", studentId);
+    const payRef = doc(db, "payments", docId);
     await setDoc(payRef, {
-      studentId,
+      studentId: finalStudentId,
       studentName: fullName.trim(),
       email: email.trim(),
       courseName: course.trim(),
@@ -271,7 +273,7 @@ export async function addRegistration(regData) {
       installments: installments || []
     });
 
-    return studentId;
+    return finalStudentId;
   } catch (error) {
     console.error("Error adding course registration: ", error);
     throw error;
@@ -284,6 +286,7 @@ export async function getAllRegistrations() {
   if (urlParams.get('mock') === '1') {
     return [
       {
+        id: "495001_CompTIASecurity+",
         studentId: "495001",
         fullName: "Shibli Akter",
         email: "shibli@example.com",
@@ -303,7 +306,9 @@ export async function getAllRegistrations() {
     const regs = [];
     querySnapshot.forEach((docSnap) => {
       if (docSnap.exists()) {
-        regs.push(docSnap.data());
+        const data = docSnap.data();
+        data.id = docSnap.id;
+        regs.push(data);
       }
     });
     return regs;
@@ -314,7 +319,7 @@ export async function getAllRegistrations() {
 }
 
 // Update course registration
-export async function updateRegistration(studentId, regData) {
+export async function updateRegistration(docId, regData) {
   if (!checkConfiguration()) return;
 
   const { fullName, email, phone, course, batch, education, schedule, message, isJobHolder, companyName, designation } = regData;
@@ -324,7 +329,11 @@ export async function updateRegistration(studentId, regData) {
   }
 
   try {
-    const regRef = doc(db, "registrations", studentId);
+    const regRef = doc(db, "registrations", docId);
+    const regSnap = await getDoc(regRef);
+    const existingData = regSnap.exists() ? regSnap.data() : {};
+    const studentId = existingData.studentId || "";
+
     await setDoc(regRef, {
       fullName: fullName.trim(),
       email: email.trim(),
@@ -340,7 +349,7 @@ export async function updateRegistration(studentId, regData) {
     }, { merge: true });
 
     // Sync student name, email, course and batch to the payment record
-    const payRef = doc(db, "payments", studentId);
+    const payRef = doc(db, "payments", docId);
 
     const paySnap = await getDoc(payRef);
     if (paySnap.exists()) {
@@ -396,21 +405,29 @@ export async function updateRegistration(studentId, regData) {
 }
 
 // Delete course registration and linked payment record
-export async function deleteRegistration(studentId) {
+export async function deleteRegistration(docId) {
   if (!checkConfiguration()) return;
   try {
-    const regRef = doc(db, "registrations", studentId);
+    const regRef = doc(db, "registrations", docId);
+    const regSnap = await getDoc(regRef);
+    let studentId = "";
+    let course = "";
+    if (regSnap.exists()) {
+      studentId = regSnap.data().studentId;
+      course = regSnap.data().course;
+    }
+
     await deleteDoc(regRef);
 
-    const payRef = doc(db, "payments", studentId);
+    const payRef = doc(db, "payments", docId);
     await deleteDoc(payRef);
 
-    // Also delete any certificates for this student
+    // Also delete any certificates for this student's specific course
     const certQuerySnapshot = await getDocs(collection(db, "certificates"));
     certQuerySnapshot.forEach(async (docSnap) => {
       if (docSnap.exists()) {
         const certData = docSnap.data();
-        if (certData.studentId === studentId) {
+        if (certData.studentId === studentId && (!course || certData.courseName === course)) {
           const certRef = doc(db, "certificates", certData.certificateId);
           await deleteDoc(certRef);
         }
@@ -432,6 +449,7 @@ export async function getAllPayments() {
   if (urlParams.get('mock') === '1') {
     return [
       {
+        id: "495001_CompTIASecurity+",
         studentId: "495001",
         studentName: "Shibli Akter",
         email: "shibli@example.com",
@@ -459,7 +477,9 @@ export async function getAllPayments() {
     const pays = [];
     querySnapshot.forEach((docSnap) => {
       if (docSnap.exists()) {
-        pays.push(docSnap.data());
+        const data = docSnap.data();
+        data.id = docSnap.id;
+        pays.push(data);
       }
     });
     return pays;
@@ -470,7 +490,7 @@ export async function getAllPayments() {
 }
 
 // Update payment record details
-export async function updatePayment(studentId, totalFee, discount, amountPaid, paymentType, transactionId, registrationFee, installments) {
+export async function updatePayment(docId, totalFee, discount, amountPaid, paymentType, transactionId, registrationFee, installments) {
   if (!checkConfiguration()) return;
 
   try {
@@ -484,7 +504,7 @@ export async function updatePayment(studentId, totalFee, discount, amountPaid, p
       status = paid >= effectiveFee ? "Fully Paid" : "Partially Paid";
     }
 
-    const payRef = doc(db, "payments", studentId);
+    const payRef = doc(db, "payments", docId);
     await setDoc(payRef, {
       totalFee: fee,
       discount: disc,
