@@ -1713,7 +1713,7 @@
                     </div>
                     
                     <!-- Table Display -->
-                    <div class="table-responsive border rounded-3 shadow-sm bg-white" style="max-height: 480px; overflow-y: auto;">
+                    <div class="table-responsive border rounded-3 shadow-sm bg-white">
                       <table class="table table-hover align-middle mb-0" id="reportTable">
                         <thead class="table-light sticky-top" id="reportTableHeader">
                           <!-- Filled dynamically by JavaScript -->
@@ -2622,7 +2622,7 @@
                         <i class="bi bi-arrow-clockwise"></i> Refresh Logs
                       </button>
                     </div>
-                    <div class="table-responsive" style="max-height: 620px; overflow-y: auto;">
+                    <div class="table-responsive">
                       <table class="table table-hover align-middle mb-0" id="logsTable">
                         <thead class="table-light sticky-top">
                           <tr>
@@ -6941,7 +6941,7 @@
         thead.innerHTML = `
           <tr>
             <th class="small fw-semibold py-2">Line Item</th>
-            <th class="small fw-semibold py-2 text-end">Amount (BDT)</th>
+            <th class="small fw-semibold py-2 text-end pe-4">Amount (BDT)</th>
           </tr>
         `;
         tbody.innerHTML = compiledReportData.map(row => {
@@ -6955,23 +6955,23 @@
             return `
               <tr class="fw-bold border-top border-bottom">
                 <td class="py-2 ps-3">${row.label}</td>
-                <td class="text-end py-2 font-monospace">${row.value.toLocaleString()} BDT</td>
+                <td class="text-end py-2 font-monospace pe-4">${row.value.toLocaleString()} BDT</td>
               </tr>
             `;
           } else if (row.type === 'net') {
             const isProfit = row.value >= 0;
             const textClass = isProfit ? "text-success" : "text-danger";
             return `
-              <tr class="fw-bold fs-6" style="border-bottom: 3px double #333; border-top: 1px solid #dee2e6;">
+              <tr class="fw-bold fs-6">
                 <td class="py-3 text-uppercase">${row.label}</td>
-                <td class="text-end py-3 font-monospace ${textClass}">${row.value.toLocaleString()} BDT</td>
+                <td class="text-end py-3 font-monospace ${textClass} pe-4">${row.value.toLocaleString()} BDT</td>
               </tr>
             `;
           } else {
             return `
               <tr>
                 <td class="py-2 ps-4 text-muted">${row.label}</td>
-                <td class="text-end py-2 font-monospace">${row.value.toLocaleString()} BDT</td>
+                <td class="text-end py-2 font-monospace pe-4">${row.value.toLocaleString()} BDT</td>
               </tr>
             `;
           }
