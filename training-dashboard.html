@@ -28,6 +28,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&amp;display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
 
   <!-- ======= Styles =======-->
   <link href="assets/vendors/bootstrap/bootstrap.min.css" rel="stylesheet">
@@ -231,6 +234,13 @@
 
     /* ── Print styles ── */
     @media print {
+      [data-aos] {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+        animation: none !important;
+      }
+
       body>*:not(#printSection) {
         display: none !important;
       }
@@ -405,6 +415,279 @@
 
       .col-md-12 {
         width: 100%;
+      }
+    }
+
+    /* Certificate Design System */
+    .certificate-container {
+      width: 100%;
+      max-width: 850px;
+      margin: 20px auto;
+      aspect-ratio: 842 / 595;
+      background-color: #faf6ee;
+      position: relative;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1) !important;
+      border-radius: 8px;
+      overflow: hidden;
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+      color: #333;
+    }
+
+    .certificate-inner {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      padding: 40px 50px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-sizing: border-box;
+    }
+
+    .certificate-border {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+
+    .certificate-content {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      text-align: center;
+      position: relative;
+      z-index: 2;
+    }
+
+    .certificate-logo-container {
+      height: 55px;
+      margin-top: 15px;
+      margin-bottom: 25px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .certificate-official-logo {
+      height: 55px;
+      width: auto;
+      display: block;
+    }
+
+    .certificate-title {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 30px;
+      font-weight: 900;
+      color: #222;
+      margin: 0 0 8px 0;
+      letter-spacing: 0.5px;
+    }
+
+    .certificate-subtitle {
+      font-family: 'Lato', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      color: #7c5a43;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .certificate-recipient {
+      font-family: 'Great Vibes', cursive;
+      font-size: 46px;
+      color: #1a1a1a;
+      margin: 15px 0;
+      line-height: 1;
+    }
+
+    .certificate-description {
+      font-family: 'Inter', sans-serif;
+      font-size: 12.5px;
+      line-height: 1.6;
+      color: #555;
+      max-width: 680px;
+      margin: 0 auto 10px auto;
+    }
+
+    .certificate-description strong {
+      color: #222;
+      font-weight: 600;
+    }
+
+    .certificate-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      width: 100%;
+      margin-top: auto;
+      padding: 0 10px;
+    }
+
+    .signature-block {
+      width: 200px;
+      text-align: center;
+    }
+
+    .signature-line {
+      border-bottom: 1.5px solid #7c5a43;
+      padding-bottom: 5px;
+      margin-bottom: 2px;
+      height: 45px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+    }
+
+    .signature-cursive {
+      font-family: 'Great Vibes', cursive;
+      font-size: 26px;
+      color: #4e3629;
+      opacity: 0.85;
+      user-select: none;
+    }
+
+    .signature-name {
+      font-family: 'Inter', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      color: #222;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .signature-title {
+      font-family: 'Inter', sans-serif;
+      font-size: 9.5px;
+      color: #666;
+    }
+
+    .verification-block {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 15px;
+    }
+
+    .qr-code-wrapper img {
+      width: 55px;
+      height: 55px;
+      display: block;
+      padding: 3px;
+      background: white;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+
+    .seal-wrapper {
+      width: 55px;
+      height: 55px;
+    }
+
+    .certificate-footer {
+      font-size: 9.5px;
+      color: #777;
+      margin-top: 12px;
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      align-items: center;
+      border-top: 1px solid rgba(124, 90, 67, 0.15);
+      width: 100%;
+      padding-top: 8px;
+    }
+
+    .certificate-footer .separator {
+      color: #ccc;
+    }
+
+    .certificate-footer .cert-id-value,
+    .certificate-footer .cert-date-value {
+      font-weight: 600;
+      color: #444;
+    }
+
+    /* Print overrides for landscape certificate inside training admin dashboard */
+    @media print {
+      body.viewing-certificate {
+        background: #faf6ee !important;
+      }
+      
+      body.viewing-certificate #printSection {
+        width: 297mm !important;
+        height: 210mm !important;
+        position: absolute !important;
+        top: 0 !important;
+        left: 0 !important;
+        background: #faf6ee !important;
+        padding: 0 !important;
+        margin: 0 !important;
+      }
+
+      body.viewing-certificate .certificate-container {
+        display: block !important;
+        width: 297mm !important;
+        height: 210mm !important;
+        max-width: none !important;
+        margin: 0 !important;
+        box-shadow: none !important;
+        border-radius: 0 !important;
+        background-color: #faf6ee !important;
+      }
+
+      body.viewing-certificate .certificate-inner {
+        padding: 15mm 20mm !important;
+      }
+
+      /* Reset display type overrides for flex components in dashboard print */
+      body.viewing-certificate #printSection .certificate-inner,
+      body.viewing-certificate #printSection .certificate-content,
+      body.viewing-certificate #printSection .certificate-bottom,
+      body.viewing-certificate #printSection .signature-block,
+      body.viewing-certificate #printSection .verification-block,
+      body.viewing-certificate #printSection .qr-code-wrapper,
+      body.viewing-certificate #printSection .seal-wrapper,
+      body.viewing-certificate #printSection .certificate-footer,
+      body.viewing-certificate #printSection .certificate-logo-container {
+        display: flex !important;
+      }
+
+      body.viewing-certificate #printSection .certificate-inner {
+        flex-direction: column !important;
+        justify-content: space-between !important;
+      }
+
+      body.viewing-certificate #printSection .certificate-content {
+        flex-direction: column !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+      }
+
+      body.viewing-certificate #printSection .certificate-bottom {
+        justify-content: space-between !important;
+        align-items: flex-end !important;
+      }
+
+      body.viewing-certificate #printSection .signature-line {
+        display: flex !important;
+        align-items: flex-end !important;
+        justify-content: center !important;
+      }
+
+      body.viewing-certificate #printSection .certificate-logo-container,
+      body.viewing-certificate #printSection .certificate-official-logo,
+      body.viewing-certificate #printSection .certificate-title,
+      body.viewing-certificate #printSection .certificate-recipient,
+      body.viewing-certificate #printSection .certificate-description {
+        display: block !important;
       }
     }
   </style>
@@ -3039,6 +3322,8 @@
   <!-- ======= Javascripts =======-->
   <script src="assets/vendors/bootstrap/bootstrap.bundle.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- html2canvas for certificate PNG download -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script type="module">
     import { loginAdmin, logoutAdmin, onAdminAuthStateChanged, addCertificate, getAllCertificates, deleteCertificate, addRegistration, getAllRegistrations, updateRegistration, deleteRegistration, getAllPayments, updatePayment, addAuditLog, getAllAuditLogs, getAllOnlineRegistrations, getOnlineRegistration, deleteOnlineRegistration, getAllOnlineInquiries, deleteOnlineInquiry, addEmployee, getAllEmployees, deleteEmployee, getAllBatches, addBatch, updateBatch, deleteBatch, getAllPublicInstitutes, addPublicInstitute, updatePublicInstitute, deletePublicInstitute, getAllJobPlacements, addJobPlacement, updateJobPlacement, deleteJobPlacement, getAllExpenses, addExpense, updateExpense, deleteExpense, getAllAssessments, saveAssessment } from "./assets/js/training.js";
 
@@ -4986,6 +5271,9 @@
     // ==========================================
     // PREMIUM RECORD DETAILS VIEW POPUP SYSTEM
     // ==========================================
+    let activeDetailRecord = null;
+    let activeDetailType = null;
+
     function showRecordDetails(type, id) {
       const typeConfigs = {
         registration: {
@@ -5140,6 +5428,17 @@
       if (!record) {
         alert("Record not found in dataset.");
         return;
+      }
+
+      activeDetailRecord = record;
+      activeDetailType = type;
+
+      // Control dynamic visibility of the "Print Official Certificate" button
+      const printCertBtn = document.getElementById("detailsPrintCertBtn");
+      if (type === "certificate") {
+        if (printCertBtn) printCertBtn.classList.remove("d-none");
+      } else {
+        if (printCertBtn) printCertBtn.classList.add("d-none");
       }
 
       if (type === 'installment' && record) {
@@ -5551,8 +5850,160 @@
       }
 
       // Launch Modal
+      // Launch Modal
       const modalInst = bootstrap.Modal.getOrCreateInstance(document.getElementById('detailsViewModal'));
       modalInst.show();
+    }
+
+    // Modal print certificate event
+    const printCertBtn = document.getElementById("detailsPrintCertBtn");
+    if (printCertBtn) {
+      printCertBtn.onclick = async () => {
+        if (activeDetailType !== "certificate" || !activeDetailRecord) return;
+        
+        const certData = activeDetailRecord;
+        const issueDateObj = new Date(certData.issueDate);
+        const formattedDate = issueDateObj.toLocaleDateString('en-US', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric'
+        });
+        
+        const origin = "https://intrex-digital.com";
+        const verifyUrl = `${origin}/verify-certificate.html?id=${certData.certificateId}`;
+        
+        const certHTML = `
+          <div class="certificate-container" style="width:842px;height:595px;position:relative;background:#faf6ee;font-family:'Inter',sans-serif;color:#333;overflow:hidden;box-sizing:border-box;">
+            <div class="certificate-inner" style="position:absolute;top:0;left:0;right:0;bottom:0;padding:40px 50px;display:flex;flex-direction:column;justify-content:space-between;box-sizing:border-box;">
+              <!-- Ornate Border SVG -->
+              <svg style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;" viewBox="0 0 842 595" xmlns="http://www.w3.org/2000/svg">
+                <path d="M 60,20 L 782,20 A 30,30 0 0 0 812,50 L 812,545 A 30,30 0 0 0 782,575 L 60,575 A 30,30 0 0 0 30,545 L 30,50 A 30,30 0 0 0 60,20 Z" fill="none" stroke="#6d4c41" stroke-width="2.5" />
+                <path d="M 70,30 L 772,30 A 30,30 0 0 0 802,60 L 802,535 A 30,30 0 0 0 772,565 L 70,565 A 30,30 0 0 0 40,535 L 40,60 A 30,30 0 0 0 70,30 Z" fill="none" stroke="#6d4c41" stroke-width="1.2" stroke-dasharray="4,2" />
+              </svg>
+              
+              <div style="height:100%;display:flex;flex-direction:column;justify-content:space-between;align-items:center;text-align:center;position:relative;z-index:2;">
+                <!-- Top Official Logo -->
+                <div style="height:55px;margin-top:15px;margin-bottom:25px;display:flex;justify-content:center;align-items:center;">
+                  <img src="${window.location.origin.includes('localhost') || window.location.protocol === 'file:' ? '' : ''}assets/images/logo/intrex-logo.svg" style="height:55px;width:auto;display:block;" alt="Intrex Digital Hub" crossorigin="anonymous">
+                </div>
+                
+                <!-- Title -->
+                <h2 style="font-family:'Playfair Display',Georgia,serif;font-size:30px;font-weight:900;color:#222;margin:0 0 8px 0;letter-spacing:0.5px;">CERTIFICATE OF COMPLETION</h2>
+                
+                <!-- Subtitle -->
+                <div style="font-family:'Lato',sans-serif;font-size:11px;font-weight:700;color:#7c5a43;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:4px;">THIS CERTIFICATE IS PROUDLY PRESENTED TO</div>
+                
+                <!-- Recipient -->
+                <div style="font-family:'Great Vibes',cursive;font-size:46px;color:#1a1a1a;margin:15px 0;line-height:1;">${certData.studentName}</div>
+                
+                <!-- Description -->
+                <p style="font-family:'Inter',sans-serif;font-size:12.5px;line-height:1.6;color:#555;max-width:680px;margin:0 auto 10px auto;">
+                  in recognition of their outstanding dedication, academic excellence, and successful completion of the professional training program in <strong style="color:#222;font-weight:600;">${certData.courseName}</strong>, batch <strong>${certData.batch || 'N/A'}</strong>, awarded with grade <strong>${certData.grade}</strong> at Intrex Digital Hub.
+                </p>
+                
+                <!-- Bottom Row: Signatures & QR / Seal -->
+                <div style="display:flex;justify-content:space-between;align-items:flex-end;width:100%;margin-top:auto;padding:0 10px;">
+                  <!-- Left Signatory -->
+                  <div style="width:200px;text-align:center;">
+                    <div style="border-bottom:1.5px solid #7c5a43;padding-bottom:5px;margin-bottom:6px;height:45px;display:flex;align-items:flex-end;justify-content:center;">
+                      <span style="font-family:'Great Vibes',cursive;font-size:26px;color:#4e3629;opacity:0.85;">Sarah Jenkins</span>
+                    </div>
+                    <div style="font-family:'Inter',sans-serif;font-size:11px;font-weight:700;color:#222;text-transform:uppercase;letter-spacing:0.5px;">Sarah Jenkins</div>
+                    <div style="font-family:'Inter',sans-serif;font-size:9.5px;color:#666;">Director of Training</div>
+                  </div>
+                  
+                  <!-- Verification (QR & Seal) -->
+                  <div style="display:flex;align-items:center;justify-content:center;gap:15px;">
+                    <div style="width:55px;height:55px;">
+                      <svg width="55" height="55" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                          <path id="offCircleTop" d="M 20,50 A 30,30 0 1,1 80,50" fill="none" />
+                          <path id="offCircleBottom" d="M 80,50 A 30,30 0 1,1 20,50" fill="none" />
+                        </defs>
+                        <circle cx="50" cy="50" r="46" fill="none" stroke="#2e7d32" stroke-width="2" stroke-dasharray="4,2" />
+                        <circle cx="50" cy="50" r="41" fill="#e8f5e9" stroke="#2e7d32" stroke-width="2.2" />
+                        <circle cx="50" cy="50" r="32" fill="none" stroke="#2e7d32" stroke-width="1" />
+                        <path d="M 38 51 L 46 59 L 62 43" fill="none" stroke="#2e7d32" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" />
+                        <text font-family="'Inter', sans-serif" font-size="8.5" font-weight="900" fill="#2e7d32" letter-spacing="1">
+                          <textPath href="#offCircleTop" startOffset="50%" text-anchor="middle">★ CERTIFIED ★</textPath>
+                        </text>
+                        <text font-family="'Inter', sans-serif" font-size="8.5" font-weight="900" fill="#2e7d32" letter-spacing="1">
+                          <textPath href="#offCircleBottom" startOffset="50%" text-anchor="middle">★ CERTIFIED ★</textPath>
+                        </text>
+                      </svg>
+                    </div>
+                    <div>
+                      <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=${encodeURIComponent(verifyUrl)}" alt="QR Code" style="width:55px;height:55px;display:block;padding:3px;background:white;border:1px solid #ddd;border-radius:4px;" crossorigin="anonymous">
+                    </div>
+                  </div>
+                  
+                  <!-- Right Signatory -->
+                  <div style="width:200px;text-align:center;">
+                    <div style="border-bottom:1.5px solid #7c5a43;padding-bottom:5px;margin-bottom:2px;height:45px;display:flex;align-items:flex-end;justify-content:center;">
+                      <span style="font-family:'Great Vibes',cursive;font-size:26px;color:#4e3629;opacity:0.85;">Jobaer Hossain</span>
+                    </div>
+                    <div style="font-family:'Inter',sans-serif;font-size:9.5px;color:#666;">Chief Executive Officer</div>
+                  </div>
+                </div>
+                
+                <!-- Footer details -->
+                <div style="font-size:9.5px;color:#777;margin-top:12px;display:flex;gap:10px;justify-content:center;align-items:center;border-top:1px solid rgba(124,90,67,0.15);width:100%;padding-top:8px;">
+                  <span>Certificate ID: </span>
+                  <span style="font-weight:600;color:#444;">${certData.certificateId}</span>
+                  <span style="color:#ccc;">|</span>
+                  <span>Date of Issue: </span>
+                  <span style="font-weight:600;color:#444;">${formattedDate}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+        
+        // Show loading feedback on button
+        printCertBtn.disabled = true;
+        printCertBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status"></span>Generating...';
+        
+        // Mount to an off-screen container at fixed certificate dimensions
+        const offscreen = document.createElement('div');
+        offscreen.style.cssText = 'position:fixed;left:-9999px;top:0;width:842px;height:595px;overflow:hidden;z-index:-1;';
+        offscreen.innerHTML = certHTML;
+        document.body.appendChild(offscreen);
+        
+        // Wait for logo + QR images to load
+        const imgs = offscreen.querySelectorAll('img');
+        await Promise.all(Array.from(imgs).map(img => {
+          if (img.complete && img.naturalWidth > 0) return Promise.resolve();
+          return new Promise(resolve => {
+            img.onload = resolve;
+            img.onerror = resolve; // resolve even on error so we don't hang
+          });
+        }));
+        
+        try {
+          const canvas = await html2canvas(offscreen.firstElementChild, {
+            useCORS: true,
+            allowTaint: false,
+            scale: 2,
+            backgroundColor: '#faf6ee',
+            logging: false,
+            width: 842,
+            height: 595
+          });
+          
+          const link = document.createElement('a');
+          const safeName = (certData.studentName || 'Certificate').replace(/[^a-zA-Z0-9 ]/g, '').trim().replace(/\s+/g, '_');
+          link.download = `Certificate_${safeName}_${certData.certificateId}.png`;
+          link.href = canvas.toDataURL('image/png', 1.0);
+          link.click();
+        } catch (err) {
+          console.error('Certificate download failed:', err);
+          alert('Failed to generate certificate image. Please try again.');
+        } finally {
+          document.body.removeChild(offscreen);
+          printCertBtn.disabled = false;
+          printCertBtn.innerHTML = '<i class="bi bi-download me-2"></i>Download Certificate';
+        }
+      };
     }
 
     // Modal print event
@@ -10512,6 +10963,9 @@
             data-bs-dismiss="modal">Close</button>
           <button type="button" class="btn btn-primary px-3 fw-semibold rounded-3" id="detailsPrintBtn">
             <i class="bi bi-printer me-2"></i>Print Details
+          </button>
+          <button type="button" class="btn btn-success px-3 fw-semibold rounded-3 d-none" id="detailsPrintCertBtn">
+            <i class="bi bi-download me-2"></i>Download Certificate
           </button>
         </div>
       </div>
