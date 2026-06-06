@@ -1781,6 +1781,88 @@ export async function deleteExpense(id) {
   }
 }
 
+// ==========================================
+// 13. COURSE FINAL ASSESSMENTS OPERATIONS (course_assessments)
+// ==========================================
+let mockAssessments = null;
+
+export async function getAllAssessments() {
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('mock') === '1') {
+    if (!mockAssessments) {
+      mockAssessments = [
+        {
+          id: "495001_CompTIASecurity",
+          studentId: "495001",
+          studentName: "Shibli Akter",
+          courseName: "CompTIA Security+",
+          batchId: "SEC-B01",
+          theoryMarks: 85,
+          practicalMarks: 90,
+          totalMarks: 175,
+          grade: "A+",
+          status: "Passed",
+          remarks: "Excellent performance in labs."
+        }
+      ];
+    }
+    return mockAssessments;
+  }
+
+  if (!checkConfiguration()) return [];
+  try {
+    const querySnapshot = await getDocs(collection(db, "course_assessments"));
+    const assessments = [];
+    querySnapshot.forEach((docSnap) => {
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        data.id = docSnap.id;
+        assessments.push(data);
+      }
+    });
+    return assessments;
+  } catch (error) {
+    console.error("Error fetching course assessments: ", error);
+    throw error;
+  }
+}
+
+export async function saveAssessment(id, assessmentData) {
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('mock') === '1') {
+    if (!mockAssessments) {
+      await getAllAssessments();
+    }
+    const existingIndex = mockAssessments.findIndex(a => a.id === id);
+    const newAssessment = {
+      id,
+      ...assessmentData,
+      updatedAt: new Date()
+    };
+    if (existingIndex > -1) {
+      mockAssessments[existingIndex] = newAssessment;
+    } else {
+      mockAssessments.push(newAssessment);
+    }
+    return id;
+  }
+
+  if (!checkConfiguration()) return null;
+
+  try {
+    const docRef = doc(db, "course_assessments", id);
+    await setDoc(docRef, {
+      ...assessmentData,
+      updatedAt: serverTimestamp()
+    }, { merge: true });
+    return id;
+  } catch (error) {
+    console.error("Error saving course assessment: ", error);
+    throw error;
+  }
+}
+
+
 
 
 

@@ -510,6 +510,11 @@
                   <i class="bi bi-collection"></i> Batch Management
                 </button>
                 <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
+                  id="course-assessment-tab" data-bs-toggle="tab" data-bs-target="#assessmentPanel" type="button" role="tab"
+                  aria-controls="assessmentPanel" aria-selected="false">
+                  <i class="bi bi-journal-check"></i> Course Assessments
+                </button>
+                <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
                   id="contact-directory-tab" data-bs-toggle="tab" data-bs-target="#contactDirectoryPanel" type="button"
                   role="tab" aria-controls="contactDirectoryPanel" aria-selected="false">
                   <i class="bi bi-person-lines-fill"></i> Contact Directory
@@ -1532,6 +1537,24 @@
                             and batch from registrations.</span>
                         </div>
 
+                        <!-- Student Status Info for Certificate Eligibility -->
+                        <div id="certStudentStatusInfo" class="alert alert-info d-none small mb-3 border-start border-4">
+                          <h6 class="fw-bold mb-2"><i class="bi bi-shield-check me-1"></i>Certificate Eligibility Check</h6>
+                          <div class="row g-2">
+                            <div class="col-sm-6">
+                              <span class="text-muted d-block" style="font-size: 0.75rem;">Payment Status</span>
+                              <span id="certInfoPaymentStatus" class="fw-bold">—</span>
+                            </div>
+                            <div class="col-sm-6">
+                              <span class="text-muted d-block" style="font-size: 0.75rem;">Final Assessment Status</span>
+                              <span id="certInfoAssessmentStatus" class="fw-bold">—</span>
+                            </div>
+                            <div class="col-12 mt-2 pt-2 border-top border-light-subtle">
+                              <div id="certInfoValidationStatus" class="fw-bold fs-6"></div>
+                            </div>
+                          </div>
+                        </div>
+
                         <div id="actionSuccess" class="alert alert-success d-none alert-dismissible fade show small"
                           role="alert">
                           <span>Certificate created successfully!</span>
@@ -1558,7 +1581,7 @@
                               <div class="input-group">
                                 <span class="input-group-text bg-body-secondary border-end-0 fw-semibold text-muted"
                                   style="font-size: 0.9rem;">INTREX-CERT-</span>
-                                <input type="text" class="form-control ps-1" id="certId" required placeholder="495001"
+                                <input type="text" class="form-control ps-1 bg-body-secondary" id="certId" readonly required placeholder="495001"
                                   minlength="1">
                               </div>
                             </div>
@@ -1575,24 +1598,8 @@
                             <div class="col-md-6">
                               <label class="form-label small fw-semibold mb-1" for="courseName">Course <span
                                   class="text-danger">*</span></label>
-                              <select class="form-select" id="courseName" required>
-                                <option value="" disabled selected>Select Course</option>
-                                <option value="CompTIA A+">CompTIA A+</option>
-                                <option value="CompTIA Network+">CompTIA Network+</option>
-                                <option value="CompTIA Security+">CompTIA Security+</option>
-                                <option value="CompTIA Linux+">CompTIA Linux+</option>
-                                <option value="CompTIA Server+">CompTIA Server+</option>
-                                <option value="CCNA">CCNA</option>
-                                <option value="CCNP - Enterprise">CCNP - Enterprise</option>
-                                <option value="CCNP - Security">CCNP - Security</option>
-                                <option value="MTCNA">MTCNA</option>
-                                <option value="MTCRE">MTCRE</option>
-                                <option value="MTCSE">MTCSE</option>
-                                <option value="RHCSA">RHCSA</option>
-                                <option value="RHCE">RHCE</option>
-                                <option value="FCP NSE4">FCP NSE4</option>
-                                <option value="FCP NSE5">FCP NSE5</option>
-                                <option value="CCNA & MTCNA">CCNA &amp; MTCNA</option>
+                              <select class="form-select" id="courseName" required disabled>
+                                <option value="" disabled selected>Please lookup a student first</option>
                               </select>
                             </div>
 
@@ -2065,6 +2072,83 @@
                           </table>
                         </div>
                       </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Sub-Page: Course Assessments -->
+                <div class="tab-pane fade" id="assessmentPanel" role="tabpanel" aria-labelledby="course-assessment-tab">
+                  <div class="card p-4 rounded-4 shadow-sm border mb-4">
+                    <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom flex-wrap gap-2">
+                      <h3 class="h5 fw-bold text-heading-color mb-0">
+                        <i class="bi bi-journal-check me-2 text-primary"></i>Course Final Assessments
+                      </h3>
+                      <div class="d-flex align-items-center gap-2 flex-wrap">
+                        <label for="assessmentBatchSelect" class="small fw-semibold text-muted mb-0 me-1">Select Batch:</label>
+                        <select id="assessmentBatchSelect" class="form-select form-select-sm" style="width: auto; min-width: 180px;">
+                          <option value="" disabled selected>Select a Batch</option>
+                        </select>
+                        <button id="refreshAssessmentBtn" class="btn btn-sm btn-outline-secondary" type="button" title="Refresh">
+                          <i class="bi bi-arrow-clockwise"></i>
+                        </button>
+                      </div>
+                    </div>
+
+                    <div id="assessmentAlert" class="alert alert-success d-none alert-dismissible fade show small" role="alert">
+                      <span id="assessmentAlertMessage">Changes saved successfully!</span>
+                      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+
+                    <!-- Batch Details -->
+                    <div id="assessmentBatchDetails" class="row g-3 mb-4 d-none">
+                      <div class="col-md-4">
+                        <div class="p-3 border rounded bg-light-subtle">
+                          <div class="small text-muted fw-semibold">COURSE NAME</div>
+                          <div id="assessmentCourseName" class="fw-bold text-primary">—</div>
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="p-3 border rounded bg-light-subtle">
+                          <div class="small text-muted fw-semibold">SCHEDULE SLOT</div>
+                          <div id="assessmentSchedule" class="fw-bold">—</div>
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="p-3 border rounded bg-light-subtle">
+                          <div class="small text-muted fw-semibold">STUDENTS ENROLLED</div>
+                          <div id="assessmentStudentsCount" class="fw-bold">—</div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Table -->
+                    <div id="assessmentTableContainer" class="d-none">
+                      <div class="table-responsive" style="max-height: 600px; overflow-y: auto;">
+                        <table class="table table-hover align-middle mb-0" id="assessmentTable">
+                          <thead class="table-light text-center">
+                            <tr>
+                              <th class="small fw-semibold py-3 text-start" style="width: 120px;">Student ID</th>
+                              <th class="small fw-semibold py-3 text-start" style="width: 200px;">Full Name</th>
+                              <th class="small fw-semibold py-3" style="width: 100px;">Theory</th>
+                              <th class="small fw-semibold py-3" style="width: 100px;">Practical</th>
+                              <th class="small fw-semibold py-3" style="width: 110px;">Total Score</th>
+                              <th class="small fw-semibold py-3" style="width: 100px;">Grade</th>
+                              <th class="small fw-semibold py-3" style="width: 140px;">Status</th>
+                              <th class="small fw-semibold py-3 text-center" style="width: 160px;">Actions</th>
+                            </tr>
+                          </thead>
+                          <tbody id="assessmentTableBody">
+                            <!-- Dynamically loaded -->
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+
+                    <!-- Empty State -->
+                    <div id="assessmentEmptyState" class="text-center py-5 text-muted">
+                      <i class="bi bi-journal-text display-4 mb-3 text-secondary opacity-50 d-block"></i>
+                      <h5>Select a Batch to Manage Assessments</h5>
+                      <p class="small">Choose a training batch from the dropdown to view, enter, or modify final results.</p>
                     </div>
                   </div>
                 </div>
@@ -2956,7 +3040,7 @@
   <script src="assets/vendors/bootstrap/bootstrap.bundle.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script type="module">
-    import { loginAdmin, logoutAdmin, onAdminAuthStateChanged, addCertificate, getAllCertificates, deleteCertificate, addRegistration, getAllRegistrations, updateRegistration, deleteRegistration, getAllPayments, updatePayment, addAuditLog, getAllAuditLogs, getAllOnlineRegistrations, getOnlineRegistration, deleteOnlineRegistration, getAllOnlineInquiries, deleteOnlineInquiry, addEmployee, getAllEmployees, deleteEmployee, getAllBatches, addBatch, updateBatch, deleteBatch, getAllPublicInstitutes, addPublicInstitute, updatePublicInstitute, deletePublicInstitute, getAllJobPlacements, addJobPlacement, updateJobPlacement, deleteJobPlacement, getAllExpenses, addExpense, updateExpense, deleteExpense } from "./assets/js/training.js";
+    import { loginAdmin, logoutAdmin, onAdminAuthStateChanged, addCertificate, getAllCertificates, deleteCertificate, addRegistration, getAllRegistrations, updateRegistration, deleteRegistration, getAllPayments, updatePayment, addAuditLog, getAllAuditLogs, getAllOnlineRegistrations, getOnlineRegistration, deleteOnlineRegistration, getAllOnlineInquiries, deleteOnlineInquiry, addEmployee, getAllEmployees, deleteEmployee, getAllBatches, addBatch, updateBatch, deleteBatch, getAllPublicInstitutes, addPublicInstitute, updatePublicInstitute, deletePublicInstitute, getAllJobPlacements, addJobPlacement, updateJobPlacement, deleteJobPlacement, getAllExpenses, addExpense, updateExpense, deleteExpense, getAllAssessments, saveAssessment } from "./assets/js/training.js";
 
     // Initialize AOS
     if (window.AOS) {
@@ -2969,6 +3053,144 @@
       return `${origin}/verify-certificate.html?id=${certificateId}`;
     }
 
+
+
+    function restoreDefaultCourses() {
+      const courseSelect = document.getElementById("courseName");
+      if (!courseSelect) return;
+      courseSelect.innerHTML = '<option value="" disabled selected>Please lookup a student first</option>';
+      courseSelect.disabled = true;
+    }
+
+    function updateCourseDropdownForStudent(studentId, defaultCourse) {
+      const courseSelect = document.getElementById("courseName");
+      if (!courseSelect) return;
+
+      if (!studentId) {
+        restoreDefaultCourses();
+        return;
+      }
+
+      const studentRegs = allRegistrations.filter(r => r.studentId && r.studentId.toUpperCase() === studentId.toUpperCase());
+      if (studentRegs.length > 0) {
+        courseSelect.innerHTML = '<option value="" disabled>Select Enrolled Course</option>';
+        studentRegs.forEach(reg => {
+          const opt = document.createElement("option");
+          opt.value = reg.course;
+          opt.textContent = reg.course;
+          courseSelect.appendChild(opt);
+        });
+        courseSelect.disabled = false;
+        if (defaultCourse && studentRegs.some(r => r.course === defaultCourse)) {
+          courseSelect.value = defaultCourse;
+        } else {
+          courseSelect.value = studentRegs[0].course;
+        }
+      } else {
+        restoreDefaultCourses();
+        if (defaultCourse) {
+          courseSelect.innerHTML = '<option value="" disabled>Select Course</option>';
+          const opt = document.createElement("option");
+          opt.value = defaultCourse;
+          opt.textContent = defaultCourse;
+          courseSelect.appendChild(opt);
+          courseSelect.disabled = false;
+          courseSelect.value = defaultCourse;
+        }
+      }
+    }
+
+    function updateStudentStatusInfo(studentId, courseName) {
+      const infoDiv = document.getElementById("certStudentStatusInfo");
+      if (!infoDiv) return;
+
+      if (!studentId || !courseName) {
+        infoDiv.classList.add("d-none");
+        return;
+      }
+
+      const cleanCourse = courseName.trim().replace(/[^a-zA-Z0-9]/g, "");
+      const assessDocId = studentId + "_" + cleanCourse;
+      const assessRecord = allAssessments.find(a => a.id === assessDocId) || 
+                            allAssessments.find(a => a.studentId === studentId && a.courseName === courseName);
+      
+      const payRecord = allPayments.find(p => p.id === assessDocId) ||
+                         allPayments.find(p => p.studentId === studentId && p.courseName === courseName);
+
+      const paymentStatus = payRecord ? payRecord.status : "Unpaid";
+      const assessmentStatus = assessRecord ? assessRecord.status : "Not Started";
+
+      const isAssessmentPassed = assessRecord && (assessRecord.status === "Passed" || assessRecord.status === "Pass" || assessRecord.status === "passed");
+      const isPaymentPaid = payRecord && (payRecord.status === "Fully Paid" || payRecord.status === "Paid" || payRecord.status === "fully paid");
+
+      const paymentSpan = document.getElementById("certInfoPaymentStatus");
+      const assessmentSpan = document.getElementById("certInfoAssessmentStatus");
+      const validationDiv = document.getElementById("certInfoValidationStatus");
+
+      paymentSpan.textContent = paymentStatus;
+      paymentSpan.className = isPaymentPaid ? "text-success fw-bold" : "text-danger fw-bold";
+
+      assessmentSpan.textContent = assessmentStatus;
+      assessmentSpan.className = isAssessmentPassed ? "text-success fw-bold" : "text-danger fw-bold";
+
+      if (isAssessmentPassed && isPaymentPaid) {
+        validationDiv.innerHTML = '<span class="text-success"><i class="bi bi-check-circle-fill me-1"></i>Eligible for Certificate</span>';
+        infoDiv.className = "alert alert-success small mb-3 border-start border-success border-4";
+      } else {
+        let reasons = [];
+        if (!isPaymentPaid) reasons.push("Payment is not fully paid");
+        if (!isAssessmentPassed) reasons.push("Assessment is not passed");
+        validationDiv.innerHTML = '<span class="text-danger"><i class="bi bi-exclamation-triangle-fill me-1"></i>Not Eligible: ' + reasons.join(" & ") + '</span>';
+        infoDiv.className = "alert alert-danger small mb-3 border-start border-danger border-4";
+      }
+      infoDiv.classList.remove("d-none");
+    }
+
+    function generateCertificateId(studentId, courseName) {
+      if (!studentId) return "";
+      
+      const baseId = studentId;
+      // Check if a certificate for this student and this course already exists (when editing or re-generating)
+      const existingCert = allRecords.find(c => c.studentId === studentId && c.courseName === courseName);
+      if (existingCert) {
+        // Return existing certificate ID suffix
+        return existingCert.certificateId.replace("INTREX-CERT-", "");
+      }
+
+      // Check if the base ID (studentId) is already taken by another course certificate
+      const baseTaken = allRecords.some(c => c.certificateId === "INTREX-CERT-" + baseId && c.courseName !== courseName);
+      if (!baseTaken) {
+        return baseId;
+      }
+
+      // If taken by another course, append a sequence number
+      let counter = 2;
+      while (allRecords.some(c => c.certificateId === `INTREX-CERT-${baseId}-${counter}`)) {
+        counter++;
+      }
+      return `${baseId}-${counter}`;
+    }
+
+    function updateGradeFromAssessment(studentId, courseName) {
+      const gradeInput = document.getElementById("grade");
+      if (!gradeInput) return;
+      if (!studentId || !courseName) {
+        gradeInput.value = "";
+        return;
+      }
+
+      const cleanCourse = courseName.trim().replace(/[^a-zA-Z0-9]/g, "");
+      const assessDocId = studentId + "_" + cleanCourse;
+      const assessRecord = allAssessments.find(a => a.id === assessDocId) || 
+                            allAssessments.find(a => a.studentId === studentId && a.courseName === courseName);
+
+      if (assessRecord && assessRecord.grade) {
+        gradeInput.value = assessRecord.grade;
+      } else {
+        gradeInput.value = "";
+      }
+    }
+
     function printContentDirectly(printHTML) {
       let printSec = document.getElementById("printSection");
       if (!printSec) {
@@ -2978,6 +3200,7 @@
       }
       printSec.innerHTML = printHTML;
       window.print();
+      printSec.innerHTML = "";
       printSec.innerHTML = "";
     }
 
@@ -2997,6 +3220,7 @@
     let allBatches = [];
     let allPublicInstitutes = [];
     let allJobPlacements = [];
+    let allAssessments = [];
     let editingBatchId = null;
     let editingInstId = null;
     let editingPlacementId = null;
@@ -3721,6 +3945,7 @@
         loadPublicInstitutes();
         loadJobPlacements();
         loadExpenses();
+        loadAssessments();
         resetInactivityTimer();
       } else {
         // Unauthenticated
@@ -3783,15 +4008,24 @@
       }
 
       // Populate form
-      document.getElementById("certStudentId").value = record.studentId || "";
+      const studentId = record.studentId || "";
+      const courseName = record.courseName || "";
+
+      document.getElementById("certStudentId").value = studentId;
       document.getElementById("certId").value = record.certificateId.replace("INTREX-CERT-", "");
       document.getElementById("certId").disabled = true;
       document.getElementById("studentName").value = record.studentName || "";
-      document.getElementById("courseName").value = record.courseName || "";
+      
+      // Update course dropdown options and select current course
+      updateCourseDropdownForStudent(studentId, courseName);
+      
       document.getElementById("issueDate").value = record.issueDate || "";
       document.getElementById("grade").value = record.grade && record.grade !== "N/A" ? record.grade : "";
       document.getElementById("certBatch").value = record.batch || "";
       document.getElementById("certStatus").value = record.status || "Verified";
+
+      // Hide eligibility check initially until they save
+      updateStudentStatusInfo(null, null);
 
       // Change UI labels
       document.getElementById("formTitle").innerHTML = `<i class="bi bi-pencil-square me-2 text-primary"></i>Edit Certificate Record`;
@@ -3812,6 +4046,12 @@
       document.getElementById("addCertForm").reset();
       document.getElementById("certStudentId").value = "";
       document.getElementById("certId").disabled = false;
+
+      // Reset course selection to default options
+      restoreDefaultCourses();
+
+      // Hide status info alert
+      updateStudentStatusInfo(null, null);
 
       // Reset date to today
       if (dateInput) {
@@ -3870,6 +4110,26 @@
         return;
       }
 
+      // Check payment status and assessment record eligibility
+      const cleanCourse = courseName.trim().replace(/[^a-zA-Z0-9]/g, "");
+      const assessDocId = studentId + "_" + cleanCourse;
+      const assessRecord = allAssessments.find(a => a.id === assessDocId) || 
+                            allAssessments.find(a => a.studentId === studentId && a.courseName === courseName);
+      
+      const payRecord = allPayments.find(p => p.id === assessDocId) ||
+                         allPayments.find(p => p.studentId === studentId && p.courseName === courseName);
+
+      const isAssessmentPassed = assessRecord && (assessRecord.status === "Passed" || assessRecord.status === "Pass" || assessRecord.status === "passed");
+      const isPaymentPaid = payRecord && (payRecord.status === "Fully Paid" || payRecord.status === "Paid" || payRecord.status === "fully paid");
+
+      // Update and show the eligibility status info box upon clicking Save
+      updateStudentStatusInfo(studentId, courseName);
+
+      if (!isAssessmentPassed || !isPaymentPaid) {
+        document.getElementById("certStudentStatusInfo").scrollIntoView({ behavior: 'smooth' });
+        return;
+      }
+
       try {
         await addCertificate({
           certificateId,
@@ -3904,6 +4164,8 @@
         } else {
           document.getElementById("addCertForm").reset();
           document.getElementById("certStudentId").value = "";
+          restoreDefaultCourses();
+          updateStudentStatusInfo(null, null);
           if (dateInput) {
             dateInput.value = new Date().toISOString().substring(0, 10);
           }
@@ -4364,15 +4626,56 @@
         return;
       }
 
-      const found = allRegistrations.find(r => r.studentId && r.studentId.toUpperCase() === searchId);
-      if (found) {
-        document.getElementById("certStudentId").value = found.studentId;
-        document.getElementById("studentName").value = found.fullName;
-        document.getElementById("courseName").value = found.course;
-        document.getElementById("certBatch").value = found.batch || "";
-        alert(`Successfully loaded registration details for ${found.fullName}!`);
+      const studentRegs = allRegistrations.filter(r => r.studentId && r.studentId.toUpperCase() === searchId);
+      if (studentRegs.length > 0) {
+        const studentId = studentRegs[0].studentId;
+        const studentName = studentRegs[0].fullName;
+
+        document.getElementById("certStudentId").value = studentId;
+        document.getElementById("studentName").value = studentName;
+
+        // Dynamically update the course dropdown to show only enrolled courses
+        updateCourseDropdownForStudent(studentId);
+
+        // Get the selected course (which is now the first enrolled course)
+        const selectedCourse = document.getElementById("courseName").value;
+        const matchingReg = studentRegs.find(r => r.course === selectedCourse);
+        document.getElementById("certBatch").value = matchingReg ? (matchingReg.batch || "") : "";
+
+        // Auto-fill Certificate ID and Grade
+        document.getElementById("certId").value = generateCertificateId(studentId, selectedCourse);
+        updateGradeFromAssessment(studentId, selectedCourse);
+
+        // Hide eligibility check initially until they save
+        updateStudentStatusInfo(null, null);
+
+        alert(`Successfully loaded registration details for ${studentName}!`);
       } else {
         alert("Student ID not found in registration records.");
+        // Reset dropdown, fields, and hide info
+        updateCourseDropdownForStudent(null);
+        document.getElementById("certId").value = "";
+        document.getElementById("grade").value = "";
+        updateStudentStatusInfo(null, null);
+      }
+    });
+
+    // Course Name Dropdown Change Listener (Certificate Generator)
+    document.getElementById("courseName").addEventListener("change", function () {
+      const selectedCourse = this.value;
+      const studentId = document.getElementById("certStudentId").value.trim();
+      
+      if (studentId) {
+        const matchingReg = allRegistrations.find(r => r.studentId && r.studentId.toUpperCase() === studentId.toUpperCase() && r.course === selectedCourse);
+        if (matchingReg) {
+          document.getElementById("certBatch").value = matchingReg.batch || "";
+        }
+        
+        // Auto-fill Certificate ID and Grade for the newly selected course
+        document.getElementById("certId").value = generateCertificateId(studentId, selectedCourse);
+        updateGradeFromAssessment(studentId, selectedCourse);
+
+        updateStudentStatusInfo(null, null);
       }
     });
 
@@ -4808,6 +5111,25 @@
             { label: "Placement Type", key: "placementType", type: "badge", cols: 6 },
             { label: "Remarks / Notes", key: "notes", type: "textarea", cols: 12 }
           ]
+        },
+        assessment: {
+          title: "Course Final Assessment Details",
+          badge: "Assessment Scorecard",
+          getRecords: () => allAssessments,
+          idField: "id",
+          fields: [
+            { label: "Student ID", key: "studentId", type: "code", cols: 6 },
+            { label: "Student Name", key: "studentName", type: "text", cols: 6 },
+            { label: "Course Name", key: "courseName", type: "text", cols: 6 },
+            { label: "Batch ID", key: "batchId", type: "badge", cols: 6 },
+            { label: "Theory Marks", key: "theoryMarks", type: "text", cols: 6 },
+            { label: "Practical Marks", key: "practicalMarks", type: "text", cols: 6 },
+            { label: "Total Score (200)", key: "totalMarks", type: "text", cols: 6 },
+            { label: "Final Grade", key: "grade", type: "badge", cols: 6 },
+            { label: "Assessment Status", key: "status", type: "badge", cols: 6 },
+            { label: "Last Updated", key: "updatedAt", type: "datetime", cols: 6 },
+            { label: "Remarks / Feedback", key: "remarks", type: "textarea", cols: 12 }
+          ]
         }
       };
 
@@ -4837,6 +5159,7 @@
       else if (type === "inquiry") subtitleText = record.name;
       else if (type === "public_institute") subtitleText = record.name;
       else if (type === "job_placement") subtitleText = `${record.studentName} at ${record.company}`;
+      else if (type === "assessment") subtitleText = record.studentName;
       document.getElementById("detailsModalSubtitle").textContent = subtitleText;
 
       // Status Badge Style Resolver
@@ -5126,6 +5449,64 @@
               `;
             }
 
+            // Find assessment record linked to this enrollment
+            const cleanCourseName = reg.course.trim().replace(/[^a-zA-Z0-9]/g, "");
+            const assessDocId = reg.studentId + "_" + cleanCourseName;
+            const assessRecord = allAssessments.find(a => a.id === assessDocId);
+
+            let assessmentSummaryHtml = '';
+            if (assessRecord) {
+              const theory = assessRecord.theoryMarks !== undefined ? assessRecord.theoryMarks : 0;
+              const practical = assessRecord.practicalMarks !== undefined ? assessRecord.practicalMarks : 0;
+              const total = assessRecord.totalMarks !== undefined ? assessRecord.totalMarks : 0;
+              const grade = assessRecord.grade || 'N/A';
+              const status = assessRecord.status || 'Pending';
+              const remarks = assessRecord.remarks || '—';
+
+              let assessBadgeClass = "bg-secondary text-white";
+              if (status === "Passed") assessBadgeClass = "bg-success text-white";
+              else if (status === "Failed") assessBadgeClass = "bg-danger text-white";
+              else if (status === "Pending") assessBadgeClass = "bg-warning text-dark";
+              else if (status === "Absent") assessBadgeClass = "bg-dark text-white";
+
+              assessmentSummaryHtml = `
+                <div class="mt-3 pt-3 border-top">
+                  <span class="text-muted small fw-bold d-block mb-2"><i class="bi bi-journal-check me-1"></i>Final Course Assessment:</span>
+                  <div class="row g-2">
+                    <div class="col-md-3">
+                      <span class="text-muted small d-block" style="font-size: 0.7rem;">Theory Marks</span>
+                      <strong class="text-dark small">${theory} / 100</strong>
+                    </div>
+                    <div class="col-md-3">
+                      <span class="text-muted small d-block" style="font-size: 0.7rem;">Practical Marks</span>
+                      <strong class="text-dark small">${practical} / 100</strong>
+                    </div>
+                    <div class="col-md-3">
+                      <span class="text-muted small d-block" style="font-size: 0.7rem;">Total Score</span>
+                      <strong class="text-primary small">${total} / 200</strong>
+                    </div>
+                    <div class="col-md-3">
+                      <span class="text-muted small d-block" style="font-size: 0.7rem;">Result Status</span>
+                      <span class="badge ${assessBadgeClass} small px-2 py-1" style="font-size:0.7rem;">${status} (${grade})</span>
+                    </div>
+                  </div>
+                  <div class="row g-2 mt-2">
+                    <div class="col-12">
+                      <span class="text-muted small d-block" style="font-size: 0.7rem;">Remarks / Feedback</span>
+                      <div class="p-2 bg-light rounded border text-dark mt-1" style="font-size: 0.825rem; font-weight: 500;">${remarks}</div>
+                    </div>
+                  </div>
+                </div>
+              `;
+            } else {
+              assessmentSummaryHtml = `
+                <div class="alert alert-light py-2 px-3 small mt-3 mb-0 border d-flex align-items-center gap-2">
+                  <i class="bi bi-info-circle text-muted"></i>
+                  <span>No final assessment result recorded yet.</span>
+                </div>
+              `;
+            }
+
             let regDateStr = "N/A";
             if (reg.createdAt) {
               const dt = reg.createdAt.toDate ? reg.createdAt.toDate() : new Date(reg.createdAt);
@@ -5148,6 +5529,7 @@
                   </div>
                 </div>
                 ${paymentSummaryHtml}
+                ${assessmentSummaryHtml}
               </div>
             `;
           }).join('');
@@ -7965,6 +8347,9 @@
       try {
         allBatches = await getAllBatches();
         renderBatches();
+        if (typeof populateAssessmentBatchDropdown === "function") {
+          populateAssessmentBatchDropdown();
+        }
       } catch (err) {
         console.error("Error loading batches: ", err);
         if (tbody) {
@@ -8395,6 +8780,323 @@
     // Globally register loadBatches and updateRegistrationBatchDropdown functions in window just in case
     window.loadBatches = loadBatches;
     window.updateRegistrationBatchDropdown = updateRegistrationBatchDropdown;
+
+    // ============================================================
+    // COURSE FINAL ASSESSMENTS SYSTEM
+    // ============================================================
+    async function loadAssessments() {
+      try {
+        allAssessments = await getAllAssessments();
+      } catch (err) {
+        console.error("Error loading course assessments: ", err);
+      }
+    }
+
+    function populateAssessmentBatchDropdown() {
+      const select = document.getElementById("assessmentBatchSelect");
+      if (!select) return;
+      
+      const prevSelectedVal = select.value;
+      select.innerHTML = '<option value="" disabled selected>Select a Batch</option>';
+      
+      allBatches.forEach(b => {
+        const option = document.createElement("option");
+        option.value = b.batchId;
+        option.textContent = `${b.batchId} (${b.courseName})`;
+        select.appendChild(option);
+      });
+
+      if (prevSelectedVal && allBatches.some(b => b.batchId === prevSelectedVal)) {
+        select.value = prevSelectedVal;
+      }
+    }
+
+    function handleAssessmentBatchChange() {
+      const batchId = document.getElementById("assessmentBatchSelect").value;
+      const batchDetails = document.getElementById("assessmentBatchDetails");
+      const tableContainer = document.getElementById("assessmentTableContainer");
+      const emptyState = document.getElementById("assessmentEmptyState");
+
+      if (!batchId) {
+        batchDetails.classList.add("d-none");
+        tableContainer.classList.add("d-none");
+        emptyState.classList.remove("d-none");
+        return;
+      }
+
+      const batch = allBatches.find(b => b.batchId === batchId);
+      if (!batch) return;
+
+      document.getElementById("assessmentCourseName").textContent = batch.courseName;
+      document.getElementById("assessmentSchedule").textContent = batch.schedule;
+      
+      const enrolledStudents = allRegistrations.filter(r => r.batch === batchId);
+      document.getElementById("assessmentStudentsCount").textContent = enrolledStudents.length;
+
+      batchDetails.classList.remove("d-none");
+      emptyState.classList.add("d-none");
+
+      if (enrolledStudents.length === 0) {
+        tableContainer.classList.add("d-none");
+        const tbody = document.getElementById("assessmentTableBody");
+        tbody.innerHTML = "";
+        
+        emptyState.innerHTML = `
+          <i class="bi bi-people display-4 mb-3 text-secondary opacity-50 d-block"></i>
+          <h5>No Registered Students</h5>
+          <p class="small">There are no students registered in batch <strong>${batchId}</strong> yet.</p>
+        `;
+        emptyState.classList.remove("d-none");
+        return;
+      }
+
+      emptyState.innerHTML = `
+        <i class="bi bi-journal-text display-4 mb-3 text-secondary opacity-50 d-block"></i>
+        <h5>Select a Batch to Manage Assessments</h5>
+        <p class="small">Choose a training batch from the dropdown to view, enter, or modify final results.</p>
+      `;
+
+      tableContainer.classList.remove("d-none");
+      renderAssessmentTable(enrolledStudents, batchId);
+    }
+
+    function renderAssessmentTable(students, batchId) {
+      const tbody = document.getElementById("assessmentTableBody");
+      if (!tbody) return;
+
+      tbody.innerHTML = "";
+
+      students.forEach(student => {
+        const cleanCourse = student.course.trim().replace(/[^a-zA-Z0-9]/g, "");
+        const docId = student.studentId + "_" + cleanCourse;
+        const record = allAssessments.find(a => a.id === docId) || {};
+
+        const theory = record.theoryMarks !== undefined ? record.theoryMarks : 0;
+        const practical = record.practicalMarks !== undefined ? record.practicalMarks : 0;
+        const total = theory + practical;
+        const grade = record.grade || "N/A";
+        const status = record.status || "Not Started";
+
+        let statusBadgeClass = "bg-secondary text-white";
+        if (status === "Passed") statusBadgeClass = "bg-success text-white";
+        else if (status === "Failed") statusBadgeClass = "bg-danger text-white";
+        else if (status === "Pending") statusBadgeClass = "bg-warning text-dark";
+        else if (status === "Absent") statusBadgeClass = "bg-dark text-white";
+
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td><span class="fw-semibold text-primary font-monospace">${student.studentId}</span></td>
+          <td><span class="fw-semibold text-heading-color">${student.fullName}</span></td>
+          <td class="text-center">${record.theoryMarks !== undefined ? record.theoryMarks : '—'}</td>
+          <td class="text-center">${record.practicalMarks !== undefined ? record.practicalMarks : '—'}</td>
+          <td class="text-center fw-bold">${record.totalMarks !== undefined ? record.totalMarks : '—'}</td>
+          <td class="text-center"><span class="badge bg-secondary px-2 py-1">${grade}</span></td>
+          <td class="text-center"><span class="badge ${statusBadgeClass} px-2 py-1">${status}</span></td>
+          <td class="text-center">
+            <div class="btn-group gap-1">
+              <button class="btn btn-sm btn-outline-info view-assessment" data-id="${docId}">
+                <i class="bi bi-eye"></i> View
+              </button>
+              <button class="btn btn-sm btn-outline-primary edit-assessment" data-student-id="${student.studentId}" data-student-name="${student.fullName}" data-course="${student.course}" data-batch="${batchId}" data-id="${docId}">
+                <i class="bi bi-pencil-square"></i> Edit
+              </button>
+            </div>
+          </td>
+        `;
+
+        tbody.appendChild(tr);
+      });
+
+      tbody.querySelectorAll(".view-assessment").forEach(btn => {
+        btn.onclick = function () {
+          const docId = btn.getAttribute("data-id");
+          const recordExists = allAssessments.some(a => a.id === docId);
+          if (!recordExists) {
+            alert("No final assessment record created for this student yet. Click Edit to create one.");
+            return;
+          }
+          showRecordDetails("assessment", docId);
+        };
+      });
+
+      tbody.querySelectorAll(".edit-assessment").forEach(btn => {
+        btn.onclick = function () {
+          const docId = btn.getAttribute("data-id");
+          const studentId = btn.getAttribute("data-student-id");
+          const studentName = btn.getAttribute("data-student-name");
+          const course = btn.getAttribute("data-course");
+          const batch = btn.getAttribute("data-batch");
+
+          const record = allAssessments.find(a => a.id === docId) || {
+            studentId,
+            studentName,
+            courseName: course,
+            batchId: batch,
+            theoryMarks: 0,
+            practicalMarks: 0,
+            totalMarks: 0,
+            grade: "",
+            status: "Pending",
+            remarks: ""
+          };
+
+          openEditAssessmentModal(docId, record);
+        };
+      });
+    }
+
+    function openEditAssessmentModal(docId, record) {
+      document.getElementById("editAssessmentDocId").value = docId;
+      document.getElementById("editAssessmentStudentId").value = record.studentId;
+      document.getElementById("editAssessmentCourseName").value = record.courseName;
+      document.getElementById("editAssessmentBatchId").value = record.batchId;
+
+      document.getElementById("editAssessmentStudentName").value = record.studentName;
+      document.getElementById("editAssessmentCourseBatch").value = `${record.courseName} (${record.batchId})`;
+
+      document.getElementById("editAssessmentTheory").value = record.theoryMarks || 0;
+      document.getElementById("editAssessmentPractical").value = record.practicalMarks || 0;
+      document.getElementById("editAssessmentGrade").value = record.grade || "";
+      document.getElementById("editAssessmentStatus").value = record.status || "Pending";
+      document.getElementById("editAssessmentRemarks").value = record.remarks || "";
+
+      document.getElementById("assessmentModalError").classList.add("d-none");
+      updateModalTotalScore();
+
+      const modal = bootstrap.Modal.getOrCreateInstance(document.getElementById("editAssessmentModal"));
+      modal.show();
+    }
+
+    function updateModalTotalScore() {
+      const theoryVal = Math.min(100, Math.max(0, parseInt(document.getElementById("editAssessmentTheory").value) || 0));
+      const practicalVal = Math.min(100, Math.max(0, parseInt(document.getElementById("editAssessmentPractical").value) || 0));
+
+      document.getElementById("editAssessmentTheory").value = theoryVal;
+      document.getElementById("editAssessmentPractical").value = practicalVal;
+
+      const total = theoryVal + practicalVal;
+      document.getElementById("editAssessmentTotalScoreLabel").textContent = `${total} / 200`;
+
+      let calculatedGrade = "F";
+      let calculatedStatus = "Failed";
+
+      if (total >= 160) {
+        calculatedGrade = "A+";
+        calculatedStatus = "Passed";
+      } else if (total >= 150) {
+        calculatedGrade = "A";
+        calculatedStatus = "Passed";
+      } else if (total >= 140) {
+        calculatedGrade = "A-";
+        calculatedStatus = "Passed";
+      } else if (total >= 120) {
+        calculatedGrade = "B";
+        calculatedStatus = "Passed";
+      } else if (total >= 100) {
+        calculatedGrade = "C";
+        calculatedStatus = "Passed";
+      } else if (total >= 80) {
+        calculatedGrade = "D";
+        calculatedStatus = "Passed";
+      }
+
+      const gradeInput = document.getElementById("editAssessmentGrade");
+      const statusSelect = document.getElementById("editAssessmentStatus");
+
+      if (gradeInput.value === "" || ["A+", "A", "A-", "B", "C", "D", "F", "Pass"].includes(gradeInput.value)) {
+        gradeInput.value = calculatedGrade;
+      }
+      if (["Pending", "Not Started", "Passed", "Failed"].includes(statusSelect.value)) {
+        statusSelect.value = calculatedStatus;
+      }
+    }
+
+    document.getElementById("editAssessmentTheory")?.addEventListener("input", updateModalTotalScore);
+    document.getElementById("editAssessmentPractical")?.addEventListener("input", updateModalTotalScore);
+
+    document.getElementById("editAssessmentForm")?.addEventListener("submit", async function (e) {
+      e.preventDefault();
+
+      const docId = document.getElementById("editAssessmentDocId").value;
+      const studentId = document.getElementById("editAssessmentStudentId").value;
+      const courseName = document.getElementById("editAssessmentCourseName").value;
+      const batchId = document.getElementById("editAssessmentBatchId").value;
+      const studentName = document.getElementById("editAssessmentStudentName").value;
+
+      const theory = parseInt(document.getElementById("editAssessmentTheory").value) || 0;
+      const practical = parseInt(document.getElementById("editAssessmentPractical").value) || 0;
+      const total = theory + practical;
+      const grade = document.getElementById("editAssessmentGrade").value.trim();
+      const status = document.getElementById("editAssessmentStatus").value;
+      const remarks = document.getElementById("editAssessmentRemarks").value.trim();
+
+      const errorDiv = document.getElementById("assessmentModalError");
+      const saveBtn = document.getElementById("editAssessmentSaveBtn");
+
+      errorDiv.classList.add("d-none");
+      saveBtn.disabled = true;
+      saveBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status"></span>Saving...';
+
+      try {
+        const assessmentData = {
+          studentId,
+          studentName,
+          courseName,
+          batchId,
+          theoryMarks: theory,
+          practicalMarks: practical,
+          totalMarks: total,
+          grade,
+          status,
+          remarks
+        };
+
+        await saveAssessment(docId, assessmentData);
+
+        await addAuditLog({
+          user_email: currentUserEmail,
+          action_type: "UPDATE",
+          collection_name: "course_assessments",
+          record_id: studentId,
+          details: `Saved assessment scorecard for student "${studentName}" (${studentId}) in batch "${batchId}". Total score: ${total}, Grade: ${grade}, Status: ${status}`
+        });
+
+        await loadAssessments();
+        refreshAuditLogs();
+        handleAssessmentBatchChange();
+
+        const modal = bootstrap.Modal.getInstance(document.getElementById("editAssessmentModal"));
+        modal.hide();
+
+        const pageAlert = document.getElementById("assessmentAlert");
+        const pageAlertMsg = document.getElementById("assessmentAlertMessage");
+        pageAlertMsg.textContent = `Successfully saved assessment results for ${studentName}.`;
+        pageAlert.className = "alert alert-success alert-dismissible fade show small";
+        pageAlert.classList.remove("d-none");
+
+      } catch (err) {
+        console.error("Error saving assessment scorecard: ", err);
+        errorDiv.textContent = `Error saving: ${err.message || err}`;
+        errorDiv.classList.remove("d-none");
+      } finally {
+        saveBtn.disabled = false;
+        saveBtn.innerHTML = "Save Changes";
+      }
+    });
+
+    document.getElementById("course-assessment-tab")?.addEventListener("click", () => {
+      loadAssessments();
+      populateAssessmentBatchDropdown();
+      handleAssessmentBatchChange();
+    });
+    document.getElementById("assessmentBatchSelect")?.addEventListener("change", handleAssessmentBatchChange);
+    document.getElementById("refreshAssessmentBtn")?.addEventListener("click", async () => {
+      await loadAssessments();
+      await loadBatches();
+      await loadRegistrations();
+      populateAssessmentBatchDropdown();
+      handleAssessmentBatchChange();
+    });
 
     // ============================================================
     // CONTACT DIRECTORY SYSTEM
@@ -9429,6 +10131,156 @@
     // Cancel Job Placement edit button
     document.getElementById("cancelPlacementEditBtn")?.addEventListener("click", resetJobPlacementForm);
 
+    // ============================================================
+    // PAY INSTALLMENT MODAL LOGIC
+    // ============================================================
+    (function () {
+      const modalEl = document.getElementById("payInstallmentModal");
+      let modalInstance = null;
+      let _currentRecord = null;
+      let _currentIndex = null;
+
+      function getModal() {
+        if (!modalInstance) {
+          modalInstance = bootstrap.Modal.getOrCreateInstance(modalEl);
+        }
+        return modalInstance;
+      }
+
+      // Expose opener so the ledger renderer can call it
+      window.openPayInstallmentModal = function (record, instIndex) {
+        _currentRecord = record;
+        _currentIndex = instIndex;
+
+        const inst = (record.installments || [])[instIndex] || {};
+        const instNum = instIndex + 1;
+
+        // Populate read-only info
+        document.getElementById("payInstModalPayId").value = record.id || record.studentId;
+        document.getElementById("payInstModalIndex").value = instIndex;
+        document.getElementById("payInstModalStudentName").textContent = record.studentName || "-";
+        document.getElementById("payInstModalStudentId").textContent = record.studentId || "-";
+        document.getElementById("payInstModalCourse").textContent =
+          `${record.courseName || "-"} / ${record.batch || "-"}`;
+        document.getElementById("payInstModalInstLabel").textContent = `Installment #${instNum}`;
+        document.getElementById("payInstModalAmount").textContent =
+          `${Number(inst.amount || 0).toLocaleString()} BDT`;
+
+        // Reset form
+        document.getElementById("payInstModalMethod").value = "Cash";
+        document.getElementById("payInstModalTxId").value = "";
+        document.getElementById("payInstModalNotes").value = "";
+        document.getElementById("payInstModalTxIdContainer").classList.add("d-none");
+        document.getElementById("payInstallmentError").classList.add("d-none");
+        const submitBtn = document.getElementById("payInstModalSubmitBtn");
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<i class="bi bi-check-circle me-2"></i>Confirm Payment';
+
+        getModal().show();
+      };
+
+      // Toggle Transaction ID field based on method
+      document.getElementById("payInstModalMethod").addEventListener("change", function () {
+        const txContainer = document.getElementById("payInstModalTxIdContainer");
+        if (this.value === "Cash") {
+          txContainer.classList.add("d-none");
+          document.getElementById("payInstModalTxId").required = false;
+        } else {
+          txContainer.classList.remove("d-none");
+          document.getElementById("payInstModalTxId").required = true;
+        }
+      });
+
+      // Form submit – mark installment as Paid and save
+      document.getElementById("payInstallmentForm").addEventListener("submit", async function (e) {
+        e.preventDefault();
+
+        const errorDiv = document.getElementById("payInstallmentError");
+        errorDiv.classList.add("d-none");
+
+        const payId = document.getElementById("payInstModalPayId").value;
+        const instIndex = parseInt(document.getElementById("payInstModalIndex").value);
+        const method = document.getElementById("payInstModalMethod").value;
+        const txId = document.getElementById("payInstModalTxId").value.trim();
+        const notes = document.getElementById("payInstModalNotes").value.trim();
+        const submitBtn = document.getElementById("payInstModalSubmitBtn");
+
+        // Validate transaction ID when required
+        if (method !== "Cash" && !txId) {
+          errorDiv.textContent = "Please enter a Transaction / Reference ID for non-cash payments.";
+          errorDiv.classList.remove("d-none");
+          return;
+        }
+
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status"></span>Processing...';
+
+        try {
+          // Clone payment record to avoid mutating the in-memory object prematurely
+          const record = _currentRecord;
+          const installments = JSON.parse(JSON.stringify(record.installments || []));
+
+          if (!installments[instIndex]) {
+            throw new Error("Installment record not found. Please refresh and try again.");
+          }
+
+          // Mark targeted installment as Paid
+          installments[instIndex].status = "Paid";
+          if (notes) installments[instIndex].notes = notes;
+
+          // Recalculate amountPaid (reg fee + all paid installments)
+          const regFee = Number(record.registrationFee) || 0;
+          const totalPaidFromInst = installments.reduce((sum, inst) => {
+            return sum + (inst.status === "Paid" ? Number(inst.amount) || 0 : 0);
+          }, 0);
+          const newAmountPaid = regFee + totalPaidFromInst;
+
+          const totalFee = Number(record.totalFee) || 0;
+          const discount = Number(record.discount) || 0;
+
+          // Determine effective transaction ID to store
+          const effectiveTxId = method !== "Cash" ? txId : (record.transactionId || "");
+
+          // Persist to Firestore via existing helper
+          await updatePayment(
+            payId,
+            totalFee,
+            discount,
+            newAmountPaid,
+            method,
+            effectiveTxId,
+            regFee,
+            installments
+          );
+
+          // Audit log
+          const instNum = instIndex + 1;
+          await addAuditLog({
+            user_email: currentUserEmail || "admin@intrex-digital.com",
+            action_type: "UPDATE",
+            collection_name: "payments",
+            record_id: payId,
+            details: `Installment #${instNum} of ${Number(installments[instIndex].amount || 0).toLocaleString()} BDT marked as Paid for student "${record.studentName}" (${record.studentId}). Method: ${method}${txId ? `, TxID: ${txId}` : ''}.${notes ? ` Notes: ${notes}` : ''}`
+          });
+          refreshAuditLogs();
+
+          // Refresh in-memory data and UI
+          allPayments = await getAllPayments();
+          window.loadAllInstallmentsLedger();
+          await loadPayments();
+
+          getModal().hide();
+
+        } catch (err) {
+          errorDiv.textContent = "Failed to record payment: " + (err.message || err);
+          errorDiv.classList.remove("d-none");
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = '<i class="bi bi-check-circle me-2"></i>Confirm Payment';
+        }
+      });
+
+    })();
+
   </script>
 
   <!-- Edit Payment Modal -->
@@ -9549,6 +10401,86 @@
           <div class="modal-footer border-top px-4 py-3">
             <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
             <button type="submit" class="btn btn-primary btn-sm px-4">Save Changes</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Assessment Modal -->
+  <div class="modal fade" id="editAssessmentModal" tabindex="-1" aria-labelledby="editAssessmentModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content rounded-4 border-0 shadow-lg">
+        <div class="modal-header border-bottom px-4">
+          <h5 class="modal-title fw-bold" id="editAssessmentModalLabel">
+            <i class="bi bi-journal-check me-2 text-primary"></i>Update Final Assessment
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form id="editAssessmentForm">
+          <div class="modal-body p-4">
+            <div id="assessmentModalError" class="alert alert-danger d-none small"></div>
+
+            <input type="hidden" id="editAssessmentDocId">
+            <input type="hidden" id="editAssessmentStudentId">
+            <input type="hidden" id="editAssessmentCourseName">
+            <input type="hidden" id="editAssessmentBatchId">
+
+            <div class="mb-3">
+              <label class="form-label small fw-semibold text-muted mb-1">Student Name</label>
+              <input type="text" id="editAssessmentStudentName" class="form-control bg-body-secondary" readonly>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label small fw-semibold text-muted mb-1">Course & Batch</label>
+              <input type="text" id="editAssessmentCourseBatch" class="form-control bg-body-secondary" readonly>
+            </div>
+
+            <div class="row g-3 mb-3">
+              <div class="col-6">
+                <label for="editAssessmentTheory" class="form-label small fw-semibold mb-1">Theory Marks (100) <span class="text-danger">*</span></label>
+                <input type="number" id="editAssessmentTheory" class="form-control" min="0" max="100" required>
+              </div>
+              <div class="col-6">
+                <label for="editAssessmentPractical" class="form-label small fw-semibold mb-1">Practical Marks (100) <span class="text-danger">*</span></label>
+                <input type="number" id="editAssessmentPractical" class="form-control" min="0" max="100" required>
+              </div>
+            </div>
+
+            <div class="row g-3 mb-3">
+              <div class="col-6">
+                <label for="editAssessmentGrade" class="form-label small fw-semibold mb-1">Final Grade <span class="text-danger">*</span></label>
+                <input type="text" id="editAssessmentGrade" class="form-control" placeholder="e.g. A+" required>
+              </div>
+              <div class="col-6">
+                <label for="editAssessmentStatus" class="form-label small fw-semibold mb-1">Status <span class="text-danger">*</span></label>
+                <select id="editAssessmentStatus" class="form-select" required>
+                  <option value="Not Started">Not Started</option>
+                  <option value="Pending">Pending</option>
+                  <option value="Passed">Passed</option>
+                  <option value="Failed">Failed</option>
+                  <option value="Absent">Absent</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="editAssessmentRemarks" class="form-label small fw-semibold mb-1">Remarks / Feedback</label>
+              <textarea id="editAssessmentRemarks" class="form-control" rows="2" placeholder="Enter feedback..."></textarea>
+            </div>
+
+            <div class="p-3 bg-light rounded-3 border">
+              <div class="d-flex justify-content-between mb-1">
+                <span class="small text-muted">Total Score:</span>
+                <strong id="editAssessmentTotalScoreLabel" class="text-heading-color">0 / 200</strong>
+              </div>
+            </div>
+
+          </div>
+          <div class="modal-footer border-top px-4 py-3">
+            <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
+            <button type="submit" id="editAssessmentSaveBtn" class="btn btn-primary btn-sm px-4">Save Changes</button>
           </div>
         </form>
       </div>
@@ -9721,12 +10653,12 @@
                 Payment Method <span class="text-danger">*</span>
               </label>
               <select class="form-select" id="payInstModalMethod" required>
-                <option value="Cash" selected>💵 Cash</option>
-                <option value="Bkash">📱 Bkash</option>
-                <option value="Nagad">📱 Nagad</option>
-                <option value="Rocket">📱 Rocket</option>
-                <option value="Bank Transfer">🏦 Bank Transfer</option>
-                <option value="Card">💳 Card</option>
+                <option value="Cash" selected>Cash</option>
+                <option value="Bkash">Bkash</option>
+                <option value="Nagad">Nagad</option>
+                <option value="Rocket">Rocket</option>
+                <option value="Bank Transfer">Bank Transfer</option>
+                <option value="Card">Card</option>
               </select>
             </div>
 
@@ -9758,158 +10690,6 @@
       </div>
     </div>
   </div>
-
-  <script>
-    // ============================================================
-    // PAY INSTALLMENT MODAL LOGIC
-    // ============================================================
-    (function () {
-      const modalEl = document.getElementById("payInstallmentModal");
-      let modalInstance = null;
-      let _currentRecord = null;
-      let _currentIndex = null;
-
-      function getModal() {
-        if (!modalInstance) {
-          modalInstance = bootstrap.Modal.getOrCreateInstance(modalEl);
-        }
-        return modalInstance;
-      }
-
-      // Expose opener so the ledger renderer can call it
-      window.openPayInstallmentModal = function (record, instIndex) {
-        _currentRecord = record;
-        _currentIndex = instIndex;
-
-        const inst = (record.installments || [])[instIndex] || {};
-        const instNum = instIndex + 1;
-
-        // Populate read-only info
-        document.getElementById("payInstModalPayId").value = record.id || record.studentId;
-        document.getElementById("payInstModalIndex").value = instIndex;
-        document.getElementById("payInstModalStudentName").textContent = record.studentName || "-";
-        document.getElementById("payInstModalStudentId").textContent = record.studentId || "-";
-        document.getElementById("payInstModalCourse").textContent =
-          `${record.courseName || "-"} / ${record.batch || "-"}`;
-        document.getElementById("payInstModalInstLabel").textContent = `Installment #${instNum}`;
-        document.getElementById("payInstModalAmount").textContent =
-          `${Number(inst.amount || 0).toLocaleString()} BDT`;
-
-        // Reset form
-        document.getElementById("payInstModalMethod").value = "Cash";
-        document.getElementById("payInstModalTxId").value = "";
-        document.getElementById("payInstModalNotes").value = "";
-        document.getElementById("payInstModalTxIdContainer").classList.add("d-none");
-        document.getElementById("payInstallmentError").classList.add("d-none");
-        const submitBtn = document.getElementById("payInstModalSubmitBtn");
-        submitBtn.disabled = false;
-        submitBtn.innerHTML = '<i class="bi bi-check-circle me-2"></i>Confirm Payment';
-
-        getModal().show();
-      };
-
-      // Toggle Transaction ID field based on method
-      document.getElementById("payInstModalMethod").addEventListener("change", function () {
-        const txContainer = document.getElementById("payInstModalTxIdContainer");
-        if (this.value === "Cash") {
-          txContainer.classList.add("d-none");
-          document.getElementById("payInstModalTxId").required = false;
-        } else {
-          txContainer.classList.remove("d-none");
-          document.getElementById("payInstModalTxId").required = true;
-        }
-      });
-
-      // Form submit – mark installment as Paid and save
-      document.getElementById("payInstallmentForm").addEventListener("submit", async function (e) {
-        e.preventDefault();
-
-        const errorDiv = document.getElementById("payInstallmentError");
-        errorDiv.classList.add("d-none");
-
-        const payId = document.getElementById("payInstModalPayId").value;
-        const instIndex = parseInt(document.getElementById("payInstModalIndex").value);
-        const method = document.getElementById("payInstModalMethod").value;
-        const txId = document.getElementById("payInstModalTxId").value.trim();
-        const notes = document.getElementById("payInstModalNotes").value.trim();
-        const submitBtn = document.getElementById("payInstModalSubmitBtn");
-
-        // Validate transaction ID when required
-        if (method !== "Cash" && !txId) {
-          errorDiv.textContent = "Please enter a Transaction / Reference ID for non-cash payments.";
-          errorDiv.classList.remove("d-none");
-          return;
-        }
-
-        submitBtn.disabled = true;
-        submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status"></span>Processing...';
-
-        try {
-          // Clone payment record to avoid mutating the in-memory object prematurely
-          const record = _currentRecord;
-          const installments = JSON.parse(JSON.stringify(record.installments || []));
-
-          if (!installments[instIndex]) {
-            throw new Error("Installment record not found. Please refresh and try again.");
-          }
-
-          // Mark targeted installment as Paid
-          installments[instIndex].status = "Paid";
-          if (notes) installments[instIndex].notes = notes;
-
-          // Recalculate amountPaid (reg fee + all paid installments)
-          const regFee = Number(record.registrationFee) || 0;
-          const totalPaidFromInst = installments.reduce((sum, inst) => {
-            return sum + (inst.status === "Paid" ? Number(inst.amount) || 0 : 0);
-          }, 0);
-          const newAmountPaid = regFee + totalPaidFromInst;
-
-          const totalFee = Number(record.totalFee) || 0;
-          const discount = Number(record.discount) || 0;
-
-          // Determine effective transaction ID to store
-          const effectiveTxId = method !== "Cash" ? txId : (record.transactionId || "");
-
-          // Persist to Firestore via existing helper
-          await updatePayment(
-            payId,
-            totalFee,
-            discount,
-            newAmountPaid,
-            method,
-            effectiveTxId,
-            regFee,
-            installments
-          );
-
-          // Audit log
-          const instNum = instIndex + 1;
-          await addAuditLog({
-            user_email: currentUserEmail || "admin@intrex-digital.com",
-            action_type: "UPDATE",
-            collection_name: "payments",
-            record_id: payId,
-            details: `Installment #${instNum} of ${Number(installments[instIndex].amount || 0).toLocaleString()} BDT marked as Paid for student "${record.studentName}" (${record.studentId}). Method: ${method}${txId ? `, TxID: ${txId}` : ''}.${notes ? ` Notes: ${notes}` : ''}`
-          });
-          refreshAuditLogs();
-
-          // Refresh in-memory data and UI
-          allPayments = await getAllPayments();
-          window.loadAllInstallmentsLedger();
-          await loadPayments();
-
-          getModal().hide();
-
-        } catch (err) {
-          errorDiv.textContent = "Failed to record payment: " + (err.message || err);
-          errorDiv.classList.remove("d-none");
-          submitBtn.disabled = false;
-          submitBtn.innerHTML = '<i class="bi bi-check-circle me-2"></i>Confirm Payment';
-        }
-      });
-
-    })();
-  </script>
 
 </body>
 
