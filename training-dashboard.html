@@ -28,7 +28,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&amp;display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap"
+    rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
 
@@ -426,7 +427,7 @@
       aspect-ratio: 842 / 595;
       background-color: #faf6ee;
       position: relative;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.1) !important;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1) !important;
       border-radius: 8px;
       overflow: hidden;
       box-sizing: border-box;
@@ -620,7 +621,7 @@
       body.viewing-certificate {
         background: #faf6ee !important;
       }
-      
+
       body.viewing-certificate #printSection {
         width: 297mm !important;
         height: 210mm !important;
@@ -793,8 +794,8 @@
                   <i class="bi bi-collection"></i> Batch Management
                 </button>
                 <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
-                  id="course-assessment-tab" data-bs-toggle="tab" data-bs-target="#assessmentPanel" type="button" role="tab"
-                  aria-controls="assessmentPanel" aria-selected="false">
+                  id="course-assessment-tab" data-bs-toggle="tab" data-bs-target="#assessmentPanel" type="button"
+                  role="tab" aria-controls="assessmentPanel" aria-selected="false">
                   <i class="bi bi-journal-check"></i> Course Assessments
                 </button>
                 <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
@@ -1821,15 +1822,18 @@
                         </div>
 
                         <!-- Student Status Info for Certificate Eligibility -->
-                        <div id="certStudentStatusInfo" class="alert alert-info d-none small mb-3 border-start border-4">
-                          <h6 class="fw-bold mb-2"><i class="bi bi-shield-check me-1"></i>Certificate Eligibility Check</h6>
+                        <div id="certStudentStatusInfo"
+                          class="alert alert-info d-none small mb-3 border-start border-4">
+                          <h6 class="fw-bold mb-2"><i class="bi bi-shield-check me-1"></i>Certificate Eligibility Check
+                          </h6>
                           <div class="row g-2">
                             <div class="col-sm-6">
                               <span class="text-muted d-block" style="font-size: 0.75rem;">Payment Status</span>
                               <span id="certInfoPaymentStatus" class="fw-bold">—</span>
                             </div>
                             <div class="col-sm-6">
-                              <span class="text-muted d-block" style="font-size: 0.75rem;">Final Assessment Status</span>
+                              <span class="text-muted d-block" style="font-size: 0.75rem;">Final Assessment
+                                Status</span>
                               <span id="certInfoAssessmentStatus" class="fw-bold">—</span>
                             </div>
                             <div class="col-12 mt-2 pt-2 border-top border-light-subtle">
@@ -1864,8 +1868,8 @@
                               <div class="input-group">
                                 <span class="input-group-text bg-body-secondary border-end-0 fw-semibold text-muted"
                                   style="font-size: 0.9rem;">INTREX-CERT-</span>
-                                <input type="text" class="form-control ps-1 bg-body-secondary" id="certId" readonly required placeholder="495001"
-                                  minlength="1">
+                                <input type="text" class="form-control ps-1 bg-body-secondary" id="certId" readonly
+                                  required placeholder="495001" minlength="1">
                               </div>
                             </div>
 
@@ -2362,22 +2366,27 @@
                 <!-- Sub-Page: Course Assessments -->
                 <div class="tab-pane fade" id="assessmentPanel" role="tabpanel" aria-labelledby="course-assessment-tab">
                   <div class="card p-4 rounded-4 shadow-sm border mb-4">
-                    <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom flex-wrap gap-2">
+                    <div
+                      class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom flex-wrap gap-2">
                       <h3 class="h5 fw-bold text-heading-color mb-0">
                         <i class="bi bi-journal-check me-2 text-primary"></i>Course Final Assessments
                       </h3>
                       <div class="d-flex align-items-center gap-2 flex-wrap">
-                        <label for="assessmentBatchSelect" class="small fw-semibold text-muted mb-0 me-1">Select Batch:</label>
-                        <select id="assessmentBatchSelect" class="form-select form-select-sm" style="width: auto; min-width: 180px;">
+                        <label for="assessmentBatchSelect" class="small fw-semibold text-muted mb-0 me-1">Select
+                          Batch:</label>
+                        <select id="assessmentBatchSelect" class="form-select form-select-sm"
+                          style="width: auto; min-width: 180px;">
                           <option value="" disabled selected>Select a Batch</option>
                         </select>
-                        <button id="refreshAssessmentBtn" class="btn btn-sm btn-outline-secondary" type="button" title="Refresh">
+                        <button id="refreshAssessmentBtn" class="btn btn-sm btn-outline-secondary" type="button"
+                          title="Refresh">
                           <i class="bi bi-arrow-clockwise"></i>
                         </button>
                       </div>
                     </div>
 
-                    <div id="assessmentAlert" class="alert alert-success d-none alert-dismissible fade show small" role="alert">
+                    <div id="assessmentAlert" class="alert alert-success d-none alert-dismissible fade show small"
+                      role="alert">
                       <span id="assessmentAlertMessage">Changes saved successfully!</span>
                       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
@@ -2431,7 +2440,8 @@
                     <div id="assessmentEmptyState" class="text-center py-5 text-muted">
                       <i class="bi bi-journal-text display-4 mb-3 text-secondary opacity-50 d-block"></i>
                       <h5>Select a Batch to Manage Assessments</h5>
-                      <p class="small">Choose a training batch from the dropdown to view, enter, or modify final results.</p>
+                      <p class="small">Choose a training batch from the dropdown to view, enter, or modify final
+                        results.</p>
                     </div>
                   </div>
                 </div>
@@ -3396,11 +3406,11 @@
 
       const cleanCourse = courseName.trim().replace(/[^a-zA-Z0-9]/g, "");
       const assessDocId = studentId + "_" + cleanCourse;
-      const assessRecord = allAssessments.find(a => a.id === assessDocId) || 
-                            allAssessments.find(a => a.studentId === studentId && a.courseName === courseName);
-      
+      const assessRecord = allAssessments.find(a => a.id === assessDocId) ||
+        allAssessments.find(a => a.studentId === studentId && a.courseName === courseName);
+
       const payRecord = allPayments.find(p => p.id === assessDocId) ||
-                         allPayments.find(p => p.studentId === studentId && p.courseName === courseName);
+        allPayments.find(p => p.studentId === studentId && p.courseName === courseName);
 
       const paymentStatus = payRecord ? payRecord.status : "Unpaid";
       const assessmentStatus = assessRecord ? assessRecord.status : "Not Started";
@@ -3433,7 +3443,7 @@
 
     function generateCertificateId(studentId, courseName) {
       if (!studentId) return "";
-      
+
       const baseId = studentId;
       // Check if a certificate for this student and this course already exists (when editing or re-generating)
       const existingCert = allRecords.find(c => c.studentId === studentId && c.courseName === courseName);
@@ -3466,8 +3476,8 @@
 
       const cleanCourse = courseName.trim().replace(/[^a-zA-Z0-9]/g, "");
       const assessDocId = studentId + "_" + cleanCourse;
-      const assessRecord = allAssessments.find(a => a.id === assessDocId) || 
-                            allAssessments.find(a => a.studentId === studentId && a.courseName === courseName);
+      const assessRecord = allAssessments.find(a => a.id === assessDocId) ||
+        allAssessments.find(a => a.studentId === studentId && a.courseName === courseName);
 
       if (assessRecord && assessRecord.grade) {
         gradeInput.value = assessRecord.grade;
@@ -4300,10 +4310,10 @@
       document.getElementById("certId").value = record.certificateId.replace("INTREX-CERT-", "");
       document.getElementById("certId").disabled = true;
       document.getElementById("studentName").value = record.studentName || "";
-      
+
       // Update course dropdown options and select current course
       updateCourseDropdownForStudent(studentId, courseName);
-      
+
       document.getElementById("issueDate").value = record.issueDate || "";
       document.getElementById("grade").value = record.grade && record.grade !== "N/A" ? record.grade : "";
       document.getElementById("certBatch").value = record.batch || "";
@@ -4398,11 +4408,11 @@
       // Check payment status and assessment record eligibility
       const cleanCourse = courseName.trim().replace(/[^a-zA-Z0-9]/g, "");
       const assessDocId = studentId + "_" + cleanCourse;
-      const assessRecord = allAssessments.find(a => a.id === assessDocId) || 
-                            allAssessments.find(a => a.studentId === studentId && a.courseName === courseName);
-      
+      const assessRecord = allAssessments.find(a => a.id === assessDocId) ||
+        allAssessments.find(a => a.studentId === studentId && a.courseName === courseName);
+
       const payRecord = allPayments.find(p => p.id === assessDocId) ||
-                         allPayments.find(p => p.studentId === studentId && p.courseName === courseName);
+        allPayments.find(p => p.studentId === studentId && p.courseName === courseName);
 
       const isAssessmentPassed = assessRecord && (assessRecord.status === "Passed" || assessRecord.status === "Pass" || assessRecord.status === "passed");
       const isPaymentPaid = payRecord && (payRecord.status === "Fully Paid" || payRecord.status === "Paid" || payRecord.status === "fully paid");
@@ -4949,13 +4959,13 @@
     document.getElementById("courseName").addEventListener("change", function () {
       const selectedCourse = this.value;
       const studentId = document.getElementById("certStudentId").value.trim();
-      
+
       if (studentId) {
         const matchingReg = allRegistrations.find(r => r.studentId && r.studentId.toUpperCase() === studentId.toUpperCase() && r.course === selectedCourse);
         if (matchingReg) {
           document.getElementById("certBatch").value = matchingReg.batch || "";
         }
-        
+
         // Auto-fill Certificate ID and Grade for the newly selected course
         document.getElementById("certId").value = generateCertificateId(studentId, selectedCourse);
         updateGradeFromAssessment(studentId, selectedCourse);
@@ -5860,7 +5870,7 @@
     if (printCertBtn) {
       printCertBtn.onclick = async () => {
         if (activeDetailType !== "certificate" || !activeDetailRecord) return;
-        
+
         const certData = activeDetailRecord;
         const issueDateObj = new Date(certData.issueDate);
         const formattedDate = issueDateObj.toLocaleDateString('en-US', {
@@ -5868,10 +5878,10 @@
           month: 'long',
           day: 'numeric'
         });
-        
+
         const origin = "https://intrex-digital.com";
         const verifyUrl = `${origin}/verify-certificate.html?id=${certData.certificateId}`;
-        
+
         const certHTML = `
           <div class="certificate-container" style="width:842px;height:595px;position:relative;background:#faf6ee;font-family:'Inter',sans-serif;color:#333;overflow:hidden;box-sizing:border-box;">
             <div class="certificate-inner" style="position:absolute;top:0;left:0;right:0;bottom:0;padding:40px 50px;display:flex;flex-direction:column;justify-content:space-between;box-sizing:border-box;">
@@ -5914,15 +5924,18 @@
                   
                   <!-- Verification (QR & Seal) -->
                   <div style="display:flex;align-items:center;justify-content:center;gap:15px;">
+                    <div>
+                      <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=${encodeURIComponent(verifyUrl)}" alt="QR Code" style="width:55px;height:55px;display:block;padding:3px;background:white;border:1px solid #ddd;border-radius:4px;" crossorigin="anonymous">
+                    </div>
                     <div style="width:55px;height:55px;">
                       <svg width="55" height="55" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
                         <defs>
                           <path id="offCircleTop" d="M 20,50 A 30,30 0 1,1 80,50" fill="none" />
-                          <path id="offCircleBottom" d="M 80,50 A 30,30 0 1,1 20,50" fill="none" />
+                          <path id="offCircleBottom" d="M 12,50 A 38,38 0 0,0 88,50" fill="none" />
                         </defs>
                         <circle cx="50" cy="50" r="46" fill="none" stroke="#2e7d32" stroke-width="2" stroke-dasharray="4,2" />
                         <circle cx="50" cy="50" r="41" fill="#e8f5e9" stroke="#2e7d32" stroke-width="2.2" />
-                        <circle cx="50" cy="50" r="32" fill="none" stroke="#2e7d32" stroke-width="1" />
+                        <circle cx="50" cy="50" r="28" fill="none" stroke="#2e7d32" stroke-width="1" />
                         <path d="M 38 51 L 46 59 L 62 43" fill="none" stroke="#2e7d32" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" />
                         <text font-family="'Inter', sans-serif" font-size="8.5" font-weight="900" fill="#2e7d32" letter-spacing="1">
                           <textPath href="#offCircleTop" startOffset="50%" text-anchor="middle">★ CERTIFIED ★</textPath>
@@ -5932,15 +5945,12 @@
                         </text>
                       </svg>
                     </div>
-                    <div>
-                      <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=${encodeURIComponent(verifyUrl)}" alt="QR Code" style="width:55px;height:55px;display:block;padding:3px;background:white;border:1px solid #ddd;border-radius:4px;" crossorigin="anonymous">
-                    </div>
                   </div>
                   
                   <!-- Right Signatory -->
                   <div style="width:200px;text-align:center;">
                     <div style="border-bottom:1.5px solid #7c5a43;padding-bottom:5px;margin-bottom:2px;height:45px;display:flex;align-items:flex-end;justify-content:center;">
-                      <span style="font-family:'Great Vibes',cursive;font-size:26px;color:#4e3629;opacity:0.85;">Jobaer Hossain</span>
+                      <img src="assets/images/signature/signature.svg" alt="CEO Signature" style="max-height:45px;max-width:180px;display:block;" crossorigin="anonymous">
                     </div>
                     <div style="font-family:'Inter',sans-serif;font-size:9.5px;color:#666;">Chief Executive Officer</div>
                   </div>
@@ -5958,17 +5968,17 @@
             </div>
           </div>
         `;
-        
+
         // Show loading feedback on button
         printCertBtn.disabled = true;
         printCertBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status"></span>Generating...';
-        
+
         // Mount to an off-screen container at fixed certificate dimensions
         const offscreen = document.createElement('div');
         offscreen.style.cssText = 'position:fixed;left:-9999px;top:0;width:842px;height:595px;overflow:hidden;z-index:-1;';
         offscreen.innerHTML = certHTML;
         document.body.appendChild(offscreen);
-        
+
         // Wait for logo + QR images to load
         const imgs = offscreen.querySelectorAll('img');
         await Promise.all(Array.from(imgs).map(img => {
@@ -5978,7 +5988,7 @@
             img.onerror = resolve; // resolve even on error so we don't hang
           });
         }));
-        
+
         try {
           const canvas = await html2canvas(offscreen.firstElementChild, {
             useCORS: true,
@@ -5989,7 +5999,7 @@
             width: 842,
             height: 595
           });
-          
+
           const link = document.createElement('a');
           const safeName = (certData.studentName || 'Certificate').replace(/[^a-zA-Z0-9 ]/g, '').trim().replace(/\s+/g, '_');
           link.download = `Certificate_${safeName}_${certData.certificateId}.png`;
@@ -9246,10 +9256,10 @@
     function populateAssessmentBatchDropdown() {
       const select = document.getElementById("assessmentBatchSelect");
       if (!select) return;
-      
+
       const prevSelectedVal = select.value;
       select.innerHTML = '<option value="" disabled selected>Select a Batch</option>';
-      
+
       allBatches.forEach(b => {
         const option = document.createElement("option");
         option.value = b.batchId;
@@ -9280,7 +9290,7 @@
 
       document.getElementById("assessmentCourseName").textContent = batch.courseName;
       document.getElementById("assessmentSchedule").textContent = batch.schedule;
-      
+
       const enrolledStudents = allRegistrations.filter(r => r.batch === batchId);
       document.getElementById("assessmentStudentsCount").textContent = enrolledStudents.length;
 
@@ -9291,7 +9301,7 @@
         tableContainer.classList.add("d-none");
         const tbody = document.getElementById("assessmentTableBody");
         tbody.innerHTML = "";
-        
+
         emptyState.innerHTML = `
           <i class="bi bi-people display-4 mb-3 text-secondary opacity-50 d-block"></i>
           <h5>No Registered Students</h5>
@@ -10890,22 +10900,26 @@
 
             <div class="row g-3 mb-3">
               <div class="col-6">
-                <label for="editAssessmentTheory" class="form-label small fw-semibold mb-1">Theory Marks (100) <span class="text-danger">*</span></label>
+                <label for="editAssessmentTheory" class="form-label small fw-semibold mb-1">Theory Marks (100) <span
+                    class="text-danger">*</span></label>
                 <input type="number" id="editAssessmentTheory" class="form-control" min="0" max="100" required>
               </div>
               <div class="col-6">
-                <label for="editAssessmentPractical" class="form-label small fw-semibold mb-1">Practical Marks (100) <span class="text-danger">*</span></label>
+                <label for="editAssessmentPractical" class="form-label small fw-semibold mb-1">Practical Marks (100)
+                  <span class="text-danger">*</span></label>
                 <input type="number" id="editAssessmentPractical" class="form-control" min="0" max="100" required>
               </div>
             </div>
 
             <div class="row g-3 mb-3">
               <div class="col-6">
-                <label for="editAssessmentGrade" class="form-label small fw-semibold mb-1">Final Grade <span class="text-danger">*</span></label>
+                <label for="editAssessmentGrade" class="form-label small fw-semibold mb-1">Final Grade <span
+                    class="text-danger">*</span></label>
                 <input type="text" id="editAssessmentGrade" class="form-control" placeholder="e.g. A+" required>
               </div>
               <div class="col-6">
-                <label for="editAssessmentStatus" class="form-label small fw-semibold mb-1">Status <span class="text-danger">*</span></label>
+                <label for="editAssessmentStatus" class="form-label small fw-semibold mb-1">Status <span
+                    class="text-danger">*</span></label>
                 <select id="editAssessmentStatus" class="form-select" required>
                   <option value="Not Started">Not Started</option>
                   <option value="Pending">Pending</option>
@@ -10918,7 +10932,8 @@
 
             <div class="mb-3">
               <label for="editAssessmentRemarks" class="form-label small fw-semibold mb-1">Remarks / Feedback</label>
-              <textarea id="editAssessmentRemarks" class="form-control" rows="2" placeholder="Enter feedback..."></textarea>
+              <textarea id="editAssessmentRemarks" class="form-control" rows="2"
+                placeholder="Enter feedback..."></textarea>
             </div>
 
             <div class="p-3 bg-light rounded-3 border">
