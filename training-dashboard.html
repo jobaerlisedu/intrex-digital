@@ -540,8 +540,8 @@
 
     .signature-line {
       border-bottom: 1.5px solid #7c5a43;
-      padding-bottom: 5px;
-      margin-bottom: 2px;
+      padding-bottom: 0px;
+      margin-bottom: 0px;
       height: 45px;
       display: flex;
       align-items: flex-end;
@@ -549,11 +549,12 @@
     }
 
     .signature-cursive {
-      font-family: 'Great Vibes', cursive;
-      font-size: 26px;
+      font-family: 'Mrs Saint Delafield', cursive;
+      font-size: 32px;
       color: #4e3629;
       opacity: 0.85;
       user-select: none;
+      line-height: 0.6;
     }
 
     .signature-name {
@@ -771,12 +772,27 @@
                   aria-controls="overviewPanel" aria-selected="true">
                   <i class="bi bi-bar-chart-line"></i> Overview
                 </button>
+                <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
+                  id="employees-tab" data-bs-toggle="tab" data-bs-target="#employeesPanel" type="button" role="tab"
+                  aria-controls="employeesPanel" aria-selected="false">
+                  <i class="bi bi-person-badge"></i> Employee Database
+                </button>
+                <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
+                  id="contact-directory-tab" data-bs-toggle="tab" data-bs-target="#contactDirectoryPanel" type="button"
+                  role="tab" aria-controls="contactDirectoryPanel" aria-selected="false">
+                  <i class="bi bi-person-lines-fill"></i> Contact Directory
+                </button>
                 <button
                   class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2 position-relative"
                   id="inquiries-tab" data-bs-toggle="tab" data-bs-target="#inquiriesPanel" type="button" role="tab"
                   aria-controls="inquiriesPanel" aria-selected="false">
                   <i class="bi bi-envelope-open"></i> Inquiries
                   <span class="badge bg-danger ms-auto" id="inquiryBadge" style="font-size:0.65rem;">0</span>
+                </button>
+                <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
+                  id="batch-management-tab" data-bs-toggle="tab" data-bs-target="#batchPanel" type="button" role="tab"
+                  aria-controls="batchPanel" aria-selected="false">
+                  <i class="bi bi-collection"></i> Batch Management
                 </button>
                 <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
                   id="registration-tab" data-bs-toggle="tab" data-bs-target="#registrationPanel" type="button"
@@ -786,42 +802,27 @@
                 <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
                   id="student-list-tab" data-bs-toggle="tab" data-bs-target="#studentListPanel" type="button" role="tab"
                   aria-controls="studentListPanel" aria-selected="false">
-                  <i class="bi bi-people"></i> Student List
-                </button>
-                <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
-                  id="batch-management-tab" data-bs-toggle="tab" data-bs-target="#batchPanel" type="button" role="tab"
-                  aria-controls="batchPanel" aria-selected="false">
-                  <i class="bi bi-collection"></i> Batch Management
-                </button>
-                <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
-                  id="course-assessment-tab" data-bs-toggle="tab" data-bs-target="#assessmentPanel" type="button"
-                  role="tab" aria-controls="assessmentPanel" aria-selected="false">
-                  <i class="bi bi-journal-check"></i> Course Assessments
-                </button>
-                <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
-                  id="contact-directory-tab" data-bs-toggle="tab" data-bs-target="#contactDirectoryPanel" type="button"
-                  role="tab" aria-controls="contactDirectoryPanel" aria-selected="false">
-                  <i class="bi bi-person-lines-fill"></i> Contact Directory
-                </button>
-                <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
-                  id="job-placement-tab" data-bs-toggle="tab" data-bs-target="#jobPlacementPanel" type="button"
-                  role="tab" aria-controls="jobPlacementPanel" aria-selected="false">
-                  <i class="bi bi-briefcase"></i> Job Placement
-                </button>
-                <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
-                  id="employees-tab" data-bs-toggle="tab" data-bs-target="#employeesPanel" type="button" role="tab"
-                  aria-controls="employeesPanel" aria-selected="false">
-                  <i class="bi bi-person-badge"></i> Employee Database
-                </button>
-                <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
-                  id="payment-tab" data-bs-toggle="tab" data-bs-target="#paymentPanel" type="button" role="tab"
-                  aria-controls="paymentPanel" aria-selected="false">
-                  <i class="bi bi-credit-card"></i> Payment Records
+                  <i class="bi bi-people"></i> Student Database
                 </button>
                 <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
                   id="installment-tab" data-bs-toggle="tab" data-bs-target="#installmentPanel" type="button" role="tab"
                   aria-controls="installmentPanel" aria-selected="false">
                   <i class="bi bi-calculator"></i> Installment Plan
+                </button>
+                <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
+                  id="payment-tab" data-bs-toggle="tab" data-bs-target="#paymentPanel" type="button" role="tab"
+                  aria-controls="paymentPanel" aria-selected="false">
+                  <i class="bi bi-credit-card"></i> Revenue Tracker
+                </button>
+                <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
+                  id="expense-tab" data-bs-toggle="tab" data-bs-target="#expensePanel" type="button" role="tab"
+                  aria-controls="expensePanel" aria-selected="false">
+                  <i class="bi bi-wallet2"></i> Expense Tracker
+                </button>
+                <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
+                  id="course-assessment-tab" data-bs-toggle="tab" data-bs-target="#assessmentPanel" type="button"
+                  role="tab" aria-controls="assessmentPanel" aria-selected="false">
+                  <i class="bi bi-journal-check"></i> Course Assessments
                 </button>
                 <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
                   id="generate-tab" data-bs-toggle="tab" data-bs-target="#generatePanel" type="button" role="tab"
@@ -831,22 +832,22 @@
                 <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
                   id="records-tab" data-bs-toggle="tab" data-bs-target="#recordsPanel" type="button" role="tab"
                   aria-controls="recordsPanel" aria-selected="false">
-                  <i class="bi bi-award"></i> Issued Certificates
+                  <i class="bi bi-award"></i> Issued Certificate
+                </button>
+                <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
+                  id="job-placement-tab" data-bs-toggle="tab" data-bs-target="#jobPlacementPanel" type="button"
+                  role="tab" aria-controls="jobPlacementPanel" aria-selected="false">
+                  <i class="bi bi-briefcase"></i> Job Placement
                 </button>
                 <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
                   id="report-tab" data-bs-toggle="tab" data-bs-target="#reportPanel" type="button" role="tab"
                   aria-controls="reportPanel" aria-selected="false">
-                  <i class="bi bi-file-earmark-bar-graph"></i> Reports
-                </button>
-                <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
-                  id="expense-tab" data-bs-toggle="tab" data-bs-target="#expensePanel" type="button" role="tab"
-                  aria-controls="expensePanel" aria-selected="false">
-                  <i class="bi bi-wallet2"></i> Expense Tracker
+                  <i class="bi bi-file-earmark-bar-graph"></i> Report
                 </button>
                 <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2" id="logs-tab"
                   data-bs-toggle="tab" data-bs-target="#logsPanel" type="button" role="tab" aria-controls="logsPanel"
                   aria-selected="false">
-                  <i class="bi bi-shield-check"></i> System Audit Logs
+                  <i class="bi bi-shield-check"></i> Logs
                 </button>
               </div>
             </div>
@@ -3332,8 +3333,6 @@
   <!-- ======= Javascripts =======-->
   <script src="assets/vendors/bootstrap/bootstrap.bundle.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <!-- html2canvas for certificate PNG download -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script type="module">
     import { loginAdmin, logoutAdmin, onAdminAuthStateChanged, addCertificate, getAllCertificates, deleteCertificate, addRegistration, getAllRegistrations, updateRegistration, deleteRegistration, getAllPayments, updatePayment, addAuditLog, getAllAuditLogs, getAllOnlineRegistrations, getOnlineRegistration, deleteOnlineRegistration, getAllOnlineInquiries, deleteOnlineInquiry, addEmployee, getAllEmployees, deleteEmployee, getAllBatches, addBatch, updateBatch, deleteBatch, getAllPublicInstitutes, addPublicInstitute, updatePublicInstitute, deletePublicInstitute, getAllJobPlacements, addJobPlacement, updateJobPlacement, deleteJobPlacement, getAllExpenses, addExpense, updateExpense, deleteExpense, getAllAssessments, saveAssessment } from "./assets/js/training.js";
 
@@ -5443,14 +5442,6 @@
       activeDetailRecord = record;
       activeDetailType = type;
 
-      // Control dynamic visibility of the "Print Official Certificate" button
-      const printCertBtn = document.getElementById("detailsPrintCertBtn");
-      if (type === "certificate") {
-        if (printCertBtn) printCertBtn.classList.remove("d-none");
-      } else {
-        if (printCertBtn) printCertBtn.classList.add("d-none");
-      }
-
       if (type === 'installment' && record) {
         const reg = allRegistrations.find(r => r.studentId === record.studentId) || {};
         if (!record.courseName) record.courseName = reg.course || "";
@@ -5863,157 +5854,6 @@
       // Launch Modal
       const modalInst = bootstrap.Modal.getOrCreateInstance(document.getElementById('detailsViewModal'));
       modalInst.show();
-    }
-
-    // Modal print certificate event
-    const printCertBtn = document.getElementById("detailsPrintCertBtn");
-    if (printCertBtn) {
-      printCertBtn.onclick = async () => {
-        if (activeDetailType !== "certificate" || !activeDetailRecord) return;
-
-        const certData = activeDetailRecord;
-        const issueDateObj = new Date(certData.issueDate);
-        const formattedDate = issueDateObj.toLocaleDateString('en-US', {
-          year: 'numeric',
-          month: 'long',
-          day: 'numeric'
-        });
-
-        const origin = "https://intrex-digital.com";
-        const verifyUrl = `${origin}/verify-certificate.html?id=${certData.certificateId}`;
-
-        const certHTML = `
-          <div class="certificate-container" style="width:842px;height:595px;position:relative;background:#faf6ee;font-family:'Inter',sans-serif;color:#333;overflow:hidden;box-sizing:border-box;">
-            <div class="certificate-inner" style="position:absolute;top:0;left:0;right:0;bottom:0;padding:40px 50px;display:flex;flex-direction:column;justify-content:space-between;box-sizing:border-box;">
-              <!-- Ornate Border SVG -->
-              <svg style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;" viewBox="0 0 842 595" xmlns="http://www.w3.org/2000/svg">
-                <path d="M 60,20 L 782,20 A 30,30 0 0 0 812,50 L 812,545 A 30,30 0 0 0 782,575 L 60,575 A 30,30 0 0 0 30,545 L 30,50 A 30,30 0 0 0 60,20 Z" fill="none" stroke="#6d4c41" stroke-width="2.5" />
-                <path d="M 70,30 L 772,30 A 30,30 0 0 0 802,60 L 802,535 A 30,30 0 0 0 772,565 L 70,565 A 30,30 0 0 0 40,535 L 40,60 A 30,30 0 0 0 70,30 Z" fill="none" stroke="#6d4c41" stroke-width="1.2" stroke-dasharray="4,2" />
-              </svg>
-              
-              <div style="height:100%;display:flex;flex-direction:column;justify-content:space-between;align-items:center;text-align:center;position:relative;z-index:2;">
-                <!-- Top Official Logo -->
-                <div style="height:55px;margin-top:15px;margin-bottom:25px;display:flex;justify-content:center;align-items:center;">
-                  <img src="${window.location.origin.includes('localhost') || window.location.protocol === 'file:' ? '' : ''}assets/images/logo/intrex-logo.svg" style="height:55px;width:auto;display:block;" alt="Intrex Digital Hub" crossorigin="anonymous">
-                </div>
-                
-                <!-- Title -->
-                <h2 style="font-family:'Playfair Display',Georgia,serif;font-size:30px;font-weight:900;color:#222;margin:0 0 8px 0;letter-spacing:0.5px;">CERTIFICATE OF COMPLETION</h2>
-                
-                <!-- Subtitle -->
-                <div style="font-family:'Lato',sans-serif;font-size:11px;font-weight:700;color:#7c5a43;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:4px;">THIS CERTIFICATE IS PROUDLY PRESENTED TO</div>
-                
-                <!-- Recipient -->
-                <div style="font-family:'Great Vibes',cursive;font-size:46px;color:#1a1a1a;margin:15px 0;line-height:1;">${certData.studentName}</div>
-                
-                <!-- Description -->
-                <p style="font-family:'Inter',sans-serif;font-size:12.5px;line-height:1.6;color:#555;max-width:680px;margin:0 auto 10px auto;">
-                  in recognition of their outstanding dedication, academic excellence, and successful completion of the professional training program in <strong style="color:#222;font-weight:600;">${certData.courseName}</strong>, batch <strong>${certData.batch || 'N/A'}</strong>, awarded with grade <strong>${certData.grade}</strong> at Intrex Digital Hub.
-                </p>
-                
-                <!-- Bottom Row: Signatures & QR / Seal -->
-                <div style="display:flex;justify-content:space-between;align-items:flex-end;width:100%;margin-top:auto;padding:0 10px;">
-                  <!-- Left Signatory -->
-                  <div style="width:200px;text-align:center;">
-                    <div style="border-bottom:1.5px solid #7c5a43;padding-bottom:5px;margin-bottom:6px;height:45px;display:flex;align-items:flex-end;justify-content:center;">
-                      <span style="font-family:'Great Vibes',cursive;font-size:26px;color:#4e3629;opacity:0.85;">Sarah Jenkins</span>
-                    </div>
-                    <div style="font-family:'Inter',sans-serif;font-size:11px;font-weight:700;color:#222;text-transform:uppercase;letter-spacing:0.5px;">Sarah Jenkins</div>
-                    <div style="font-family:'Inter',sans-serif;font-size:9.5px;color:#666;">Director of Training</div>
-                  </div>
-                  
-                  <!-- Verification (QR & Seal) -->
-                  <div style="display:flex;align-items:center;justify-content:center;gap:15px;">
-                    <div>
-                      <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=${encodeURIComponent(verifyUrl)}" alt="QR Code" style="width:55px;height:55px;display:block;padding:3px;background:white;border:1px solid #ddd;border-radius:4px;" crossorigin="anonymous">
-                    </div>
-                    <div style="width:55px;height:55px;">
-                      <svg width="55" height="55" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                        <defs>
-                          <path id="offCircleTop" d="M 20,50 A 30,30 0 1,1 80,50" fill="none" />
-                          <path id="offCircleBottom" d="M 12,50 A 38,38 0 0,0 88,50" fill="none" />
-                        </defs>
-                        <circle cx="50" cy="50" r="46" fill="none" stroke="#2e7d32" stroke-width="2" stroke-dasharray="4,2" />
-                        <circle cx="50" cy="50" r="41" fill="#e8f5e9" stroke="#2e7d32" stroke-width="2.2" />
-                        <circle cx="50" cy="50" r="28" fill="none" stroke="#2e7d32" stroke-width="1" />
-                        <path d="M 38 51 L 46 59 L 62 43" fill="none" stroke="#2e7d32" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" />
-                        <text font-family="'Inter', sans-serif" font-size="8.5" font-weight="900" fill="#2e7d32" letter-spacing="1">
-                          <textPath href="#offCircleTop" startOffset="50%" text-anchor="middle">★ CERTIFIED ★</textPath>
-                        </text>
-                        <text font-family="'Inter', sans-serif" font-size="8.5" font-weight="900" fill="#2e7d32" letter-spacing="1">
-                          <textPath href="#offCircleBottom" startOffset="50%" text-anchor="middle">★ CERTIFIED ★</textPath>
-                        </text>
-                      </svg>
-                    </div>
-                  </div>
-                  
-                  <!-- Right Signatory -->
-                  <div style="width:200px;text-align:center;">
-                    <div style="border-bottom:1.5px solid #7c5a43;padding-bottom:5px;margin-bottom:2px;height:45px;display:flex;align-items:flex-end;justify-content:center;">
-                      <img src="assets/images/signature/signature.svg" alt="CEO Signature" style="max-height:45px;max-width:180px;display:block;" crossorigin="anonymous">
-                    </div>
-                    <div style="font-family:'Inter',sans-serif;font-size:9.5px;color:#666;">Chief Executive Officer</div>
-                  </div>
-                </div>
-                
-                <!-- Footer details -->
-                <div style="font-size:9.5px;color:#777;margin-top:12px;display:flex;gap:10px;justify-content:center;align-items:center;border-top:1px solid rgba(124,90,67,0.15);width:100%;padding-top:8px;">
-                  <span>Certificate ID: </span>
-                  <span style="font-weight:600;color:#444;">${certData.certificateId}</span>
-                  <span style="color:#ccc;">|</span>
-                  <span>Date of Issue: </span>
-                  <span style="font-weight:600;color:#444;">${formattedDate}</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        `;
-
-        // Show loading feedback on button
-        printCertBtn.disabled = true;
-        printCertBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status"></span>Generating...';
-
-        // Mount to an off-screen container at fixed certificate dimensions
-        const offscreen = document.createElement('div');
-        offscreen.style.cssText = 'position:fixed;left:-9999px;top:0;width:842px;height:595px;overflow:hidden;z-index:-1;';
-        offscreen.innerHTML = certHTML;
-        document.body.appendChild(offscreen);
-
-        // Wait for logo + QR images to load
-        const imgs = offscreen.querySelectorAll('img');
-        await Promise.all(Array.from(imgs).map(img => {
-          if (img.complete && img.naturalWidth > 0) return Promise.resolve();
-          return new Promise(resolve => {
-            img.onload = resolve;
-            img.onerror = resolve; // resolve even on error so we don't hang
-          });
-        }));
-
-        try {
-          const canvas = await html2canvas(offscreen.firstElementChild, {
-            useCORS: true,
-            allowTaint: false,
-            scale: 2,
-            backgroundColor: '#faf6ee',
-            logging: false,
-            width: 842,
-            height: 595
-          });
-
-          const link = document.createElement('a');
-          const safeName = (certData.studentName || 'Certificate').replace(/[^a-zA-Z0-9 ]/g, '').trim().replace(/\s+/g, '_');
-          link.download = `Certificate_${safeName}_${certData.certificateId}.png`;
-          link.href = canvas.toDataURL('image/png', 1.0);
-          link.click();
-        } catch (err) {
-          console.error('Certificate download failed:', err);
-          alert('Failed to generate certificate image. Please try again.');
-        } finally {
-          document.body.removeChild(offscreen);
-          printCertBtn.disabled = false;
-          printCertBtn.innerHTML = '<i class="bi bi-download me-2"></i>Download Certificate';
-        }
-      };
     }
 
     // Modal print event
@@ -10978,9 +10818,6 @@
             data-bs-dismiss="modal">Close</button>
           <button type="button" class="btn btn-primary px-3 fw-semibold rounded-3" id="detailsPrintBtn">
             <i class="bi bi-printer me-2"></i>Print Details
-          </button>
-          <button type="button" class="btn btn-success px-3 fw-semibold rounded-3 d-none" id="detailsPrintCertBtn">
-            <i class="bi bi-download me-2"></i>Download Certificate
           </button>
         </div>
       </div>
