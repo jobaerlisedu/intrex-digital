@@ -418,280 +418,6 @@
         width: 100%;
       }
     }
-
-    /* Certificate Design System */
-    .certificate-container {
-      width: 100%;
-      max-width: 850px;
-      margin: 20px auto;
-      aspect-ratio: 842 / 595;
-      background-color: #faf6ee;
-      position: relative;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1) !important;
-      border-radius: 8px;
-      overflow: hidden;
-      box-sizing: border-box;
-      font-family: 'Inter', sans-serif;
-      color: #333;
-    }
-
-    .certificate-inner {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      padding: 40px 50px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      box-sizing: border-box;
-    }
-
-    .certificate-border {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-    }
-
-    .certificate-content {
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      align-items: center;
-      text-align: center;
-      position: relative;
-      z-index: 2;
-    }
-
-    .certificate-logo-container {
-      height: 55px;
-      margin-top: 15px;
-      margin-bottom: 25px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .certificate-official-logo {
-      height: 55px;
-      width: auto;
-      display: block;
-    }
-
-    .certificate-title {
-      font-family: 'Playfair Display', Georgia, serif;
-      font-size: 30px;
-      font-weight: 900;
-      color: #222;
-      margin: 0 0 8px 0;
-      letter-spacing: 0.5px;
-    }
-
-    .certificate-subtitle {
-      font-family: 'Lato', sans-serif;
-      font-size: 11px;
-      font-weight: 700;
-      color: #7c5a43;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      margin-bottom: 4px;
-    }
-
-    .certificate-recipient {
-      font-family: 'Great Vibes', cursive;
-      font-size: 46px;
-      color: #1a1a1a;
-      margin: 15px 0;
-      line-height: 1;
-    }
-
-    .certificate-description {
-      font-family: 'Inter', sans-serif;
-      font-size: 12.5px;
-      line-height: 1.6;
-      color: #555;
-      max-width: 680px;
-      margin: 0 auto 10px auto;
-    }
-
-    .certificate-description strong {
-      color: #222;
-      font-weight: 600;
-    }
-
-    .certificate-bottom {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-end;
-      width: 100%;
-      margin-top: auto;
-      padding: 0 10px;
-    }
-
-    .signature-block {
-      width: 200px;
-      text-align: center;
-    }
-
-    .signature-line {
-      border-bottom: 1.5px solid #7c5a43;
-      padding-bottom: 0px;
-      margin-bottom: 0px;
-      height: 45px;
-      display: flex;
-      align-items: flex-end;
-      justify-content: center;
-    }
-
-    .signature-cursive {
-      font-family: 'Mrs Saint Delafield', cursive;
-      font-size: 32px;
-      color: #4e3629;
-      opacity: 0.85;
-      user-select: none;
-      line-height: 0.6;
-    }
-
-    .signature-name {
-      font-family: 'Inter', sans-serif;
-      font-size: 11px;
-      font-weight: 700;
-      color: #222;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-
-    .signature-title {
-      font-family: 'Inter', sans-serif;
-      font-size: 9.5px;
-      color: #666;
-    }
-
-    .verification-block {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 15px;
-    }
-
-    .qr-code-wrapper img {
-      width: 55px;
-      height: 55px;
-      display: block;
-      padding: 3px;
-      background: white;
-      border: 1px solid #ddd;
-      border-radius: 4px;
-    }
-
-    .seal-wrapper {
-      width: 55px;
-      height: 55px;
-    }
-
-    .certificate-footer {
-      font-size: 9.5px;
-      color: #777;
-      margin-top: 12px;
-      display: flex;
-      gap: 10px;
-      justify-content: center;
-      align-items: center;
-      border-top: 1px solid rgba(124, 90, 67, 0.15);
-      width: 100%;
-      padding-top: 8px;
-    }
-
-    .certificate-footer .separator {
-      color: #ccc;
-    }
-
-    .certificate-footer .cert-id-value,
-    .certificate-footer .cert-date-value {
-      font-weight: 600;
-      color: #444;
-    }
-
-    /* Print overrides for landscape certificate inside training admin dashboard */
-    @media print {
-      body.viewing-certificate {
-        background: #faf6ee !important;
-      }
-
-      body.viewing-certificate #printSection {
-        width: 297mm !important;
-        height: 210mm !important;
-        position: absolute !important;
-        top: 0 !important;
-        left: 0 !important;
-        background: #faf6ee !important;
-        padding: 0 !important;
-        margin: 0 !important;
-      }
-
-      body.viewing-certificate .certificate-container {
-        display: block !important;
-        width: 297mm !important;
-        height: 210mm !important;
-        max-width: none !important;
-        margin: 0 !important;
-        box-shadow: none !important;
-        border-radius: 0 !important;
-        background-color: #faf6ee !important;
-      }
-
-      body.viewing-certificate .certificate-inner {
-        padding: 15mm 20mm !important;
-      }
-
-      /* Reset display type overrides for flex components in dashboard print */
-      body.viewing-certificate #printSection .certificate-inner,
-      body.viewing-certificate #printSection .certificate-content,
-      body.viewing-certificate #printSection .certificate-bottom,
-      body.viewing-certificate #printSection .signature-block,
-      body.viewing-certificate #printSection .verification-block,
-      body.viewing-certificate #printSection .qr-code-wrapper,
-      body.viewing-certificate #printSection .seal-wrapper,
-      body.viewing-certificate #printSection .certificate-footer,
-      body.viewing-certificate #printSection .certificate-logo-container {
-        display: flex !important;
-      }
-
-      body.viewing-certificate #printSection .certificate-inner {
-        flex-direction: column !important;
-        justify-content: space-between !important;
-      }
-
-      body.viewing-certificate #printSection .certificate-content {
-        flex-direction: column !important;
-        justify-content: space-between !important;
-        align-items: center !important;
-      }
-
-      body.viewing-certificate #printSection .certificate-bottom {
-        justify-content: space-between !important;
-        align-items: flex-end !important;
-      }
-
-      body.viewing-certificate #printSection .signature-line {
-        display: flex !important;
-        align-items: flex-end !important;
-        justify-content: center !important;
-      }
-
-      body.viewing-certificate #printSection .certificate-logo-container,
-      body.viewing-certificate #printSection .certificate-official-logo,
-      body.viewing-certificate #printSection .certificate-title,
-      body.viewing-certificate #printSection .certificate-recipient,
-      body.viewing-certificate #printSection .certificate-description {
-        display: block !important;
-      }
-    }
   </style>
 
   <script>
@@ -772,27 +498,12 @@
                   aria-controls="overviewPanel" aria-selected="true">
                   <i class="bi bi-bar-chart-line"></i> Overview
                 </button>
-                <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
-                  id="employees-tab" data-bs-toggle="tab" data-bs-target="#employeesPanel" type="button" role="tab"
-                  aria-controls="employeesPanel" aria-selected="false">
-                  <i class="bi bi-person-badge"></i> Employee Database
-                </button>
-                <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
-                  id="contact-directory-tab" data-bs-toggle="tab" data-bs-target="#contactDirectoryPanel" type="button"
-                  role="tab" aria-controls="contactDirectoryPanel" aria-selected="false">
-                  <i class="bi bi-person-lines-fill"></i> Contact Directory
-                </button>
                 <button
                   class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2 position-relative"
                   id="inquiries-tab" data-bs-toggle="tab" data-bs-target="#inquiriesPanel" type="button" role="tab"
                   aria-controls="inquiriesPanel" aria-selected="false">
                   <i class="bi bi-envelope-open"></i> Inquiries
                   <span class="badge bg-danger ms-auto" id="inquiryBadge" style="font-size:0.65rem;">0</span>
-                </button>
-                <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
-                  id="batch-management-tab" data-bs-toggle="tab" data-bs-target="#batchPanel" type="button" role="tab"
-                  aria-controls="batchPanel" aria-selected="false">
-                  <i class="bi bi-collection"></i> Batch Management
                 </button>
                 <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
                   id="registration-tab" data-bs-toggle="tab" data-bs-target="#registrationPanel" type="button"
@@ -802,27 +513,57 @@
                 <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
                   id="student-list-tab" data-bs-toggle="tab" data-bs-target="#studentListPanel" type="button" role="tab"
                   aria-controls="studentListPanel" aria-selected="false">
-                  <i class="bi bi-people"></i> Student Database
+                  <i class="bi bi-people"></i> Student List
                 </button>
                 <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
-                  id="installment-tab" data-bs-toggle="tab" data-bs-target="#installmentPanel" type="button" role="tab"
-                  aria-controls="installmentPanel" aria-selected="false">
-                  <i class="bi bi-calculator"></i> Installment Plan
-                </button>
-                <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
-                  id="payment-tab" data-bs-toggle="tab" data-bs-target="#paymentPanel" type="button" role="tab"
-                  aria-controls="paymentPanel" aria-selected="false">
-                  <i class="bi bi-credit-card"></i> Revenue Tracker
-                </button>
-                <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
-                  id="expense-tab" data-bs-toggle="tab" data-bs-target="#expensePanel" type="button" role="tab"
-                  aria-controls="expensePanel" aria-selected="false">
-                  <i class="bi bi-wallet2"></i> Expense Tracker
+                  id="batch-management-tab" data-bs-toggle="tab" data-bs-target="#batchPanel" type="button" role="tab"
+                  aria-controls="batchPanel" aria-selected="false">
+                  <i class="bi bi-collection"></i> Batch Management
                 </button>
                 <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
                   id="course-assessment-tab" data-bs-toggle="tab" data-bs-target="#assessmentPanel" type="button"
                   role="tab" aria-controls="assessmentPanel" aria-selected="false">
                   <i class="bi bi-journal-check"></i> Course Assessments
+                </button>
+                <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
+                  id="contact-directory-tab" data-bs-toggle="tab" data-bs-target="#contactDirectoryPanel" type="button"
+                  role="tab" aria-controls="contactDirectoryPanel" aria-selected="false">
+                  <i class="bi bi-person-lines-fill"></i> Contact Directory
+                </button>
+                <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
+                  id="marketing-agents-tab" data-bs-toggle="tab" data-bs-target="#marketingAgentsPanel" type="button"
+                  role="tab" aria-controls="marketingAgentsPanel" aria-selected="false">
+                  <i class="bi bi-headset"></i> Marketing Agents
+                </button>
+                <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
+                  id="sales-commission-tab" data-bs-toggle="tab" data-bs-target="#salesCommissionPanel" type="button"
+                  role="tab" aria-controls="salesCommissionPanel" aria-selected="false">
+                  <i class="bi bi-graph-up"></i> Sales Commission & KPI
+                </button>
+                <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
+                  id="sales-records-tab" data-bs-toggle="tab" data-bs-target="#salesRecordsPanel" type="button"
+                  role="tab" aria-controls="salesRecordsPanel" aria-selected="false">
+                  <i class="bi bi-receipt"></i> Sales Records
+                </button>
+                <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
+                  id="job-placement-tab" data-bs-toggle="tab" data-bs-target="#jobPlacementPanel" type="button"
+                  role="tab" aria-controls="jobPlacementPanel" aria-selected="false">
+                  <i class="bi bi-briefcase"></i> Job Placement
+                </button>
+                <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
+                  id="employees-tab" data-bs-toggle="tab" data-bs-target="#employeesPanel" type="button" role="tab"
+                  aria-controls="employeesPanel" aria-selected="false">
+                  <i class="bi bi-person-badge"></i> Employee Database
+                </button>
+                <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
+                  id="payment-tab" data-bs-toggle="tab" data-bs-target="#paymentPanel" type="button" role="tab"
+                  aria-controls="paymentPanel" aria-selected="false">
+                  <i class="bi bi-credit-card"></i> Payment Records
+                </button>
+                <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
+                  id="installment-tab" data-bs-toggle="tab" data-bs-target="#installmentPanel" type="button" role="tab"
+                  aria-controls="installmentPanel" aria-selected="false">
+                  <i class="bi bi-calculator"></i> Installment Plan
                 </button>
                 <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
                   id="generate-tab" data-bs-toggle="tab" data-bs-target="#generatePanel" type="button" role="tab"
@@ -832,22 +573,22 @@
                 <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
                   id="records-tab" data-bs-toggle="tab" data-bs-target="#recordsPanel" type="button" role="tab"
                   aria-controls="recordsPanel" aria-selected="false">
-                  <i class="bi bi-award"></i> Issued Certificate
-                </button>
-                <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
-                  id="job-placement-tab" data-bs-toggle="tab" data-bs-target="#jobPlacementPanel" type="button"
-                  role="tab" aria-controls="jobPlacementPanel" aria-selected="false">
-                  <i class="bi bi-briefcase"></i> Job Placement
+                  <i class="bi bi-award"></i> Issued Certificates
                 </button>
                 <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
                   id="report-tab" data-bs-toggle="tab" data-bs-target="#reportPanel" type="button" role="tab"
                   aria-controls="reportPanel" aria-selected="false">
-                  <i class="bi bi-file-earmark-bar-graph"></i> Report
+                  <i class="bi bi-file-earmark-bar-graph"></i> Reports
+                </button>
+                <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
+                  id="expense-tab" data-bs-toggle="tab" data-bs-target="#expensePanel" type="button" role="tab"
+                  aria-controls="expensePanel" aria-selected="false">
+                  <i class="bi bi-wallet2"></i> Expense Tracker
                 </button>
                 <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2" id="logs-tab"
                   data-bs-toggle="tab" data-bs-target="#logsPanel" type="button" role="tab" aria-controls="logsPanel"
                   aria-selected="false">
-                  <i class="bi bi-shield-check"></i> Logs
+                  <i class="bi bi-shield-check"></i> System Audit Logs
                 </button>
               </div>
             </div>
@@ -1316,19 +1057,19 @@
                               <label class="form-label small fw-semibold mb-1" for="regFee">Course Fee (BDT) <span
                                   class="text-danger">*</span></label>
                               <input class="form-control" id="regFee" type="number" min="0" placeholder="e.g. 12000"
-                                required>
+                                required readonly>
                             </div>
                             <div class="col-md-4">
                               <label class="form-label small fw-semibold mb-1" for="regDiscount">Discount (BDT)</label>
-                              <input class="form-control" id="regDiscount" type="number" min="0" value="0"
-                                placeholder="e.g. 0">
+                              <input class="form-control" id="regDiscount" type="number" min="0" value="2000"
+                                placeholder="e.g. 0" readonly>
                             </div>
                             <div class="col-md-4">
                               <label class="form-label small fw-semibold mb-1" id="regAmountPaidLabel"
                                 for="regAmountPaid">Amount Paid (BDT)
                                 <span class="text-danger">*</span></label>
                               <input class="form-control" id="regAmountPaid" type="number" min="0" value="0"
-                                placeholder="e.g. 0" required>
+                                placeholder="e.g. 0" required readonly>
                             </div>
                           </div>
 
@@ -1384,6 +1125,20 @@
                               <label class="form-label small fw-semibold mb-1" for="regPaymentTxId">Transaction
                                 ID</label>
                               <input class="form-control" id="regPaymentTxId" type="text" placeholder="e.g. TRX100293">
+                            </div>
+                          </div>
+
+                          <!-- Row 5.5: Key Account Manager -->
+                          <div class="row g-3 mb-3">
+                            <div class="col-12">
+                              <label class="form-label small fw-semibold mb-1" for="regKam">Key Account Manager
+                                (KAM) <span class="text-danger">*</span></label>
+                              <select class="form-select" id="regKam" required>
+                                <option value="" disabled selected>Select Key Account Manager</option>
+                                <option value="Direct">None / Direct Enrollment</option>
+                              </select>
+                              <div class="form-text small text-muted">Select an assigned Marketing Agent or Business
+                                Development Executive/Manager.</div>
                             </div>
                           </div>
 
@@ -2083,6 +1838,7 @@
                           <option value="expenses">Detailed Business Expenses</option>
                           <option value="placements">Job Placement Success Registry</option>
                           <option value="profit_loss">Income Statement (Profit & Loss)</option>
+                          <option value="agent_sales">Agent & Employee Sales KPI</option>
                         </select>
                       </div>
                       <div class="col-md-2 col-sm-6" id="reportCourseContainer">
@@ -2753,6 +2509,379 @@
                   </div>
                 </div>
 
+                <!-- Sub-Page: Marketing Agents -->
+                <div class="tab-pane fade" id="marketingAgentsPanel" role="tabpanel"
+                  aria-labelledby="marketing-agents-tab">
+                  <div class="row g-4">
+                    <!-- Left: Form -->
+                    <div class="col-lg-4">
+                      <div class="card p-4 rounded-4 shadow-sm border">
+                        <h3 id="agentFormTitle" class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
+                          <i class="bi bi-person-plus-fill me-2 text-primary"></i>Add Marketing Agent
+                        </h3>
+
+                        <div id="agentSuccess" class="alert alert-success d-none alert-dismissible fade show small"
+                          role="alert">
+                          <span>Agent saved successfully!</span>
+                          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                        <div id="agentError" class="alert alert-danger d-none alert-dismissible fade show small"
+                          role="alert">
+                          <span>An error occurred. Please try again.</span>
+                          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+
+                        <form id="agentForm">
+                          <div class="mb-3">
+                            <label class="form-label small fw-semibold mb-1" for="agentNameInput">Agent Name
+                              <span class="text-danger">*</span></label>
+                            <input class="form-control" id="agentNameInput" type="text" placeholder="e.g. Hasan Mahmud"
+                              required>
+                          </div>
+
+                          <div class="row g-2 mb-3">
+                            <div class="col-md-6">
+                              <label class="form-label small fw-semibold mb-1" for="agentEmailInput">Email
+                                Address</label>
+                              <input class="form-control" id="agentEmailInput" type="email"
+                                placeholder="email@domain.com">
+                            </div>
+                            <div class="col-md-6">
+                              <label class="form-label small fw-semibold mb-1" for="agentPhoneInput">Mobile
+                                Phone <span class="text-danger">*</span></label>
+                              <input class="form-control" id="agentPhoneInput" type="tel" placeholder="+880 1XXX-XXXXXX"
+                                required>
+                            </div>
+                          </div>
+
+                          <div class="mb-3">
+                            <label class="form-label small fw-semibold mb-1" for="agentRegionSelect">Region / Area
+                              <span class="text-danger">*</span></label>
+                            <select class="form-select" id="agentRegionSelect" required>
+                              <option value="" disabled selected>Select region</option>
+                              <option value="Dhaka">Dhaka</option>
+                              <option value="Chattogram">Chattogram</option>
+                              <option value="Sylhet">Sylhet</option>
+                              <option value="Rajshahi">Rajshahi</option>
+                              <option value="Khulna">Khulna</option>
+                              <option value="Barishal">Barishal</option>
+                              <option value="Rangpur">Rangpur</option>
+                              <option value="Mymensingh">Mymensingh</option>
+                              <option value="Nationwide">Nationwide</option>
+                            </select>
+                          </div>
+
+                          <div class="row g-2 mb-3">
+                            <div class="col-md-6">
+                              <label class="form-label small fw-semibold mb-1" for="agentCommissionInput">Commission
+                                (%)</label>
+                              <input class="form-control" id="agentCommissionInput" type="number" min="0" max="100"
+                                placeholder="e.g. 15">
+                            </div>
+                            <div class="col-md-6">
+                              <label class="form-label small fw-semibold mb-1" for="agentStatusSelect">Status <span
+                                  class="text-danger">*</span></label>
+                              <select class="form-select" id="agentStatusSelect" required>
+                                <option value="Active" selected>Active</option>
+                                <option value="Inactive">Inactive</option>
+                              </select>
+                            </div>
+                          </div>
+
+                          <div class="mb-4">
+                            <label class="form-label small fw-semibold mb-1" for="agentNotesTextarea">Additional
+                              Notes</label>
+                            <textarea class="form-control" id="agentNotesTextarea" rows="2"
+                              placeholder="Details about territory, performance..."></textarea>
+                          </div>
+
+                          <div class="d-flex gap-2">
+                            <button type="submit" id="submitAgentBtn" class="btn btn-primary w-100 fw-semibold py-2">
+                              <i class="bi bi-cloud-arrow-up me-2"></i>Save Agent
+                            </button>
+                            <button type="button" id="cancelAgentEditBtn"
+                              class="btn btn-outline-secondary w-50 fw-semibold py-2 d-none">
+                              Cancel
+                            </button>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+
+                    <!-- Right: Table -->
+                    <div class="col-lg-8">
+                      <div class="card p-4 rounded-4 shadow-sm border h-100">
+                        <div
+                          class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom flex-wrap gap-2">
+                          <h3 class="h5 fw-bold text-heading-color mb-0">
+                            <i class="bi bi-headset me-2 text-primary"></i>Marketing Agents Directory
+                          </h3>
+                          <div class="d-flex align-items-center gap-2 flex-wrap">
+                            <input type="text" id="searchAgent" class="form-control form-control-sm"
+                              style="max-width: 200px;" placeholder="Search name, region, phone...">
+                            <select id="filterAgentRegion" class="form-select form-select-sm" style="width: auto;">
+                              <option value="all">All Regions</option>
+                              <option value="Dhaka">Dhaka</option>
+                              <option value="Chattogram">Chattogram</option>
+                              <option value="Sylhet">Sylhet</option>
+                              <option value="Rajshahi">Rajshahi</option>
+                              <option value="Khulna">Khulna</option>
+                              <option value="Barishal">Barishal</option>
+                              <option value="Rangpur">Rangpur</option>
+                              <option value="Mymensingh">Mymensingh</option>
+                              <option value="Nationwide">Nationwide</option>
+                            </select>
+                            <button id="refreshAgentListBtn" class="btn btn-sm btn-outline-secondary" type="button"
+                              title="Refresh List">
+                              <i class="bi bi-arrow-clockwise"></i>
+                            </button>
+                          </div>
+                        </div>
+
+                        <div class="table-responsive" style="max-height: 620px; overflow-y: auto;">
+                          <table class="table table-hover align-middle mb-0" id="marketingAgentsTable">
+                            <thead class="table-light">
+                              <tr>
+                                <th class="small fw-semibold">Agent ID</th>
+                                <th class="small fw-semibold">Agent Name</th>
+                                <th class="small fw-semibold">Contact Info</th>
+                                <th class="small fw-semibold">Region</th>
+                                <th class="small fw-semibold text-center">Commission</th>
+                                <th class="small fw-semibold text-center">Status</th>
+                                <th class="small fw-semibold text-center">Actions</th>
+                              </tr>
+                            </thead>
+                            <tbody id="marketingAgentsTableBody">
+                              <tr>
+                                <td colspan="7" class="text-center py-4 text-muted">
+                                  <div class="spinner-border spinner-border-sm text-primary me-2" role="status">
+                                  </div>
+                                  Loading marketing agents...
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Sub-Page: Sales Commission -->
+                <div class="tab-pane fade" id="salesCommissionPanel" role="tabpanel"
+                  aria-labelledby="sales-commission-tab">
+                  <div class="row g-4">
+                    <!-- Left: Form -->
+                    <div class="col-lg-4">
+                      <div class="card p-4 rounded-4 shadow-sm border">
+                        <h3 id="commissionFormTitle" class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
+                          <i class="bi bi-cash-coin me-2 text-primary"></i>Record Commission Payout
+                        </h3>
+
+                        <div id="commissionSuccess" class="alert alert-success d-none alert-dismissible fade show small"
+                          role="alert">
+                          <span>Commission payout recorded successfully!</span>
+                          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                        <div id="commissionError" class="alert alert-danger d-none alert-dismissible fade show small"
+                          role="alert">
+                          <span>An error occurred. Please try again.</span>
+                          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+
+                        <form id="commissionForm">
+                          <div class="mb-3">
+                            <label class="form-label small fw-semibold mb-1" for="commissionAgentSelect">Marketing Agent
+                              <span class="text-danger">*</span></label>
+                            <select class="form-select" id="commissionAgentSelect" required>
+                              <option value="" disabled selected>Select an agent</option>
+                            </select>
+                          </div>
+
+                          <div class="row g-2 mb-3">
+                            <div class="col-md-6">
+                              <label class="form-label small fw-semibold mb-1" for="commissionAmountInput">Amount (BDT)
+                                <span class="text-danger">*</span></label>
+                              <input class="form-control" id="commissionAmountInput" type="number" min="0"
+                                placeholder="e.g. 5000" required>
+                            </div>
+                            <div class="col-md-6">
+                              <label class="form-label small fw-semibold mb-1" for="commissionDateInput">Date <span
+                                  class="text-danger">*</span></label>
+                              <input class="form-control" id="commissionDateInput" type="date" required>
+                            </div>
+                          </div>
+
+                          <div class="mb-3">
+                            <label class="form-label small fw-semibold mb-1" for="commissionStudentSelect">Associated
+                              Student <span class="text-muted">(Optional)</span></label>
+                            <select class="form-select" id="commissionStudentSelect">
+                              <option value="" selected>None / General Payout</option>
+                            </select>
+                          </div>
+
+                          <div class="mb-3">
+                            <label class="form-label small fw-semibold mb-1" for="commissionMethodSelect">Payment Method
+                              <span class="text-danger">*</span></label>
+                            <select class="form-select" id="commissionMethodSelect" required>
+                              <option value="Bank Transfer" selected>Bank Transfer</option>
+                              <option value="Cash">Cash</option>
+                              <option value="bKash">bKash</option>
+                              <option value="Cheque">Cheque</option>
+                            </select>
+                          </div>
+
+                          <div class="mb-4">
+                            <label class="form-label small fw-semibold mb-1" for="commissionNotesTextarea">Remarks /
+                              Reference</label>
+                            <textarea class="form-control" id="commissionNotesTextarea" rows="2"
+                              placeholder="e.g. Transaction ID, Check #..."></textarea>
+                          </div>
+
+                          <div class="d-flex gap-2">
+                            <button type="submit" id="submitCommissionBtn"
+                              class="btn btn-primary w-100 fw-semibold py-2">
+                              <i class="bi bi-cloud-arrow-up me-2"></i>Save Payout
+                            </button>
+                            <button type="button" id="cancelCommissionEditBtn"
+                              class="btn btn-outline-secondary w-50 fw-semibold py-2 d-none">
+                              Cancel
+                            </button>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+
+                    <!-- Right: Table & KPI -->
+                    <div class="col-lg-8">
+                      <!-- KPI Row -->
+                      <div class="row g-3 mb-4">
+                        <div class="col-md-4">
+                          <div class="card bg-light border-light-subtle rounded-3 p-3 shadow-sm text-center h-100">
+                            <span class="text-muted small fw-semibold d-block text-uppercase mb-1"
+                              style="font-size: 0.65rem; letter-spacing: 0.05em;">Total Commission Paid</span>
+                            <strong class="text-primary fs-5" id="kpiTotalCommission">0 BDT</strong>
+                          </div>
+                        </div>
+                        <div class="col-md-4">
+                          <div
+                            class="card bg-success-subtle border-success-subtle rounded-3 p-3 shadow-sm text-center h-100">
+                            <span class="text-success small fw-semibold d-block text-uppercase mb-1"
+                              style="font-size: 0.65rem; letter-spacing: 0.05em;">Total Sales via Agents</span>
+                            <strong class="text-success fs-5" id="kpiTotalAgentSales">0 BDT</strong>
+                          </div>
+                        </div>
+                        <div class="col-md-4">
+                          <div class="card bg-info-subtle border-info-subtle rounded-3 p-3 shadow-sm text-center h-100">
+                            <span class="text-info-emphasis small fw-semibold d-block text-uppercase mb-1"
+                              style="font-size: 0.65rem; letter-spacing: 0.05em;">Top Performing Agent</span>
+                            <strong class="text-info-emphasis fs-5" id="kpiTopAgent">-</strong>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="card p-4 rounded-4 shadow-sm border h-100">
+                        <div
+                          class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom flex-wrap gap-2">
+                          <h3 class="h5 fw-bold text-heading-color mb-0">
+                            <i class="bi bi-list-stars me-2 text-primary"></i>Commission Payout Registry
+                          </h3>
+                          <div class="d-flex align-items-center gap-2 flex-wrap">
+                            <input type="month" id="filterCommissionMonth" class="form-control form-control-sm"
+                              style="width: auto;" title="Filter by Month">
+                            <input type="text" id="searchCommission" class="form-control form-control-sm"
+                              style="max-width: 200px;" placeholder="Search agent, student...">
+                            <select id="filterCommissionAgent" class="form-select form-select-sm" style="width: auto;">
+                              <option value="all">All Agents / Employees</option>
+                            </select>
+                            <button id="exportCommissionBtn" class="btn btn-sm btn-outline-success" type="button"
+                              title="Export CSV">
+                              <i class="bi bi-file-earmark-excel"></i>
+                            </button>
+                            <button id="refreshCommissionListBtn" class="btn btn-sm btn-outline-secondary" type="button"
+                              title="Refresh List">
+                              <i class="bi bi-arrow-clockwise"></i>
+                            </button>
+                          </div>
+                        </div>
+
+                        <div class="table-responsive" style="max-height: 480px; overflow-y: auto;">
+                          <table class="table table-hover align-middle mb-0" id="commissionTable">
+                            <thead class="table-light">
+                              <tr>
+                                <th class="small fw-semibold">Date</th>
+                                <th class="small fw-semibold">Agent Name</th>
+                                <th class="small fw-semibold">Student / Reference</th>
+                                <th class="small fw-semibold text-end">Amount</th>
+                                <th class="small fw-semibold text-center">Method</th>
+                                <th class="small fw-semibold text-center">Actions</th>
+                              </tr>
+                            </thead>
+                            <tbody id="commissionTableBody">
+                              <tr>
+                                <td colspan="6" class="text-center py-4 text-muted">
+                                  No commission payouts recorded yet.
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Sub-Page: Sales Records -->
+                <div class="tab-pane fade" id="salesRecordsPanel" role="tabpanel" aria-labelledby="sales-records-tab">
+                  <div class="row">
+                    <div class="col-12">
+                      <div class="card p-4 rounded-4 shadow-sm border">
+                        <div
+                          class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom flex-wrap gap-2">
+                          <h3 class="h5 fw-bold text-heading-color mb-0">
+                            <i class="bi bi-receipt me-2 text-primary"></i>Sales Records & Commissions
+                          </h3>
+                          <div class="d-flex align-items-center gap-2 flex-wrap">
+                            <input type="month" id="filterSalesMonth" class="form-control form-control-sm"
+                              style="width: auto;" title="Filter by Month">
+                            <select id="filterSalesKam" class="form-select form-select-sm"
+                              style="width: auto; min-width: 150px;">
+                              <option value="all">All KAMs</option>
+                            </select>
+                            <button id="refreshSalesRecordsBtn" class="btn btn-sm btn-outline-secondary" type="button"
+                              title="Refresh List">
+                              <i class="bi bi-arrow-clockwise"></i>
+                            </button>
+                          </div>
+                        </div>
+                        <div class="table-responsive" style="max-height: 620px; overflow-y: auto;">
+                          <table class="table table-hover align-middle mb-0" id="salesRecordsTable">
+                            <thead class="table-light sticky-top">
+                              <tr>
+                                <th class="small fw-semibold text-center">Date</th>
+                                <th class="small fw-semibold">Key Account Manager</th>
+                                <th class="small fw-semibold">Student Name</th>
+                                <th class="small fw-semibold">Course</th>
+                                <th class="small fw-semibold text-end">Final Course Fee (BDT)</th>
+                                <th class="small fw-semibold text-end">Commission (20%)</th>
+                              </tr>
+                            </thead>
+                            <tbody id="salesRecordsTableBody">
+                              <tr>
+                                <td colspan="6" class="text-center py-4 text-muted">Loading sales records...</td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                        <div class="d-flex justify-content-end mt-3 border-top pt-3">
+                          <h5 class="fw-bold m-0 text-dark">Total Commission: <span id="totalSalesCommission"
+                              class="text-success ms-2">0 BDT</span></h5>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
                 <!-- Sub-Page 6.48: Student Job Placement -->
                 <div class="tab-pane fade" id="jobPlacementPanel" role="tabpanel" aria-labelledby="job-placement-tab">
                   <div class="row g-4">
@@ -3334,7 +3463,7 @@
   <script src="assets/vendors/bootstrap/bootstrap.bundle.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script type="module">
-    import { loginAdmin, logoutAdmin, onAdminAuthStateChanged, addCertificate, getAllCertificates, deleteCertificate, addRegistration, getAllRegistrations, updateRegistration, deleteRegistration, getAllPayments, updatePayment, addAuditLog, getAllAuditLogs, getAllOnlineRegistrations, getOnlineRegistration, deleteOnlineRegistration, getAllOnlineInquiries, deleteOnlineInquiry, addEmployee, getAllEmployees, deleteEmployee, getAllBatches, addBatch, updateBatch, deleteBatch, getAllPublicInstitutes, addPublicInstitute, updatePublicInstitute, deletePublicInstitute, getAllJobPlacements, addJobPlacement, updateJobPlacement, deleteJobPlacement, getAllExpenses, addExpense, updateExpense, deleteExpense, getAllAssessments, saveAssessment } from "./assets/js/training.js";
+    import { loginAdmin, logoutAdmin, onAdminAuthStateChanged, addCertificate, getAllCertificates, deleteCertificate, addRegistration, getAllRegistrations, updateRegistration, deleteRegistration, getAllPayments, updatePayment, addAuditLog, getAllAuditLogs, getAllOnlineRegistrations, getOnlineRegistration, deleteOnlineRegistration, getAllOnlineInquiries, deleteOnlineInquiry, addEmployee, getAllEmployees, deleteEmployee, getAllBatches, addBatch, updateBatch, deleteBatch, getAllPublicInstitutes, addPublicInstitute, updatePublicInstitute, deletePublicInstitute, getAllJobPlacements, addJobPlacement, updateJobPlacement, deleteJobPlacement, getAllExpenses, addExpense, updateExpense, deleteExpense, getAllAssessments, saveAssessment, getAllMarketingAgents, addMarketingAgent, updateMarketingAgent, deleteMarketingAgent, getAllCommissions, addCommission, deleteCommission } from "./assets/js/training.js";
 
     // Initialize AOS
     if (window.AOS) {
@@ -3515,6 +3644,7 @@
     let allPublicInstitutes = [];
     let allJobPlacements = [];
     let allAssessments = [];
+    let allMarketingAgents = [];
     let editingBatchId = null;
     let editingInstId = null;
     let editingPlacementId = null;
@@ -3524,6 +3654,7 @@
     let reusedStudentId = null;
     let editingCertId = null;
     let editingEmployeeId = null;
+    let editingAgentId = null;
     let currentUserEmail = "";
 
     // Inactivity Auto-logout (3 minutes)
@@ -4238,8 +4369,11 @@
         loadBatches();
         loadPublicInstitutes();
         loadJobPlacements();
+        loadMarketingAgents();
         loadExpenses();
         loadAssessments();
+        loadCommissions();
+        loadSalesRecords();
         resetInactivityTimer();
       } else {
         // Unauthenticated
@@ -4498,10 +4632,52 @@
     document.getElementById("regCourse").addEventListener("change", function (e) {
       const selectedCourse = e.target.value;
       const feeInput = document.getElementById("regFee");
+      const discountInput = document.getElementById("regDiscount");
+      const numInstSelect = document.getElementById("regNumInstallments");
+
       if (selectedCourse in courseFees && !editingStudentId) {
         feeInput.value = courseFees[selectedCourse];
+        discountInput.value = 2000;
+
+        const durationInstMap = {
+          "CompTIA A+": 2, "CompTIA Network+": 2, "CompTIA Security+": 2,
+          "CompTIA Linux+": 2, "CompTIA Server+": 2, "CCNA": 1,
+          "CCNP - Enterprise": 3, "CCNP - Security": 3, "MTCNA": 1,
+          "MTCRE": 1, "MTCSE": 1, "RHCSA": 2, "RHCE": 2,
+          "FCP NSE4": 2, "FCP NSE5": 2, "CCNA & MTCNA": 3
+        };
+        if (durationInstMap[selectedCourse]) {
+          numInstSelect.value = durationInstMap[selectedCourse];
+        }
+
+        updateRegAmountPaid();
+        if (document.getElementById("regEnableInstallments").checked) {
+          renderRegInstallments();
+        }
       }
       updateRegistrationBatchDropdown(selectedCourse);
+    });
+
+    function updateRegAmountPaid() {
+      if (editingStudentId) return;
+      const fee = Number(document.getElementById("regFee").value) || 0;
+      const disc = Number(document.getElementById("regDiscount").value) || 0;
+      const enableInst = document.getElementById("regEnableInstallments").checked;
+      const amountPaidInput = document.getElementById("regAmountPaid");
+
+      if (enableInst) {
+        amountPaidInput.value = 2000;
+      } else {
+        amountPaidInput.value = Math.max(0, fee - disc);
+      }
+    }
+
+    document.getElementById("regBatch").addEventListener("change", function (e) {
+      const batchId = e.target.value;
+      const batch = allBatches.find(b => b.batchId === batchId);
+      if (batch && batch.schedule) {
+        document.getElementById("regSchedule").value = batch.schedule;
+      }
     });
 
     // Dynamic show/hide of TxID field based on Registration Payment Method
@@ -4533,6 +4709,8 @@
         allRegistrations = await getAllRegistrations();
         renderFilteredRegistrations();
         renderStudentContacts();
+        if (typeof populateCommissionDropdowns === "function") populateCommissionDropdowns();
+        if (typeof updateCommissionKPIs === "function") updateCommissionKPIs();
         updateOverview();
         if (typeof populateReportBatchFilter === 'function') {
           populateReportBatchFilter();
@@ -4580,10 +4758,29 @@
         );
       }
 
-      // Sort by name
-      filtered.sort((a, b) => (a.fullName || '').localeCompare(b.fullName || ''));
+      // Group registrations by studentId to prevent duplicate rows for the same student
+      const groupedRegs = new Map();
+      filtered.forEach(r => {
+        if (!groupedRegs.has(r.studentId)) {
+          groupedRegs.set(r.studentId, {
+            ...r,
+            courses: [r.course],
+            schedules: [r.schedule],
+            docIds: [r.id || r.studentId]
+          });
+        } else {
+          const existing = groupedRegs.get(r.studentId);
+          if (r.course && !existing.courses.includes(r.course)) existing.courses.push(r.course);
+          if (r.schedule && !existing.schedules.includes(r.schedule)) existing.schedules.push(r.schedule);
+          existing.docIds.push(r.id || r.studentId);
+        }
+      });
+      const uniqueFiltered = Array.from(groupedRegs.values());
 
-      if (filtered.length === 0) {
+      // Sort by name
+      uniqueFiltered.sort((a, b) => (a.fullName || '').localeCompare(b.fullName || ''));
+
+      if (uniqueFiltered.length === 0) {
         tbody.innerHTML = `
           <tr>
             <td colspan="8" class="text-center py-4 text-muted">No registrations found.</td>
@@ -4593,7 +4790,7 @@
       }
 
       tbody.innerHTML = "";
-      filtered.forEach(record => {
+      uniqueFiltered.forEach(record => {
         const tr = document.createElement("tr");
 
         let dateStr = "N/A";
@@ -4601,6 +4798,9 @@
           const dt = record.createdAt.toDate ? record.createdAt.toDate() : new Date(record.createdAt);
           dateStr = dt.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
         }
+
+        const courseHtml = record.courses.map(c => `<span class="d-block mb-1">${c}</span>`).join('');
+        const scheduleHtml = record.schedules.map(s => `<span class="d-block mb-1">${s}</span>`).join('');
 
         tr.innerHTML = `
           <td class="text-center"><code class="text-dark font-monospace">${record.studentId}</code></td>
@@ -4612,8 +4812,8 @@
             <span class="small d-block text-muted"><i class="bi bi-envelope me-1"></i>${record.email}</span>
             <span class="small d-block text-muted"><i class="bi bi-telephone me-1"></i>${record.phone}</span>
           </td>
-          <td class="text-center"><span class="small">${record.course}</span></td>
-          <td class="text-center"><span class="small">${record.schedule}</span></td>
+          <td class="text-center"><span class="small">${courseHtml}</span></td>
+          <td class="text-center"><span class="small">${scheduleHtml}</span></td>
           <td class="text-center"><span class="badge bg-secondary text-dark">${record.education || 'N/A'}</span></td>
           <td class="text-center"><span class="small text-muted">${dateStr}</span></td>
           <td class="text-center">
@@ -4705,6 +4905,7 @@
       document.getElementById("regEducation").value = record.education || "";
       document.getElementById("regSchedule").value = record.schedule;
       document.getElementById("regMessage").value = record.message || "";
+      document.getElementById("regKam").value = record.kam || "Direct";
 
       if (regIsJobHolderSwitch) {
         regIsJobHolderSwitch.checked = record.isJobHolder || false;
@@ -4775,6 +4976,7 @@
       document.getElementById("regPaymentType").disabled = false;
       document.getElementById("regPaymentTxId").disabled = false;
       document.getElementById("regPaymentTxIdContainer").classList.add("d-none");
+      document.getElementById("regKam").value = "";
 
       document.getElementById("regFormTitle").innerHTML = `<i class="bi bi-pencil-square me-2 text-primary"></i>Course Registration Form`;
       document.getElementById("submitRegBtn").innerHTML = `<i class="bi bi-cloud-arrow-up me-2"></i>Save Registration & Payment Record`;
@@ -4866,6 +5068,7 @@
       document.getElementById("regEmail").value = record.email || "";
       document.getElementById("regPhone").value = record.phone || "";
       document.getElementById("regEducation").value = record.education || "";
+      document.getElementById("regKam").value = record.kam || "Direct";
 
       const isJobHolder = record.isJobHolder || false;
       if (regIsJobHolderSwitch) {
@@ -4999,6 +5202,8 @@
       const paymentType = document.getElementById("regPaymentType").value;
       const transactionId = document.getElementById("regPaymentTxId").value.trim();
       const message = document.getElementById("regMessage").value.trim();
+      const kamValue = document.getElementById("regKam").value;
+      const kam = kamValue === "Direct" ? "" : kamValue;
 
       const enableInstallments = document.getElementById("regEnableInstallments").checked;
       const registrationFee = enableInstallments ? amountPaid : 0;
@@ -5046,7 +5251,7 @@
 
         if (editingDocId) {
           // Update
-          await updateRegistration(editingDocId, { fullName, email, phone, course, batch, education, schedule, message, isJobHolder, companyName, designation });
+          await updateRegistration(editingDocId, { fullName, email, phone, course, batch, education, schedule, message, isJobHolder, companyName, designation, kam });
 
           // Audit Logging
           await addAuditLog({
@@ -5062,7 +5267,7 @@
           cancelRegEditMode();
         } else {
           // Create
-          const generatedId = await addRegistration({ fullName, email, phone, course, batch, education, schedule, message, totalFee, discount, amountPaid, paymentType, transactionId, registrationFee, installments, isJobHolder, companyName, designation, studentId: reusedStudentId });
+          const generatedId = await addRegistration({ fullName, email, phone, course, batch, education, schedule, message, totalFee, discount, amountPaid, paymentType, transactionId, registrationFee, installments, isJobHolder, companyName, designation, studentId: reusedStudentId, kam });
 
           // Audit Logging
           await addAuditLog({
@@ -5163,6 +5368,7 @@
         if (window.loadAllInstallmentsLedger) {
           window.loadAllInstallmentsLedger();
         }
+        if (typeof updateCommissionKPIs === "function") updateCommissionKPIs();
       } catch (err) {
         tbody.innerHTML = `
           <tr>
@@ -5295,10 +5501,8 @@
             { label: "Full Name", key: "fullName", type: "text", cols: 6 },
             { label: "Email Address", key: "email", type: "email", cols: 6 },
             { label: "Mobile Phone", key: "phone", type: "phone", cols: 6 },
-            { label: "Enrolled Course", key: "course", type: "text", cols: 6 },
-            { label: "Batch Name", key: "batch", type: "badge", cols: 6 },
             { label: "Education Level", key: "education", type: "badge", cols: 6 },
-            { label: "Preferred Schedule", key: "schedule", type: "text", cols: 6 },
+            { label: "Key Account Manager", key: "kam", type: "kam", cols: 6 },
             { label: "Job Holder Status", key: "isJobHolder", type: "badge", cols: 6 },
             { label: "Company Name", key: "companyName", type: "text", cols: 6 },
             { label: "Designation", key: "designation", type: "text", cols: 6 },
@@ -5390,6 +5594,22 @@
             { label: "Additional Notes", key: "notes", type: "textarea", cols: 12 }
           ]
         },
+        marketing_agent: {
+          title: "Marketing Agent Details",
+          badge: "Agent Profile",
+          getRecords: () => allMarketingAgents,
+          idField: "id",
+          fields: [
+            { label: "Agent ID", key: "id", type: "code", cols: 6 },
+            { label: "Agent Name", key: "name", type: "text", cols: 6 },
+            { label: "Email Address", key: "email", type: "email", cols: 6 },
+            { label: "Mobile Phone", key: "phone", type: "phone", cols: 6 },
+            { label: "Region / Area", key: "region", type: "badge", cols: 6 },
+            { label: "Commission Rate (%)", key: "commissionRate", type: "text", cols: 6 },
+            { label: "Status", key: "status", type: "badge", cols: 6 },
+            { label: "Additional Notes", key: "notes", type: "textarea", cols: 12 }
+          ]
+        },
         job_placement: {
           title: "Job Placement Details",
           badge: "Placement Record",
@@ -5458,6 +5678,7 @@
       else if (type === "certificate") subtitleText = record.studentName;
       else if (type === "inquiry") subtitleText = record.name;
       else if (type === "public_institute") subtitleText = record.name;
+      else if (type === "marketing_agent") subtitleText = record.name;
       else if (type === "job_placement") subtitleText = `${record.studentName} at ${record.company}`;
       else if (type === "assessment") subtitleText = record.studentName;
       document.getElementById("detailsModalSubtitle").textContent = subtitleText;
@@ -5502,6 +5723,12 @@
               break;
             case 'badge':
               displayHtml = `<span class="badge ${getBadgeClass(val)} px-3 py-2 fw-semibold" style="font-size: 0.8rem;">${val}</span>`;
+              break;
+            case 'kam':
+              const kamMatch = allMarketingAgents.find(a => a.id === val) || allEmployees.find(e => e.employee_id === val) || allPublicInstitutes.find(p => p.id === val);
+              displayHtml = kamMatch
+                ? `<strong class="text-heading-color">${kamMatch.name || kamMatch.employee_name}</strong> <span class="text-muted font-monospace small">(${val})</span>`
+                : `<strong class="text-heading-color">${val}</strong>`;
               break;
             case 'date':
               displayHtml = `<i class="bi bi-calendar-event me-2 text-primary"></i>${val}`;
@@ -6107,6 +6334,9 @@
     document.getElementById("regEnableInstallments").addEventListener("change", function () {
       const container = document.getElementById("regInstallmentsPlanContainer");
       const amountPaidLabel = document.getElementById("regAmountPaidLabel");
+
+      updateRegAmountPaid();
+
       if (this.checked) {
         container.classList.remove("d-none");
         if (amountPaidLabel) amountPaidLabel.innerHTML = 'Registration Fee (BDT) <span class="text-danger">*</span>';
@@ -6494,6 +6724,7 @@
       document.getElementById("regEducation").value = record.education || "";
       document.getElementById("regSchedule").value = record.schedule || "";
       document.getElementById("regMessage").value = record.message || "";
+      document.getElementById("regKam").value = record.kam || "Direct";
 
       if (regIsJobHolderSwitch) {
         regIsJobHolderSwitch.checked = record.isJobHolder || false;
@@ -7686,6 +7917,68 @@
           { type: 'total', label: 'Total Operating Expenses', value: totalExp },
           { type: 'net', label: 'NET PROFIT / (LOSS)', value: netProfit }
         ];
+      } else if (type === 'agent_sales') {
+        let kams = [...allMarketingAgents.map(a => ({ ...a, kamId: a.id, isEmployee: false, displayName: a.name })),
+        ...allEmployees.filter(e => e.status === "Active" && (e.designation.includes("Business Development") || e.designation.includes("BD"))).map(e => ({ ...e, kamId: e.employee_id, isEmployee: true, displayName: e.employee_name }))];
+
+        let totalAgentSalesCount = 0;
+        let totalAgentSalesRevenue = 0;
+        let totalCommissionPaid = 0;
+
+        kams.forEach(kam => {
+          // Find registrations for this kam
+          let kamRegs = allRegistrations.filter(r => r.kam === kam.kamId);
+
+          if (startDate || endDate) {
+            kamRegs = kamRegs.filter(r => {
+              const d = getRecordDate(r);
+              if (!d) return false;
+              if (startDate && d < startDate) return false;
+              if (endDate && d > endDate) return false;
+              return true;
+            });
+          }
+
+          let kamRevenue = 0;
+          kamRegs.forEach(r => {
+            const pay = allPayments.find(p => p.studentId === r.studentId);
+            kamRevenue += pay ? (Number(pay.amountPaid) || 0) : 0;
+          });
+
+          // Find commissions paid
+          let kamComms = allCommissions.filter(c => c.agentId === kam.kamId);
+          if (startDate || endDate) {
+            kamComms = kamComms.filter(c => {
+              const d = new Date(c.date + "T12:00:00");
+              if (isNaN(d.getTime())) return false;
+              if (startDate && d < startDate) return false;
+              if (endDate && d > endDate) return false;
+              return true;
+            });
+          }
+
+          let kamCommPaid = kamComms.reduce((sum, c) => sum + Number(c.amount), 0);
+
+          if (kamRegs.length > 0 || kamCommPaid > 0) {
+            totalAgentSalesCount += kamRegs.length;
+            totalAgentSalesRevenue += kamRevenue;
+            totalCommissionPaid += kamCommPaid;
+
+            compiledReportData.push({
+              kamId: kam.kamId,
+              displayName: kam.displayName,
+              type: kam.isEmployee ? "Employee (In-house)" : "External Agent",
+              region: kam.region || "-",
+              salesCount: kamRegs.length,
+              salesRevenue: kamRevenue,
+              commissionPaid: kamCommPaid
+            });
+          }
+        });
+
+        totalFees = totalAgentSalesRevenue;
+        totalCollected = totalCommissionPaid;
+        totalOutstanding = totalAgentSalesCount;
       }
 
       // Update summary stat counts with dynamic labels
@@ -7733,6 +8026,18 @@
           outstandingEl.className = "fs-4 text-danger fw-bold";
         }
 
+      } else if (type === 'agent_sales') {
+        document.getElementById("lblReportStatRecords").textContent = "Active KAMs";
+        document.getElementById("lblReportStatFees").textContent = "Total Agent Sales";
+        document.getElementById("lblReportStatCollected").textContent = "Commission Paid";
+        document.getElementById("lblReportStatOutstanding").textContent = "Enrolled Students";
+
+        document.getElementById("reportStatRecords").textContent = compiledReportData.length.toLocaleString();
+        document.getElementById("reportStatFees").textContent = `${totalFees.toLocaleString()} BDT`;
+        document.getElementById("reportStatCollected").textContent = `${totalCollected.toLocaleString()} BDT`;
+        const outstandingEl = document.getElementById("reportStatOutstanding");
+        outstandingEl.textContent = totalOutstanding.toLocaleString();
+        outstandingEl.className = "fs-4 text-primary fw-bold";
       } else {
         document.getElementById("reportStatRecords").textContent = compiledReportData.length.toLocaleString();
         document.getElementById("reportStatFees").textContent = `${totalFees.toLocaleString()} BDT`;
@@ -7953,6 +8258,29 @@
             `;
           }
         }).join('');
+      } else if (compiledReportType === 'agent_sales') {
+        thead.innerHTML = `
+          <tr>
+            <th class="small fw-semibold py-2">KAM ID</th>
+            <th class="small fw-semibold py-2">Name</th>
+            <th class="small fw-semibold py-2">Type</th>
+            <th class="small fw-semibold py-2">Region</th>
+            <th class="small fw-semibold py-2 text-center">Sales Count</th>
+            <th class="small fw-semibold py-2 text-end">Sales Revenue</th>
+            <th class="small fw-semibold py-2 text-end">Commission Paid</th>
+          </tr>
+        `;
+        tbody.innerHTML = compiledReportData.map(k => `
+          <tr>
+            <td><code class="text-dark fw-bold font-monospace">${k.kamId}</code></td>
+            <td><strong>${k.displayName}</strong></td>
+            <td><span class="badge bg-secondary text-dark border small">${k.type}</span></td>
+            <td><span class="small text-muted">${k.region}</span></td>
+            <td class="text-center fw-bold">${k.salesCount}</td>
+            <td class="text-end text-success fw-bold font-monospace">${k.salesRevenue.toLocaleString()} BDT</td>
+            <td class="text-end text-danger fw-bold font-monospace">${k.commissionPaid.toLocaleString()} BDT</td>
+          </tr>
+        `).join('');
       }
     }
 
@@ -8049,6 +8377,17 @@
             return [row.label, row.value];
           }
         });
+      } else if (compiledReportType === 'agent_sales') {
+        headers = ["KAM ID", "Name", "Type", "Region", "Sales Count", "Sales Revenue (BDT)", "Commission Paid (BDT)"];
+        rows = compiledReportData.map(k => [
+          k.kamId,
+          k.displayName,
+          k.type,
+          k.region,
+          k.salesCount,
+          k.salesRevenue,
+          k.commissionPaid
+        ]);
       }
 
       const csvContent = [
@@ -8080,7 +8419,8 @@
         'certificates': 'Issued Certificates Registry Report',
         'expenses': 'Detailed Business Expenses Report',
         'placements': 'Job Placement Success Registry',
-        'profit_loss': 'Profit & Loss Statement (Income Statement)'
+        'profit_loss': 'Profit & Loss Statement (Income Statement)',
+        'agent_sales': 'Agent & Employee Sales KPI Report'
       }[compiledReportType];
 
       const courseVal = document.getElementById("reportCourseFilter").value;
@@ -8249,6 +8589,27 @@
             `;
           }
         }).join('');
+      } else if (compiledReportType === 'agent_sales') {
+        tableHeadersHtml = `
+          <th>KAM ID</th>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Region</th>
+          <th class="text-center">Sales Count</th>
+          <th class="text-end">Sales Revenue</th>
+          <th class="text-end">Commission Paid</th>
+        `;
+        tableRowsHtml = compiledReportData.map(k => `
+          <tr>
+            <td><code class="font-monospace text-dark">${k.kamId}</code></td>
+            <td><strong>${k.displayName}</strong></td>
+            <td>${k.type}</td>
+            <td>${k.region}</td>
+            <td class="text-center">${k.salesCount}</td>
+            <td class="text-end text-success">${k.salesRevenue.toLocaleString()} BDT</td>
+            <td class="text-end text-danger">${k.commissionPaid.toLocaleString()} BDT</td>
+          </tr>
+        `).join('');
       }
 
       const lbl1 = document.getElementById("lblReportStatRecords").textContent;
@@ -8370,6 +8731,7 @@
         allEmployees = await getAllEmployees();
         applyEmployeeFilters();
         renderTrainerContacts();
+        if (typeof populateKamDropdown === "function") populateKamDropdown();
       } catch (err) {
         console.error("Error loading employees: ", err);
         if (tbody) {
@@ -8590,6 +8952,65 @@
 
     // Globally register loadEmployees function in window just in case
     window.loadEmployees = loadEmployees;
+
+    function populateKamDropdown() {
+      const kamSelect = document.getElementById("regKam");
+      if (!kamSelect) return;
+      const currentVal = kamSelect.value;
+      kamSelect.innerHTML = '<option value="" disabled selected>Select Key Account Manager</option><option value="Direct">None / Direct Enrollment</option>';
+
+      if (allMarketingAgents && allMarketingAgents.length > 0) {
+        const activeAgents = allMarketingAgents.filter(a => a.status === "Active");
+        if (activeAgents.length > 0) {
+          const optgroup = document.createElement("optgroup");
+          optgroup.label = "Marketing Agents";
+          activeAgents.forEach(a => {
+            const opt = document.createElement("option");
+            opt.value = a.id;
+            opt.textContent = `${a.name} (${a.region})`;
+            optgroup.appendChild(opt);
+          });
+          kamSelect.appendChild(optgroup);
+        }
+      }
+
+      if (allEmployees && allEmployees.length > 0) {
+        const bdEmps = allEmployees.filter(e => e.status === "Active" && (e.designation.includes("Business Development") || e.designation.includes("BD")));
+        if (bdEmps.length > 0) {
+          const optgroup = document.createElement("optgroup");
+          optgroup.label = "Business Development Executives";
+          bdEmps.forEach(e => {
+            const opt = document.createElement("option");
+            opt.value = e.employee_id;
+            opt.textContent = `${e.employee_name} (${e.designation})`;
+            optgroup.appendChild(opt);
+          });
+          kamSelect.appendChild(optgroup);
+        }
+      }
+
+      if (allPublicInstitutes && allPublicInstitutes.length > 0) {
+        const activeInst = allPublicInstitutes.filter(i => i.status === "Active");
+        if (activeInst.length > 0) {
+          const optgroup = document.createElement("optgroup");
+          optgroup.label = "Public Institutes";
+          activeInst.forEach(i => {
+            const opt = document.createElement("option");
+            opt.value = i.id;
+            opt.textContent = `${i.name} (${i.type})`;
+            optgroup.appendChild(opt);
+          });
+          kamSelect.appendChild(optgroup);
+        }
+      }
+
+      if (currentVal) {
+        const allOptions = Array.from(kamSelect.querySelectorAll('option'));
+        if (allOptions.some(opt => opt.value === currentVal)) {
+          kamSelect.value = currentVal;
+        }
+      }
+    }
 
     // ============================================================
     // BATCH MANAGEMENT SYSTEM
@@ -9420,12 +9841,30 @@
         return matchesSearch && matchesCourse;
       });
 
-      if (filtered.length === 0) {
+      const groupedContacts = new Map();
+      filtered.forEach(r => {
+        if (!groupedContacts.has(r.studentId)) {
+          groupedContacts.set(r.studentId, {
+            ...r,
+            courses: [r.course],
+            batches: [r.batch || 'N/A'],
+            schedules: [r.schedule]
+          });
+        } else {
+          const existing = groupedContacts.get(r.studentId);
+          if (r.course && !existing.courses.includes(r.course)) existing.courses.push(r.course);
+          if (r.batch && !existing.batches.includes(r.batch || 'N/A')) existing.batches.push(r.batch || 'N/A');
+          if (r.schedule && !existing.schedules.includes(r.schedule)) existing.schedules.push(r.schedule);
+        }
+      });
+      const uniqueContacts = Array.from(groupedContacts.values());
+
+      if (uniqueContacts.length === 0) {
         tbody.innerHTML = `<tr><td colspan="8" class="text-center py-4 text-muted">No student contacts found.</td></tr>`;
         return;
       }
 
-      tbody.innerHTML = filtered.map(r => {
+      tbody.innerHTML = uniqueContacts.map(r => {
         // Cross reference with payment record
         const payment = allPayments.find(p => p.studentId === r.studentId);
         const payStatus = payment ? payment.status : "Unpaid";
@@ -9436,6 +9875,10 @@
         } else if (payStatus === "Partially Paid") {
           badgeClass = "bg-warning text-dark";
         }
+
+        const courseHtml = r.courses.map(c => `<span class="d-block mb-1">${c}</span>`).join('');
+        const batchHtml = r.batches.map(b => `<span class="badge bg-secondary text-dark d-block mb-1">${b}</span>`).join('');
+        const scheduleHtml = r.schedules.map(s => `<span class="d-block mb-1">${s}</span>`).join('');
 
         return `
           <tr>
@@ -9456,9 +9899,9 @@
                 <i class="bi bi-telephone me-1 text-primary"></i>${r.phone}
               </a>
             </td>
-            <td><span class="small">${r.course}</span></td>
-            <td class="text-center"><span class="badge bg-secondary text-dark">${r.batch || 'N/A'}</span></td>
-            <td><span class="small">${r.schedule}</span></td>
+            <td><span class="small">${courseHtml}</span></td>
+            <td class="text-center">${batchHtml}</td>
+            <td><span class="small">${scheduleHtml}</span></td>
             <td class="text-center">
               <div class="btn-group gap-1">
                 <a href="mailto:${r.email}" class="btn btn-sm btn-outline-primary py-1 px-2" title="Email Student">
@@ -9563,6 +10006,7 @@
       try {
         allPublicInstitutes = await getAllPublicInstitutes();
         renderPublicInstitutes();
+        if (typeof populateKamDropdown === "function") populateKamDropdown();
       } catch (err) {
         console.error("Error loading public institutes: ", err);
         if (tbody) {
@@ -10084,6 +10528,736 @@
     document.getElementById("filterPlacementType")?.addEventListener("change", renderJobPlacements);
     document.getElementById("refreshPlacementListBtn")?.addEventListener("click", loadJobPlacements);
     document.getElementById("jobPlacementForm")?.addEventListener("submit", handleJobPlacementSubmit);
+
+    // ============================================================
+    // MARKETING AGENTS DIRECTORY SYSTEM
+    // ============================================================
+    async function loadMarketingAgents() {
+      const tbody = document.getElementById("marketingAgentsTableBody");
+      if (tbody) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="7" class="text-center py-4 text-muted">
+              <div class="spinner-border spinner-border-sm text-primary me-2" role="status"></div>
+              Loading marketing agents...
+            </td>
+          </tr>
+        `;
+      }
+      try {
+        allMarketingAgents = await getAllMarketingAgents();
+        renderMarketingAgents();
+        if (typeof populateKamDropdown === "function") populateKamDropdown();
+        if (typeof populateCommissionDropdowns === "function") populateCommissionDropdowns();
+      } catch (err) {
+        console.error("Error loading marketing agents: ", err);
+        if (tbody) {
+          tbody.innerHTML = `<tr><td colspan="7" class="text-center py-4 text-danger">Failed to load marketing agents.</td></tr>`;
+        }
+      }
+    }
+
+    function renderMarketingAgents() {
+      const tbody = document.getElementById("marketingAgentsTableBody");
+      if (!tbody) return;
+
+      const searchQuery = document.getElementById("searchAgent")?.value.toLowerCase().trim() || "";
+      const regionFilter = document.getElementById("filterAgentRegion")?.value || "all";
+
+      const filtered = allMarketingAgents.filter(a => {
+        const matchesSearch =
+          (a.name && a.name.toLowerCase().includes(searchQuery)) ||
+          (a.id && a.id.toLowerCase().includes(searchQuery)) ||
+          (a.phone && a.phone.toLowerCase().includes(searchQuery)) ||
+          (a.email && a.email.toLowerCase().includes(searchQuery));
+
+        const matchesRegion = regionFilter === "all" || a.region === regionFilter;
+        return matchesSearch && matchesRegion;
+      });
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="7" class="text-center py-4 text-muted">No marketing agents found.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = filtered.map(a => {
+        const statusBadge = a.status === "Active"
+          ? `<span class="badge bg-success-subtle text-success px-2 py-1">Active</span>`
+          : `<span class="badge bg-danger-subtle text-danger px-2 py-1">Inactive</span>`;
+
+        let contactInfo = '';
+        if (a.phone) contactInfo += `<div class="small"><a href="tel:${a.phone}" class="text-decoration-none text-muted"><i class="bi bi-telephone me-1"></i>${a.phone}</a></div>`;
+        if (a.email) contactInfo += `<div class="small"><a href="mailto:${a.email}" class="text-decoration-none text-muted"><i class="bi bi-envelope me-1"></i>${a.email}</a></div>`;
+        if (!a.email && !a.phone) contactInfo = '—';
+
+        return `
+          <tr>
+            <td><code class="text-dark fw-bold font-monospace">${a.id}</code></td>
+            <td><strong>${a.name}</strong></td>
+            <td>${contactInfo}</td>
+            <td><span class="badge bg-light text-dark border small">${a.region}</span></td>
+            <td class="text-center fw-semibold">${a.commissionRate ? a.commissionRate + '%' : '0%'}</td>
+            <td class="text-center">${statusBadge}</td>
+            <td class="text-center">
+              <div class="btn-group gap-1">
+                <button class="btn btn-sm btn-outline-info agent-view-btn py-1 px-2" data-id="${a.id}" title="View Details">
+                  <i class="bi bi-eye"></i>
+                </button>
+                <button class="btn btn-sm btn-outline-primary agent-edit-btn py-1 px-2" data-id="${a.id}" title="Edit">
+                  <i class="bi bi-pencil-square"></i>
+                </button>
+                <button class="btn btn-sm btn-outline-danger agent-delete-btn py-1 px-2" data-id="${a.id}" title="Delete">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join("");
+
+      tbody.querySelectorAll(".agent-view-btn").forEach(btn => {
+        btn.onclick = function () {
+          const id = this.getAttribute("data-id");
+          showRecordDetails("marketing_agent", id);
+        };
+      });
+
+      tbody.querySelectorAll(".agent-edit-btn").forEach(btn => {
+        btn.onclick = function () {
+          const id = this.getAttribute("data-id");
+          const agent = allMarketingAgents.find(a => a.id === id);
+          if (agent) editMarketingAgent(agent);
+        };
+      });
+
+      tbody.querySelectorAll(".agent-delete-btn").forEach(btn => {
+        btn.onclick = async function () {
+          const id = this.getAttribute("data-id");
+          const agent = allMarketingAgents.find(a => a.id === id);
+          if (agent && confirm(`Are you sure you want to delete marketing agent "${agent.name}"?`)) {
+            try {
+              btn.disabled = true;
+              btn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status"></span>';
+              await deleteMarketingAgent(id);
+              await addAuditLog({
+                user_email: currentUserEmail || "admin@intrex-digital.com",
+                action_type: "DELETE",
+                collection_name: "marketing_agents",
+                record_id: id,
+                details: `Deleted marketing agent "${agent.name}" (${id})`
+              });
+              refreshAuditLogs();
+              await loadMarketingAgents();
+            } catch (err) {
+              alert("Failed to delete marketing agent: " + err.message);
+              btn.disabled = false;
+              btn.innerHTML = '<i class="bi bi-trash"></i>';
+            }
+          }
+        };
+      });
+    }
+
+    function editMarketingAgent(agent) {
+      editingAgentId = agent.id;
+      document.getElementById("agentFormTitle").innerHTML = `<i class="bi bi-pencil-square me-2 text-primary"></i>Edit Agent Contact`;
+      document.getElementById("agentNameInput").value = agent.name;
+      document.getElementById("agentEmailInput").value = agent.email || "";
+      document.getElementById("agentPhoneInput").value = agent.phone || "";
+      document.getElementById("agentRegionSelect").value = agent.region;
+      document.getElementById("agentCommissionInput").value = agent.commissionRate || 0;
+      document.getElementById("agentStatusSelect").value = agent.status;
+      document.getElementById("agentNotesTextarea").value = agent.notes || "";
+
+      const cancelBtn = document.getElementById("cancelAgentEditBtn");
+      if (cancelBtn) cancelBtn.classList.remove("d-none");
+
+      document.getElementById("agentFormTitle")?.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function resetMarketingAgentForm() {
+      editingAgentId = null;
+      document.getElementById("agentFormTitle").innerHTML = `<i class="bi bi-person-plus-fill me-2 text-primary"></i>Add Marketing Agent`;
+      document.getElementById("agentForm")?.reset();
+      const cancelBtn = document.getElementById("cancelAgentEditBtn");
+      if (cancelBtn) cancelBtn.classList.add("d-none");
+    }
+
+    async function handleMarketingAgentSubmit(e) {
+      e.preventDefault();
+      const name = document.getElementById("agentNameInput").value.trim();
+      const email = document.getElementById("agentEmailInput").value.trim();
+      const phone = document.getElementById("agentPhoneInput").value.trim();
+      const region = document.getElementById("agentRegionSelect").value;
+      const commissionRate = document.getElementById("agentCommissionInput").value;
+      const status = document.getElementById("agentStatusSelect").value;
+      const notes = document.getElementById("agentNotesTextarea").value.trim();
+
+      const successAlert = document.getElementById("agentSuccess");
+      const errorAlert = document.getElementById("agentError");
+
+      if (successAlert) successAlert.classList.add("d-none");
+      if (errorAlert) errorAlert.classList.add("d-none");
+
+      const agentData = {
+        name,
+        email,
+        phone,
+        region,
+        commissionRate,
+        status,
+        notes
+      };
+
+      try {
+        if (editingAgentId) {
+          await updateMarketingAgent(editingAgentId, agentData);
+          await addAuditLog({
+            user_email: currentUserEmail || "admin@intrex-digital.com",
+            action_type: "UPDATE",
+            collection_name: "marketing_agents",
+            record_id: editingAgentId,
+            details: `Updated marketing agent contact "${name}" (${editingAgentId})`
+          });
+        } else {
+          const savedId = await addMarketingAgent(agentData);
+          await addAuditLog({
+            user_email: currentUserEmail || "admin@intrex-digital.com",
+            action_type: "CREATE",
+            collection_name: "marketing_agents",
+            record_id: savedId,
+            details: `Created marketing agent contact "${name}" (${savedId})`
+          });
+        }
+
+        refreshAuditLogs();
+
+        if (successAlert) {
+          successAlert.querySelector("span").textContent = `Marketing agent saved successfully!`;
+          successAlert.classList.remove("d-none");
+          setTimeout(() => successAlert.classList.add("d-none"), 4000);
+        }
+
+        resetMarketingAgentForm();
+        await loadMarketingAgents();
+      } catch (err) {
+        console.error("Error saving marketing agent: ", err);
+        if (errorAlert) {
+          errorAlert.querySelector("span").textContent = err.message || "An error occurred while saving the agent contact.";
+          errorAlert.classList.remove("d-none");
+        }
+      }
+    }
+
+    document.getElementById("marketing-agents-tab")?.addEventListener("click", () => {
+      loadMarketingAgents();
+    });
+    document.getElementById("searchAgent")?.addEventListener("input", renderMarketingAgents);
+    document.getElementById("filterAgentRegion")?.addEventListener("change", renderMarketingAgents);
+    document.getElementById("refreshAgentListBtn")?.addEventListener("click", loadMarketingAgents);
+    document.getElementById("agentForm")?.addEventListener("submit", handleMarketingAgentSubmit);
+    document.getElementById("cancelAgentEditBtn")?.addEventListener("click", resetMarketingAgentForm);
+
+    // ============================================================
+    // SALES COMMISSION SYSTEM
+    // ============================================================
+    let allCommissions = [];
+    let editingCommissionId = null;
+
+    async function loadCommissions() {
+      try {
+        allCommissions = await getAllCommissions();
+        populateCommissionDropdowns();
+        renderCommissions();
+        updateCommissionKPIs();
+      } catch (err) {
+        console.error("Error loading commissions: ", err);
+      }
+    }
+
+    function populateCommissionDropdowns() {
+      const agentSelect = document.getElementById("commissionAgentSelect");
+      const agentFilter = document.getElementById("filterCommissionAgent");
+      const studentSelect = document.getElementById("commissionStudentSelect");
+
+      if (agentSelect) {
+        const val = agentSelect.value;
+        agentSelect.innerHTML = '<option value="" disabled selected>Select an agent or employee</option>';
+
+        const optgroupAg = document.createElement("optgroup");
+        optgroupAg.label = "Marketing Agents";
+        allMarketingAgents.forEach(a => {
+          const opt = document.createElement("option");
+          opt.value = a.id;
+          opt.textContent = `${a.name} (${a.region})`;
+          optgroupAg.appendChild(opt);
+        });
+        if (optgroupAg.children.length > 0) agentSelect.appendChild(optgroupAg);
+
+        const bdEmps = allEmployees.filter(e => e.status === "Active" && (e.designation.includes("Business Development") || e.designation.includes("BD")));
+        const optgroupEmp = document.createElement("optgroup");
+        optgroupEmp.label = "Business Development Executives";
+        bdEmps.forEach(e => {
+          const opt = document.createElement("option");
+          opt.value = e.employee_id;
+          opt.textContent = `${e.employee_name} (${e.designation})`;
+          optgroupEmp.appendChild(opt);
+        });
+        if (optgroupEmp.children.length > 0) agentSelect.appendChild(optgroupEmp);
+
+        if (val) agentSelect.value = val;
+      }
+
+      if (agentFilter) {
+        const val = agentFilter.value;
+        agentFilter.innerHTML = '<option value="all">All Agents / Employees</option>';
+
+        const optgroupAg = document.createElement("optgroup");
+        optgroupAg.label = "Marketing Agents";
+        allMarketingAgents.forEach(a => {
+          const opt = document.createElement("option");
+          opt.value = a.id;
+          opt.textContent = a.name;
+          optgroupAg.appendChild(opt);
+        });
+        if (optgroupAg.children.length > 0) agentFilter.appendChild(optgroupAg);
+
+        const bdEmps = allEmployees.filter(e => e.status === "Active" && (e.designation.includes("Business Development") || e.designation.includes("BD")));
+        const optgroupEmp = document.createElement("optgroup");
+        optgroupEmp.label = "Business Development Executives";
+        bdEmps.forEach(e => {
+          const opt = document.createElement("option");
+          opt.value = e.employee_id;
+          opt.textContent = e.employee_name;
+          optgroupEmp.appendChild(opt);
+        });
+        if (optgroupEmp.children.length > 0) agentFilter.appendChild(optgroupEmp);
+
+        if (val) agentFilter.value = val;
+      }
+
+      if (studentSelect) {
+        const val = studentSelect.value;
+        studentSelect.innerHTML = '<option value="" selected>None / General Payout</option>';
+        allRegistrations.forEach(r => {
+          const opt = document.createElement("option");
+          opt.value = r.studentId;
+          opt.textContent = `${r.fullName} (${r.studentId})`;
+          studentSelect.appendChild(opt);
+        });
+        if (val) studentSelect.value = val;
+      }
+    }
+
+    function renderCommissions() {
+      const tbody = document.getElementById("commissionTableBody");
+      if (!tbody) return;
+
+      const searchQuery = document.getElementById("searchCommission")?.value.toLowerCase().trim() || "";
+      const agentFilter = document.getElementById("filterCommissionAgent")?.value || "all";
+      const monthFilter = document.getElementById("filterCommissionMonth")?.value || "";
+
+      const filtered = allCommissions.filter(c => {
+        const agent = allMarketingAgents.find(a => a.id === c.agentId) || allEmployees.find(e => e.employee_id === c.agentId) || {};
+        const student = allRegistrations.find(r => r.studentId === c.studentId) || {};
+        const agentName = agent.name || agent.employee_name || c.agentId;
+
+        const matchesSearch =
+          (agentName && agentName.toLowerCase().includes(searchQuery)) ||
+          (student.fullName && student.fullName.toLowerCase().includes(searchQuery)) ||
+          (c.notes && c.notes.toLowerCase().includes(searchQuery));
+
+        const matchesAgent = agentFilter === "all" || c.agentId === agentFilter;
+        const matchesMonth = monthFilter === "" || c.date.startsWith(monthFilter);
+
+        return matchesSearch && matchesAgent && matchesMonth;
+      });
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="6" class="text-center py-4 text-muted">No commission payouts recorded yet.</td></tr>`;
+      } else {
+        tbody.innerHTML = filtered.map(c => {
+          const agent = allMarketingAgents.find(a => a.id === c.agentId) || allEmployees.find(e => e.employee_id === c.agentId) || {};
+          const student = allRegistrations.find(r => r.studentId === c.studentId) || {};
+          const agentName = agent.name || agent.employee_name || c.agentId;
+          const studentName = student.fullName ? student.fullName : (c.studentId ? c.studentId : '—');
+
+          return `
+            <tr>
+              <td><span class="small font-monospace text-muted">${c.date}</span></td>
+              <td><strong>${agentName}</strong></td>
+              <td><span class="small text-secondary">${studentName}</span></td>
+              <td class="text-end fw-bold text-dark"><span class="small">${Number(c.amount).toLocaleString()} BDT</span></td>
+              <td class="text-center"><span class="badge bg-light text-dark border">${c.method}</span></td>
+              <td class="text-center">
+                <div class="btn-group gap-1">
+                  <button class="btn btn-sm btn-outline-info commission-view-expense-btn py-1 px-2" data-id="${c.id}" title="View Linked Expense">
+                    <i class="bi bi-wallet2"></i>
+                  </button>
+                  <button class="btn btn-sm btn-outline-danger commission-delete-btn py-1 px-2" data-id="${c.id}" title="Delete">
+                    <i class="bi bi-trash"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          `;
+        }).join("");
+
+        tbody.querySelectorAll(".commission-view-expense-btn").forEach(btn => {
+          btn.onclick = function () {
+            const commId = this.getAttribute("data-id");
+            const matchedExpense = allExpenses.find(e => e.description && e.description.includes(commId));
+            if (matchedExpense) {
+              showRecordDetails("expense", matchedExpense.id);
+            } else {
+              alert("No linked expense record found for this commission payout.");
+            }
+          };
+        });
+
+        tbody.querySelectorAll(".commission-delete-btn").forEach(btn => {
+          btn.onclick = async function () {
+            const id = this.getAttribute("data-id");
+            if (confirm("Are you sure you want to delete this commission payout?")) {
+              try {
+                await deleteCommission(id);
+                await loadCommissions();
+              } catch (err) {
+                alert("Failed to delete commission: " + err.message);
+              }
+            }
+          };
+        });
+      }
+    }
+
+    function updateCommissionKPIs() {
+      const monthFilter = document.getElementById("filterCommissionMonth")?.value || "";
+
+      const filteredCommissions = allCommissions.filter(c => monthFilter === "" || c.date.startsWith(monthFilter));
+      const totalPaid = filteredCommissions.reduce((sum, c) => sum + Number(c.amount), 0);
+      document.getElementById("kpiTotalCommission").textContent = `${totalPaid.toLocaleString()} BDT`;
+
+      // Sales via agents and KAM employees
+      const agentSales = allRegistrations.filter(r => {
+        if (!r.kam) return false;
+        const isKam = allMarketingAgents.some(a => a.id === r.kam) || allEmployees.some(e => e.employee_id === r.kam);
+        if (!isKam) return false;
+
+        if (monthFilter !== "") {
+          const d = r.createdAt?.toDate ? r.createdAt.toDate() : new Date(r.createdAt || 0);
+          if (isNaN(d.getTime())) return false;
+          const yyyymm = d.toISOString().substring(0, 7);
+          if (yyyymm !== monthFilter) return false;
+        }
+        return true;
+      });
+
+      const totalAgentSales = agentSales.reduce((sum, r) => {
+        const pay = allPayments.find(p => p.studentId === r.studentId);
+        return sum + (pay ? Number(pay.amountPaid) : 0);
+      }, 0);
+      document.getElementById("kpiTotalAgentSales").textContent = `${totalAgentSales.toLocaleString()} BDT`;
+
+      // Top agent
+      const agentCounts = {};
+      agentSales.forEach(r => {
+        agentCounts[r.kam] = (agentCounts[r.kam] || 0) + 1;
+      });
+      let topAgentId = null;
+      let maxCount = 0;
+      for (const kam in agentCounts) {
+        if (agentCounts[kam] > maxCount) {
+          maxCount = agentCounts[kam];
+          topAgentId = kam;
+        }
+      }
+
+      const topAgent = allMarketingAgents.find(a => a.id === topAgentId) || allEmployees.find(e => e.employee_id === topAgentId);
+      const topAgentName = topAgent ? (topAgent.name || topAgent.employee_name) : null;
+      document.getElementById("kpiTopAgent").textContent = topAgentName ? `${topAgentName} (${maxCount} sales)` : "—";
+    }
+
+    document.getElementById("commissionAgentSelect")?.addEventListener("change", function (e) {
+      const agentId = e.target.value;
+      const studentSelect = document.getElementById("commissionStudentSelect");
+      if (!studentSelect) return;
+      studentSelect.innerHTML = '<option value="" selected>None / General Payout</option>';
+
+      const regs = allRegistrations.filter(r => r.kam === agentId);
+      regs.forEach(r => {
+        const pay = allPayments.find(p => p.studentId === r.studentId);
+        const paid = pay ? (Number(pay.amountPaid) || 0) : 0;
+        const opt = document.createElement("option");
+        opt.value = r.studentId;
+        opt.textContent = `${r.fullName} (${r.studentId}) - Paid: ${paid.toLocaleString()} BDT`;
+        opt.dataset.paid = paid;
+        studentSelect.appendChild(opt);
+      });
+      document.getElementById("commissionAmountInput").value = "";
+    });
+
+    document.getElementById("commissionStudentSelect")?.addEventListener("change", function (e) {
+      const studentId = e.target.value;
+      const agentId = document.getElementById("commissionAgentSelect").value;
+      if (agentId && studentId) {
+        const agent = allMarketingAgents.find(a => a.id === agentId);
+        const rate = agent ? (Number(agent.commissionRate) || 0) : 0;
+        const selectedOpt = this.options[this.selectedIndex];
+        const paid = Number(selectedOpt.dataset.paid) || 0;
+
+        const totalEarned = (paid * rate) / 100;
+        const alreadyPaid = allCommissions
+          .filter(c => c.agentId === agentId && c.studentId === studentId)
+          .reduce((sum, c) => sum + Number(c.amount), 0);
+
+        const payable = Math.max(0, totalEarned - alreadyPaid);
+        document.getElementById("commissionAmountInput").value = payable;
+
+        if (alreadyPaid > 0 && payable > 0) {
+          const noteEl = document.getElementById("commissionNotesTextarea");
+          if (noteEl && !noteEl.value.includes("Adjusted")) {
+            noteEl.value = `Adjusted for ${alreadyPaid} BDT already paid. ` + noteEl.value;
+          }
+        }
+      } else {
+        document.getElementById("commissionAmountInput").value = "";
+      }
+    });
+
+    document.getElementById("commissionForm")?.addEventListener("submit", async function (e) {
+      e.preventDefault();
+      const agentId = document.getElementById("commissionAgentSelect").value;
+      const amount = document.getElementById("commissionAmountInput").value;
+      const date = document.getElementById("commissionDateInput").value;
+      const studentId = document.getElementById("commissionStudentSelect").value;
+      const method = document.getElementById("commissionMethodSelect").value;
+      const notes = document.getElementById("commissionNotesTextarea").value;
+      const commId = "COM-" + Date.now();
+
+      const newComm = {
+        id: commId,
+        agentId,
+        amount,
+        date,
+        studentId,
+        method,
+        notes
+      };
+
+      try {
+        await addCommission(newComm);
+      } catch (err) {
+        console.error("Failed to save commission to database:", err);
+      }
+
+      // Add to Expenses to merge profit easily
+      try {
+        const agent = allMarketingAgents.find(a => a.id === agentId) || allEmployees.find(emp => emp.employee_id === agentId) || {};
+        const agentName = agent.name || agent.employee_name || agentId;
+
+        await addExpense({
+          category: "Marketing & Student Acquisition",
+          subCategory: "Sales Team Salaries & Enrollment Commissions",
+          amount: Number(amount),
+          date: date,
+          paymentMethod: method,
+          description: `Commission Payout to ${agentName} (Ref: ${commId})${notes ? ' - ' + notes : ''}`
+        });
+
+        if (typeof loadExpenses === 'function') {
+          await loadExpenses();
+        }
+      } catch (err) {
+        console.error("Failed to sync commission to expenses:", err);
+      }
+
+      document.getElementById("commissionSuccess").classList.remove("d-none");
+      setTimeout(() => document.getElementById("commissionSuccess").classList.add("d-none"), 3000);
+
+      this.reset();
+      document.getElementById("commissionDateInput").value = new Date().toISOString().substring(0, 10);
+
+      await loadCommissions();
+    });
+
+    document.getElementById("searchCommission")?.addEventListener("input", renderCommissions);
+    document.getElementById("filterCommissionAgent")?.addEventListener("change", renderCommissions);
+    document.getElementById("filterCommissionMonth")?.addEventListener("change", () => {
+      renderCommissions();
+      updateCommissionKPIs();
+    });
+    document.getElementById("refreshCommissionListBtn")?.addEventListener("click", () => {
+      loadCommissions();
+    });
+    document.getElementById("sales-commission-tab")?.addEventListener("click", () => {
+      loadCommissions();
+    });
+
+    document.getElementById("exportCommissionBtn")?.addEventListener("click", function () {
+      if (allCommissions.length === 0) {
+        alert("No commission payouts available to export.");
+        return;
+      }
+      let csvContent = "data:text/csv;charset=utf-8,";
+      csvContent += "Date,Agent/Employee Name,Student Name,Method,Amount (BDT),Notes\n";
+
+      const monthFilter = document.getElementById("filterCommissionMonth")?.value || "";
+      const agentFilter = document.getElementById("filterCommissionAgent")?.value || "all";
+
+      const filtered = allCommissions.filter(c => {
+        const matchesMonth = monthFilter === "" || c.date.startsWith(monthFilter);
+        const matchesAgent = agentFilter === "all" || c.agentId === agentFilter;
+        return matchesMonth && matchesAgent;
+      });
+
+      filtered.forEach(c => {
+        const agent = allMarketingAgents.find(a => a.id === c.agentId) || allEmployees.find(e => e.employee_id === c.agentId) || {};
+        const agentName = agent.name || agent.employee_name || c.agentId;
+        const student = allRegistrations.find(r => r.studentId === c.studentId) || {};
+        const studentName = student.fullName || c.studentId || "-";
+        const desc = (c.notes || "").replace(/"/g, '""');
+        csvContent += `"${c.date}","${agentName}","${studentName}","${c.method}",${c.amount},"${desc}"\n`;
+      });
+
+      const encodedUri = encodeURI(csvContent);
+      const link = document.createElement("a");
+      link.setAttribute("href", encodedUri);
+      link.setAttribute("download", `Commissions_Export_${new Date().toISOString().substring(0, 10)}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    });
+
+    const commDateInput = document.getElementById("commissionDateInput");
+    if (commDateInput) {
+      commDateInput.value = new Date().toISOString().substring(0, 10);
+    }
+
+    // ============================================================
+    // SALES RECORDS & COMMISSIONS SYSTEM
+    // ============================================================
+    function loadSalesRecords() {
+      populateSalesKamDropdown();
+      renderSalesRecords();
+    }
+
+    function populateSalesKamDropdown() {
+      const filterSelect = document.getElementById("filterSalesKam");
+      if (!filterSelect) return;
+      const val = filterSelect.value;
+      filterSelect.innerHTML = '<option value="all">All KAMs</option>';
+
+      const uniqueKams = [...new Set(allRegistrations.filter(r => r.kam && r.kam !== "Direct").map(r => r.kam))];
+      uniqueKams.forEach(kamId => {
+        const kamMatch = allMarketingAgents.find(a => a.id === kamId) ||
+          allEmployees.find(e => e.employee_id === kamId) ||
+          allPublicInstitutes.find(p => p.id === kamId);
+        const name = kamMatch ? (kamMatch.name || kamMatch.employee_name) : kamId;
+        const opt = document.createElement("option");
+        opt.value = kamId;
+        opt.textContent = name;
+        filterSelect.appendChild(opt);
+      });
+
+      if (val) {
+        const options = Array.from(filterSelect.options);
+        if (options.some(opt => opt.value === val)) {
+          filterSelect.value = val;
+        }
+      }
+    }
+
+    function renderSalesRecords() {
+      const tbody = document.getElementById("salesRecordsTableBody");
+      if (!tbody) return;
+
+      const monthFilter = document.getElementById("filterSalesMonth")?.value || "";
+      const kamFilter = document.getElementById("filterSalesKam")?.value || "all";
+
+      let sales = [];
+      allRegistrations.forEach(r => {
+        if (r.kam && r.kam !== "Direct") {
+          const pay = allPayments.find(p => p.studentId === r.studentId) || {};
+          const finalFee = Math.max(0, (Number(pay.totalFee) || 0) - (Number(pay.discount) || 0));
+          const commission = finalFee * 0.20;
+
+          let dateObj = null;
+          if (r.createdAt) {
+            dateObj = r.createdAt.toDate ? r.createdAt.toDate() : new Date(r.createdAt);
+          }
+          const dateStr = dateObj ? dateObj.toISOString().substring(0, 10) : "N/A";
+          const monthStr = dateObj ? dateObj.toISOString().substring(0, 7) : "";
+
+          sales.push({
+            date: dateStr,
+            month: monthStr,
+            kamId: r.kam,
+            studentName: r.fullName,
+            studentId: r.studentId,
+            course: r.course,
+            finalFee: finalFee,
+            commission: commission
+          });
+        }
+      });
+
+      // Sort descending by date
+      sales.sort((a, b) => b.date.localeCompare(a.date));
+
+      let filtered = sales;
+      if (monthFilter) {
+        filtered = filtered.filter(s => s.month === monthFilter);
+      }
+      if (kamFilter !== "all") {
+        filtered = filtered.filter(s => s.kamId === kamFilter);
+      }
+
+      let totalCommission = 0;
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="6" class="text-center py-4 text-muted">No sales records found.</td></tr>';
+        document.getElementById("totalSalesCommission").textContent = "0 BDT";
+        return;
+      }
+
+      tbody.innerHTML = filtered.map(s => {
+        totalCommission += s.commission;
+        const kamMatch = allMarketingAgents.find(a => a.id === s.kamId) ||
+          allEmployees.find(e => e.employee_id === s.kamId) ||
+          allPublicInstitutes.find(p => p.id === s.kamId);
+        const kamName = kamMatch ? (kamMatch.name || kamMatch.employee_name) : s.kamId;
+
+        return `
+           <tr>
+             <td class="text-center"><span class="small text-muted font-monospace">${s.date}</span></td>
+             <td><strong>${kamName}</strong> <code class="small text-muted font-monospace d-block">${s.kamId}</code></td>
+             <td>
+               <span class="small fw-semibold d-block">${s.studentName}</span>
+               <code class="small text-muted font-monospace">${s.studentId}</code>
+             </td>
+             <td><span class="small">${s.course}</span></td>
+             <td class="text-end fw-bold text-dark">${s.finalFee.toLocaleString()} BDT</td>
+             <td class="text-end fw-bold text-success">${s.commission.toLocaleString()} BDT</td>
+           </tr>
+         `;
+      }).join("");
+
+      document.getElementById("totalSalesCommission").textContent = `${totalCommission.toLocaleString()} BDT`;
+    }
+
+    document.getElementById("sales-records-tab")?.addEventListener("click", loadSalesRecords);
+    document.getElementById("filterSalesMonth")?.addEventListener("change", renderSalesRecords);
+    document.getElementById("filterSalesKam")?.addEventListener("change", renderSalesRecords);
+    document.getElementById("refreshSalesRecordsBtn")?.addEventListener("click", async () => {
+      const btn = document.getElementById("refreshSalesRecordsBtn");
+      btn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status"></span>';
+      await loadRegistrations();
+      await loadPayments();
+      loadSalesRecords();
+      btn.innerHTML = '<i class="bi bi-arrow-clockwise"></i>';
+    });
+
     // ============================================================
     // EXPENSE TRACKER SYSTEM
     // ============================================================

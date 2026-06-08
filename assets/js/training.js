@@ -204,7 +204,7 @@ function generateStudentId(courseName, batchName, registrationsList) {
 export async function addRegistration(regData) {
   if (!checkConfiguration()) return null;
 
-  const { fullName, email, phone, course, batch, education, schedule, message, totalFee, discount, amountPaid, paymentType, transactionId, registrationFee, installments, isJobHolder, companyName, designation, studentId } = regData;
+  const { fullName, email, phone, course, batch, education, schedule, message, totalFee, discount, amountPaid, paymentType, transactionId, registrationFee, installments, isJobHolder, companyName, designation, studentId, kam } = regData;
 
   if (!fullName || !email || !phone || !course || !batch || !schedule) {
     throw new Error("Missing required registration fields");
@@ -239,6 +239,7 @@ export async function addRegistration(regData) {
       isJobHolder: isJobHolder || false,
       companyName: companyName || "",
       designation: designation || "",
+      kam: kam || "",
       createdAt: serverTimestamp()
     });
 
@@ -296,7 +297,8 @@ export async function getAllRegistrations() {
         education: "B.Sc in CSE",
         schedule: "Fri-Sat 10:00 AM",
         createdAt: new Date(),
-        message: "Looking forward to starting the course."
+        message: "Looking forward to starting the course.",
+        kam: "AGT-0001"
       }
     ];
   }
@@ -322,7 +324,7 @@ export async function getAllRegistrations() {
 export async function updateRegistration(docId, regData) {
   if (!checkConfiguration()) return;
 
-  const { fullName, email, phone, course, batch, education, schedule, message, isJobHolder, companyName, designation } = regData;
+  const { fullName, email, phone, course, batch, education, schedule, message, isJobHolder, companyName, designation, kam } = regData;
 
   if (!fullName || !email || !phone || !course || !batch || !schedule) {
     throw new Error("Missing required registration fields");
@@ -345,7 +347,8 @@ export async function updateRegistration(docId, regData) {
       message: message ? message.trim() : "",
       isJobHolder: isJobHolder || false,
       companyName: companyName || "",
-      designation: designation || ""
+      designation: designation || "",
+      kam: kam || ""
     }, { merge: true });
 
     // Sync student name, email, course and batch to the payment record
@@ -672,12 +675,12 @@ export async function addOnlineRegistration(regData) {
     let isUnique = false;
     let regKey = "";
     let attempts = 0;
-    
+
     while (!isUnique && attempts < 10) {
       attempts++;
       const randomNum = Math.floor(100000 + Math.random() * 900000);
       regKey = `REG-${randomNum}`;
-      
+
       // Verify uniqueness by checking if the doc already exists
       const docRef = doc(db, "online_registrations", regKey);
       const docSnap = await getDoc(docRef);
@@ -1862,7 +1865,224 @@ export async function saveAssessment(id, assessmentData) {
   }
 }
 
+// ==========================================
+// 14. MARKETING AGENTS OPERATIONS (marketing_agents)
+// ==========================================
+let mockMarketingAgents = null;
 
+export async function getAllMarketingAgents() {
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('mock') === '1') {
+    if (!mockMarketingAgents) {
+      mockMarketingAgents = [
+        {
+          id: "AGT-0001",
+          name: "Hasan Mahmud",
+          email: "hasan@example.com",
+          phone: "+8801711000000",
+          region: "Dhaka",
+          commissionRate: 15,
+          status: "Active",
+          notes: "Top performing agent.",
+          createdAt: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)
+        }
+      ];
+    }
+    return mockMarketingAgents;
+  }
 
+  if (!checkConfiguration()) return [];
+  try {
+    const querySnapshot = await getDocs(collection(db, "marketing_agents"));
+    const agents = [];
+    querySnapshot.forEach((docSnap) => {
+      if (docSnap.exists()) {
+        agents.push(docSnap.data());
+      }
+    });
+    agents.sort((a, b) => a.id.localeCompare(b.id));
+    return agents;
+  } catch (error) {
+    console.error("Error fetching marketing agents: ", error);
+    throw error;
+  }
+}
 
+export async function addMarketingAgent(agentData) {
+  const { name, email, phone, region, commissionRate, status, notes } = agentData;
+  if (!name || !phone || !region || !status) {
+    throw new Error("Missing required agent fields: name, phone, region, status");
+  }
 
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('mock') === '1') {
+    if (!mockMarketingAgents) {
+      await getAllMarketingAgents();
+    }
+    const id = "AGT-" + String(mockMarketingAgents.length + 1).padStart(4, '0');
+    const newAgent = {
+      id,
+      name: name.trim(),
+      email: email ? email.trim() : "",
+      phone: phone.trim(),
+      region: region.trim(),
+      commissionRate: commissionRate ? Number(commissionRate) : 0,
+      status: status,
+      notes: notes ? notes.trim() : "",
+      createdAt: new Date()
+    };
+    mockMarketingAgents.push(newAgent);
+    return id;
+  }
+
+  if (!checkConfiguration()) return null;
+
+  try {
+    const id = await getNextSeqId("marketing_agents", "AGT-", "id", 4);
+    const docRef = doc(db, "marketing_agents", id);
+    await setDoc(docRef, {
+      id,
+      name: name.trim(),
+      email: email ? email.trim() : "",
+      phone: phone.trim(),
+      region: region.trim(),
+      commissionRate: commissionRate ? Number(commissionRate) : 0,
+      status: status,
+      notes: notes ? notes.trim() : "",
+      createdAt: serverTimestamp()
+    });
+    return id;
+  } catch (error) {
+    console.error("Error saving marketing agent: ", error);
+    throw error;
+  }
+}
+
+export async function updateMarketingAgent(agentId, agentData) {
+  const { name, email, phone, region, commissionRate, status, notes } = agentData;
+
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('mock') === '1') {
+    if (!mockMarketingAgents) {
+      await getAllMarketingAgents();
+    }
+    const index = mockMarketingAgents.findIndex(a => a.id === agentId.trim());
+    if (index > -1) {
+      mockMarketingAgents[index] = {
+        ...mockMarketingAgents[index],
+        name: name ? name.trim() : mockMarketingAgents[index].name,
+        email: email !== undefined ? email.trim() : mockMarketingAgents[index].email,
+        phone: phone ? phone.trim() : mockMarketingAgents[index].phone,
+        region: region ? region.trim() : mockMarketingAgents[index].region,
+        commissionRate: commissionRate !== undefined ? Number(commissionRate) : mockMarketingAgents[index].commissionRate,
+        status: status ? status : mockMarketingAgents[index].status,
+        notes: notes !== undefined ? notes.trim() : mockMarketingAgents[index].notes,
+        updatedAt: new Date()
+      };
+    }
+    return agentId;
+  }
+
+  if (!checkConfiguration()) return;
+
+  try {
+    const docRef = doc(db, "marketing_agents", agentId.trim());
+    await setDoc(docRef, {
+      name: name.trim(),
+      email: email ? email.trim() : "",
+      phone: phone.trim(),
+      region: region.trim(),
+      commissionRate: commissionRate ? Number(commissionRate) : 0,
+      status: status,
+      notes: notes ? notes.trim() : "",
+      updatedAt: serverTimestamp()
+    }, { merge: true });
+  } catch (error) {
+    console.error("Error updating marketing agent: ", error);
+    throw error;
+  }
+}
+
+export async function deleteMarketingAgent(agentId) {
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('mock') === '1') {
+    if (!mockMarketingAgents) {
+      await getAllMarketingAgents();
+    }
+    mockMarketingAgents = mockMarketingAgents.filter(a => a.id !== agentId);
+    return;
+  }
+
+  if (!checkConfiguration()) return;
+  try {
+    const docRef = doc(db, "marketing_agents", agentId.trim());
+    await deleteDoc(docRef);
+  } catch (error) {
+    console.error("Error deleting marketing agent: ", error);
+    throw error;
+  }
+}
+
+// ==========================================
+// 15. SALES COMMISSIONS OPERATIONS (commissions)
+// ==========================================
+let mockCommissions = null;
+
+export async function getAllCommissions() {
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('mock') === '1') {
+    if (!mockCommissions) mockCommissions = [];
+    return mockCommissions;
+  }
+
+  if (!checkConfiguration()) return [];
+  try {
+    const querySnapshot = await getDocs(collection(db, "commissions"));
+    const comms = [];
+    querySnapshot.forEach((docSnap) => {
+      if (docSnap.exists()) {
+        comms.push(docSnap.data());
+      }
+    });
+    // Sort to show the newest payouts first
+    comms.sort((a, b) => new Date(b.date) - new Date(a.date));
+    return comms;
+  } catch (error) {
+    console.error("Error fetching commissions: ", error);
+    throw error;
+  }
+}
+
+export async function addCommission(commData) {
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('mock') === '1') {
+    if (!mockCommissions) mockCommissions = [];
+    mockCommissions.push(commData);
+    return commData.id;
+  }
+
+  if (!checkConfiguration()) return null;
+
+  try {
+    const docRef = doc(db, "commissions", commData.id);
+    await setDoc(docRef, {
+      ...commData,
+      createdAt: serverTimestamp()
+    });
+    return commData.id;
+  } catch (error) {
+    console.error("Error saving commission: ", error);
+    throw error;
+  }
+}
+
+export async function deleteCommission(id) {
+  if (!checkConfiguration()) return;
+  try {
+    const docRef = doc(db, "commissions", id);
+    await deleteDoc(docRef);
+  } catch (error) {
+    console.error("Error deleting commission: ", error);
+    throw error;
+  }
+}
