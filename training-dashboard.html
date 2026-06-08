@@ -478,9 +478,15 @@
         <div id="dashboardSection" class="d-none">
           <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2 pb-3 border-bottom"
             style="padding-right: 24px;">
-            <div>
-              <span class="badge bg-primary text-white mb-1">INTREX DIGITAL HUB SYSTEM</span>
-              <h2 class="h3 fw-bold text-heading-color mb-0">Student Management Dashboard</h2>
+            <div class="d-flex align-items-center gap-3">
+              <button class="btn btn-light border d-md-none" type="button" data-bs-toggle="offcanvas"
+                data-bs-target="#sidebarMenu" aria-controls="sidebarMenu">
+                <i class="bi bi-list fs-5"></i>
+              </button>
+              <div>
+                <span class="badge bg-primary text-white mb-1">INTREX DIGITAL HUB SYSTEM</span>
+                <h2 class="h3 fw-bold text-heading-color mb-0">Student Management Dashboard</h2>
+              </div>
             </div>
             <button id="logoutBtn" class="btn btn-outline-danger btn-sm py-2 px-3">
               <i class="bi bi-box-arrow-right me-1"></i> Logout
@@ -490,106 +496,119 @@
           <!-- Sidebar Layout Row -->
           <div class="row g-4 mt-2 dashboard-main-row">
             <!-- Left Sidebar Tabs Navigation -->
-            <div class="col-12 col-md-3 col-lg-2 border-end pe-md-4 sidebar-container">
-              <div class="nav flex-column nav-pills gap-2" id="dashboardTabs" role="tablist"
-                aria-orientation="vertical">
-                <button class="nav-link active text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
-                  id="overview-tab" data-bs-toggle="tab" data-bs-target="#overviewPanel" type="button" role="tab"
-                  aria-controls="overviewPanel" aria-selected="true">
-                  <i class="bi bi-bar-chart-line"></i> Overview
-                </button>
-                <button
-                  class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2 position-relative"
-                  id="inquiries-tab" data-bs-toggle="tab" data-bs-target="#inquiriesPanel" type="button" role="tab"
-                  aria-controls="inquiriesPanel" aria-selected="false">
-                  <i class="bi bi-envelope-open"></i> Inquiries
-                  <span class="badge bg-danger ms-auto" id="inquiryBadge" style="font-size:0.65rem;">0</span>
-                </button>
-                <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
-                  id="employees-tab" data-bs-toggle="tab" data-bs-target="#employeesPanel" type="button" role="tab"
-                  aria-controls="employeesPanel" aria-selected="false">
-                  <i class="bi bi-person-badge"></i> Employee Database
-                </button>
-                <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
-                  id="contact-directory-tab" data-bs-toggle="tab" data-bs-target="#contactDirectoryPanel" type="button"
-                  role="tab" aria-controls="contactDirectoryPanel" aria-selected="false">
-                  <i class="bi bi-person-lines-fill"></i> Contact Directory
-                </button>
-                <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
-                  id="marketing-agents-tab" data-bs-toggle="tab" data-bs-target="#marketingAgentsPanel" type="button"
-                  role="tab" aria-controls="marketingAgentsPanel" aria-selected="false">
-                  <i class="bi bi-headset"></i> Brand Ambassadors
-                </button>
-                <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
-                  id="batch-management-tab" data-bs-toggle="tab" data-bs-target="#batchPanel" type="button" role="tab"
-                  aria-controls="batchPanel" aria-selected="false">
-                  <i class="bi bi-collection"></i> Batch Management
-                </button>
-                <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
-                  id="registration-tab" data-bs-toggle="tab" data-bs-target="#registrationPanel" type="button"
-                  role="tab" aria-controls="registrationPanel" aria-selected="false">
-                  <i class="bi bi-pencil-square"></i> Course Registration
-                </button>
-                <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
-                  id="student-list-tab" data-bs-toggle="tab" data-bs-target="#studentListPanel" type="button" role="tab"
-                  aria-controls="studentListPanel" aria-selected="false">
-                  <i class="bi bi-people"></i> Student Database
-                </button>
-                <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
-                  id="installment-tab" data-bs-toggle="tab" data-bs-target="#installmentPanel" type="button" role="tab"
-                  aria-controls="installmentPanel" aria-selected="false">
-                  <i class="bi bi-calculator"></i> Installment Plan
-                </button>
-                <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
-                  id="payment-tab" data-bs-toggle="tab" data-bs-target="#paymentPanel" type="button" role="tab"
-                  aria-controls="paymentPanel" aria-selected="false">
-                  <i class="bi bi-credit-card"></i> Revenue Tracker
-                </button>
-                <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
-                  id="expense-tab" data-bs-toggle="tab" data-bs-target="#expensePanel" type="button" role="tab"
-                  aria-controls="expensePanel" aria-selected="false">
-                  <i class="bi bi-wallet2"></i> Expense Tracker
-                </button>
-                <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
-                  id="sales-records-tab" data-bs-toggle="tab" data-bs-target="#salesRecordsPanel" type="button"
-                  role="tab" aria-controls="salesRecordsPanel" aria-selected="false">
-                  <i class="bi bi-receipt"></i> Sales Records
-                </button>
-                <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
-                  id="sales-commission-tab" data-bs-toggle="tab" data-bs-target="#salesCommissionPanel" type="button"
-                  role="tab" aria-controls="salesCommissionPanel" aria-selected="false">
-                  <i class="bi bi-graph-up"></i> Sales Commission & KPI
-                </button>
-                <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
-                  id="course-assessment-tab" data-bs-toggle="tab" data-bs-target="#assessmentPanel" type="button"
-                  role="tab" aria-controls="assessmentPanel" aria-selected="false">
-                  <i class="bi bi-journal-check"></i> Course Assessments
-                </button>
-                <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
-                  id="generate-tab" data-bs-toggle="tab" data-bs-target="#generatePanel" type="button" role="tab"
-                  aria-controls="generatePanel" aria-selected="false">
-                  <i class="bi bi-patch-plus"></i> Generate Cert
-                </button>
-                <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
-                  id="records-tab" data-bs-toggle="tab" data-bs-target="#recordsPanel" type="button" role="tab"
-                  aria-controls="recordsPanel" aria-selected="false">
-                  <i class="bi bi-award"></i> Issued Certificates
-                </button>
-                <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
-                  id="job-placement-tab" data-bs-toggle="tab" data-bs-target="#jobPlacementPanel" type="button"
-                  role="tab" aria-controls="jobPlacementPanel" aria-selected="false">
-                  <i class="bi bi-briefcase"></i> Job Placement
-                </button>
-                <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
-                  id="report-tab" data-bs-toggle="tab" data-bs-target="#reportPanel" type="button" role="tab"
-                  aria-controls="reportPanel" aria-selected="false">
-                  <i class="bi bi-file-earmark-bar-graph"></i> Reports
-                </button>
-                <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2" id="logs-tab"
-                  data-bs-toggle="tab" data-bs-target="#logsPanel" type="button" role="tab" aria-controls="logsPanel"
-                  aria-selected="false">
-                  <i class="bi bi-shield-check"></i> System Audit Logs
-                </button>
+            <div class="col-md-3 col-lg-2 border-end pe-md-4 sidebar-container offcanvas-md offcanvas-start"
+              tabindex="-1" id="sidebarMenu" aria-labelledby="sidebarMenuLabel">
+              <div class="offcanvas-header d-md-none border-bottom mb-3">
+                <h5 class="offcanvas-title fw-bold" id="sidebarMenuLabel">Menu</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#sidebarMenu"
+                  aria-label="Close"></button>
+              </div>
+              <div class="offcanvas-body d-md-block p-3 p-md-0">
+                <div class="nav flex-column nav-pills gap-2 w-100" id="dashboardTabs" role="tablist"
+                  aria-orientation="vertical">
+                  <button class="nav-link active text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
+                    id="overview-tab" data-bs-toggle="tab" data-bs-target="#overviewPanel" type="button" role="tab"
+                    aria-controls="overviewPanel" aria-selected="true">
+                    <i class="bi bi-bar-chart-line"></i> Overview
+                  </button>
+                  <button
+                    class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2 position-relative"
+                    id="inquiries-tab" data-bs-toggle="tab" data-bs-target="#inquiriesPanel" type="button" role="tab"
+                    aria-controls="inquiriesPanel" aria-selected="false">
+                    <i class="bi bi-envelope-open"></i> Inquiries
+                    <span class="badge bg-danger ms-auto" id="inquiryBadge" style="font-size:0.65rem;">0</span>
+                  </button>
+                  <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
+                    id="employees-tab" data-bs-toggle="tab" data-bs-target="#employeesPanel" type="button" role="tab"
+                    aria-controls="employeesPanel" aria-selected="false">
+                    <i class="bi bi-person-badge"></i> Employee Database
+                  </button>
+                  <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
+                    id="contact-directory-tab" data-bs-toggle="tab" data-bs-target="#contactDirectoryPanel"
+                    type="button" role="tab" aria-controls="contactDirectoryPanel" aria-selected="false">
+                    <i class="bi bi-person-lines-fill"></i> Contact Directory
+                  </button>
+                  <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
+                    id="marketing-agents-tab" data-bs-toggle="tab" data-bs-target="#marketingAgentsPanel" type="button"
+                    role="tab" aria-controls="marketingAgentsPanel" aria-selected="false">
+                    <i class="bi bi-headset"></i> Brand Ambassadors
+                  </button>
+                  <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
+                    id="batch-management-tab" data-bs-toggle="tab" data-bs-target="#batchPanel" type="button" role="tab"
+                    aria-controls="batchPanel" aria-selected="false">
+                    <i class="bi bi-collection"></i> Batch Management
+                  </button>
+                  <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
+                    id="registration-tab" data-bs-toggle="tab" data-bs-target="#registrationPanel" type="button"
+                    role="tab" aria-controls="registrationPanel" aria-selected="false">
+                    <i class="bi bi-pencil-square"></i> Course Registration
+                  </button>
+                  <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
+                    id="student-list-tab" data-bs-toggle="tab" data-bs-target="#studentListPanel" type="button"
+                    role="tab" aria-controls="studentListPanel" aria-selected="false">
+                    <i class="bi bi-people"></i> Student Database
+                  </button>
+                  <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
+                    id="installment-tab" data-bs-toggle="tab" data-bs-target="#installmentPanel" type="button"
+                    role="tab" aria-controls="installmentPanel" aria-selected="false">
+                    <i class="bi bi-calculator"></i> Installment Plan
+                  </button>
+                  <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
+                    id="payment-tab" data-bs-toggle="tab" data-bs-target="#paymentPanel" type="button" role="tab"
+                    aria-controls="paymentPanel" aria-selected="false">
+                    <i class="bi bi-credit-card"></i> Revenue Tracker
+                  </button>
+                  <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
+                    id="expense-tab" data-bs-toggle="tab" data-bs-target="#expensePanel" type="button" role="tab"
+                    aria-controls="expensePanel" aria-selected="false">
+                    <i class="bi bi-wallet2"></i> Expense Tracker
+                  </button>
+                  <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
+                    id="asset-inventory-tab" data-bs-toggle="tab" data-bs-target="#assetInventoryPanel" type="button"
+                    role="tab" aria-controls="assetInventoryPanel" aria-selected="false">
+                    <i class="bi bi-pc-display"></i> Asset Inventory
+                  </button>
+                  <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
+                    id="sales-records-tab" data-bs-toggle="tab" data-bs-target="#salesRecordsPanel" type="button"
+                    role="tab" aria-controls="salesRecordsPanel" aria-selected="false">
+                    <i class="bi bi-receipt"></i> Sales Records
+                  </button>
+                  <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
+                    id="sales-commission-tab" data-bs-toggle="tab" data-bs-target="#salesCommissionPanel" type="button"
+                    role="tab" aria-controls="salesCommissionPanel" aria-selected="false">
+                    <i class="bi bi-graph-up"></i> Sales Commission & KPI
+                  </button>
+                  <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
+                    id="course-assessment-tab" data-bs-toggle="tab" data-bs-target="#assessmentPanel" type="button"
+                    role="tab" aria-controls="assessmentPanel" aria-selected="false">
+                    <i class="bi bi-journal-check"></i> Course Assessments
+                  </button>
+                  <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
+                    id="generate-tab" data-bs-toggle="tab" data-bs-target="#generatePanel" type="button" role="tab"
+                    aria-controls="generatePanel" aria-selected="false">
+                    <i class="bi bi-patch-plus"></i> Generate Cert
+                  </button>
+                  <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
+                    id="records-tab" data-bs-toggle="tab" data-bs-target="#recordsPanel" type="button" role="tab"
+                    aria-controls="recordsPanel" aria-selected="false">
+                    <i class="bi bi-award"></i> Issued Certificates
+                  </button>
+                  <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
+                    id="job-placement-tab" data-bs-toggle="tab" data-bs-target="#jobPlacementPanel" type="button"
+                    role="tab" aria-controls="jobPlacementPanel" aria-selected="false">
+                    <i class="bi bi-briefcase"></i> Job Placement
+                  </button>
+                  <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
+                    id="report-tab" data-bs-toggle="tab" data-bs-target="#reportPanel" type="button" role="tab"
+                    aria-controls="reportPanel" aria-selected="false">
+                    <i class="bi bi-file-earmark-bar-graph"></i> Reports
+                  </button>
+                  <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
+                    id="logs-tab" data-bs-toggle="tab" data-bs-target="#logsPanel" type="button" role="tab"
+                    aria-controls="logsPanel" aria-selected="false">
+                    <i class="bi bi-shield-check"></i> System Audit Logs
+                  </button>
+                </div>
               </div>
             </div>
 
@@ -800,6 +819,74 @@
                           </div>
                           <div class="h2 fw-bold mb-0 text-white" id="kpiActiveBatches">—</div>
                           <div class="small opacity-75 mt-1">Batches currently active</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Fourth row: Online Inquiries, Online Regs, Employees, Commissions -->
+                  <div class="row g-3 mb-4">
+                    <div class="col-6 col-md-3">
+                      <div class="card border-0 rounded-4 shadow-sm h-100"
+                        style="background-color: var(--bs-primary) !important;">
+                        <div class="card-body p-3 text-white">
+                          <div class="d-flex align-items-center justify-content-between mb-2">
+                            <span class="small fw-semibold opacity-75">Pending Inquiries</span>
+                            <div class="rounded-circle d-flex align-items-center justify-content-center"
+                              style="width:36px;height:36px;background:rgba(255,255,255,0.15);">
+                              <i class="bi bi-question-circle-fill"></i>
+                            </div>
+                          </div>
+                          <div class="h2 fw-bold mb-0 text-white" id="kpiPendingInquiries">—</div>
+                          <div class="small opacity-75 mt-1">New or in-progress queries</div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-6 col-md-3">
+                      <div class="card border-0 rounded-4 shadow-sm h-100"
+                        style="background-color: var(--bs-primary) !important;">
+                        <div class="card-body p-3 text-white">
+                          <div class="d-flex align-items-center justify-content-between mb-2">
+                            <span class="small fw-semibold opacity-75">Pending Web Reg.</span>
+                            <div class="rounded-circle d-flex align-items-center justify-content-center"
+                              style="width:36px;height:36px;background:rgba(255,255,255,0.15);">
+                              <i class="bi bi-globe"></i>
+                            </div>
+                          </div>
+                          <div class="h2 fw-bold mb-0 text-white" id="kpiPendingOnlineReg">—</div>
+                          <div class="small opacity-75 mt-1">From public website</div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-6 col-md-3">
+                      <div class="card border-0 rounded-4 shadow-sm h-100"
+                        style="background-color: var(--bs-primary) !important;">
+                        <div class="card-body p-3 text-white">
+                          <div class="d-flex align-items-center justify-content-between mb-2">
+                            <span class="small fw-semibold opacity-75">Active Employees</span>
+                            <div class="rounded-circle d-flex align-items-center justify-content-center"
+                              style="width:36px;height:36px;background:rgba(255,255,255,0.15);">
+                              <i class="bi bi-person-badge-fill"></i>
+                            </div>
+                          </div>
+                          <div class="h2 fw-bold mb-0 text-white" id="kpiActiveEmployees">—</div>
+                          <div class="small opacity-75 mt-1">Total active staff</div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-6 col-md-3">
+                      <div class="card border-0 rounded-4 shadow-sm h-100"
+                        style="background-color: var(--bs-primary) !important;">
+                        <div class="card-body p-3 text-white">
+                          <div class="d-flex align-items-center justify-content-between mb-2">
+                            <span class="small fw-semibold opacity-75">Total Commissions</span>
+                            <div class="rounded-circle d-flex align-items-center justify-content-center"
+                              style="width:36px;height:36px;background:rgba(255,255,255,0.15);">
+                              <i class="bi bi-award-fill"></i>
+                            </div>
+                          </div>
+                          <div class="h2 fw-bold mb-0 text-white" id="kpiTotalCommissions">—</div>
+                          <div class="small opacity-75 mt-1">Paid to agents</div>
                         </div>
                       </div>
                     </div>
@@ -3441,6 +3528,53 @@
                   </div>
                 </div>
 
+                <!-- Sub-Page 11.5: Asset Inventory -->
+                <div class="tab-pane fade" id="assetInventoryPanel" role="tabpanel"
+                  aria-labelledby="asset-inventory-tab">
+                  <div class="row">
+                    <div class="col-12">
+                      <div class="card p-4 rounded-4 shadow-sm border">
+                        <div
+                          class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom flex-wrap gap-2">
+                          <h3 class="h5 fw-bold text-heading-color mb-0">
+                            <i class="bi bi-pc-display me-2 text-primary"></i>Asset Inventory (Infrastructure &amp;
+                            Technology)
+                          </h3>
+                          <div class="d-flex align-items-center gap-2 flex-wrap">
+                            <button id="refreshAssetInventoryBtn" class="btn btn-sm btn-outline-secondary" type="button"
+                              title="Refresh List">
+                              <i class="bi bi-arrow-clockwise"></i>
+                            </button>
+                          </div>
+                        </div>
+
+                        <div class="table-responsive">
+                          <table class="table table-hover align-middle mb-0" id="assetInventoryTable">
+                            <thead class="table-light">
+                              <tr>
+                                <th class="small fw-semibold">Expense ID</th>
+                                <th class="small fw-semibold">Date</th>
+                                <th class="small fw-semibold">Sub-category</th>
+                                <th class="small fw-semibold">Description</th>
+                                <th class="small fw-semibold">Payment Method</th>
+                                <th class="small fw-semibold text-end">Amount</th>
+                              </tr>
+                            </thead>
+                            <tbody id="assetInventoryTableBody">
+                              <tr>
+                                <td colspan="6" class="text-center py-4 text-muted">
+                                  <div class="spinner-border spinner-border-sm text-primary me-2" role="status"></div>
+                                  Loading assets...
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
                 <!-- Sub-Page 7: System Audit Logs -->
                 <div class="tab-pane fade" id="logsPanel" role="tabpanel" aria-labelledby="logs-tab">
                   <div class="card p-4 rounded-4 shadow-sm border">
@@ -3787,7 +3921,24 @@
       const activeBatchesCount = allBatches.filter(b => b.status === "Active" || !b.status).length;
       document.getElementById("kpiActiveBatches").textContent = activeBatchesCount.toLocaleString();
 
-      // 4. Render Recent Activity Lists
+      // 4. Fourth row KPIs: Pending Inquiries, Pending Online Regs, Active Employees, Total Commissions
+      const pendingInquiriesCount = allInquiries.filter(i => i.source === "training-page" && (i.status === "new" || i.status === "in_progress" || i.status === "pending" || !i.status)).length;
+      const kpiPendingInquiriesElem = document.getElementById("kpiPendingInquiries");
+      if (kpiPendingInquiriesElem) kpiPendingInquiriesElem.textContent = pendingInquiriesCount.toLocaleString();
+
+      const pendingOnlineRegsCount = allOnlineRegistrations.length;
+      const kpiPendingOnlineRegElem = document.getElementById("kpiPendingOnlineReg");
+      if (kpiPendingOnlineRegElem) kpiPendingOnlineRegElem.textContent = pendingOnlineRegsCount.toLocaleString();
+
+      const activeEmployeesCount = allEmployees.filter(e => e.status === "Active" || !e.status).length;
+      const kpiActiveEmployeesElem = document.getElementById("kpiActiveEmployees");
+      if (kpiActiveEmployeesElem) kpiActiveEmployeesElem.textContent = activeEmployeesCount.toLocaleString();
+
+      const totalCommissions = allCommissions.reduce((sum, c) => sum + (Number(c.amount) || 0), 0);
+      const kpiTotalCommissionsElem = document.getElementById("kpiTotalCommissions");
+      if (kpiTotalCommissionsElem) kpiTotalCommissionsElem.textContent = `${totalCommissions.toLocaleString()} BDT`;
+
+      // 5. Render Recent Activity Lists
       // A. Recent Registrations
       const recentList = document.getElementById("recentRegistrationsList");
       if (recentList) {
@@ -4156,6 +4307,19 @@
         });
       }
     }
+
+    // Auto-close offcanvas sidebar on mobile after selecting a tab
+    document.querySelectorAll('#dashboardTabs .nav-link').forEach(link => {
+      link.addEventListener('click', () => {
+        if (window.innerWidth < 768) {
+          const offcanvasEl = document.getElementById('sidebarMenu');
+          if (offcanvasEl) {
+            const offcanvasInstance = bootstrap.Offcanvas.getInstance(offcanvasEl);
+            if (offcanvasInstance) offcanvasInstance.hide();
+          }
+        }
+      });
+    });
 
     // Dynamic theme observer to update charts styling on the fly
     const themeObserver = new MutationObserver(() => {
@@ -9619,9 +9783,21 @@
       return clean.substring(0, 5);
     }
 
-    function autoGenerateBatchId(courseName) {
+    function getSlotCode(schedule) {
+      if (!schedule) return "";
+      if (schedule.includes("Morning")) return "M";
+      if (schedule.includes("Afternoon")) return "A";
+      if (schedule.includes("Evening")) return "E";
+      if (schedule.includes("Weekend")) return "W";
+      return "";
+    }
+
+    function autoGenerateBatchId(courseName, scheduleSlot) {
+      if (!courseName || !scheduleSlot) return "";
       const prefix = getCoursePrefix(courseName);
-      const prefixPattern = new RegExp("^" + prefix + "-B(\\d+)$", "i");
+      const slotCode = getSlotCode(scheduleSlot);
+      const fullPrefix = `${prefix}-${slotCode}B`;
+      const prefixPattern = new RegExp("^" + fullPrefix + "(\\d+)$", "i");
 
       let maxNum = 0;
       allBatches.forEach(b => {
@@ -9638,16 +9814,18 @@
 
       const nextNum = maxNum + 1;
       const numStr = String(nextNum).padStart(2, "0");
-      return `${prefix}-B${numStr}`;
+      return `${fullPrefix}${numStr}`;
     }
 
-    // Auto-generate Batch ID when course is selected in Batch Form
-    document.getElementById("batchCourseSelect")?.addEventListener("change", function () {
+    // Auto-generate Batch ID when course or schedule is selected in Batch Form
+    function updateBatchIdField() {
       if (editingBatchId) return; // Do not auto-generate when editing an existing batch
 
-      const courseName = this.value;
-      if (courseName) {
-        const generatedId = autoGenerateBatchId(courseName);
+      const courseName = document.getElementById("batchCourseSelect").value;
+      const scheduleSlot = document.getElementById("batchScheduleSelect").value;
+
+      if (courseName && scheduleSlot) {
+        const generatedId = autoGenerateBatchId(courseName, scheduleSlot);
         const batchInput = document.getElementById("batchIdInput");
         if (batchInput) {
           batchInput.value = generatedId;
@@ -9660,7 +9838,10 @@
           batchInput.removeAttribute("readonly");
         }
       }
-    });
+    }
+
+    document.getElementById("batchCourseSelect")?.addEventListener("change", updateBatchIdField);
+    document.getElementById("batchScheduleSelect")?.addEventListener("change", updateBatchIdField);
 
     // Globally register loadBatches and updateRegistrationBatchDropdown functions in window just in case
     window.loadBatches = loadBatches;
@@ -11501,6 +11682,7 @@
         renderExpenses();
         updateExpenseKPIs();
         updateOverview();
+        if (typeof renderAssetInventory === 'function') renderAssetInventory();
       } catch (err) {
         console.error("Error loading expenses: ", err);
         if (tbody) {
@@ -11533,6 +11715,41 @@
       if (kpiTotal) kpiTotal.textContent = `${total.toLocaleString()} BDT`;
       if (kpiFixed) kpiFixed.textContent = `${fixed.toLocaleString()} BDT`;
       if (kpiVariable) kpiVariable.textContent = `${variable.toLocaleString()} BDT`;
+    }
+
+    function renderAssetInventory() {
+      const tbody = document.getElementById("assetInventoryTableBody");
+      if (!tbody) return;
+
+      const filtered = allExpenses.filter(e => e.category === "Infrastructure & Technology (Fixed/Subscription)");
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="6" class="text-center py-4 text-muted">No infrastructure & technology assets found.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = "";
+      filtered.forEach(exp => {
+        const tr = document.createElement("tr");
+
+        let dateStr = exp.date || "N/A";
+        if (exp.createdAt && typeof exp.createdAt === 'object' && exp.createdAt.toDate) {
+          if (!exp.date) {
+            const dt = exp.createdAt.toDate();
+            dateStr = dt.toISOString().substring(0, 10);
+          }
+        }
+
+        tr.innerHTML = `
+          <td><code class="text-dark font-monospace fw-bold">${exp.id}</code></td>
+          <td><span class="small text-muted">${dateStr}</span></td>
+          <td><span class="small fw-medium text-secondary">${exp.subCategory}</span></td>
+          <td><span class="small text-muted">${exp.description}</span></td>
+          <td><span class="badge bg-light text-dark border small">${exp.paymentMethod}</span></td>
+          <td class="text-end fw-bold text-dark"><span class="small">${Number(exp.amount).toLocaleString()} BDT</span></td>
+        `;
+        tbody.appendChild(tr);
+      });
     }
 
     function renderExpenses() {
@@ -11754,6 +11971,10 @@
     document.getElementById("expense-tab")?.addEventListener("click", () => {
       loadExpenses();
     });
+    document.getElementById("asset-inventory-tab")?.addEventListener("click", () => {
+      loadExpenses();
+    });
+    document.getElementById("refreshAssetInventoryBtn")?.addEventListener("click", loadExpenses);
     document.getElementById("refreshExpensesBtn")?.addEventListener("click", loadExpenses);
     document.getElementById("expenseFilterCategory")?.addEventListener("change", renderExpenses);
     document.getElementById("expenseForm")?.addEventListener("submit", handleExpenseSubmit);
