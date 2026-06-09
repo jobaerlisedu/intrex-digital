@@ -549,13 +549,18 @@
                   <div class="card h-100 border shadow-sm rounded-4 p-4 d-flex flex-column justify-content-between">
                     <div>
                       <div class="d-flex align-items-center gap-3 mb-3">
+                        <i class="bi ${c.icon || 'bi-journal-bookmark'} fs-2 text-primary"></i>
                         <h4 class="h5 fw-bold mb-0 text-heading-color">${c.title}</h4>
                       </div>
                       <span class="badge text-white fw-semibold mb-3" style="background-color: var(--bs-primary);">Target: ${c.target}</span>
                       <p class="small text-muted mb-3">${c.description}</p>
+                      <div class="d-flex flex-wrap gap-2 mb-2">
+                        <span class="badge bg-light text-dark border fw-normal"><i class="bi bi-person-fill me-1 text-primary"></i> ${c.trainer || 'Expert Trainer'}</span>
+                        <span class="badge bg-light text-dark border fw-normal"><i class="bi bi-tag-fill me-1 text-primary"></i> ${c.fee ? Number(c.fee).toLocaleString() + ' BDT' : 'TBA'}</span>
+                      </div>
                     </div>
                     <div class="border-top pt-3 mt-2 d-flex flex-wrap gap-2 justify-content-between align-items-center">
-                      <span class="small text-muted"><i class="bi bi-clock me-1"></i> ${c.duration}</span>
+                      <span class="small text-muted fw-semibold"><i class="bi bi-clock me-1"></i> ${!isNaN(parseFloat(c.duration)) ? parseFloat(c.duration) + ' Months' : c.duration || 'N/A'}</span>
                       <div class="d-flex gap-2">
                         <button class="btn btn-sm btn-outline-primary py-1 px-3" data-bs-toggle="modal" data-bs-target="#inquiryModal" data-course="${c.title}">Enquire</button>
                         <button class="btn btn-sm btn-primary py-1 px-3" data-bs-toggle="modal" data-bs-target="#registrationModal" data-course="${c.title}">Register</button>

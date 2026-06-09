@@ -2138,7 +2138,7 @@ export async function getAllCourses() {
 }
 
 export async function addCourse(courseData) {
-  const { title, code, target, description, duration, fee, status } = courseData;
+  const { title, code, target, trainer, description, duration, fee, status, icon } = courseData;
   if (!title || !code || !target || !duration || fee === undefined) {
     throw new Error("Missing required course fields");
   }
@@ -2149,10 +2149,12 @@ export async function addCourse(courseData) {
     title: title.trim(),
     code: code.trim().toUpperCase(),
     target: target.trim(),
+    trainer: trainer ? trainer.trim() : "",
     description: description ? description.trim() : "",
     duration: duration.trim(),
     fee: Number(fee),
     status: status || "Active",
+    icon: icon || "bi-journal-bookmark",
     createdAt: new Date()
   };
 

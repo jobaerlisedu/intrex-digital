@@ -524,6 +524,11 @@
                     <i class="bi bi-person-badge"></i> Employee Database
                   </button>
                   <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
+                    id="trainers-tab" data-bs-toggle="tab" data-bs-target="#trainersPanel" type="button" role="tab"
+                    aria-controls="trainersPanel" aria-selected="false">
+                    <i class="bi bi-person-video3"></i> Trainer Database
+                  </button>
+                  <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
                     id="contact-directory-tab" data-bs-toggle="tab" data-bs-target="#contactDirectoryPanel"
                     type="button" role="tab" aria-controls="contactDirectoryPanel" aria-selected="false">
                     <i class="bi bi-person-lines-fill"></i> Contact Directory
@@ -2363,13 +2368,6 @@
                         </button>
                       </li>
                       <li class="nav-item" role="presentation">
-                        <button class="nav-link px-4 py-2 fw-semibold rounded-3" id="sub-trainer-contacts-tab"
-                          data-bs-toggle="tab" data-bs-target="#trainerContactsSubPanel" type="button" role="tab"
-                          aria-controls="trainerContactsSubPanel" aria-selected="false">
-                          <i class="bi bi-person-badge-fill me-2"></i>Trainer Contacts
-                        </button>
-                      </li>
-                      <li class="nav-item" role="presentation">
                         <button class="nav-link px-4 py-2 fw-semibold rounded-3" id="sub-public-institutes-tab"
                           data-bs-toggle="tab" data-bs-target="#publicInstitutesSubPanel" type="button" role="tab"
                           aria-controls="publicInstitutesSubPanel" aria-selected="false">
@@ -2434,51 +2432,6 @@
                             <tbody id="studentContactsTableBody">
                               <tr>
                                 <td colspan="8" class="text-center py-4 text-muted">Loading student contacts...</td>
-                              </tr>
-                            </tbody>
-                          </table>
-                        </div>
-                      </div>
-                    </div>
-
-                    <!-- Sub-Tab 2: Trainer Contacts -->
-                    <div class="tab-pane fade" id="trainerContactsSubPanel" role="tabpanel"
-                      aria-labelledby="sub-trainer-contacts-tab">
-                      <div class="card p-4 rounded-4 shadow-sm border">
-                        <div
-                          class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom flex-wrap gap-2">
-                          <h3 class="h6 fw-bold text-heading-color mb-0">
-                            <i class="bi bi-person-badge me-2 text-primary"></i>Trainer Contact Directory
-                          </h3>
-                          <div class="d-flex align-items-center gap-2 flex-wrap">
-                            <input type="text" id="searchTrainerContact" class="form-control form-control-sm"
-                              style="max-width: 240px;" placeholder="Search name, phone, email...">
-                            <select id="typeTrainerContactFilter" class="form-select form-select-sm"
-                              style="width: auto;">
-                              <option value="all">All Types</option>
-                              <option value="In-house Staff">In-house Staff</option>
-                              <option value="External Professionals">External Professionals</option>
-                            </select>
-                          </div>
-                        </div>
-
-                        <div class="table-responsive" style="max-height: 550px; overflow-y: auto;">
-                          <table class="table table-hover align-middle mb-0" id="trainerContactsTable">
-                            <thead class="table-light">
-                              <tr>
-                                <th class="small fw-semibold text-center">Trainer ID</th>
-                                <th class="small fw-semibold">Trainer Name</th>
-                                <th class="small fw-semibold">Designation</th>
-                                <th class="small fw-semibold">Email</th>
-                                <th class="small fw-semibold">Phone</th>
-                                <th class="small fw-semibold">Type</th>
-                                <th class="small fw-semibold text-center">Status</th>
-                                <th class="small fw-semibold text-center">Actions</th>
-                              </tr>
-                            </thead>
-                            <tbody id="trainerContactsTableBody">
-                              <tr>
-                                <td colspan="8" class="text-center py-4 text-muted">Loading trainer contacts...</td>
                               </tr>
                             </tbody>
                           </table>
@@ -2850,11 +2803,27 @@
                             </div>
                           </div>
 
+                          <div class="row g-2 mb-3">
+                            <div class="col-md-6">
+                              <label class="form-label small fw-semibold mb-1" for="courseTargetInput">Target <span
+                                  class="text-danger">*</span></label>
+                              <input class="form-control" id="courseTargetInput" type="text"
+                                placeholder="e.g. CompTIA A+" required>
+                            </div>
+                            <div class="col-md-6">
+                              <label class="form-label small fw-semibold mb-1" for="courseTrainerInput">Trainer
+                                Name</label>
+                              <select class="form-select" id="courseTrainerSelect">
+                                <option value="" disabled selected>Select a Trainer</option>
+                              </select>
+                            </div>
+                          </div>
+
                           <div class="mb-3">
-                            <label class="form-label small fw-semibold mb-1" for="courseTargetInput">Target <span
-                                class="text-danger">*</span></label>
-                            <input class="form-control" id="courseTargetInput" type="text" placeholder="e.g. CompTIA A+"
-                              required>
+                            <label class="form-label small fw-semibold mb-1" for="courseIconInput">Icon Class</label>
+                            <input class="form-control" id="courseIconInput" type="text"
+                              placeholder="e.g. bi-pc-display" value="bi-journal-bookmark">
+                            <div class="form-text small text-muted">Bootstrap Icon class for the course card.</div>
                           </div>
 
                           <div class="row g-2 mb-3">
@@ -3485,6 +3454,61 @@
                           </tr>
                         </tbody>
                       </table>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Sub-Page: Trainer Database -->
+                <div class="tab-pane fade" id="trainersPanel" role="tabpanel" aria-labelledby="trainers-tab">
+                  <div class="row">
+                    <div class="col-12">
+                      <div class="card p-4 rounded-4 shadow-sm border">
+                        <div
+                          class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom flex-wrap gap-2">
+                          <h3 class="h5 fw-bold text-heading-color mb-0">
+                            <i class="bi bi-person-video3 me-2 text-primary"></i>Trainer Database
+                          </h3>
+                          <div class="d-flex align-items-center gap-2 flex-nowrap">
+                            <input type="text" id="searchTrainerContact" class="form-control form-control-sm"
+                              style="max-width: 200px;" placeholder="Search name, phone...">
+                            <select id="typeTrainerContactFilter" class="form-select form-select-sm"
+                              style="width: auto;">
+                              <option value="all">All Types</option>
+                              <option value="In-house Staff">In-house Staff</option>
+                              <option value="External Professionals">External Professionals</option>
+                            </select>
+                            <button id="refreshTrainersBtn" class="btn btn-sm btn-outline-secondary" type="button"
+                              title="Refresh Directory">
+                              <i class="bi bi-arrow-clockwise"></i>
+                            </button>
+                          </div>
+                        </div>
+
+                        <div class="table-responsive" style="max-height: 620px; overflow-y: auto;">
+                          <table class="table table-hover align-middle mb-0" id="trainerContactsTable">
+                            <thead class="table-light">
+                              <tr>
+                                <th class="small fw-semibold text-center">Trainer ID</th>
+                                <th class="small fw-semibold">Trainer Name</th>
+                                <th class="small fw-semibold">Designation</th>
+                                <th class="small fw-semibold">Email</th>
+                                <th class="small fw-semibold">Phone</th>
+                                <th class="small fw-semibold">Type</th>
+                                <th class="small fw-semibold text-center">Status</th>
+                                <th class="small fw-semibold text-center">Actions</th>
+                              </tr>
+                            </thead>
+                            <tbody id="trainerContactsTableBody">
+                              <tr>
+                                <td colspan="8" class="text-center py-4 text-muted">
+                                  <div class="spinner-border spinner-border-sm text-primary me-2" role="status"></div>
+                                  Loading trainers...
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -7304,6 +7328,8 @@
             document.getElementById("courseTitleInput").value = course.title;
             document.getElementById("courseCodeInput").value = course.code || "";
             document.getElementById("courseTargetInput").value = course.target;
+            document.getElementById("courseTrainerSelect").value = course.trainer || "";
+            document.getElementById("courseIconInput").value = course.icon || "bi-journal-bookmark";
             document.getElementById("courseDurationInput").value = course.duration;
             document.getElementById("courseFeeInput").value = course.fee;
             document.getElementById("courseStatusSelect").value = course.status;
@@ -7352,6 +7378,8 @@
       const title = document.getElementById("courseTitleInput").value.trim();
       const code = document.getElementById("courseCodeInput").value.trim().toUpperCase();
       const target = document.getElementById("courseTargetInput").value.trim();
+      const trainer = document.getElementById("courseTrainerSelect").value || "";
+      const icon = document.getElementById("courseIconInput").value.trim();
       const duration = document.getElementById("courseDurationInput").value.trim();
       const fee = document.getElementById("courseFeeInput").value;
       const status = document.getElementById("courseStatusSelect").value;
@@ -7363,7 +7391,7 @@
       successAlert.classList.add("d-none");
       errorAlert.classList.add("d-none");
 
-      const courseData = { title, code, target, duration, fee, status, description };
+      const courseData = { title, code, target, trainer, duration, fee, status, description, icon };
 
       try {
         if (editingCourseId) {
@@ -9442,6 +9470,7 @@
 
     async function loadEmployees() {
       const tbody = document.getElementById("employeesTableBody");
+      const trainerBody = document.getElementById("trainerContactsTableBody");
       if (tbody) {
         tbody.innerHTML = `
           <tr>
@@ -9452,11 +9481,22 @@
           </tr>
         `;
       }
+      if (trainerBody) {
+        trainerBody.innerHTML = `
+          <tr>
+            <td colspan="8" class="text-center py-4 text-muted">
+              <div class="spinner-border spinner-border-sm text-primary me-2" role="status"></div>
+              Loading trainers...
+            </td>
+          </tr>
+        `;
+      }
       try {
         allEmployees = await getAllEmployees();
         applyEmployeeFilters();
         renderTrainerContacts();
         if (typeof populateKamDropdown === "function") populateKamDropdown();
+        if (typeof populateTrainerDropdown === "function") populateTrainerDropdown();
       } catch (err) {
         console.error("Error loading employees: ", err);
         if (tbody) {
@@ -9675,6 +9715,20 @@
     document.getElementById("filterDesignation")?.addEventListener("change", applyEmployeeFilters);
     document.getElementById("filterStatus")?.addEventListener("change", applyEmployeeFilters);
 
+    // Attach Trainer Database events
+    document.getElementById("trainers-tab")?.addEventListener("click", renderTrainerContacts);
+    document.getElementById("searchTrainerContact")?.addEventListener("input", renderTrainerContacts);
+    document.getElementById("typeTrainerContactFilter")?.addEventListener("change", renderTrainerContacts);
+    document.getElementById("refreshTrainersBtn")?.addEventListener("click", async () => {
+      const btn = document.getElementById("refreshTrainersBtn");
+      const origHtml = btn.innerHTML;
+      btn.disabled = true;
+      btn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status"></span>';
+      await loadEmployees();
+      btn.disabled = false;
+      btn.innerHTML = origHtml;
+    });
+
     // Globally register loadEmployees function in window just in case
     window.loadEmployees = loadEmployees;
 
@@ -9733,6 +9787,36 @@
         const allOptions = Array.from(kamSelect.querySelectorAll('option'));
         if (allOptions.some(opt => opt.value === currentVal)) {
           kamSelect.value = currentVal;
+        }
+      }
+    }
+
+    function populateTrainerDropdown() {
+      const trainerSelect = document.getElementById("courseTrainerSelect");
+      if (!trainerSelect) return;
+      const currentVal = trainerSelect.value;
+      trainerSelect.innerHTML = '<option value="" disabled selected>Select a Trainer</option><option value="">None / TBA</option>';
+
+      if (allEmployees && allEmployees.length > 0) {
+        const trainers = allEmployees.filter(emp => {
+          const designation = emp.designation ? emp.designation.toLowerCase() : "";
+          return emp.status === "Active" && (designation.includes("trainer") || designation.includes("expert"));
+        });
+
+        if (trainers.length > 0) {
+          trainers.forEach(t => {
+            const opt = document.createElement("option");
+            opt.value = t.employee_name;
+            opt.textContent = `${t.employee_name} (${t.employee_type === 'In-house Staff' ? 'In-house' : 'External'})`;
+            trainerSelect.appendChild(opt);
+          });
+        }
+      }
+
+      if (currentVal) {
+        const allOptions = Array.from(trainerSelect.querySelectorAll('option'));
+        if (allOptions.some(opt => opt.value === currentVal)) {
+          trainerSelect.value = currentVal;
         }
       }
     }
@@ -10744,21 +10828,39 @@
             <td class="text-center">${statusBadge}</td>
             <td class="text-center">
               <div class="btn-group gap-1">
-                ${emp.email ? `
-                  <a href="mailto:${emp.email}" class="btn btn-sm btn-outline-primary py-1 px-2" title="Email Trainer">
-                    <i class="bi bi-envelope-at"></i>
-                  </a>
-                ` : ''}
-                ${emp.mobile_phone ? `
-                  <a href="tel:${emp.mobile_phone}" class="btn btn-sm btn-outline-success py-1 px-2" title="Call Trainer">
-                    <i class="bi bi-telephone-outbound"></i>
-                  </a>
-                ` : ''}
+                <button class="btn btn-sm btn-outline-primary trainer-edit-btn py-1 px-2" data-id="${emp.employee_id}" title="Edit">
+                  <i class="bi bi-pencil-square"></i>
+                </button>
+                <button class="btn btn-sm btn-outline-danger trainer-delete-btn py-1 px-2" data-id="${emp.employee_id}" title="Delete">
+                  <i class="bi bi-trash"></i>
+                </button>
               </div>
             </td>
           </tr>
         `;
       }).join("");
+
+      tbody.querySelectorAll(".trainer-edit-btn").forEach(btn => {
+        btn.onclick = function () {
+          const id = this.getAttribute("data-id");
+          const emp = allEmployees.find(e => e.employee_id === id);
+          if (emp) {
+            const empTab = document.getElementById("employees-tab");
+            if (empTab) bootstrap.Tab.getOrCreateInstance(empTab).show();
+            editEmployee(emp);
+          }
+        };
+      });
+
+      tbody.querySelectorAll(".trainer-delete-btn").forEach(btn => {
+        btn.onclick = function () {
+          const id = this.getAttribute("data-id");
+          const emp = allEmployees.find(e => e.employee_id === id);
+          if (emp && confirm(`Are you sure you want to delete trainer "${emp.employee_name}" (${id})?`)) {
+            deleteEmployeeRecord(id, emp.employee_name);
+          }
+        };
+      });
     }
 
     async function loadPublicInstitutes() {
@@ -10994,14 +11096,11 @@
     // Attach Contact Directory events
     document.getElementById("contact-directory-tab")?.addEventListener("click", () => {
       renderStudentContacts();
-      renderTrainerContacts();
       loadPublicInstitutes();
     });
 
     document.getElementById("searchStudentContact")?.addEventListener("input", renderStudentContacts);
     document.getElementById("courseStudentContactFilter")?.addEventListener("change", renderStudentContacts);
-    document.getElementById("searchTrainerContact")?.addEventListener("input", renderTrainerContacts);
-    document.getElementById("typeTrainerContactFilter")?.addEventListener("change", renderTrainerContacts);
 
     document.getElementById("searchInstContact")?.addEventListener("input", renderPublicInstitutes);
     document.getElementById("filterInstType")?.addEventListener("change", renderPublicInstitutes);
