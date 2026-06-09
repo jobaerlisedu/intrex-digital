@@ -101,6 +101,8 @@
       }
     }
 
+    
+
     /* Custom thin scrollbars and bottom padding for scroll breathing room */
     .sidebar-container,
     .content-container {
@@ -458,12 +460,12 @@
 
               <form id="loginForm">
                 <div class="mb-3">
-                  <label for="adminEmail" class="form-label small fw-semibold">Email Address</label>
+                  <label for="adminEmail" class="form-label small fw-semibold">Email Address <span class="text-danger">*</span></label>
                   <input type="email" class="form-control" id="adminEmail" required
                     placeholder="admin@intrex-digital.com">
                 </div>
                 <div class="mb-3">
-                  <label for="adminPassword" class="form-label small fw-semibold">Password</label>
+                  <label for="adminPassword" class="form-label small fw-semibold">Password <span class="text-danger">*</span></label>
                   <input type="password" class="form-control" id="adminPassword" required placeholder="••••••••">
                 </div>
                 <button type="submit" class="btn btn-primary w-100 fw-semibold py-2 mt-2">
@@ -574,11 +576,6 @@
                     <i class="bi bi-wallet2"></i> Expense Tracker
                   </button>
                   <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
-                    id="asset-inventory-tab" data-bs-toggle="tab" data-bs-target="#assetInventoryPanel" type="button"
-                    role="tab" aria-controls="assetInventoryPanel" aria-selected="false">
-                    <i class="bi bi-pc-display"></i> Asset Inventory
-                  </button>
-                  <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
                     id="sales-records-tab" data-bs-toggle="tab" data-bs-target="#salesRecordsPanel" type="button"
                     role="tab" aria-controls="salesRecordsPanel" aria-selected="false">
                     <i class="bi bi-receipt"></i> Sales Records
@@ -586,7 +583,7 @@
                   <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
                     id="sales-commission-tab" data-bs-toggle="tab" data-bs-target="#salesCommissionPanel" type="button"
                     role="tab" aria-controls="salesCommissionPanel" aria-selected="false">
-                    <i class="bi bi-graph-up"></i> Sales Commission & KPI
+                    <i class="bi bi-graph-up"></i> Sales Commissions
                   </button>
                   <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
                     id="course-assessment-tab" data-bs-toggle="tab" data-bs-target="#assessmentPanel" type="button"
@@ -1399,7 +1396,7 @@
                         <div
                           class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom flex-wrap gap-2">
                           <h3 class="h5 fw-bold text-heading-color mb-0">
-                            <i class="bi bi-credit-card me-2 text-primary"></i>Course Payment Records
+                            <i class="bi bi-credit-card me-2 text-primary"></i>Students Payment Records
                           </h3>
                           <div class="d-flex align-items-center gap-2 flex-wrap">
                             <div class="input-group qf-wrapper" style="width: auto; max-width: 260px;">
@@ -1720,7 +1717,7 @@
 
                           <div class="row g-3 mb-3">
                             <div class="col-md-4">
-                              <label class="form-label small fw-semibold mb-1" for="certStudentId">Student ID</label>
+                              <label class="form-label small fw-semibold mb-1" for="certStudentId">Student ID <span class="text-danger">*</span></label>
                               <input type="text" class="form-control bg-body-secondary" id="certStudentId" readonly
                                 placeholder="Auto-fills from lookup">
                             </div>
@@ -2615,12 +2612,12 @@
                     <div class="col-lg-4">
                       <div class="card p-4 rounded-4 shadow-sm border">
                         <h3 id="agentFormTitle" class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
-                          <i class="bi bi-person-plus-fill me-2 text-primary"></i>Add Marketing Agent
+                          <i class="bi bi-person-plus-fill me-2 text-primary"></i>Add Brand Ambassador
                         </h3>
 
                         <div id="agentSuccess" class="alert alert-success d-none alert-dismissible fade show small"
                           role="alert">
-                          <span>Agent saved successfully!</span>
+                          <span>Brand ambassador saved successfully!</span>
                           <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
                         <div id="agentError" class="alert alert-danger d-none alert-dismissible fade show small"
@@ -2631,7 +2628,7 @@
 
                         <form id="agentForm">
                           <div class="mb-3">
-                            <label class="form-label small fw-semibold mb-1" for="agentNameInput">Agent Name
+                            <label class="form-label small fw-semibold mb-1" for="agentNameInput">Brand Ambassador Name
                               <span class="text-danger">*</span></label>
                             <input class="form-control" id="agentNameInput" type="text" placeholder="e.g. Hasan Mahmud"
                               required>
@@ -2695,7 +2692,7 @@
 
                           <div class="d-flex gap-2">
                             <button type="submit" id="submitAgentBtn" class="btn btn-primary w-100 fw-semibold py-2">
-                              <i class="bi bi-cloud-arrow-up me-2"></i>Save Agent
+                              <i class="bi bi-cloud-arrow-up me-2"></i>Save Brand Ambassador
                             </button>
                             <button type="button" id="cancelAgentEditBtn"
                               class="btn btn-outline-secondary w-50 fw-semibold py-2 d-none">
@@ -2712,7 +2709,7 @@
                         <div
                           class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom flex-wrap gap-2">
                           <h3 class="h5 fw-bold text-heading-color mb-0">
-                            <i class="bi bi-headset me-2 text-primary"></i>Marketing Agents Directory
+                            <i class="bi bi-headset me-2 text-primary"></i>Brand Ambassadors Directory
                           </h3>
                           <div class="d-flex align-items-center gap-2 flex-wrap">
                             <input type="text" id="searchAgent" class="form-control form-control-sm"
@@ -2740,8 +2737,8 @@
                           <table class="table table-hover align-middle mb-0" id="marketingAgentsTable">
                             <thead class="table-light">
                               <tr>
-                                <th class="small fw-semibold">Agent ID</th>
-                                <th class="small fw-semibold">Agent Name</th>
+                                <th class="small fw-semibold">Ambassador ID</th>
+                                <th class="small fw-semibold">Brand Ambassador Name</th>
                                 <th class="small fw-semibold">Contact Info</th>
                                 <th class="small fw-semibold">Region</th>
                                 <th class="small fw-semibold text-center">Commission</th>
@@ -2754,7 +2751,7 @@
                                 <td colspan="7" class="text-center py-4 text-muted">
                                   <div class="spinner-border spinner-border-sm text-primary me-2" role="status">
                                   </div>
-                                  Loading marketing agents...
+                                  Loading brand ambassadors...
                                 </td>
                               </tr>
                             </tbody>
@@ -2943,12 +2940,24 @@
                         </div>
 
                         <form id="commissionForm">
-                          <div class="mb-3">
-                            <label class="form-label small fw-semibold mb-1" for="commissionAgentSelect">Marketing Agent
-                              <span class="text-danger">*</span></label>
-                            <select class="form-select" id="commissionAgentSelect" required>
-                              <option value="" disabled selected>Select an agent</option>
-                            </select>
+                          <div class="row g-2 mb-3">
+                            <div class="col-md-6">
+                              <label class="form-label small fw-semibold mb-1">Target Month <span class="text-danger">*</span></label>
+                              <div class="d-flex" style="gap:0.5rem;">
+                                <select class="form-select w-auto" id="commissionMonthSelect" required aria-label="Month select">
+                                  <option value="" disabled selected>Month</option>
+                                </select>
+                                <select class="form-select w-auto" id="commissionYearSelect" required aria-label="Year select">
+                                  <option value="" disabled selected>Year</option>
+                                </select>
+                              </div>
+                            </div>
+                            <div class="col-md-6">
+                              <label class="form-label small fw-semibold mb-1" for="commissionAgentSelect">Brand Ambassador / KAM <span class="text-danger">*</span></label>
+                              <select class="form-select" id="commissionAgentSelect" required>
+                                <option value="" disabled selected>Select an agent or employee</option>
+                              </select>
+                            </div>
                           </div>
 
                           <div class="row g-2 mb-3">
@@ -2965,13 +2974,7 @@
                             </div>
                           </div>
 
-                          <div class="mb-3">
-                            <label class="form-label small fw-semibold mb-1" for="commissionStudentSelect">Associated
-                              Student <span class="text-muted">(Optional)</span></label>
-                            <select class="form-select" id="commissionStudentSelect">
-                              <option value="" selected>None / General Payout</option>
-                            </select>
-                          </div>
+                          <!-- Associated student removed as requested -->
 
                           <div class="mb-3">
                             <label class="form-label small fw-semibold mb-1" for="commissionMethodSelect">Payment Method
@@ -3002,6 +3005,7 @@
                             </button>
                           </div>
                         </form>
+                        <div id="commissionDebug" class="small text-muted mt-2" style="white-space:pre-wrap; display:none; background:#f8f9fa; padding:8px; border-radius:6px; border:1px solid #e9ecef;"></div>
                       </div>
                     </div>
 
@@ -3040,19 +3044,13 @@
                             <i class="bi bi-list-stars me-2 text-primary"></i>Commission Payout Registry
                           </h3>
                           <div class="d-flex align-items-center gap-2 flex-wrap">
-                            <input type="month" id="filterCommissionMonth" class="form-control form-control-sm"
-                              style="width: auto;" title="Filter by Month">
-                            <input type="text" id="searchCommission" class="form-control form-control-sm"
-                              style="max-width: 200px;" placeholder="Search agent, student...">
                             <select id="filterCommissionAgent" class="form-select form-select-sm" style="width: auto;">
                               <option value="all">All Agents / Employees</option>
                             </select>
-                            <button id="exportCommissionBtn" class="btn btn-sm btn-outline-success" type="button"
-                              title="Export CSV">
+                            <button id="exportCommissionBtn" class="btn btn-sm btn-outline-success" type="button" title="Export CSV">
                               <i class="bi bi-file-earmark-excel"></i>
                             </button>
-                            <button id="refreshCommissionListBtn" class="btn btn-sm btn-outline-secondary" type="button"
-                              title="Refresh List">
+                            <button id="refreshCommissionListBtn" class="btn btn-sm btn-outline-secondary" type="button" title="Refresh List">
                               <i class="bi bi-arrow-clockwise"></i>
                             </button>
                           </div>
@@ -3063,7 +3061,7 @@
                             <thead class="table-light">
                               <tr>
                                 <th class="small fw-semibold">Date</th>
-                                <th class="small fw-semibold">Agent Name</th>
+                                <th class="small fw-semibold">Ambassador Name</th>
                                 <th class="small fw-semibold">Student / Reference</th>
                                 <th class="small fw-semibold text-end">Amount</th>
                                 <th class="small fw-semibold text-center">Method</th>
@@ -3095,11 +3093,15 @@
                             <i class="bi bi-receipt me-2 text-primary"></i>Sales Records & Commissions
                           </h3>
                           <div class="d-flex align-items-center gap-2 flex-wrap">
-                            <input type="month" id="filterSalesMonth" class="form-control form-control-sm"
-                              style="width: auto;" title="Filter by Month">
+                            <select id="filterSalesMonth" class="form-select form-select-sm" style="width: auto;" title="Filter by Month">
+                              <option value="">Month</option>
+                            </select>
+                            <select id="filterSalesYear" class="form-select form-select-sm" style="width: auto;" title="Filter by Year">
+                              <option value="">Year</option>
+                            </select>
                             <select id="filterSalesKam" class="form-select form-select-sm"
                               style="width: auto; min-width: 150px;">
-                              <option value="all">All KAMs</option>
+                              <option value="all">All BDEs & Brand Ambassadors</option>
                             </select>
                             <button id="refreshSalesRecordsBtn" class="btn btn-sm btn-outline-secondary" type="button"
                               title="Refresh List">
@@ -3112,7 +3114,7 @@
                             <thead class="table-light sticky-top">
                               <tr>
                                 <th class="small fw-semibold text-center">Date</th>
-                                <th class="small fw-semibold">Key Account Manager</th>
+                                <th class="small fw-semibold">BDE / Brand Ambassador</th>
                                 <th class="small fw-semibold">Student Name</th>
                                 <th class="small fw-semibold">Course</th>
                                 <th class="small fw-semibold text-end">Final Course Fee (BDT)</th>
@@ -3595,8 +3597,6 @@
                               <option value="" disabled selected>Select category</option>
                               <option value="Direct Training & Delivery Costs (Variable)">Direct Training & Delivery
                                 Costs (Variable)</option>
-                              <option value="Infrastructure & Technology (Fixed/Subscription)">Infrastructure &
-                                Technology (Fixed/Subscription)</option>
                               <option value="Facilities & Utilities (Fixed Overhead)">Facilities & Utilities (Fixed
                                 Overhead)</option>
                               <option value="Marketing & Student Acquisition">Marketing & Student Acquisition</option>
@@ -3672,8 +3672,6 @@
                               style="width: auto; min-width: 150px;">
                               <option value="all">All Categories</option>
                               <option value="Direct Training & Delivery Costs (Variable)">Direct Training Costs</option>
-                              <option value="Infrastructure & Technology (Fixed/Subscription)">Infrastructure & Tech
-                              </option>
                               <option value="Facilities & Utilities (Fixed Overhead)">Facilities & Utilities</option>
                               <option value="Marketing & Student Acquisition">Marketing</option>
                               <option value="Administrative & Compliance Costs">Administrative</option>
@@ -3707,53 +3705,6 @@
                                 <td colspan="7" class="text-center py-4 text-muted">
                                   <div class="spinner-border spinner-border-sm text-primary me-2" role="status"></div>
                                   Loading expenses...
-                                </td>
-                              </tr>
-                            </tbody>
-                          </table>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Sub-Page 11.5: Asset Inventory -->
-                <div class="tab-pane fade" id="assetInventoryPanel" role="tabpanel"
-                  aria-labelledby="asset-inventory-tab">
-                  <div class="row">
-                    <div class="col-12">
-                      <div class="card p-4 rounded-4 shadow-sm border">
-                        <div
-                          class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom flex-wrap gap-2">
-                          <h3 class="h5 fw-bold text-heading-color mb-0">
-                            <i class="bi bi-pc-display me-2 text-primary"></i>Asset Inventory (Infrastructure &amp;
-                            Technology)
-                          </h3>
-                          <div class="d-flex align-items-center gap-2 flex-wrap">
-                            <button id="refreshAssetInventoryBtn" class="btn btn-sm btn-outline-secondary" type="button"
-                              title="Refresh List">
-                              <i class="bi bi-arrow-clockwise"></i>
-                            </button>
-                          </div>
-                        </div>
-
-                        <div class="table-responsive">
-                          <table class="table table-hover align-middle mb-0" id="assetInventoryTable">
-                            <thead class="table-light">
-                              <tr>
-                                <th class="small fw-semibold">Expense ID</th>
-                                <th class="small fw-semibold">Date</th>
-                                <th class="small fw-semibold">Sub-category</th>
-                                <th class="small fw-semibold">Description</th>
-                                <th class="small fw-semibold">Payment Method</th>
-                                <th class="small fw-semibold text-end">Amount</th>
-                              </tr>
-                            </thead>
-                            <tbody id="assetInventoryTableBody">
-                              <tr>
-                                <td colspan="6" class="text-center py-4 text-muted">
-                                  <div class="spinner-border spinner-border-sm text-primary me-2" role="status"></div>
-                                  Loading assets...
                                 </td>
                               </tr>
                             </tbody>
@@ -3831,6 +3782,29 @@
       return `${origin}/verify-certificate.html?id=${certificateId}`;
     }
 
+    // Populate separate month and year selects
+    function populateCommissionMonthYear() {
+      const monthSel = document.getElementById('commissionMonthSelect');
+      const yearSel = document.getElementById('commissionYearSelect');
+      if (!monthSel || !yearSel) return;
+      // months (01-12)
+      const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+      months.forEach((m, idx) => {
+        const opt = document.createElement('option');
+        const val = String(idx + 1).padStart(2, '0');
+        opt.value = val;
+        opt.textContent = `${m}`;
+        monthSel.appendChild(opt);
+      });
+      // years: explicit range 2026-2030
+      for (let yr = 2026; yr <= 2030; yr++) {
+        const opt = document.createElement('option');
+        opt.value = String(yr);
+        opt.textContent = String(yr);
+        yearSel.appendChild(opt);
+      }
+    }
+
 
 
     function restoreDefaultCourses() {
@@ -3839,6 +3813,9 @@
       courseSelect.innerHTML = '<option value="" disabled selected>Please lookup a student first</option>';
       courseSelect.disabled = true;
     }
+
+    // initialize month & year dropdowns
+    populateCommissionMonthYear();
 
     function updateCourseDropdownForStudent(studentId, defaultCourse) {
       const courseSelect = document.getElementById("courseName");
@@ -5290,6 +5267,7 @@
       updateRegistrationBatchDropdown(record.course, record.batch);
       document.getElementById("regEducation").value = record.education || "";
       document.getElementById("regSchedule").value = record.schedule;
+      if (document.getElementById("regClassDays")) document.getElementById("regClassDays").value = record.classDays || "";
       document.getElementById("regMessage").value = record.message || "";
       document.getElementById("regKam").value = record.kam || "Direct";
 
@@ -5454,6 +5432,7 @@
       document.getElementById("regEmail").value = record.email || "";
       document.getElementById("regPhone").value = record.phone || "";
       document.getElementById("regEducation").value = record.education || "";
+      if (document.getElementById("regClassDays")) document.getElementById("regClassDays").value = record.classDays || "";
       document.getElementById("regKam").value = record.kam || "Direct";
 
       const isJobHolder = record.isJobHolder || false;
@@ -5572,6 +5551,7 @@
       const batch = document.getElementById("regBatch").value.trim();
       const education = document.getElementById("regEducation").value;
       const schedule = document.getElementById("regSchedule").value;
+      const classDays = document.getElementById("regClassDays").value;
 
       const isJobHolder = regIsJobHolderSwitch ? regIsJobHolderSwitch.checked : false;
       const companyName = isJobHolder ? regCompany.value.trim() : "";
@@ -5588,8 +5568,7 @@
       const paymentType = document.getElementById("regPaymentType").value;
       const transactionId = document.getElementById("regPaymentTxId").value.trim();
       const message = document.getElementById("regMessage").value.trim();
-      const kamValue = document.getElementById("regKam").value;
-      const kam = kamValue === "Direct" ? "" : kamValue;
+      const kam = document.getElementById("regKam").value;
 
       const enableInstallments = document.getElementById("regEnableInstallments").checked;
       const registrationFee = enableInstallments ? amountPaid : 0;
@@ -5637,7 +5616,7 @@
 
         if (editingDocId) {
           // Update
-          await updateRegistration(editingDocId, { fullName, email, phone, course, batch, education, schedule, message, isJobHolder, companyName, designation, kam });
+          await updateRegistration(editingDocId, { fullName, email, phone, course, batch, education, schedule, classDays, message, isJobHolder, companyName, designation, kam });
 
           // Audit Logging
           await addAuditLog({
@@ -5653,7 +5632,7 @@
           cancelRegEditMode();
         } else {
           // Create
-          const generatedId = await addRegistration({ fullName, email, phone, course, batch, education, schedule, message, totalFee, discount, amountPaid, paymentType, transactionId, registrationFee, installments, isJobHolder, companyName, designation, studentId: reusedStudentId, kam });
+          const generatedId = await addRegistration({ fullName, email, phone, course, batch, education, schedule, classDays, message, totalFee, discount, amountPaid, paymentType, transactionId, registrationFee, installments, isJobHolder, companyName, designation, studentId: reusedStudentId, kam });
 
           // Audit Logging
           await addAuditLog({
@@ -6604,11 +6583,11 @@
         row.innerHTML = `
           <div class="row g-2 align-items-center">
             <div class="col-md-4">
-              <span class="small fw-semibold text-muted">Installment #${i}</span>
+              <span class="small fw-semibold text-muted">Installment #${i} <span class="text-danger">*</span></span>
               <input type="number" class="form-control form-control-sm inst-amount" value="${instAmount}" placeholder="Amount" required>
             </div>
             <div class="col-md-4">
-              <span class="small fw-semibold text-muted">Due Date</span>
+              <span class="small fw-semibold text-muted">Due Date <span class="text-danger">*</span></span>
               <input type="date" class="form-control form-control-sm inst-due-date" value="${dateStr}" required>
             </div>
             <div class="col-md-4">
@@ -6645,11 +6624,11 @@
           row.innerHTML = `
             <div class="row g-2 align-items-center">
               <div class="col-md-4">
-                <span class="small fw-semibold text-muted">Installment #${idx + 1}</span>
+                <span class="small fw-semibold text-muted">Installment #${idx + 1} <span class="text-danger">*</span></span>
                 <input type="number" class="form-control form-control-sm inst-amount" value="${inst.amount}" placeholder="Amount" required>
               </div>
               <div class="col-md-4">
-                <span class="small fw-semibold text-muted">Due Date</span>
+                <span class="small fw-semibold text-muted">Due Date <span class="text-danger">*</span></span>
                 <input type="date" class="form-control form-control-sm inst-due-date" value="${inst.dueDate || ''}" required>
               </div>
               <div class="col-md-4">
@@ -6695,11 +6674,11 @@
         row.innerHTML = `
           <div class="row g-2 align-items-center">
             <div class="col-md-4">
-              <span class="small fw-semibold text-muted">Installment #${i}</span>
+              <span class="small fw-semibold text-muted">Installment #${i} <span class="text-danger">*</span></span>
               <input type="number" class="form-control form-control-sm inst-amount" value="${instAmount}" placeholder="Amount" required>
             </div>
             <div class="col-md-4">
-              <span class="small fw-semibold text-muted">Due Date</span>
+              <span class="small fw-semibold text-muted">Due Date <span class="text-danger">*</span></span>
               <input type="date" class="form-control form-control-sm inst-due-date" value="${dateStr}" required>
             </div>
             <div class="col-md-4">
@@ -7735,11 +7714,11 @@
         row.innerHTML = `
           <div class="row g-2 align-items-center">
             <div class="col-md-4">
-              <span class="small fw-semibold text-muted">Installment #${idx + 1}</span>
+              <span class="small fw-semibold text-muted">Installment #${idx + 1} <span class="text-danger">*</span></span>
               <input type="number" class="form-control form-control-sm inst-amount" value="${inst.amount}" placeholder="Amount" required>
             </div>
             <div class="col-md-4">
-              <span class="small fw-semibold text-muted">Due Date</span>
+              <span class="small fw-semibold text-muted">Due Date <span class="text-danger">*</span></span>
               <input type="date" class="form-control form-control-sm inst-due-date" value="${inst.dueDate || ''}" required>
             </div>
             <div class="col-md-4">
@@ -9742,7 +9721,7 @@
         const activeAgents = allMarketingAgents.filter(a => a.status === "Active");
         if (activeAgents.length > 0) {
           const optgroup = document.createElement("optgroup");
-          optgroup.label = "Marketing Agents";
+              optgroup.label = "Brand Ambassadors";
           activeAgents.forEach(a => {
             const opt = document.createElement("option");
             opt.value = a.id;
@@ -11408,7 +11387,7 @@
           <tr>
             <td colspan="7" class="text-center py-4 text-muted">
               <div class="spinner-border spinner-border-sm text-primary me-2" role="status"></div>
-              Loading marketing agents...
+                  Loading brand ambassadors...
             </td>
           </tr>
         `;
@@ -11445,7 +11424,7 @@
       });
 
       if (filtered.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="7" class="text-center py-4 text-muted">No marketing agents found.</td></tr>`;
+            tbody.innerHTML = `<tr><td colspan="7" class="text-center py-4 text-muted">No brand ambassadors found.</td></tr>`;
         return;
       }
 
@@ -11529,7 +11508,7 @@
 
     function editMarketingAgent(agent) {
       editingAgentId = agent.id;
-      document.getElementById("agentFormTitle").innerHTML = `<i class="bi bi-pencil-square me-2 text-primary"></i>Edit Agent Contact`;
+          document.getElementById("agentFormTitle").innerHTML = `<i class="bi bi-pencil-square me-2 text-primary"></i>Edit Brand Ambassador Contact`;
       document.getElementById("agentNameInput").value = agent.name;
       document.getElementById("agentEmailInput").value = agent.email || "";
       document.getElementById("agentPhoneInput").value = agent.phone || "";
@@ -11546,7 +11525,7 @@
 
     function resetMarketingAgentForm() {
       editingAgentId = null;
-      document.getElementById("agentFormTitle").innerHTML = `<i class="bi bi-person-plus-fill me-2 text-primary"></i>Add Marketing Agent`;
+          document.getElementById("agentFormTitle").innerHTML = `<i class="bi bi-person-plus-fill me-2 text-primary"></i>Add Brand Ambassador`;
       document.getElementById("agentForm")?.reset();
       const cancelBtn = document.getElementById("cancelAgentEditBtn");
       if (cancelBtn) cancelBtn.classList.add("d-none");
@@ -11602,7 +11581,7 @@
         refreshAuditLogs();
 
         if (successAlert) {
-          successAlert.querySelector("span").textContent = `Marketing agent saved successfully!`;
+              successAlert.querySelector("span").textContent = `Brand ambassador saved successfully!`;
           successAlert.classList.remove("d-none");
           setTimeout(() => successAlert.classList.add("d-none"), 4000);
         }
@@ -11647,14 +11626,13 @@
     function populateCommissionDropdowns() {
       const agentSelect = document.getElementById("commissionAgentSelect");
       const agentFilter = document.getElementById("filterCommissionAgent");
-      const studentSelect = document.getElementById("commissionStudentSelect");
 
       if (agentSelect) {
         const val = agentSelect.value;
         agentSelect.innerHTML = '<option value="" disabled selected>Select an agent or employee</option>';
 
         const optgroupAg = document.createElement("optgroup");
-        optgroupAg.label = "Marketing Agents";
+            optgroupAg.label = "Brand Ambassadors";
         allMarketingAgents.forEach(a => {
           const opt = document.createElement("option");
           opt.value = a.id;
@@ -11682,10 +11660,10 @@
         agentFilter.innerHTML = '<option value="all">All Agents / Employees</option>';
 
         const optgroupAg = document.createElement("optgroup");
-        optgroupAg.label = "Marketing Agents";
+            optgroupAg.label = "Brand Ambassadors";
         allMarketingAgents.forEach(a => {
           const opt = document.createElement("option");
-          opt.value = a.id;
+          opt.value = a.name || a.id; // use name as filter value
           opt.textContent = a.name;
           optgroupAg.appendChild(opt);
         });
@@ -11696,7 +11674,7 @@
         optgroupEmp.label = "Business Development Executives";
         bdEmps.forEach(e => {
           const opt = document.createElement("option");
-          opt.value = e.employee_id;
+          opt.value = e.employee_name || e.employee_id; // use employee name as filter value
           opt.textContent = e.employee_name;
           optgroupEmp.appendChild(opt);
         });
@@ -11705,17 +11683,7 @@
         if (val) agentFilter.value = val;
       }
 
-      if (studentSelect) {
-        const val = studentSelect.value;
-        studentSelect.innerHTML = '<option value="" selected>None / General Payout</option>';
-        allRegistrations.forEach(r => {
-          const opt = document.createElement("option");
-          opt.value = r.studentId;
-          opt.textContent = `${r.fullName} (${r.studentId})`;
-          studentSelect.appendChild(opt);
-        });
-        if (val) studentSelect.value = val;
-      }
+      // Associated student select removed from form; no population needed.
     }
 
     function renderCommissions() {
@@ -11726,7 +11694,7 @@
       const agentFilter = document.getElementById("filterCommissionAgent")?.value || "all";
       const monthFilter = document.getElementById("filterCommissionMonth")?.value || "";
 
-      const filtered = allCommissions.filter(c => {
+        const filtered = allCommissions.filter(c => {
         const agent = allMarketingAgents.find(a => a.id === c.agentId) || allEmployees.find(e => e.employee_id === c.agentId) || {};
         const student = allRegistrations.find(r => r.studentId === c.studentId) || {};
         const agentName = agent.name || agent.employee_name || c.agentId;
@@ -11736,7 +11704,7 @@
           (student.fullName && student.fullName.toLowerCase().includes(searchQuery)) ||
           (c.notes && c.notes.toLowerCase().includes(searchQuery));
 
-        const matchesAgent = agentFilter === "all" || c.agentId === agentFilter;
+        const matchesAgent = agentFilter === "all" || agentName === agentFilter;
         const matchesMonth = monthFilter === "" || c.date.startsWith(monthFilter);
 
         return matchesSearch && matchesAgent && matchesMonth;
@@ -11847,61 +11815,145 @@
       document.getElementById("kpiTopAgent").textContent = topAgentName ? `${topAgentName} (${maxCount} sales)` : "—";
     }
 
-    document.getElementById("commissionAgentSelect")?.addEventListener("change", function (e) {
-      const agentId = e.target.value;
-      const studentSelect = document.getElementById("commissionStudentSelect");
-      if (!studentSelect) return;
-      studentSelect.innerHTML = '<option value="" selected>None / General Payout</option>';
-
-      const regs = allRegistrations.filter(r => r.kam === agentId);
-      regs.forEach(r => {
-        const pay = allPayments.find(p => p.studentId === r.studentId);
-        const paid = pay ? (Number(pay.amountPaid) || 0) : 0;
-        const opt = document.createElement("option");
-        opt.value = r.studentId;
-        opt.textContent = `${r.fullName} (${r.studentId}) - Paid: ${paid.toLocaleString()} BDT`;
-        opt.dataset.paid = paid;
-        studentSelect.appendChild(opt);
-      });
-      document.getElementById("commissionAmountInput").value = "";
-    });
-
-    document.getElementById("commissionStudentSelect")?.addEventListener("change", function (e) {
-      const studentId = e.target.value;
+    function calculateCommissionAmount() {
       const agentId = document.getElementById("commissionAgentSelect").value;
-      if (agentId && studentId) {
-        const agent = allMarketingAgents.find(a => a.id === agentId);
-        const rate = agent ? (Number(agent.commissionRate) || 0) : 0;
-        const selectedOpt = this.options[this.selectedIndex];
-        const paid = Number(selectedOpt.dataset.paid) || 0;
-
-        const totalEarned = (paid * rate) / 100;
-        const alreadyPaid = allCommissions
-          .filter(c => c.agentId === agentId && c.studentId === studentId)
-          .reduce((sum, c) => sum + Number(c.amount), 0);
-
-        const payable = Math.max(0, totalEarned - alreadyPaid);
-        document.getElementById("commissionAmountInput").value = payable;
-
-        if (alreadyPaid > 0 && payable > 0) {
-          const noteEl = document.getElementById("commissionNotesTextarea");
-          if (noteEl && !noteEl.value.includes("Adjusted")) {
-            noteEl.value = `Adjusted for ${alreadyPaid} BDT already paid. ` + noteEl.value;
+      const monthVal = document.getElementById("commissionMonthSelect").value;
+      const yearVal = document.getElementById("commissionYearSelect")?.value;
+      const monthFilter = (yearVal && monthVal) ? `${yearVal}-${monthVal}` : "";
+      console.debug('calcCommission:start', { agentId, monthFilter });
+      // Guard: ensure data arrays are loaded before proceeding. Retry a few times if not.
+      try {
+        const needRegs = (!window.allRegistrations || window.allRegistrations.length === 0);
+        const needPays = (!window.allPayments || window.allPayments.length === 0);
+        const needAgents = (!window.allMarketingAgents || window.allMarketingAgents.length === 0) && (!window.allEmployees || window.allEmployees.length === 0);
+        if (needRegs || needPays || needAgents) {
+          window._commissionCalcRetries = (window._commissionCalcRetries || 0) + 1;
+          const dbg = document.getElementById('commissionDebug');
+          if (dbg && window.SHOW_COMMISSION_DEBUG) {
+            dbg.style.display = 'block';
+            dbg.textContent = `Waiting for data to load... retry ${window._commissionCalcRetries}`;
           }
+          if (window._commissionCalcRetries <= 10) {
+            setTimeout(calculateCommissionAmount, 300);
+            return;
+          }
+          // exceeded retries — show informative message and continue (will result in 0 if no data)
+          if (dbg) dbg.textContent += '\nData not loaded after retries.';
+          window._commissionCalcRetries = 0;
         }
-      } else {
-        document.getElementById("commissionAmountInput").value = "";
+      } catch (err) {
+        console.warn('Error while checking data readiness', err);
       }
+
+      if (!agentId) {
+        document.getElementById("commissionAmountInput").value = "";
+        return;
+      }
+
+      const agent = allMarketingAgents.find(a => a.id === agentId) || allEmployees.find(e => e.employee_id === agentId);
+      // Default commission rate 20% when not provided on agent record
+      let rate = agent ? (isFinite(Number(agent.commissionRate)) ? Number(agent.commissionRate) : 20) : 20;
+
+      let regs = allRegistrations.filter(r => r.kam === agentId);
+
+      if (monthFilter) {
+        regs = regs.filter(r => {
+           let dateObj = null;
+           if (r.createdAt) {
+             dateObj = r.createdAt.toDate ? r.createdAt.toDate() : new Date(r.createdAt);
+           }
+           if (dateObj && !isNaN(dateObj.getTime())) {
+             return dateObj.toISOString().substring(0, 7) === monthFilter;
+           }
+           return false;
+        });
+      }
+
+      console.debug('calcCommission:matchedRegs', regs.map(r => ({ studentId: r.studentId, createdAt: r.createdAt }))); 
+      let totalEarned = 0;
+      regs.forEach(r => {
+        const pay = allPayments.find(p => p.studentId === r.studentId) || {};
+        const finalFee = Math.max(0, (Number(pay.totalFee) || 0) - (Number(pay.discount) || 0));
+        console.debug('calcCommission:payment', { studentId: r.studentId, pay, finalFee });
+        totalEarned += finalFee * (rate / 100);
+      });
+
+      let alreadyPaidCommissions = allCommissions.filter(c => c.agentId === agentId);
+      if (monthFilter) {
+        alreadyPaidCommissions = alreadyPaidCommissions.filter(c => c.targetMonth === monthFilter || c.date.startsWith(monthFilter));
+      }
+
+      const alreadyPaid = alreadyPaidCommissions.reduce((sum, c) => sum + Number(c.amount), 0);
+      const payable = Math.max(0, totalEarned - alreadyPaid);
+      console.debug('calcCommission:result', { totalEarned, alreadyPaid, payable });
+
+      // Populate debug panel (hidden by default)
+      try {
+        const dbg = document.getElementById('commissionDebug');
+        if (dbg && window.SHOW_COMMISSION_DEBUG) {
+          const regIds = regs.map(r => r.studentId);
+          const payments = regs.map(r => {
+            const p = allPayments.find(x => x.studentId === r.studentId) || {};
+            return { studentId: r.studentId, totalFee: p.totalFee || null, discount: p.discount || null, amountPaid: p.amountPaid || null };
+          });
+          const txt = `Agent: ${agentId}\nMonthFilter: ${monthFilter || '<none>'}\nMatched registrations: ${regs.length} (${regIds.join(', ') || '—'})\n\nPayments:\n${payments.map(pp=>JSON.stringify(pp)).join('\n')}\n\nRate: ${rate}%\nTotal Earned: ${totalEarned}\nAlready Paid: ${alreadyPaid}\nPayable: ${payable}`;
+          dbg.style.display = 'block';
+          dbg.textContent = txt;
+        }
+      } catch (err) {
+        console.error('Failed to write commission debug:', err);
+      }
+
+      document.getElementById("commissionAmountInput").value = payable;
+      
+      const noteEl = document.getElementById("commissionNotesTextarea");
+      if (noteEl) {
+        if (alreadyPaid > 0 && payable > 0) {
+          if (!noteEl.value.includes("Adjusted")) {
+            noteEl.value = `Adjusted for ${alreadyPaid.toLocaleString()} BDT already paid. ` + noteEl.value.replace(/Adjusted for .*? already paid\. /, '');
+          }
+        } else {
+          noteEl.value = noteEl.value.replace(/Adjusted for .*? already paid\. /, '');
+        }
+      }
+    }
+
+    document.getElementById("commissionAgentSelect")?.addEventListener("change", function (e) {
+      // When KAM changes, recalculate commission based on selected month/year
+      calculateCommissionAmount();
     });
+
+    document.getElementById("commissionMonthSelect")?.addEventListener("change", function () {
+      calculateCommissionAmount();
+    });
+    document.getElementById("commissionYearSelect")?.addEventListener("change", function () {
+      calculateCommissionAmount();
+    });
+
+    // commissionStudentSelect removed — calculation now depends on agent + month/year only
 
     document.getElementById("commissionForm")?.addEventListener("submit", async function (e) {
       e.preventDefault();
       const agentId = document.getElementById("commissionAgentSelect").value;
       const amount = document.getElementById("commissionAmountInput").value;
       const date = document.getElementById("commissionDateInput").value;
-      const studentId = document.getElementById("commissionStudentSelect").value;
       const method = document.getElementById("commissionMethodSelect").value;
       const notes = document.getElementById("commissionNotesTextarea").value;
+      const monthVal = document.getElementById("commissionMonthSelect").value;
+      const yearVal = document.getElementById("commissionYearSelect").value;
+      const targetMonth = (yearVal && monthVal) ? `${yearVal}-${monthVal}` : "";
+      // Ensure target month is provided (required)
+      if (!targetMonth) {
+        const errEl = document.getElementById("commissionError");
+        if (errEl) {
+          errEl.textContent = "Please select a Target Month.";
+          errEl.classList.remove("d-none");
+        } else {
+          alert("Please select a Target Month.");
+        }
+        return;
+      }
+
       const commId = "COM-" + Date.now();
 
       const newComm = {
@@ -11909,9 +11961,9 @@
         agentId,
         amount,
         date,
-        studentId,
         method,
-        notes
+        notes,
+        targetMonth
       };
 
       try {
@@ -11969,14 +12021,16 @@
         return;
       }
       let csvContent = "data:text/csv;charset=utf-8,";
-      csvContent += "Date,Agent/Employee Name,Student Name,Method,Amount (BDT),Notes\n";
+          csvContent += "Date,Ambassador/Employee Name,Student Name,Method,Amount (BDT),Notes\n";
 
       const monthFilter = document.getElementById("filterCommissionMonth")?.value || "";
       const agentFilter = document.getElementById("filterCommissionAgent")?.value || "all";
 
       const filtered = allCommissions.filter(c => {
         const matchesMonth = monthFilter === "" || c.date.startsWith(monthFilter);
-        const matchesAgent = agentFilter === "all" || c.agentId === agentFilter;
+        const agent = allMarketingAgents.find(a => a.id === c.agentId) || allEmployees.find(e => e.employee_id === c.agentId) || {};
+        const agentName = agent.name || agent.employee_name || c.agentId;
+        const matchesAgent = agentFilter === "all" || agentName === agentFilter;
         return matchesMonth && matchesAgent;
       });
 
@@ -12007,8 +12061,52 @@
     // SALES RECORDS & COMMISSIONS SYSTEM
     // ============================================================
     function loadSalesRecords() {
+          populateSalesMonthDropdown();
       populateSalesKamDropdown();
       renderSalesRecords();
+    }
+
+    function populateSalesMonthDropdown() {
+      const monthSelect = document.getElementById("filterSalesMonth");
+      const yearSelect = document.getElementById("filterSalesYear");
+      if (!monthSelect || !yearSelect) return;
+      const prevMonth = monthSelect.value;
+      const prevYear = yearSelect.value;
+      monthSelect.innerHTML = '<option value="">Month</option>';
+      yearSelect.innerHTML = '<option value="">Year</option>';
+
+      // months
+      const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+      months.forEach((m, idx) => {
+        const opt = document.createElement('option');
+        const val = String(idx + 1).padStart(2, '0');
+        opt.value = val;
+        opt.textContent = m;
+        monthSelect.appendChild(opt);
+      });
+
+      // years 2026-2030
+      for (let yr = 2026; yr <= 2030; yr++) {
+        const opt = document.createElement('option');
+        opt.value = String(yr);
+        opt.textContent = String(yr);
+        yearSelect.appendChild(opt);
+      }
+
+      if (prevMonth) monthSelect.value = prevMonth;
+      if (prevYear) yearSelect.value = prevYear;
+    }
+
+    // Sync Sales Records month/year filters into the Commission form and trigger recalculation
+    function syncSalesFiltersToCommission() {
+      const monthVal = document.getElementById("filterSalesMonth")?.value || "";
+      const yearVal = document.getElementById("filterSalesYear")?.value || "";
+      const cm = document.getElementById("commissionMonthSelect");
+      const cy = document.getElementById("commissionYearSelect");
+      if (!cm || !cy) return;
+      if (monthVal) cm.value = monthVal; else cm.value = "";
+      if (yearVal) cy.value = yearVal; else cy.value = "";
+      try { calculateCommissionAmount(); } catch (err) { /* ignore if function not ready */ }
     }
 
     function populateSalesKamDropdown() {
@@ -12041,7 +12139,9 @@
       const tbody = document.getElementById("salesRecordsTableBody");
       if (!tbody) return;
 
-      const monthFilter = document.getElementById("filterSalesMonth")?.value || "";
+      const monthVal = document.getElementById("filterSalesMonth")?.value || "";
+      const yearVal = document.getElementById("filterSalesYear")?.value || "";
+      const monthFilter = (yearVal && monthVal) ? `${yearVal}-${monthVal}` : (monthVal || "");
       const kamFilter = document.getElementById("filterSalesKam")?.value || "all";
 
       let sales = [];
@@ -12075,7 +12175,7 @@
       sales.sort((a, b) => b.date.localeCompare(a.date));
 
       let filtered = sales;
-      if (monthFilter) {
+      if (monthFilter && monthFilter !== "all") {
         filtered = filtered.filter(s => s.month === monthFilter);
       }
       if (kamFilter !== "all") {
@@ -12117,7 +12217,11 @@
 
     document.getElementById("sales-records-tab")?.addEventListener("click", loadSalesRecords);
     document.getElementById("filterSalesMonth")?.addEventListener("change", renderSalesRecords);
+    document.getElementById("filterSalesYear")?.addEventListener("change", renderSalesRecords);
     document.getElementById("filterSalesKam")?.addEventListener("change", renderSalesRecords);
+    // Sync sales month/year selection into commission form
+    document.getElementById("filterSalesMonth")?.addEventListener("change", syncSalesFiltersToCommission);
+    document.getElementById("filterSalesYear")?.addEventListener("change", syncSalesFiltersToCommission);
     document.getElementById("refreshSalesRecordsBtn")?.addEventListener("click", async () => {
       const btn = document.getElementById("refreshSalesRecordsBtn");
       btn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status"></span>';
@@ -12139,13 +12243,6 @@
         "Training Materials & Lab Supplies",
         "Student Certification Vouchers",
         "Student Catering"
-      ],
-      "Infrastructure & Technology (Fixed/Subscription)": [
-        "Software & Virtual Lab Licensing",
-        "Learning Management System (LMS)",
-        "High-Speed Redundant Internet Connections",
-        "Hardware Maintenance & Upgrades",
-        "Cloud Infrastructure & Sandbox Environment Fees"
       ],
       "Facilities & Utilities (Fixed Overhead)": [
         "Physical Space Rent or Lease Payments",
@@ -12207,7 +12304,6 @@
         renderExpenses();
         updateExpenseKPIs();
         updateOverview();
-        if (typeof renderAssetInventory === 'function') renderAssetInventory();
       } catch (err) {
         console.error("Error loading expenses: ", err);
         if (tbody) {
@@ -12240,41 +12336,6 @@
       if (kpiTotal) kpiTotal.textContent = `${total.toLocaleString()} BDT`;
       if (kpiFixed) kpiFixed.textContent = `${fixed.toLocaleString()} BDT`;
       if (kpiVariable) kpiVariable.textContent = `${variable.toLocaleString()} BDT`;
-    }
-
-    function renderAssetInventory() {
-      const tbody = document.getElementById("assetInventoryTableBody");
-      if (!tbody) return;
-
-      const filtered = allExpenses.filter(e => e.category === "Infrastructure & Technology (Fixed/Subscription)");
-
-      if (filtered.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="6" class="text-center py-4 text-muted">No infrastructure & technology assets found.</td></tr>`;
-        return;
-      }
-
-      tbody.innerHTML = "";
-      filtered.forEach(exp => {
-        const tr = document.createElement("tr");
-
-        let dateStr = exp.date || "N/A";
-        if (exp.createdAt && typeof exp.createdAt === 'object' && exp.createdAt.toDate) {
-          if (!exp.date) {
-            const dt = exp.createdAt.toDate();
-            dateStr = dt.toISOString().substring(0, 10);
-          }
-        }
-
-        tr.innerHTML = `
-          <td><code class="text-dark font-monospace fw-bold">${exp.id}</code></td>
-          <td><span class="small text-muted">${dateStr}</span></td>
-          <td><span class="small fw-medium text-secondary">${exp.subCategory}</span></td>
-          <td><span class="small text-muted">${exp.description}</span></td>
-          <td><span class="badge bg-light text-dark border small">${exp.paymentMethod}</span></td>
-          <td class="text-end fw-bold text-dark"><span class="small">${Number(exp.amount).toLocaleString()} BDT</span></td>
-        `;
-        tbody.appendChild(tr);
-      });
     }
 
     function renderExpenses() {
@@ -12496,10 +12557,6 @@
     document.getElementById("expense-tab")?.addEventListener("click", () => {
       loadExpenses();
     });
-    document.getElementById("asset-inventory-tab")?.addEventListener("click", () => {
-      loadExpenses();
-    });
-    document.getElementById("refreshAssetInventoryBtn")?.addEventListener("click", loadExpenses);
     document.getElementById("refreshExpensesBtn")?.addEventListener("click", loadExpenses);
     document.getElementById("expenseFilterCategory")?.addEventListener("change", renderExpenses);
     document.getElementById("expenseForm")?.addEventListener("submit", handleExpenseSubmit);
