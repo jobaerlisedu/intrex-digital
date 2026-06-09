@@ -204,9 +204,9 @@ function generateStudentId(courseName, batchName, registrationsList) {
 export async function addRegistration(regData) {
   if (!checkConfiguration()) return null;
 
-  const { fullName, email, phone, course, batch, education, schedule, message, totalFee, discount, amountPaid, paymentType, transactionId, registrationFee, installments, isJobHolder, companyName, designation, studentId, kam } = regData;
+  const { fullName, email, phone, course, batch, education, schedule, classDays, message, totalFee, discount, amountPaid, paymentType, transactionId, registrationFee, installments, isJobHolder, companyName, designation, studentId, kam } = regData;
 
-  if (!fullName || !email || !phone || !course || !batch || !schedule) {
+  if (!fullName || !email || !phone || !course || !batch || !schedule || !classDays) {
     throw new Error("Missing required registration fields");
   }
 
@@ -235,6 +235,7 @@ export async function addRegistration(regData) {
       batch: batch.trim(),
       education: education || "",
       schedule: schedule || "",
+      classDays: classDays || "",
       message: message ? message.trim() : "",
       isJobHolder: isJobHolder || false,
       companyName: companyName || "",
@@ -324,9 +325,9 @@ export async function getAllRegistrations() {
 export async function updateRegistration(docId, regData) {
   if (!checkConfiguration()) return;
 
-  const { fullName, email, phone, course, batch, education, schedule, message, isJobHolder, companyName, designation, kam } = regData;
+  const { fullName, email, phone, course, batch, education, schedule, classDays, message, isJobHolder, companyName, designation, kam } = regData;
 
-  if (!fullName || !email || !phone || !course || !batch || !schedule) {
+  if (!fullName || !email || !phone || !course || !batch || !schedule || !classDays) {
     throw new Error("Missing required registration fields");
   }
 
@@ -344,6 +345,7 @@ export async function updateRegistration(docId, regData) {
       batch: batch.trim(),
       education: education || "",
       schedule: schedule || "",
+      classDays: classDays || "",
       message: message ? message.trim() : "",
       isJobHolder: isJobHolder || false,
       companyName: companyName || "",
@@ -2083,6 +2085,131 @@ export async function deleteCommission(id) {
     await deleteDoc(docRef);
   } catch (error) {
     console.error("Error deleting commission: ", error);
+    throw error;
+  }
+}
+
+// ==========================================
+// 16. COURSE MANAGEMENT OPERATIONS (courses)
+// ==========================================
+let mockCourses = null;
+
+export async function getAllCourses() {
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('mock') === '1') {
+    if (!mockCourses) {
+      mockCourses = [
+        { id: "CompTIA A+", title: "CompTIA A+", code: "APLUS", target: "CompTIA A+", description: "Hardware, operating systems, troubleshooting, and basic networking skills required for entry-level IT support roles.", duration: "2.5 Months", fee: 8000, status: "Active", icon: "bi-pc-display", createdAt: new Date() },
+        { id: "CompTIA Network+", title: "CompTIA Network+", code: "NET", target: "CompTIA Network+", description: "Core concepts of networking technologies, design, infrastructure management, troubleshooting, and network security.", duration: "2.0 Months", fee: 8000, status: "Active", icon: "bi-diagram-3", createdAt: new Date() },
+        { id: "CompTIA Security+", title: "CompTIA Security+", code: "SEC", target: "CompTIA Security+", description: "Core cybersecurity principles, threat intelligence, vulnerability management, cryptography, and secure network design.", duration: "2.5 Months", fee: 12000, status: "Active", icon: "bi-shield-check", createdAt: new Date() },
+        { id: "CompTIA Linux+", title: "CompTIA Linux+", code: "LIN", target: "CompTIA Linux+", description: "Linux administration, command line operations, scripting, storage management, and container virtualization security.", duration: "2.0 Months", fee: 10000, status: "Active", icon: "bi-terminal", createdAt: new Date() },
+        { id: "CompTIA Server+", title: "CompTIA Server+", code: "SRV", target: "CompTIA Server+", description: "Server architecture, virtualization, server administration, backup and disaster recovery, and storage systems.", duration: "2.0 Months", fee: 10000, status: "Active", icon: "bi-server", createdAt: new Date() },
+        { id: "CCNA", title: "CCNA", code: "CCNA", target: "CCNA", description: "Network fundamentals, IP connectivity, IP services, security fundamentals, automation, and programmability using Cisco gear.", duration: "1.5 Months", fee: 10000, status: "Active", icon: "bi-router", createdAt: new Date() },
+        { id: "CCNP - Enterprise", title: "CCNP - Enterprise", code: "CCNPE", target: "CCNP Enterprise", description: "Advanced routing and switching, wireless networks, enterprise network design, and software-defined networking (SDN).", duration: "3.0 Months", fee: 18000, status: "Active", icon: "bi-hdd-network", createdAt: new Date() },
+        { id: "CCNP - Security", title: "CCNP - Security", code: "CCNPS", target: "CCNP Security", description: "Implementing and operating Cisco security technologies, covering firewalls, VPNs, web security, and endpoint protection.", duration: "3.0 Months", fee: 18000, status: "Active", icon: "bi-shield-lock", createdAt: new Date() },
+        { id: "MTCNA", title: "MTCNA", code: "MTCNA", target: "MikroTik Associate", description: "MikroTik Certified Network Associate. RouterOS basics, routing, switching, firewall, NAT, DHCP, wireless, and bandwidth management.", duration: "1.5 Months", fee: 6000, status: "Active", icon: "bi-broadcast", createdAt: new Date() },
+        { id: "MTCRE", title: "MTCRE", code: "MTCRE", target: "MikroTik Routing Engineer", description: "MikroTik Certified Routing Engineer. Advanced static and dynamic routing (OSPF), VPNs, point-to-point tunnels, and addressing.", duration: "1.5 Months", fee: 7000, status: "Active", icon: "bi-globe", createdAt: new Date() },
+        { id: "MTCSE", title: "MTCSE", code: "MTCSE", target: "MikroTik Security Engineer", description: "MikroTik Certified Security Engineer. Network security mechanisms, threat mitigation, secure tunnels, and RouterOS hardening.", duration: "1.5 Months", fee: 8000, status: "Active", icon: "bi-shield-shaded", createdAt: new Date() },
+        { id: "RHCSA", title: "RHCSA", code: "RHCSA", target: "Red Hat Admin", description: "Red Hat Certified System Administrator. Deploying, configuring, and maintaining Red Hat Enterprise Linux (RHEL) systems.", duration: "2.0 Months", fee: 8000, status: "Active", icon: "bi-cpu", createdAt: new Date() },
+        { id: "RHCE", title: "RHCE", code: "RHCE", target: "Red Hat Automation", description: "Red Hat Certified Engineer. Automation of RHEL tasks using Ansible, system deployment automation, and configuration management.", duration: "2.0 Months", fee: 10000, status: "Active", icon: "bi-gear", createdAt: new Date() },
+        { id: "FCP NSE4", title: "FCP NSE4", code: "NSE4", target: "Fortinet Network Security", description: "Fortinet Certified Professional in Network Security. FortiGate firewall setup, security policies, VPNs, and system monitoring.", duration: "2.0 Months", fee: 12000, status: "Active", icon: "bi-bricks", createdAt: new Date() },
+        { id: "FCP NSE5", title: "FCP NSE5", code: "NSE5", target: "Fortinet Security Analyst", description: "Fortinet Certified Professional in Security Analyst. FortiAnalyzer and FortiManager deployment, threat detection, and log parsing.", duration: "2.0 Months", fee: 12000, status: "Active", icon: "bi-graph-up-arrow", createdAt: new Date() },
+        { id: "CCNA & MTCNA", title: "CCNA & MTCNA", code: "CCMTC", target: "Cisco & MikroTik Combo", description: "Dual-certification program covering both Cisco and MikroTik systems, building solid foundational skills in routing and switching.", duration: "3.0 Months", fee: 15000, status: "Active", icon: "bi-link-45deg", createdAt: new Date() }
+      ];
+    }
+    return mockCourses;
+  }
+
+  if (!checkConfiguration()) return [];
+  try {
+    const querySnapshot = await getDocs(collection(db, "courses"));
+    const courses = [];
+    querySnapshot.forEach((docSnap) => {
+      if (docSnap.exists()) {
+        courses.push(docSnap.data());
+      }
+    });
+    courses.sort((a, b) => a.title.localeCompare(b.title));
+    return courses;
+  } catch (error) {
+    console.error("Error fetching courses: ", error);
+    throw error;
+  }
+}
+
+export async function addCourse(courseData) {
+  const { title, code, target, description, duration, fee, status } = courseData;
+  if (!title || !code || !target || !duration || fee === undefined) {
+    throw new Error("Missing required course fields");
+  }
+
+  const id = title.trim();
+  const newCourse = {
+    id,
+    title: title.trim(),
+    code: code.trim().toUpperCase(),
+    target: target.trim(),
+    description: description ? description.trim() : "",
+    duration: duration.trim(),
+    fee: Number(fee),
+    status: status || "Active",
+    createdAt: new Date()
+  };
+
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('mock') === '1') {
+    if (!mockCourses) await getAllCourses();
+    mockCourses.push(newCourse);
+    return id;
+  }
+
+  if (!checkConfiguration()) return null;
+  try {
+    const docRef = doc(db, "courses", id);
+    newCourse.createdAt = serverTimestamp();
+    await setDoc(docRef, newCourse);
+    return id;
+  } catch (error) {
+    console.error("Error saving course: ", error);
+    throw error;
+  }
+}
+
+export async function updateCourse(id, courseData) {
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('mock') === '1') {
+    if (!mockCourses) await getAllCourses();
+    const index = mockCourses.findIndex(c => c.id === id);
+    if (index > -1) {
+      mockCourses[index] = { ...mockCourses[index], ...courseData, updatedAt: new Date() };
+    }
+    return id;
+  }
+
+  if (!checkConfiguration()) return;
+  try {
+    const docRef = doc(db, "courses", id);
+    await setDoc(docRef, { ...courseData, updatedAt: serverTimestamp() }, { merge: true });
+  } catch (error) {
+    console.error("Error updating course: ", error);
+    throw error;
+  }
+}
+
+export async function deleteCourse(id) {
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('mock') === '1') {
+    if (!mockCourses) await getAllCourses();
+    mockCourses = mockCourses.filter(c => c.id !== id);
+    return;
+  }
+
+  if (!checkConfiguration()) return;
+  try {
+    const docRef = doc(db, "courses", id);
+    await deleteDoc(docRef);
+  } catch (error) {
+    console.error("Error deleting course: ", error);
     throw error;
   }
 }

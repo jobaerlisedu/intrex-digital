@@ -8,6 +8,13 @@ service cloud.firestore {
       allow read: if true;
       allow write: if request.auth != null;
     }
+
+    // Courses collection:
+    // Anyone can read (for course directory), but only logged-in administrators can create/edit/delete.
+    match /courses/{courseId} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
     
     // Course Registrations collection:
     // Only logged-in administrators can view, edit, or delete registration entries.
@@ -114,6 +121,12 @@ service cloud.firestore {
     // Marketing Agents collection:
     // Only logged-in administrators can view or update marketing agents.
     match /marketing_agents/{agentId} {
+      allow read, write: if request.auth != null;
+    }
+
+    // Sales Commissions collection:
+    // Only logged-in administrators can view or update commissions.
+    match /commissions/{commissionId} {
       allow read, write: if request.auth != null;
     }
     

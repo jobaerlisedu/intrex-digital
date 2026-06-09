@@ -534,6 +534,11 @@
                     <i class="bi bi-headset"></i> Brand Ambassadors
                   </button>
                   <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
+                    id="course-creation-tab" data-bs-toggle="tab" data-bs-target="#courseCreationPanel" type="button"
+                    role="tab" aria-controls="courseCreationPanel" aria-selected="false">
+                    <i class="bi bi-book"></i> Course Creation
+                  </button>
+                  <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
                     id="batch-management-tab" data-bs-toggle="tab" data-bs-target="#batchPanel" type="button" role="tab"
                     aria-controls="batchPanel" aria-selected="false">
                     <i class="bi bi-collection"></i> Batch Management
@@ -1073,9 +1078,9 @@
                             </div>
                           </div>
 
-                          <!-- Row 3: Education + Schedule + Batch -->
+                          <!-- Row 3: Education + Schedule + Class Days + Batch -->
                           <div class="row g-3 mb-3">
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                               <label class="form-label small fw-semibold mb-1" for="regEducation">Educational
                                 Background</label>
                               <select class="form-select" id="regEducation">
@@ -1087,18 +1092,28 @@
                                 <option value="Other">Other</option>
                               </select>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                               <label class="form-label small fw-semibold mb-1" for="regSchedule">Preferred Schedule
                                 <span class="text-danger">*</span></label>
                               <select class="form-select" id="regSchedule" required>
                                 <option value="" disabled selected>Select a slot</option>
-                                <option value="Morning (9am – 12pm)">Morning (9am – 12pm)</option>
-                                <option value="Afternoon (1pm – 4pm)">Afternoon (1pm – 4pm)</option>
-                                <option value="Evening (5pm – 8pm)">Evening (5pm – 8pm)</option>
-                                <option value="Weekend Batch">Weekend Batch</option>
+                                <option value="Morning">Morning</option>
+                                <option value="Afternoon">Afternoon</option>
+                                <option value="Evening">Evening</option>
+                                <option value="Weekend">Weekend</option>
                               </select>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-3">
+                              <label class="form-label small fw-semibold mb-1" for="regClassDays">Class Days
+                                <span class="text-danger">*</span></label>
+                              <select class="form-select" id="regClassDays" required>
+                                <option value="" disabled selected>Select class days</option>
+                                <option value="Saturday, Monday & Wednesday">Saturday, Monday &amp; Wednesday</option>
+                                <option value="Sunday, Tuesday & Thursday">Sunday, Tuesday &amp; Thursday</option>
+                                <option value="Friday">Friday</option>
+                              </select>
+                            </div>
+                            <div class="col-md-3">
                               <label class="form-label small fw-semibold mb-1" for="regBatch">Batch <span
                                   class="text-danger">*</span></label>
                               <select class="form-select" id="regBatch" required>
@@ -2138,10 +2153,21 @@
                               <span class="text-danger">*</span></label>
                             <select class="form-select" id="batchScheduleSelect" required>
                               <option value="" disabled selected>Select preferred slot</option>
-                              <option value="Morning (9am – 12pm)">Morning (9am – 12pm)</option>
-                              <option value="Afternoon (1pm – 4pm)">Afternoon (1pm – 4pm)</option>
-                              <option value="Evening (5pm – 8pm)">Evening (5pm – 8pm)</option>
-                              <option value="Weekend Batch">Weekend Batch</option>
+                              <option value="Morning">Morning</option>
+                              <option value="Afternoon">Afternoon</option>
+                              <option value="Evening">Evening</option>
+                              <option value="Weekend">Weekend</option>
+                            </select>
+                          </div>
+
+                          <div class="mb-3">
+                            <label class="form-label small fw-semibold mb-1" for="batchClassDaysSelect">Class Days
+                              <span class="text-danger">*</span></label>
+                            <select class="form-select" id="batchClassDaysSelect" required>
+                              <option value="" disabled selected>Select class days</option>
+                              <option value="Saturday, Monday & Wednesday">Saturday, Monday &amp; Wednesday</option>
+                              <option value="Sunday, Tuesday & Thursday">Sunday, Tuesday &amp; Thursday</option>
+                              <option value="Friday">Friday</option>
                             </select>
                           </div>
 
@@ -2776,6 +2802,145 @@
                                   <div class="spinner-border spinner-border-sm text-primary me-2" role="status">
                                   </div>
                                   Loading marketing agents...
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Sub-Page: Course Creation -->
+                <div class="tab-pane fade" id="courseCreationPanel" role="tabpanel"
+                  aria-labelledby="course-creation-tab">
+                  <div class="row g-4">
+                    <!-- Left: Form -->
+                    <div class="col-lg-4">
+                      <div class="card p-4 rounded-4 shadow-sm border">
+                        <h3 id="courseFormTitle" class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
+                          <i class="bi bi-journal-plus me-2 text-primary"></i>Create New Course
+                        </h3>
+
+                        <div id="courseSuccess" class="alert alert-success d-none alert-dismissible fade show small"
+                          role="alert">
+                          <span>Course saved successfully!</span>
+                          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                        <div id="courseError" class="alert alert-danger d-none alert-dismissible fade show small"
+                          role="alert">
+                          <span>An error occurred. Please try again.</span>
+                          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+
+                        <form id="courseForm">
+                          <div class="row g-2 mb-3">
+                            <div class="col-md-8">
+                              <label class="form-label small fw-semibold mb-1" for="courseTitleInput">Course Title <span
+                                  class="text-danger">*</span></label>
+                              <input class="form-control" id="courseTitleInput" type="text"
+                                placeholder="e.g. CompTIA A+" required>
+                            </div>
+                            <div class="col-md-4">
+                              <label class="form-label small fw-semibold mb-1" for="courseCodeInput">Course Code <span
+                                  class="text-danger">*</span></label>
+                              <input class="form-control" id="courseCodeInput" type="text" placeholder="e.g. APLUS"
+                                required>
+                            </div>
+                          </div>
+
+                          <div class="mb-3">
+                            <label class="form-label small fw-semibold mb-1" for="courseTargetInput">Target <span
+                                class="text-danger">*</span></label>
+                            <input class="form-control" id="courseTargetInput" type="text" placeholder="e.g. CompTIA A+"
+                              required>
+                          </div>
+
+                          <div class="row g-2 mb-3">
+                            <div class="col-md-6">
+                              <label class="form-label small fw-semibold mb-1" for="courseDurationInput">Duration <span
+                                  class="text-danger">*</span></label>
+                              <input class="form-control" id="courseDurationInput" type="text"
+                                placeholder="e.g. 2.5 Months" required>
+                            </div>
+                            <div class="col-md-6">
+                              <label class="form-label small fw-semibold mb-1" for="courseFeeInput">Course Fee (BDT)
+                                <span class="text-danger">*</span></label>
+                              <input class="form-control" id="courseFeeInput" type="number" min="0"
+                                placeholder="e.g. 8000" required>
+                            </div>
+                          </div>
+
+                          <div class="mb-3">
+                            <label class="form-label small fw-semibold mb-1" for="courseStatusSelect">Status <span
+                                class="text-danger">*</span></label>
+                            <select class="form-select" id="courseStatusSelect" required>
+                              <option value="Active" selected>Active</option>
+                              <option value="Inactive">Inactive</option>
+                            </select>
+                          </div>
+
+                          <div class="mb-4">
+                            <label class="form-label small fw-semibold mb-1"
+                              for="courseDescTextarea">Description</label>
+                            <textarea class="form-control" id="courseDescTextarea" rows="3"
+                              placeholder="Course description..."></textarea>
+                          </div>
+
+                          <div class="d-flex gap-2">
+                            <button type="submit" id="submitCourseBtn" class="btn btn-primary w-100 fw-semibold py-2">
+                              <i class="bi bi-cloud-arrow-up me-2"></i>Save Course
+                            </button>
+                            <button type="button" id="cancelCourseEditBtn"
+                              class="btn btn-outline-secondary w-50 fw-semibold py-2 d-none">
+                              Cancel
+                            </button>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+
+                    <!-- Right: Table -->
+                    <div class="col-lg-8">
+                      <div class="card p-4 rounded-4 shadow-sm border h-100">
+                        <div
+                          class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom flex-wrap gap-2">
+                          <h3 class="h5 fw-bold text-heading-color mb-0">
+                            <i class="bi bi-book me-2 text-primary"></i>Courses Directory
+                          </h3>
+                          <div class="d-flex align-items-center gap-2 flex-wrap">
+                            <input type="text" id="searchCourse" class="form-control form-control-sm"
+                              style="max-width: 200px;" placeholder="Search title...">
+                            <select id="filterCourseStatus" class="form-select form-select-sm" style="width: auto;">
+                              <option value="all">All Status</option>
+                              <option value="Active">Active</option>
+                              <option value="Inactive">Inactive</option>
+                            </select>
+                            <button id="refreshCourseListBtn" class="btn btn-sm btn-outline-secondary" type="button"
+                              title="Refresh List">
+                              <i class="bi bi-arrow-clockwise"></i>
+                            </button>
+                          </div>
+                        </div>
+
+                        <div class="table-responsive" style="max-height: 620px; overflow-y: auto;">
+                          <table class="table table-hover align-middle mb-0" id="coursesTable">
+                            <thead class="table-light">
+                              <tr>
+                                <th class="small fw-semibold">Course Title</th>
+                                <th class="small fw-semibold">Target</th>
+                                <th class="small fw-semibold">Duration</th>
+                                <th class="small fw-semibold text-end">Fee (BDT)</th>
+                                <th class="small fw-semibold text-center">Status</th>
+                                <th class="small fw-semibold text-center">Actions</th>
+                              </tr>
+                            </thead>
+                            <tbody id="coursesTableBody">
+                              <tr>
+                                <td colspan="6" class="text-center py-4 text-muted">
+                                  <div class="spinner-border spinner-border-sm text-primary me-2" role="status"></div>
+                                  Loading courses...
                                 </td>
                               </tr>
                             </tbody>
@@ -3629,7 +3794,7 @@
   <script src="assets/vendors/bootstrap/bootstrap.bundle.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script type="module">
-    import { loginAdmin, logoutAdmin, onAdminAuthStateChanged, addCertificate, getAllCertificates, deleteCertificate, addRegistration, getAllRegistrations, updateRegistration, deleteRegistration, getAllPayments, updatePayment, addAuditLog, getAllAuditLogs, getAllOnlineRegistrations, getOnlineRegistration, deleteOnlineRegistration, getAllOnlineInquiries, deleteOnlineInquiry, addEmployee, getAllEmployees, deleteEmployee, getAllBatches, addBatch, updateBatch, deleteBatch, getAllPublicInstitutes, addPublicInstitute, updatePublicInstitute, deletePublicInstitute, getAllJobPlacements, addJobPlacement, updateJobPlacement, deleteJobPlacement, getAllExpenses, addExpense, updateExpense, deleteExpense, getAllAssessments, saveAssessment, getAllMarketingAgents, addMarketingAgent, updateMarketingAgent, deleteMarketingAgent, getAllCommissions, addCommission, deleteCommission } from "./assets/js/training.js";
+    import { loginAdmin, logoutAdmin, onAdminAuthStateChanged, addCertificate, getAllCertificates, deleteCertificate, addRegistration, getAllRegistrations, updateRegistration, deleteRegistration, getAllPayments, updatePayment, addAuditLog, getAllAuditLogs, getAllOnlineRegistrations, getOnlineRegistration, deleteOnlineRegistration, getAllOnlineInquiries, deleteOnlineInquiry, addEmployee, getAllEmployees, deleteEmployee, getAllBatches, addBatch, updateBatch, deleteBatch, getAllPublicInstitutes, addPublicInstitute, updatePublicInstitute, deletePublicInstitute, getAllJobPlacements, addJobPlacement, updateJobPlacement, deleteJobPlacement, getAllExpenses, addExpense, updateExpense, deleteExpense, getAllAssessments, saveAssessment, getAllMarketingAgents, addMarketingAgent, updateMarketingAgent, deleteMarketingAgent, getAllCommissions, addCommission, deleteCommission, getAllCourses, addCourse, updateCourse, deleteCourse } from "./assets/js/training.js";
 
     // Initialize AOS
     if (window.AOS) {
@@ -3811,6 +3976,7 @@
     let allJobPlacements = [];
     let allAssessments = [];
     let allMarketingAgents = [];
+    let allCourses = [];
     let editingBatchId = null;
     let editingInstId = null;
     let editingPlacementId = null;
@@ -3821,6 +3987,7 @@
     let editingCertId = null;
     let editingEmployeeId = null;
     let editingAgentId = null;
+    let editingCourseId = null;
     let currentUserEmail = "";
 
     // Inactivity Auto-logout (3 minutes)
@@ -3861,24 +4028,7 @@
     let chartRevenueByCourseInstance = null;
     let chartCashFlowInstance = null;
 
-    const courseFees = {
-      "CompTIA A+": 8000,
-      "CompTIA Network+": 8000,
-      "CompTIA Security+": 12000,
-      "CompTIA Linux+": 10000,
-      "CompTIA Server+": 10000,
-      "CCNA": 10000,
-      "CCNP - Enterprise": 18000,
-      "CCNP - Security": 18000,
-      "MTCNA": 6000,
-      "MTCRE": 7000,
-      "MTCSE": 8000,
-      "RHCSA": 8000,
-      "RHCE": 10000,
-      "FCP NSE4": 12000,
-      "FCP NSE5": 12000,
-      "CCNA & MTCNA": 15000
-    };
+    let courseFees = {};
 
     function updateOverview() {
       // 1. Update KPI numbers
@@ -4558,6 +4708,7 @@
         loadRecords();
         loadRegistrations();
         loadPayments();
+        loadCourses();
         loadOnlineRegistrations();
         loadInquiries();
         refreshAuditLogs();
@@ -4824,6 +4975,24 @@
     // COURSE REGISTRATION FORM & STUDENT LIST CONTROLLERS
     // ==========================================
 
+    // Auto-select Class Days based on Schedule and vice-versa for Registration
+    document.getElementById("regSchedule")?.addEventListener("change", function (e) {
+      const classDays = document.getElementById("regClassDays");
+      if (e.target.value === "Weekend") {
+        if (classDays && classDays.value !== "Friday") classDays.value = "Friday";
+      } else {
+        if (classDays && classDays.value === "Friday") classDays.value = "";
+      }
+    });
+    document.getElementById("regClassDays")?.addEventListener("change", function (e) {
+      const schedule = document.getElementById("regSchedule");
+      if (e.target.value === "Friday") {
+        if (schedule && schedule.value !== "Weekend") schedule.value = "Weekend";
+      } else {
+        if (schedule && schedule.value === "Weekend") schedule.value = "";
+      }
+    });
+
     // Auto-fill course fee when course is selected
     document.getElementById("regCourse").addEventListener("change", function (e) {
       const selectedCourse = e.target.value;
@@ -4835,15 +5004,12 @@
         feeInput.value = courseFees[selectedCourse];
         discountInput.value = 2000;
 
-        const durationInstMap = {
-          "CompTIA A+": 2, "CompTIA Network+": 2, "CompTIA Security+": 2,
-          "CompTIA Linux+": 2, "CompTIA Server+": 2, "CCNA": 1,
-          "CCNP - Enterprise": 3, "CCNP - Security": 3, "MTCNA": 1,
-          "MTCRE": 1, "MTCSE": 1, "RHCSA": 2, "RHCE": 2,
-          "FCP NSE4": 2, "FCP NSE5": 2, "CCNA & MTCNA": 3
-        };
-        if (durationInstMap[selectedCourse]) {
-          numInstSelect.value = durationInstMap[selectedCourse];
+        const courseMatch = allCourses.find(c => c.title === selectedCourse);
+        if (courseMatch) {
+          const durationNum = parseFloat(courseMatch.duration);
+          if (!isNaN(durationNum)) {
+            numInstSelect.value = Math.max(1, Math.min(6, Math.floor(durationNum)));
+          }
         }
 
         updateRegAmountPaid();
@@ -6898,6 +7064,7 @@
       let matchedValue = "";
       for (let i = 0; i < regCourseSelect.options.length; i++) {
         const optVal = regCourseSelect.options[i].value;
+        if (!optVal) continue;
         if (optVal.toLowerCase() === (record.course || "").toLowerCase() ||
           optVal.toLowerCase().includes((record.course || "").toLowerCase()) ||
           (record.course || "").toLowerCase().includes(optVal.toLowerCase())) {
@@ -6918,7 +7085,25 @@
       }
 
       document.getElementById("regEducation").value = record.education || "";
-      document.getElementById("regSchedule").value = record.schedule || "";
+
+      // Handle schedule matching
+      const regScheduleSelect = document.getElementById("regSchedule");
+      let matchedSchedule = "";
+      for (let i = 0; i < regScheduleSelect.options.length; i++) {
+        const optVal = regScheduleSelect.options[i].value;
+        if (!optVal) continue;
+        if ((record.schedule || "").toLowerCase().includes(optVal.toLowerCase())) {
+          matchedSchedule = optVal;
+          break;
+        }
+      }
+      if (matchedSchedule) {
+        regScheduleSelect.value = matchedSchedule;
+        regScheduleSelect.dispatchEvent(new Event("change"));
+      } else {
+        regScheduleSelect.value = "";
+      }
+      if (document.getElementById("regClassDays") && record.classDays) document.getElementById("regClassDays").value = record.classDays;
       document.getElementById("regMessage").value = record.message || "";
       document.getElementById("regKam").value = record.kam || "Direct";
 
@@ -6986,6 +7171,219 @@
 
     // Make loadOnlineRegistrations globally available inside the script block scope
     window.loadOnlineRegistrations = loadOnlineRegistrations;
+
+    // ============================================================
+    // COURSE MANAGEMENT SYSTEM
+    // ============================================================
+    async function loadCourses() {
+      const tbody = document.getElementById("coursesTableBody");
+      if (tbody) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="6" class="text-center py-4 text-muted">
+              <div class="spinner-border spinner-border-sm text-primary me-2" role="status"></div>
+              Loading courses...
+            </td>
+          </tr>
+        `;
+      }
+      try {
+        allCourses = await getAllCourses();
+        renderCourses();
+        populateCourseDropdowns();
+      } catch (err) {
+        console.error("Error loading courses: ", err);
+        if (tbody) {
+          tbody.innerHTML = `<tr><td colspan="6" class="text-center py-4 text-danger">Failed to load courses.</td></tr>`;
+        }
+      }
+    }
+
+    function populateCourseDropdowns() {
+      courseFees = {};
+      allCourses.forEach(c => {
+        if (c.status === "Active") {
+          courseFees[c.title] = c.fee;
+        }
+      });
+
+      const activeCourses = allCourses.filter(c => c.status === "Active");
+      const courseOptions = activeCourses.map(c => `<option value="${c.title}">${c.title}</option>`).join("");
+      const filterOptions = allCourses.map(c => `<option value="${c.title}">${c.title}</option>`).join("");
+
+      const regCourse = document.getElementById("regCourse");
+      if (regCourse) {
+        const val = regCourse.value;
+        regCourse.innerHTML = '<option value="" disabled selected>Select a course</option>' + courseOptions;
+        if (val && activeCourses.some(c => c.title === val)) regCourse.value = val;
+      }
+
+      const courseRegFilter = document.getElementById("courseRegFilter");
+      if (courseRegFilter) {
+        const val = courseRegFilter.value;
+        courseRegFilter.innerHTML = '<option value="all">All Courses</option>' + filterOptions;
+        if (val && allCourses.some(c => c.title === val)) courseRegFilter.value = val;
+      }
+
+      const batchCourseSelect = document.getElementById("batchCourseSelect");
+      if (batchCourseSelect) {
+        const val = batchCourseSelect.value;
+        batchCourseSelect.innerHTML = '<option value="" disabled selected>Select a course</option>' + courseOptions;
+        if (val && activeCourses.some(c => c.title === val)) batchCourseSelect.value = val;
+      }
+
+      const courseBatchFilter = document.getElementById("courseBatchFilter");
+      if (courseBatchFilter) {
+        const val = courseBatchFilter.value;
+        courseBatchFilter.innerHTML = '<option value="all">All Courses</option>' + filterOptions;
+        if (val && allCourses.some(c => c.title === val)) courseBatchFilter.value = val;
+      }
+
+      const reportCourseFilter = document.getElementById("reportCourseFilter");
+      if (reportCourseFilter) {
+        const val = reportCourseFilter.value;
+        reportCourseFilter.innerHTML = '<option value="all">All Courses</option>' + filterOptions;
+        if (val && allCourses.some(c => c.title === val)) reportCourseFilter.value = val;
+      }
+    }
+
+    function renderCourses() {
+      const tbody = document.getElementById("coursesTableBody");
+      if (!tbody) return;
+
+      const searchQuery = document.getElementById("searchCourse")?.value.toLowerCase().trim() || "";
+      const statusFilter = document.getElementById("filterCourseStatus")?.value || "all";
+
+      const filtered = allCourses.filter(c => {
+        const matchesSearch = c.title.toLowerCase().includes(searchQuery) || c.target.toLowerCase().includes(searchQuery);
+        const matchesStatus = statusFilter === "all" || c.status === statusFilter;
+        return matchesSearch && matchesStatus;
+      });
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="6" class="text-center py-4 text-muted">No courses found.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = filtered.map(c => {
+        const statusBadge = c.status === "Active"
+          ? `<span class="badge bg-success-subtle text-success px-2 py-1">Active</span>`
+          : `<span class="badge bg-danger-subtle text-danger px-2 py-1">Inactive</span>`;
+
+        return `
+          <tr>
+            <td>
+              <strong>${c.title}</strong>
+              ${c.code ? `<code class="d-block text-muted font-monospace small">${c.code}</code>` : ''}
+            </td>
+            <td><span class="small">${c.target}</span></td>
+            <td><span class="small">${c.duration}</span></td>
+            <td class="text-end fw-semibold">${Number(c.fee).toLocaleString()}</td>
+            <td class="text-center">${statusBadge}</td>
+            <td class="text-center">
+              <div class="btn-group gap-1">
+                <button class="btn btn-sm btn-outline-primary course-edit-btn py-1 px-2" data-id="${c.id}" title="Edit">
+                  <i class="bi bi-pencil-square"></i>
+                </button>
+                <button class="btn btn-sm btn-outline-danger course-delete-btn py-1 px-2" data-id="${c.id}" title="Delete">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join("");
+
+      tbody.querySelectorAll(".course-edit-btn").forEach(btn => {
+        btn.onclick = function () {
+          const id = this.getAttribute("data-id");
+          const course = allCourses.find(c => c.id === id);
+          if (course) {
+            editingCourseId = course.id;
+            document.getElementById("courseFormTitle").innerHTML = `<i class="bi bi-pencil-square me-2 text-primary"></i>Edit Course`;
+            document.getElementById("courseTitleInput").value = course.title;
+            document.getElementById("courseCodeInput").value = course.code || "";
+            document.getElementById("courseTargetInput").value = course.target;
+            document.getElementById("courseDurationInput").value = course.duration;
+            document.getElementById("courseFeeInput").value = course.fee;
+            document.getElementById("courseStatusSelect").value = course.status;
+            document.getElementById("courseDescTextarea").value = course.description || "";
+            document.getElementById("cancelCourseEditBtn").classList.remove("d-none");
+            document.getElementById("courseFormTitle")?.scrollIntoView({ behavior: 'smooth' });
+          }
+        };
+      });
+
+      tbody.querySelectorAll(".course-delete-btn").forEach(btn => {
+        btn.onclick = async function () {
+          const id = this.getAttribute("data-id");
+          if (confirm(`Are you sure you want to delete the course "${id}"?`)) {
+            try {
+              btn.disabled = true;
+              btn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status"></span>';
+              await deleteCourse(id);
+              await addAuditLog({ user_email: currentUserEmail, action_type: "DELETE", collection_name: "courses", record_id: id, details: `Deleted course "${id}"` });
+              refreshAuditLogs();
+              await loadCourses();
+            } catch (err) {
+              alert("Failed to delete course: " + err.message);
+              btn.disabled = false;
+              btn.innerHTML = '<i class="bi bi-trash"></i>';
+            }
+          }
+        };
+      });
+    }
+
+    document.getElementById("course-creation-tab")?.addEventListener("click", loadCourses);
+    document.getElementById("searchCourse")?.addEventListener("input", renderCourses);
+    document.getElementById("filterCourseStatus")?.addEventListener("change", renderCourses);
+    document.getElementById("refreshCourseListBtn")?.addEventListener("click", loadCourses);
+
+    document.getElementById("cancelCourseEditBtn")?.addEventListener("click", function () {
+      editingCourseId = null;
+      document.getElementById("courseFormTitle").innerHTML = `<i class="bi bi-journal-plus me-2 text-primary"></i>Create New Course`;
+      document.getElementById("courseForm").reset();
+      this.classList.add("d-none");
+    });
+
+    document.getElementById("courseForm")?.addEventListener("submit", async function (e) {
+      e.preventDefault();
+      const title = document.getElementById("courseTitleInput").value.trim();
+      const code = document.getElementById("courseCodeInput").value.trim().toUpperCase();
+      const target = document.getElementById("courseTargetInput").value.trim();
+      const duration = document.getElementById("courseDurationInput").value.trim();
+      const fee = document.getElementById("courseFeeInput").value;
+      const status = document.getElementById("courseStatusSelect").value;
+      const description = document.getElementById("courseDescTextarea").value.trim();
+
+      const successAlert = document.getElementById("courseSuccess");
+      const errorAlert = document.getElementById("courseError");
+
+      successAlert.classList.add("d-none");
+      errorAlert.classList.add("d-none");
+
+      const courseData = { title, code, target, duration, fee, status, description };
+
+      try {
+        if (editingCourseId) {
+          await updateCourse(editingCourseId, courseData);
+          await addAuditLog({ user_email: currentUserEmail, action_type: "UPDATE", collection_name: "courses", record_id: editingCourseId, details: `Updated course "${title}"` });
+        } else {
+          const savedId = await addCourse(courseData);
+          await addAuditLog({ user_email: currentUserEmail, action_type: "CREATE", collection_name: "courses", record_id: savedId, details: `Created course "${title}"` });
+        }
+        refreshAuditLogs();
+        successAlert.querySelector("span").textContent = `Course saved successfully!`;
+        successAlert.classList.remove("d-none");
+        setTimeout(() => successAlert.classList.add("d-none"), 4000);
+        document.getElementById("cancelCourseEditBtn").click();
+        await loadCourses();
+      } catch (err) {
+        errorAlert.querySelector("span").textContent = err.message || "An error occurred while saving the course.";
+        errorAlert.classList.remove("d-none");
+      }
+    });
 
     // ============================================================
     // ONLINE INQUIRIES – LIST & MANAGE
@@ -9524,6 +9922,7 @@
       document.getElementById("batchIdInput").setAttribute("readonly", "true");
       document.getElementById("batchCourseSelect").value = batch.courseName;
       document.getElementById("batchScheduleSelect").value = batch.schedule;
+      document.getElementById("batchClassDaysSelect").value = batch.classDays || "";
       document.getElementById("batchStatusSelect").value = batch.status;
 
       const cancelBtn = document.getElementById("cancelBatchEditBtn");
@@ -9546,6 +9945,7 @@
       const batchId = document.getElementById("batchIdInput").value.trim();
       const courseName = document.getElementById("batchCourseSelect").value;
       const schedule = document.getElementById("batchScheduleSelect").value;
+      const classDays = document.getElementById("batchClassDaysSelect").value;
       const status = document.getElementById("batchStatusSelect").value;
 
       const successAlert = document.getElementById("batchSuccess");
@@ -9558,6 +9958,7 @@
         batchId,
         courseName,
         schedule,
+        classDays,
         capacity: 10,
         status
       };
@@ -9774,6 +10175,9 @@
     };
 
     function getCoursePrefix(courseName) {
+      const course = allCourses.find(c => c.title === courseName);
+      if (course && course.code) return course.code.toUpperCase();
+
       if (coursePrefixes[courseName]) return coursePrefixes[courseName];
       const clean = courseName.toUpperCase().replace(/[^A-Z0-9\s]/g, "");
       const words = clean.split(/\s+/).filter(w => w.length > 0);
@@ -9841,7 +10245,29 @@
     }
 
     document.getElementById("batchCourseSelect")?.addEventListener("change", updateBatchIdField);
-    document.getElementById("batchScheduleSelect")?.addEventListener("change", updateBatchIdField);
+    document.getElementById("batchScheduleSelect")?.addEventListener("change", function (e) {
+      const classDays = document.getElementById("batchClassDaysSelect");
+      if (e.target.value === "Weekend") {
+        if (classDays && classDays.value !== "Friday") classDays.value = "Friday";
+      } else {
+        if (classDays && classDays.value === "Friday") classDays.value = "";
+      }
+      updateBatchIdField();
+    });
+    document.getElementById("batchClassDaysSelect")?.addEventListener("change", function (e) {
+      const schedule = document.getElementById("batchScheduleSelect");
+      if (e.target.value === "Friday") {
+        if (schedule && schedule.value !== "Weekend") {
+          schedule.value = "Weekend";
+          updateBatchIdField();
+        }
+      } else {
+        if (schedule && schedule.value === "Weekend") {
+          schedule.value = "";
+          updateBatchIdField();
+        }
+      }
+    });
 
     // Globally register loadBatches and updateRegistrationBatchDropdown functions in window just in case
     window.loadBatches = loadBatches;
