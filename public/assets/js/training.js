@@ -585,7 +585,7 @@ export async function addAuditLog(logData) {
   }
 
   try {
-    const id = await getNextSeqId("tbl_audit_logs", "LOG-", "log_id", 5);
+    const id = await getNextSeqId("learn_tbl_audit_logs", "LOG-", "log_id", 5);
     const docRef = doc(db, "learn_tbl_audit_logs", id);
     await setDoc(docRef, {
       log_id: id,
@@ -966,7 +966,7 @@ export async function addEmployee(employeeData) {
   }
 
   try {
-    const id = employee_id || await getNextSeqId("tbl_employees", "EMP-", "employee_id", 4);
+    const id = employee_id || await getNextSeqId("learn_tbl_employees", "EMP-", "employee_id", 4);
     const docRef = doc(db, "learn_tbl_employees", id);
     let originalCreatedAt = null;
     if (employee_id) {
@@ -1341,7 +1341,7 @@ export async function addPublicInstitute(instData) {
   if (!checkConfiguration()) return null;
 
   try {
-    const id = await getNextSeqId("public_institutes", "INST-", "id", 4);
+    const id = await getNextSeqId("learn_public_institutes", "INST-", "id", 4);
     const docRef = doc(db, "learn_public_institutes", id);
     await setDoc(docRef, {
       id,
@@ -1522,7 +1522,7 @@ export async function addJobPlacement(placementData) {
   if (!checkConfiguration()) return null;
 
   try {
-    const id = await getNextSeqId("job_placements", "PLACE-", "id", 4);
+    const id = await getNextSeqId("learn_job_placements", "PLACE-", "id", 4);
     const docRef = doc(db, "learn_job_placements", id);
     await setDoc(docRef, {
       id,
@@ -1699,7 +1699,7 @@ export async function addExpense(expenseData) {
   if (!checkConfiguration()) return null;
 
   try {
-    const id = await getNextSeqId("expenses", "EXP-", "id", 4);
+    const id = await getNextSeqId("learn_expenses", "EXP-", "id", 4);
     const docRef = doc(db, "learn_expenses", id);
     await setDoc(docRef, {
       id,
@@ -1940,7 +1940,7 @@ export async function addMarketingAgent(agentData) {
   if (!checkConfiguration()) return null;
 
   try {
-    const id = await getNextSeqId("marketing_agents", "AGT-", "id", 4);
+    const id = await getNextSeqId("learn_marketing_agents", "AGT-", "id", 4);
     const docRef = doc(db, "learn_marketing_agents", id);
     await setDoc(docRef, {
       id,
