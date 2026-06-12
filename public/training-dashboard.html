@@ -6053,10 +6053,15 @@
       filtered.forEach(record => {
         const tr = document.createElement("tr");
 
+        let displayStatus = record.status || 'Unpaid';
+        if ((record.totalFee || 0) - (record.discount || 0) === 0) {
+          displayStatus = "Fully Paid";
+        }
+
         let statusBadgeClass = "bg-danger";
-        if (record.status === "Fully Paid") {
+        if (displayStatus === "Fully Paid") {
           statusBadgeClass = "bg-success";
-        } else if (record.status === "Partially Paid") {
+        } else if (displayStatus === "Partially Paid") {
           statusBadgeClass = "bg-warning text-dark";
         }
 
@@ -6074,7 +6079,7 @@
           <td class="text-center text-success"><strong>${(record.amountPaid || 0).toLocaleString()} BDT</strong></td>
           <td class="text-center text-danger"><strong>${(record.dueAmount || 0).toLocaleString()} BDT</strong></td>
           <td class="text-center">${methodHtml}</td>
-          <td class="text-center"><span class="badge ${statusBadgeClass}">${record.status || 'Unpaid'}</span></td>
+          <td class="text-center"><span class="badge ${statusBadgeClass}">${displayStatus}</span></td>
           <td class="text-center">
             <div class="btn-group gap-1">
               <button class="btn btn-sm btn-outline-info view-payment" data-id="${record.id || record.studentId}">
@@ -6666,6 +6671,11 @@
               regDateStr = dt.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
             }
 
+            let payStatus = payRecord ? (payRecord.status || 'Unpaid') : '';
+            if (payRecord && (payRecord.totalFee || 0) - (payRecord.discount || 0) === 0) {
+              payStatus = "Fully Paid";
+            }
+
             return `
               <div class="card border border-light-subtle rounded-3 p-3 shadow-sm mb-3" style="background: #fafafa;">
                 <div class="d-flex justify-content-between align-items-start flex-wrap gap-2 mb-2">
@@ -6678,7 +6688,7 @@
                   <div class="d-flex gap-2">
                     <span class="badge bg-secondary text-dark px-2 py-1 font-semibold" style="font-size: 0.725rem;">Batch: ${reg.batch || 'N/A'}</span>
                     <span class="badge bg-secondary text-dark px-2 py-1 font-semibold" style="font-size: 0.725rem;">Schedule: ${reg.schedule || 'N/A'}</span>
-                    ${payRecord ? `<span class="badge ${getBadgeClass(payRecord.status)} px-2 py-1 fw-bold" style="font-size: 0.725rem;">${payRecord.status}</span>` : ''}
+                    ${payRecord ? `<span class="badge ${getBadgeClass(payStatus)} px-2 py-1 fw-bold" style="font-size: 0.725rem;">${payStatus}</span>` : ''}
                   </div>
                 </div>
                 ${paymentSummaryHtml}
@@ -6793,7 +6803,10 @@
 
       let statusText = "Unpaid";
       let statusClass = "text-danger";
-      if (paid > 0) {
+      if (effectiveTotal === 0) {
+        statusText = "Fully Paid";
+        statusClass = "text-success";
+      } else if (paid > 0) {
         if (paid >= effectiveTotal) {
           statusText = "Fully Paid";
           statusClass = "text-success";

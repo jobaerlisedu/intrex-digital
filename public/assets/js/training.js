@@ -252,7 +252,9 @@ export async function addRegistration(regData) {
     const effectiveFee = Math.max(0, fee - disc);
     const due = Math.max(0, effectiveFee - paid);
     let status = "Unpaid";
-    if (paid > 0) {
+    if (effectiveFee === 0) {
+      status = "Fully Paid";
+    } else if (paid > 0) {
       status = paid >= effectiveFee ? "Fully Paid" : "Partially Paid";
     }
 
@@ -367,7 +369,9 @@ export async function updateRegistration(docId, regData) {
       const effectiveFee = Math.max(0, totalFee - disc);
       const dueAmount = Math.max(0, effectiveFee - amountPaid);
       let status = "Unpaid";
-      if (amountPaid > 0) {
+      if (effectiveFee === 0) {
+        status = "Fully Paid";
+      } else if (amountPaid > 0) {
         status = amountPaid >= effectiveFee ? "Fully Paid" : "Partially Paid";
       }
 
@@ -507,7 +511,9 @@ export async function updatePayment(docId, totalFee, discount, amountPaid, payme
     const effectiveFee = Math.max(0, fee - disc);
     const due = Math.max(0, effectiveFee - paid);
     let status = "Unpaid";
-    if (paid > 0) {
+    if (effectiveFee === 0) {
+      status = "Fully Paid";
+    } else if (paid > 0) {
       status = paid >= effectiveFee ? "Fully Paid" : "Partially Paid";
     }
 
