@@ -4077,11 +4077,19 @@
       const payRecord = allPayments.find(p => p.id === assessDocId) ||
         allPayments.find(p => p.studentId === studentId && p.courseName === courseName);
 
-      const paymentStatus = payRecord ? payRecord.status : "Unpaid";
+      let paymentStatus = payRecord ? payRecord.status : "Unpaid";
+      if (payRecord) {
+        const fee = Number(payRecord.totalFee) || (typeof payRecord.totalFee === 'string' ? parseFloat(payRecord.totalFee) : 0) || 0;
+        const disc = Number(payRecord.discount) || (typeof payRecord.discount === 'string' ? parseFloat(payRecord.discount) : 0) || 0;
+        const reg = allRegistrations.find(r => r.studentId === payRecord.studentId);
+        if (fee - disc === 0 || (reg && reg.isFreeBatch)) {
+          paymentStatus = "Fully Paid";
+        }
+      }
       const assessmentStatus = assessRecord ? assessRecord.status : "Not Started";
 
       const isAssessmentPassed = assessRecord && (assessRecord.status === "Passed" || assessRecord.status === "Pass" || assessRecord.status === "passed");
-      const isPaymentPaid = payRecord && (payRecord.status === "Fully Paid" || payRecord.status === "Paid" || payRecord.status === "fully paid");
+      const isPaymentPaid = payRecord && (paymentStatus === "Fully Paid" || paymentStatus === "Paid" || paymentStatus === "fully paid");
 
       const paymentSpan = document.getElementById("certInfoPaymentStatus");
       const assessmentSpan = document.getElementById("certInfoAssessmentStatus");
@@ -4251,13 +4259,31 @@
       document.getElementById("kpiTotalDiscount").textContent = `${totalDiscount.toLocaleString()} BDT`;
 
       // 2. Breakdown counts (Fully Paid, Partially Paid, Unpaid, Collection Rate)
-      const fullyPaidCount = allPayments.filter(p => p.status === "Fully Paid").length;
+      const fullyPaidCount = allPayments.filter(p => {
+        const fee = Number(p.totalFee) || (typeof p.totalFee === 'string' ? parseFloat(p.totalFee) : 0) || 0;
+        const disc = Number(p.discount) || (typeof p.discount === 'string' ? parseFloat(p.discount) : 0) || 0;
+        const reg = allRegistrations.find(r => r.studentId === p.studentId);
+        const isFree = (fee - disc === 0) || (reg && reg.isFreeBatch);
+        return p.status === "Fully Paid" || isFree;
+      }).length;
       document.getElementById("kpiFullyPaid").textContent = fullyPaidCount.toLocaleString();
 
-      const partiallyPaidCount = allPayments.filter(p => p.status === "Partially Paid").length;
+      const partiallyPaidCount = allPayments.filter(p => {
+        const fee = Number(p.totalFee) || (typeof p.totalFee === 'string' ? parseFloat(p.totalFee) : 0) || 0;
+        const disc = Number(p.discount) || (typeof p.discount === 'string' ? parseFloat(p.discount) : 0) || 0;
+        const reg = allRegistrations.find(r => r.studentId === p.studentId);
+        const isFree = (fee - disc === 0) || (reg && reg.isFreeBatch);
+        return p.status === "Partially Paid" && !isFree;
+      }).length;
       document.getElementById("kpiPartiallyPaid").textContent = partiallyPaidCount.toLocaleString();
 
-      const unpaidCount = allPayments.filter(p => p.status === "Unpaid" || !p.status).length;
+      const unpaidCount = allPayments.filter(p => {
+        const fee = Number(p.totalFee) || (typeof p.totalFee === 'string' ? parseFloat(p.totalFee) : 0) || 0;
+        const disc = Number(p.discount) || (typeof p.discount === 'string' ? parseFloat(p.discount) : 0) || 0;
+        const reg = allRegistrations.find(r => r.studentId === p.studentId);
+        const isFree = (fee - disc === 0) || (reg && reg.isFreeBatch);
+        return (p.status === "Unpaid" || !p.status) && !isFree;
+      }).length;
       document.getElementById("kpiUnpaid").textContent = unpaidCount.toLocaleString();
 
       const totalBilled = allPayments.reduce((sum, p) => sum + (Number(p.totalFee) || 0) - (Number(p.discount) || 0), 0);
@@ -6054,7 +6080,10 @@
         const tr = document.createElement("tr");
 
         let displayStatus = record.status || 'Unpaid';
-        if ((record.totalFee || 0) - (record.discount || 0) === 0) {
+        const fee = Number(record.totalFee) || (typeof record.totalFee === 'string' ? parseFloat(record.totalFee) : 0) || 0;
+        const disc = Number(record.discount) || (typeof record.discount === 'string' ? parseFloat(record.discount) : 0) || 0;
+        const reg = allRegistrations.find(r => r.studentId === record.studentId);
+        if (fee - disc === 0 || (reg && reg.isFreeBatch)) {
           displayStatus = "Fully Paid";
         }
 
@@ -6288,6 +6317,15 @@
       if (!record) {
         alert("Record not found in dataset.");
         return;
+      }
+
+      if (type === "payment" && record) {
+        const fee = Number(record.totalFee) || (typeof record.totalFee === 'string' ? parseFloat(record.totalFee) : 0) || 0;
+        const disc = Number(record.discount) || (typeof record.discount === 'string' ? parseFloat(record.discount) : 0) || 0;
+        const reg = allRegistrations.find(r => r.studentId === record.studentId);
+        if (fee - disc === 0 || (reg && reg.isFreeBatch)) {
+          record.status = "Fully Paid";
+        }
       }
 
       activeDetailRecord = record;
@@ -6672,8 +6710,13 @@
             }
 
             let payStatus = payRecord ? (payRecord.status || 'Unpaid') : '';
-            if (payRecord && (payRecord.totalFee || 0) - (payRecord.discount || 0) === 0) {
-              payStatus = "Fully Paid";
+            if (payRecord) {
+              const fee = Number(payRecord.totalFee) || (typeof payRecord.totalFee === 'string' ? parseFloat(payRecord.totalFee) : 0) || 0;
+              const disc = Number(payRecord.discount) || (typeof payRecord.discount === 'string' ? parseFloat(payRecord.discount) : 0) || 0;
+              const regDoc = allRegistrations.find(r => r.studentId === payRecord.studentId);
+              if (fee - disc === 0 || (regDoc && regDoc.isFreeBatch)) {
+                payStatus = "Fully Paid";
+              }
             }
 
             return `
@@ -8580,7 +8623,13 @@
         // Gather financial data for summary & payment status filtering
         filteredRegs.forEach(r => {
           const pay = allPayments.find(p => p.studentId === r.studentId) || {};
-          const status = pay.status || 'Unpaid';
+          let status = pay.status || 'Unpaid';
+          const parsedFee = Number(pay.totalFee) || (typeof pay.totalFee === 'string' ? parseFloat(pay.totalFee) : 0) || 0;
+          const parsedDisc = Number(pay.discount) || (typeof pay.discount === 'string' ? parseFloat(pay.discount) : 0) || 0;
+          const regDoc = allRegistrations.find(x => x.studentId === pay.studentId) || r;
+          if (parsedFee - parsedDisc === 0 || (regDoc && regDoc.isFreeBatch)) {
+            status = "Fully Paid";
+          }
 
           // Apply payment status filter
           if (paymentStatus !== 'all' && status !== paymentStatus) {
@@ -8627,7 +8676,16 @@
 
         // Filter by status
         if (paymentStatus !== 'all') {
-          filteredPays = filteredPays.filter(p => p.status === paymentStatus);
+          filteredPays = filteredPays.filter(p => {
+            let status = p.status || 'Unpaid';
+            const fee = Number(p.totalFee) || (typeof p.totalFee === 'string' ? parseFloat(p.totalFee) : 0) || 0;
+            const disc = Number(p.discount) || (typeof p.discount === 'string' ? parseFloat(p.discount) : 0) || 0;
+            const reg = allRegistrations.find(r => r.studentId === p.studentId);
+            if (fee - disc === 0 || (reg && reg.isFreeBatch)) {
+              status = "Fully Paid";
+            }
+            return status === paymentStatus;
+          });
         }
 
         // Filter by date range (uses registration creation date)
@@ -8662,7 +8720,16 @@
             discount: discount,
             amountPaid: paid,
             dueAmount: due,
-            status: p.status || 'Unpaid'
+            status: (() => {
+              let status = p.status || 'Unpaid';
+              const fee = Number(p.totalFee) || (typeof p.totalFee === 'string' ? parseFloat(p.totalFee) : 0) || 0;
+              const disc = Number(p.discount) || (typeof p.discount === 'string' ? parseFloat(p.discount) : 0) || 0;
+              const regDoc = allRegistrations.find(r => r.studentId === p.studentId);
+              if (fee - disc === 0 || (regDoc && regDoc.isFreeBatch)) {
+                status = "Fully Paid";
+              }
+              return status;
+            })()
           });
         });
 
@@ -10398,7 +10465,15 @@
         tbody.innerHTML = enrolled.map(student => {
           // Cross reference with payment record
           const payment = allPayments.find(p => p.studentId === student.studentId);
-          const payStatus = payment ? payment.status : "Unpaid";
+          let payStatus = payment ? payment.status : "Unpaid";
+          if (payment) {
+            const fee = Number(payment.totalFee) || (typeof payment.totalFee === 'string' ? parseFloat(payment.totalFee) : 0) || 0;
+            const disc = Number(payment.discount) || (typeof payment.discount === 'string' ? parseFloat(payment.discount) : 0) || 0;
+            const reg = allRegistrations.find(r => r.studentId === payment.studentId) || student;
+            if (fee - disc === 0 || (reg && reg.isFreeBatch)) {
+              payStatus = "Fully Paid";
+            }
+          }
 
           let badgeClass = "bg-danger";
           if (payStatus === "Fully Paid") {
@@ -11008,7 +11083,15 @@
       tbody.innerHTML = uniqueContacts.map(r => {
         // Cross reference with payment record
         const payment = allPayments.find(p => p.studentId === r.studentId);
-        const payStatus = payment ? payment.status : "Unpaid";
+        let payStatus = payment ? payment.status : "Unpaid";
+        if (payment) {
+          const fee = Number(payment.totalFee) || (typeof payment.totalFee === 'string' ? parseFloat(payment.totalFee) : 0) || 0;
+          const disc = Number(payment.discount) || (typeof payment.discount === 'string' ? parseFloat(payment.discount) : 0) || 0;
+          const regDoc = allRegistrations.find(x => x.studentId === payment.studentId) || r;
+          if (fee - disc === 0 || (regDoc && regDoc.isFreeBatch)) {
+            payStatus = "Fully Paid";
+          }
+        }
 
         let badgeClass = "bg-danger";
         if (payStatus === "Fully Paid") {

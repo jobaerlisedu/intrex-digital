@@ -369,7 +369,7 @@ export async function updateRegistration(docId, regData) {
       const effectiveFee = Math.max(0, totalFee - disc);
       const dueAmount = Math.max(0, effectiveFee - amountPaid);
       let status = "Unpaid";
-      if (effectiveFee === 0) {
+      if (effectiveFee === 0 || isFreeBatch) {
         status = "Fully Paid";
       } else if (amountPaid > 0) {
         status = amountPaid >= effectiveFee ? "Fully Paid" : "Partially Paid";
@@ -385,11 +385,16 @@ export async function updateRegistration(docId, regData) {
         updatedAt: serverTimestamp()
       }, { merge: true });
     } else {
+      let status = "Unpaid";
+      if (isFreeBatch) {
+        status = "Fully Paid";
+      }
       await setDoc(payRef, {
         studentName: fullName.trim(),
         email: email.trim(),
         courseName: course.trim(),
         batch: batch.trim(),
+        status,
         updatedAt: serverTimestamp()
       }, { merge: true });
     }
