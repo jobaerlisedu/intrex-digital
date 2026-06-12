@@ -204,7 +204,7 @@ function generateStudentId(courseName, batchName, registrationsList) {
 export async function addRegistration(regData) {
   if (!checkConfiguration()) return null;
 
-  const { fullName, email, phone, course, batch, education, schedule, classDays, message, totalFee, discount, amountPaid, paymentType, transactionId, registrationFee, installments, isJobHolder, companyName, designation, studentId, kam } = regData;
+  const { fullName, email, phone, course, batch, education, schedule, classDays, message, totalFee, discount, amountPaid, paymentType, transactionId, registrationFee, installments, isJobHolder, companyName, designation, studentId, kam, isFreeBatch } = regData;
 
   if (!fullName || !email || !phone || !course || !batch || !schedule || !classDays) {
     throw new Error("Missing required registration fields");
@@ -241,6 +241,7 @@ export async function addRegistration(regData) {
       companyName: companyName || "",
       designation: designation || "",
       kam: kam || "",
+      isFreeBatch: isFreeBatch || false,
       createdAt: serverTimestamp()
     });
 
@@ -325,7 +326,7 @@ export async function getAllRegistrations() {
 export async function updateRegistration(docId, regData) {
   if (!checkConfiguration()) return;
 
-  const { fullName, email, phone, course, batch, education, schedule, classDays, message, isJobHolder, companyName, designation, kam } = regData;
+  const { fullName, email, phone, course, batch, education, schedule, classDays, message, isJobHolder, companyName, designation, kam, isFreeBatch } = regData;
 
   if (!fullName || !email || !phone || !course || !batch || !schedule || !classDays) {
     throw new Error("Missing required registration fields");
@@ -350,7 +351,8 @@ export async function updateRegistration(docId, regData) {
       isJobHolder: isJobHolder || false,
       companyName: companyName || "",
       designation: designation || "",
-      kam: kam || ""
+      kam: kam || "",
+      isFreeBatch: isFreeBatch || false
     }, { merge: true });
 
     // Sync student name, email, course and batch to the payment record

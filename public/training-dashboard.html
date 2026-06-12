@@ -1164,25 +1164,37 @@
                             </div>
                           </div>
 
+                          <!-- Row 3.8: Free Batch Switch -->
+                          <div class="row g-3 mb-2">
+                            <div class="col-12">
+                              <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="regIsFreeBatch">
+                                <label class="form-check-label small fw-semibold text-success" for="regIsFreeBatch">
+                                  <i class="bi bi-gift me-1"></i>Free of Cost Batch
+                                </label>
+                              </div>
+                            </div>
+                          </div>
+
                           <!-- Row 4: Course Fee, Discount & Amount Paid -->
                           <div class="row g-3 mb-3">
                             <div class="col-md-4">
                               <label class="form-label small fw-semibold mb-1" for="regFee">Course Fee (BDT) <span
                                   class="text-danger">*</span></label>
                               <input class="form-control" id="regFee" type="number" min="0" placeholder="e.g. 12000"
-                                required readonly>
+                                required>
                             </div>
                             <div class="col-md-4">
                               <label class="form-label small fw-semibold mb-1" for="regDiscount">Discount (BDT)</label>
                               <input class="form-control" id="regDiscount" type="number" min="0" value="2000"
-                                placeholder="e.g. 0" readonly>
+                                placeholder="e.g. 0">
                             </div>
                             <div class="col-md-4">
                               <label class="form-label small fw-semibold mb-1" id="regAmountPaidLabel"
                                 for="regAmountPaid">Amount Paid (BDT)
                                 <span class="text-danger">*</span></label>
                               <input class="form-control" id="regAmountPaid" type="number" min="0" value="0"
-                                placeholder="e.g. 0" required readonly>
+                                placeholder="e.g. 0" required>
                             </div>
                           </div>
 
@@ -5202,6 +5214,14 @@
       const discountInput = document.getElementById("regDiscount");
       const numInstSelect = document.getElementById("regNumInstallments");
 
+      if (document.getElementById("regIsFreeBatch")?.checked) {
+        feeInput.value = 0;
+        discountInput.value = 0;
+        document.getElementById("regAmountPaid").value = 0;
+        updateRegistrationBatchDropdown(selectedCourse);
+        return;
+      }
+
       if (selectedCourse in courseFees && !editingStudentId) {
         feeInput.value = courseFees[selectedCourse];
         discountInput.value = 2000;
@@ -5239,8 +5259,13 @@
     document.getElementById("regBatch").addEventListener("change", function (e) {
       const batchId = e.target.value;
       const batch = allBatches.find(b => b.batchId === batchId);
-      if (batch && batch.schedule) {
-        document.getElementById("regSchedule").value = batch.schedule;
+      if (batch) {
+        if (batch.schedule) {
+          document.getElementById("regSchedule").value = batch.schedule;
+        }
+        if (batch.classDays) {
+          document.getElementById("regClassDays").value = batch.classDays;
+        }
       }
     });
 
@@ -5485,6 +5510,15 @@
         }
       }
 
+      // Load Free Batch status
+      const isFree = record.isFreeBatch || false;
+      const freeCheckbox = document.getElementById("regIsFreeBatch");
+      if (freeCheckbox) {
+        freeCheckbox.checked = isFree;
+        freeCheckbox.dispatchEvent(new Event("change"));
+        freeCheckbox.disabled = true;
+      }
+
       // Find matching payment record to disable/enable and populate course fee
       const payRecord = allPayments.find(p => p.studentId === record.studentId);
       if (payRecord) {
@@ -5507,10 +5541,12 @@
         }
         document.getElementById("regPaymentTxId").disabled = true;
       } else {
-        document.getElementById("regFee").value = "";
-        document.getElementById("regFee").disabled = false;
-        document.getElementById("regAmountPaid").value = 0;
-        document.getElementById("regAmountPaid").disabled = false;
+        if (!isFree) {
+          document.getElementById("regFee").value = "";
+          document.getElementById("regFee").disabled = false;
+          document.getElementById("regAmountPaid").value = 0;
+          document.getElementById("regAmountPaid").disabled = false;
+        }
         document.getElementById("regPaymentType").value = "Cash";
         document.getElementById("regPaymentType").disabled = false;
         document.getElementById("regPaymentTxId").value = "";
@@ -5538,6 +5574,13 @@
       if (regIsJobHolderSwitch) {
         regIsJobHolderSwitch.checked = false;
         regIsJobHolderSwitch.dispatchEvent(new Event("change"));
+      }
+
+      const freeCheckbox = document.getElementById("regIsFreeBatch");
+      if (freeCheckbox) {
+        freeCheckbox.checked = false;
+        freeCheckbox.disabled = false;
+        freeCheckbox.dispatchEvent(new Event("change"));
       }
 
       document.getElementById("regFee").disabled = false;
@@ -5778,6 +5821,7 @@
       const totalFee = Number(document.getElementById("regFee").value) || 0;
       const discount = Number(document.getElementById("regDiscount").value) || 0;
       const amountPaid = Number(document.getElementById("regAmountPaid").value) || 0;
+      const isFreeBatch = document.getElementById("regIsFreeBatch")?.checked || false;
       const paymentType = document.getElementById("regPaymentType").value;
       const transactionId = document.getElementById("regPaymentTxId").value.trim();
       const message = document.getElementById("regMessage").value.trim();
@@ -5829,7 +5873,7 @@
 
         if (editingDocId) {
           // Update
-          await updateRegistration(editingDocId, { fullName, email, phone, course, batch, education, schedule, classDays, message, isJobHolder, companyName, designation, kam });
+          await updateRegistration(editingDocId, { fullName, email, phone, course, batch, education, schedule, classDays, message, isJobHolder, companyName, designation, kam, isFreeBatch });
 
           // Audit Logging
           await addAuditLog({
@@ -5845,7 +5889,7 @@
           cancelRegEditMode();
         } else {
           // Create
-          const generatedId = await addRegistration({ fullName, email, phone, course, batch, education, schedule, classDays, message, totalFee, discount, amountPaid, paymentType, transactionId, registrationFee, installments, isJobHolder, companyName, designation, studentId: reusedStudentId, kam });
+          const generatedId = await addRegistration({ fullName, email, phone, course, batch, education, schedule, classDays, message, totalFee, discount, amountPaid, paymentType, transactionId, registrationFee, installments, isJobHolder, companyName, designation, studentId: reusedStudentId, kam, isFreeBatch });
 
           // Audit Logging
           await addAuditLog({
@@ -6932,13 +6976,47 @@
     document.getElementById("regNumInstallments").addEventListener("change", renderRegInstallments);
     document.getElementById("regAutoDistributeBtn").addEventListener("click", renderRegInstallments);
     document.getElementById("regFee").addEventListener("input", () => {
+      updateRegAmountPaid();
       if (document.getElementById("regEnableInstallments").checked) renderRegInstallments();
     });
     document.getElementById("regDiscount").addEventListener("input", () => {
+      updateRegAmountPaid();
       if (document.getElementById("regEnableInstallments").checked) renderRegInstallments();
     });
     document.getElementById("regAmountPaid").addEventListener("input", () => {
       if (document.getElementById("regEnableInstallments").checked) renderRegInstallments();
+    });
+
+    document.getElementById("regIsFreeBatch").addEventListener("change", function () {
+      const isFree = this.checked;
+      const feeInput = document.getElementById("regFee");
+      const discountInput = document.getElementById("regDiscount");
+      const amountPaidInput = document.getElementById("regAmountPaid");
+      const enableInstSwitch = document.getElementById("regEnableInstallments");
+
+      if (isFree) {
+        feeInput.value = 0;
+        discountInput.value = 0;
+        amountPaidInput.value = 0;
+
+        feeInput.disabled = true;
+        discountInput.disabled = true;
+        amountPaidInput.disabled = true;
+
+        enableInstSwitch.checked = false;
+        enableInstSwitch.disabled = true;
+        enableInstSwitch.dispatchEvent(new Event("change"));
+      } else {
+        feeInput.disabled = false;
+        discountInput.disabled = false;
+        amountPaidInput.disabled = false;
+        enableInstSwitch.disabled = false;
+
+        const courseSelect = document.getElementById("regCourse");
+        if (courseSelect) {
+          courseSelect.dispatchEvent(new Event("change"));
+        }
+      }
     });
 
     document.getElementById("editPaymentEnableInstallments").addEventListener("change", function () {
