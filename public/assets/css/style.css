@@ -1610,3 +1610,64 @@ h6 {
   --bs-btn-active-bg: var(--bs-primary-hover) !important;
   --bs-btn-active-border-color: var(--bs-primary-hover) !important;
 }
+
+/* Custom segmented button group design matching user specification */
+.btn-group.gap-1 {
+  gap: 0px !important; /* Make buttons touch each other */
+  border-radius: 12px !important; /* Heavily rounded outer corners */
+  overflow: hidden !important;
+  border: 1px solid var(--bs-primary) !important;
+  background-color: var(--bs-primary) !important;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.06) !important;
+  display: inline-flex !important;
+}
+
+.btn-group.gap-1 .btn {
+  border: none !important;
+  border-radius: 0 !important;
+  margin: 0 !important;
+  padding: 0.35rem 0.65rem !important; /* Compact spacing */
+  background-color: var(--bs-primary) !important;
+  color: #ffffff !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-decoration: none !important;
+  transition: background-color 0.15s ease-in-out !important;
+  position: relative !important;
+  min-width: 2.2rem !important;
+}
+
+/* Vertical separator line between segmented buttons */
+.btn-group.gap-1 .btn:not(:last-child)::after {
+  content: "" !important;
+  position: absolute !important;
+  right: 0 !important;
+  top: 15% !important;
+  height: 70% !important;
+  width: 1px !important;
+  background-color: rgba(255, 255, 255, 0.25) !important;
+  z-index: 10 !important;
+}
+
+/* Hover effects — all non-danger segment buttons hover to a deeper teal */
+.btn-group.gap-1 .btn:hover {
+  background-color: var(--bs-primary-hover) !important;
+  color: #ffffff !important;
+}
+
+.btn-group.gap-1 .btn:hover i {
+  color: #ffffff !important;
+}
+
+.btn-group.gap-1 .btn.btn-outline-info:hover,
+.btn-group.gap-1 .btn.btn-outline-primary:hover,
+.btn-group.gap-1 .btn.btn-outline-secondary:hover,
+.btn-group.gap-1 .btn.btn-outline-success:hover {
+  background-color: var(--bs-primary-hover) !important;
+}
+
+/* Red hover accent for delete button only */
+.btn-group.gap-1 .btn.btn-outline-danger:hover {
+  background-color: #bb2d3b !important;
+}

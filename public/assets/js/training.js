@@ -1099,7 +1099,8 @@ export async function getAllBatches() {
         {
           batchId: "CCNA-B01",
           courseName: "CCNA",
-          schedule: "Morning (9am – 12pm)",
+          schedule: "Morning",
+          classDays: "Saturday, Monday & Wednesday",
           capacity: 10,
           status: "Active",
           createdAt: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)
@@ -1107,7 +1108,8 @@ export async function getAllBatches() {
         {
           batchId: "SEC-B01",
           courseName: "CompTIA Security+",
-          schedule: "Evening (5pm – 8pm)",
+          schedule: "Evening",
+          classDays: "Sunday, Tuesday & Thursday",
           capacity: 10,
           status: "Active",
           createdAt: new Date(Date.now() - 15 * 24 * 60 * 60 * 1000)
@@ -1115,7 +1117,8 @@ export async function getAllBatches() {
         {
           batchId: "NET-B01",
           courseName: "CompTIA Network+",
-          schedule: "Weekend Batch",
+          schedule: "Weekend",
+          classDays: "Friday",
           capacity: 10,
           status: "Upcoming",
           createdAt: new Date()
@@ -1143,7 +1146,7 @@ export async function getAllBatches() {
 }
 
 export async function addBatch(batchData) {
-  const { batchId, courseName, schedule, capacity, status } = batchData;
+  const { batchId, courseName, schedule, classDays, capacity, status, trainer, trainerId } = batchData;
   if (!batchId || !courseName || !status) {
     throw new Error("Missing required batch fields");
   }
@@ -1160,9 +1163,12 @@ export async function addBatch(batchData) {
     const newBatch = {
       batchId: batchId.trim(),
       courseName: courseName.trim(),
-      schedule: schedule || "Morning (9am – 12pm)",
+      schedule: schedule || "Morning",
+      classDays: classDays || "",
       capacity: Number(capacity) || 10,
       status: status || "Active",
+      trainer: trainer || "",
+      trainerId: trainerId || "",
       createdAt: new Date()
     };
     mockBatches.push(newBatch);
@@ -1180,9 +1186,12 @@ export async function addBatch(batchData) {
     await setDoc(docRef, {
       batchId: batchId.trim(),
       courseName: courseName.trim(),
-      schedule: schedule || "Morning (9am – 12pm)",
+      schedule: schedule || "Morning",
+      classDays: classDays || "",
       capacity: Number(capacity) || 10,
       status: status || "Active",
+      trainer: trainer || "",
+      trainerId: trainerId || "",
       createdAt: serverTimestamp()
     });
     return batchId;
@@ -1193,7 +1202,7 @@ export async function addBatch(batchData) {
 }
 
 export async function updateBatch(batchId, batchData) {
-  const { courseName, schedule, capacity, status } = batchData;
+  const { courseName, schedule, classDays, capacity, status, trainer, trainerId } = batchData;
 
   const urlParams = new URLSearchParams(window.location.search);
   if (urlParams.get('mock') === '1') {
@@ -1206,8 +1215,11 @@ export async function updateBatch(batchId, batchData) {
         ...mockBatches[existingIndex],
         courseName: courseName ? courseName.trim() : mockBatches[existingIndex].courseName,
         schedule: schedule ? schedule.trim() : mockBatches[existingIndex].schedule,
+        classDays: classDays !== undefined ? classDays : mockBatches[existingIndex].classDays,
         capacity: capacity !== undefined ? Number(capacity) : mockBatches[existingIndex].capacity,
         status: status ? status.trim() : mockBatches[existingIndex].status,
+        trainer: trainer !== undefined ? trainer : mockBatches[existingIndex].trainer,
+        trainerId: trainerId !== undefined ? trainerId : mockBatches[existingIndex].trainerId,
         updatedAt: new Date()
       };
     }
@@ -1220,9 +1232,12 @@ export async function updateBatch(batchId, batchData) {
     const docRef = doc(db, "learn_batches", batchId.trim());
     await setDoc(docRef, {
       courseName: courseName.trim(),
-      schedule: schedule || "Morning (9am – 12pm)",
+      schedule: schedule || "Morning",
+      classDays: classDays || "",
       capacity: Number(capacity) || 10,
       status: status || "Active",
+      trainer: trainer || "",
+      trainerId: trainerId || "",
       updatedAt: serverTimestamp()
     }, { merge: true });
   } catch (error) {
@@ -1881,34 +1896,34 @@ export async function saveAssessment(id, assessmentData) {
 }
 
 // ==========================================
-// 14. MARKETING AGENTS OPERATIONS (marketing_agents)
+// 14. BRAND AMBASSADORS OPERATIONS (brand_ambassadors)
 // ==========================================
-let mockMarketingAgents = null;
+let mockBrandAmbassadors = null;
 
-export async function getAllMarketingAgents() {
+export async function getAllBrandAmbassadors() {
   const urlParams = new URLSearchParams(window.location.search);
   if (urlParams.get('mock') === '1') {
-    if (!mockMarketingAgents) {
-      mockMarketingAgents = [
+    if (!mockBrandAmbassadors) {
+      mockBrandAmbassadors = [
         {
-          id: "AGT-0001",
+          id: "AMB-0001",
           name: "Hasan Mahmud",
           email: "hasan@example.com",
           phone: "+8801711000000",
           region: "Dhaka",
           commissionRate: 15,
           status: "Active",
-          notes: "Top performing agent.",
+          notes: "Top performing ambassador.",
           createdAt: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)
         }
       ];
     }
-    return mockMarketingAgents;
+    return mockBrandAmbassadors;
   }
 
   if (!checkConfiguration()) return [];
   try {
-    const querySnapshot = await getDocs(collection(db, "learn_marketing_agents"));
+    const querySnapshot = await getDocs(collection(db, "learn_brand_ambassadors"));
     const agents = [];
     querySnapshot.forEach((docSnap) => {
       if (docSnap.exists()) {
@@ -1918,23 +1933,23 @@ export async function getAllMarketingAgents() {
     agents.sort((a, b) => a.id.localeCompare(b.id));
     return agents;
   } catch (error) {
-    console.error("Error fetching marketing agents: ", error);
+    console.error("Error fetching brand ambassadors: ", error);
     throw error;
   }
 }
 
-export async function addMarketingAgent(agentData) {
+export async function addBrandAmbassador(agentData) {
   const { name, email, phone, region, commissionRate, status, notes } = agentData;
   if (!name || !phone || !region || !status) {
-    throw new Error("Missing required agent fields: name, phone, region, status");
+    throw new Error("Missing required fields: name, phone, region, status");
   }
 
   const urlParams = new URLSearchParams(window.location.search);
   if (urlParams.get('mock') === '1') {
-    if (!mockMarketingAgents) {
-      await getAllMarketingAgents();
+    if (!mockBrandAmbassadors) {
+      await getAllBrandAmbassadors();
     }
-    const id = "AGT-" + String(mockMarketingAgents.length + 1).padStart(4, '0');
+    const id = "AMB-" + String(mockBrandAmbassadors.length + 1).padStart(4, '0');
     const newAgent = {
       id,
       name: name.trim(),
@@ -1946,15 +1961,15 @@ export async function addMarketingAgent(agentData) {
       notes: notes ? notes.trim() : "",
       createdAt: new Date()
     };
-    mockMarketingAgents.push(newAgent);
+    mockBrandAmbassadors.push(newAgent);
     return id;
   }
 
   if (!checkConfiguration()) return null;
 
   try {
-    const id = await getNextSeqId("learn_marketing_agents", "AGT-", "id", 4);
-    const docRef = doc(db, "learn_marketing_agents", id);
+    const id = await getNextSeqId("learn_brand_ambassadors", "AMB-", "id", 4);
+    const docRef = doc(db, "learn_brand_ambassadors", id);
     await setDoc(docRef, {
       id,
       name: name.trim(),
@@ -1968,30 +1983,30 @@ export async function addMarketingAgent(agentData) {
     });
     return id;
   } catch (error) {
-    console.error("Error saving marketing agent: ", error);
+    console.error("Error saving brand ambassador: ", error);
     throw error;
   }
 }
 
-export async function updateMarketingAgent(agentId, agentData) {
+export async function updateBrandAmbassador(agentId, agentData) {
   const { name, email, phone, region, commissionRate, status, notes } = agentData;
 
   const urlParams = new URLSearchParams(window.location.search);
   if (urlParams.get('mock') === '1') {
-    if (!mockMarketingAgents) {
-      await getAllMarketingAgents();
+    if (!mockBrandAmbassadors) {
+      await getAllBrandAmbassadors();
     }
-    const index = mockMarketingAgents.findIndex(a => a.id === agentId.trim());
+    const index = mockBrandAmbassadors.findIndex(a => a.id === agentId.trim());
     if (index > -1) {
-      mockMarketingAgents[index] = {
-        ...mockMarketingAgents[index],
-        name: name ? name.trim() : mockMarketingAgents[index].name,
-        email: email !== undefined ? email.trim() : mockMarketingAgents[index].email,
-        phone: phone ? phone.trim() : mockMarketingAgents[index].phone,
-        region: region ? region.trim() : mockMarketingAgents[index].region,
-        commissionRate: commissionRate !== undefined ? Number(commissionRate) : mockMarketingAgents[index].commissionRate,
-        status: status ? status : mockMarketingAgents[index].status,
-        notes: notes !== undefined ? notes.trim() : mockMarketingAgents[index].notes,
+      mockBrandAmbassadors[index] = {
+        ...mockBrandAmbassadors[index],
+        name: name ? name.trim() : mockBrandAmbassadors[index].name,
+        email: email !== undefined ? email.trim() : mockBrandAmbassadors[index].email,
+        phone: phone ? phone.trim() : mockBrandAmbassadors[index].phone,
+        region: region ? region.trim() : mockBrandAmbassadors[index].region,
+        commissionRate: commissionRate !== undefined ? Number(commissionRate) : mockBrandAmbassadors[index].commissionRate,
+        status: status ? status : mockBrandAmbassadors[index].status,
+        notes: notes !== undefined ? notes.trim() : mockBrandAmbassadors[index].notes,
         updatedAt: new Date()
       };
     }
@@ -2001,7 +2016,7 @@ export async function updateMarketingAgent(agentId, agentData) {
   if (!checkConfiguration()) return;
 
   try {
-    const docRef = doc(db, "learn_marketing_agents", agentId.trim());
+    const docRef = doc(db, "learn_brand_ambassadors", agentId.trim());
     await setDoc(docRef, {
       name: name.trim(),
       email: email ? email.trim() : "",
@@ -2013,27 +2028,27 @@ export async function updateMarketingAgent(agentId, agentData) {
       updatedAt: serverTimestamp()
     }, { merge: true });
   } catch (error) {
-    console.error("Error updating marketing agent: ", error);
+    console.error("Error updating brand ambassador: ", error);
     throw error;
   }
 }
 
-export async function deleteMarketingAgent(agentId) {
+export async function deleteBrandAmbassador(agentId) {
   const urlParams = new URLSearchParams(window.location.search);
   if (urlParams.get('mock') === '1') {
-    if (!mockMarketingAgents) {
-      await getAllMarketingAgents();
+    if (!mockBrandAmbassadors) {
+      await getAllBrandAmbassadors();
     }
-    mockMarketingAgents = mockMarketingAgents.filter(a => a.id !== agentId);
+    mockBrandAmbassadors = mockBrandAmbassadors.filter(a => a.id !== agentId);
     return;
   }
 
   if (!checkConfiguration()) return;
   try {
-    const docRef = doc(db, "learn_marketing_agents", agentId.trim());
+    const docRef = doc(db, "learn_brand_ambassadors", agentId.trim());
     await deleteDoc(docRef);
   } catch (error) {
-    console.error("Error deleting marketing agent: ", error);
+    console.error("Error deleting brand ambassador: ", error);
     throw error;
   }
 }
