@@ -221,8 +221,8 @@
                   id="reports-tab" data-bs-toggle="tab" data-bs-target="#reportsPanel" type="button" role="tab">
                   <i class="bi bi-file-earmark-bar-graph"></i> Project Report Generator
                 </button>
-                <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
-                  id="logs-tab" data-bs-toggle="tab" data-bs-target="#logsPanel" type="button" role="tab">
+                <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2" id="logs-tab"
+                  data-bs-toggle="tab" data-bs-target="#logsPanel" type="button" role="tab">
                   <i class="bi bi-shield-check"></i> System Audit Logs
                 </button>
               </div>
@@ -309,285 +309,413 @@
 
                 <!-- 1. PROJECT CREATOR PANEL -->
                 <div class="tab-pane fade" id="projectsPanel" role="tabpanel">
-                  <!-- Form -->
-                  <div class="card p-4 rounded-4 shadow-sm border mb-4">
-                    <h3 id="projFormTitle" class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
-                      <i class="bi bi-kanban me-2 text-primary"></i>Create Project
-                    </h3>
-                    <form id="projectForm">
-                      <div class="row g-3">
-                        <div class="col-md-6">
-                          <label class="form-label small fw-semibold" for="project_id">Project ID <span
-                              class="text-muted">(Format: PRJ-YYYY-XXX, auto-generated if blank)</span></label>
-                          <input class="form-control" id="project_id" type="text" placeholder="e.g. PRJ-2026-001">
-                        </div>
-                        <div class="col-md-6">
-                          <label class="form-label small fw-semibold" for="project_name">Project Name <span
-                              class="text-danger">*</span></label>
-                          <input class="form-control" id="project_name" type="text" placeholder="Project title" required
-                             maxlength="100">
-                        </div>
-                        <div class="col-md-6">
-                          <label class="form-label small fw-semibold" for="client_sponsor">Client / Sponsor <span
-                              class="text-danger">*</span></label>
-                          <select class="form-select" id="client_sponsor" required>
-                            <option value="" disabled selected>Select Client / Sponsor</option>
-                          </select>
-                        </div>
-                        <div class="col-md-6">
-                          <label class="form-label small fw-semibold" for="project_manager">Project Manager <span
-                              class="text-danger">*</span></label>
-                          <select class="form-select" id="project_manager" required>
-                            <option value="" disabled selected>Loading managers...</option>
-                          </select>
-                        </div>
-                        <div class="col-md-4">
-                          <label class="form-label small fw-semibold" for="start_date">Start Date <span
-                              class="text-danger">*</span></label>
-                          <input class="form-control" id="start_date" type="date" required>
-                        </div>
-                        <div class="col-md-4">
-                          <label class="form-label small fw-semibold" for="end_date">Target End Date <span
-                              class="text-danger">*</span></label>
-                          <input class="form-control" id="end_date" type="date" required>
-                        </div>
-                        <div class="col-md-4">
-                          <label class="form-label small fw-semibold" for="project_status">Project Status</label>
-                          <select class="form-select" id="project_status">
-                            <option value="Pipeline" selected>Pipeline</option>
-                            <option value="Active">Active</option>
-                            <option value="On Hold">On Hold</option>
-                            <option value="Completed">Completed</option>
-                            <option value="Cancelled">Cancelled</option>
-                          </select>
-                        </div>
-                        <div class="col-12">
-                          <label class="form-label small fw-semibold" for="project_desc">Description</label>
-                          <textarea class="form-control" id="project_desc" rows="2"
-                            placeholder="Scope & objectives..."></textarea>
+                  <!-- Sub-tabs at the top -->
+                  <ul class="nav nav-tabs mb-3" id="projectSubTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                      <button class="nav-link active fw-semibold text-primary" id="project-form-subtab" data-bs-toggle="tab" data-bs-target="#projectFormSubPanel" type="button" role="tab" aria-controls="projectFormSubPanel" aria-selected="true">
+                        <i class="bi bi-plus-circle me-1"></i>Create Project
+                      </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                      <button class="nav-link fw-semibold text-primary" id="project-list-subtab" data-bs-toggle="tab" data-bs-target="#projectListSubPanel" type="button" role="tab" aria-controls="projectListSubPanel" aria-selected="false">
+                        <i class="bi bi-list-task me-1"></i>Projects Directory
+                      </button>
+                    </li>
+                  </ul>
+                  <div class="tab-content" id="projectSubTabsContent">
+                    <!-- Tab 1: Form -->
+                    <div class="tab-pane fade show active" id="projectFormSubPanel" role="tabpanel" aria-labelledby="project-form-subtab">
+                      <div class="card p-4 rounded-4 shadow-sm border mb-4">
+                        <h3 id="projFormTitle" class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
+                          <i class="bi bi-kanban me-2 text-primary"></i>Create Project
+                        </h3>
+                        <form id="projectForm">
+                          <div class="row g-3">
+                            <div class="col-md-6">
+                              <label class="form-label small fw-semibold" for="project_id">Project ID <span
+                                  class="text-muted">(Format: PRJ-YYYY-XXX, auto-generated if blank)</span></label>
+                              <input class="form-control" id="project_id" type="text" placeholder="e.g. PRJ-2026-001">
+                            </div>
+                            <div class="col-md-6">
+                              <label class="form-label small fw-semibold" for="project_name">Project Name <span
+                                  class="text-danger">*</span></label>
+                              <input class="form-control" id="project_name" type="text" placeholder="Project title" required
+                                 maxlength="100">
+                            </div>
+                            <div class="col-md-6">
+                              <label class="form-label small fw-semibold" for="client_sponsor">Client / Sponsor <span
+                                  class="text-danger">*</span></label>
+                              <select class="form-select" id="client_sponsor" required>
+                                <option value="" disabled selected>Select Client / Sponsor</option>
+                              </select>
+                            </div>
+                            <div class="col-md-6">
+                              <label class="form-label small fw-semibold" for="project_manager">Project Manager <span
+                                  class="text-danger">*</span></label>
+                              <select class="form-select" id="project_manager" required>
+                                <option value="" disabled selected>Loading managers...</option>
+                              </select>
+                            </div>
+                            <div class="col-md-4">
+                              <label class="form-label small fw-semibold" for="start_date">Start Date <span
+                                  class="text-danger">*</span></label>
+                              <input class="form-control" id="start_date" type="date" required>
+                            </div>
+                            <div class="col-md-4">
+                              <label class="form-label small fw-semibold" for="end_date">Target End Date <span
+                                  class="text-danger">*</span></label>
+                              <input class="form-control" id="end_date" type="date" required>
+                            </div>
+                            <div class="col-md-4">
+                              <label class="form-label small fw-semibold" for="project_status">Project Status</label>
+                              <select class="form-select" id="project_status">
+                                <option value="Pipeline" selected>Pipeline</option>
+                                <option value="Active">Active</option>
+                                <option value="On Hold">On Hold</option>
+                                <option value="Completed">Completed</option>
+                                <option value="Cancelled">Cancelled</option>
+                              </select>
+                            </div>
+                            <div class="col-12">
+                              <label class="form-label small fw-semibold" for="project_desc">Description</label>
+                              <textarea class="form-control" id="project_desc" rows="2"
+                                placeholder="Scope & objectives..."></textarea>
+                            </div>
+                          </div>
+                          <div class="d-flex gap-2 mt-3">
+                            <button type="submit" id="projSubmitBtn" class="btn btn-primary fw-semibold py-2 px-4">
+                              <i class="bi bi-save me-2"></i>Save Project
+                            </button>
+                            <button type="button" id="cancelProjEditBtn" class="btn btn-outline-secondary py-2 px-3 d-none">
+                              Cancel Edit
+                            </button>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                    <!-- Tab 2: Directory -->
+                    <div class="tab-pane fade" id="projectListSubPanel" role="tabpanel" aria-labelledby="project-list-subtab">
+                      <div class="card p-4 rounded-4 shadow-sm border">
+                        <h3 class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
+                          <i class="bi bi-list-task me-2 text-primary"></i>Projects Directory
+                        </h3>
+                        <div class="table-responsive">
+                          <table class="table table-hover align-middle mb-0" id="projectsTable">
+                            <thead class="table-light">
+                              <tr>
+                                <th>Project ID</th>
+                                <th>Project Name</th>
+                                <th>Client / Sponsor</th>
+                                <th>Manager</th>
+                                <th>Timeline</th>
+                                <th>Status</th>
+                                <th class="text-center">Actions</th>
+                              </tr>
+                            </thead>
+                            <tbody id="projectsTableBody">
+                              <tr>
+                                <td colspan="7" class="text-center py-4 text-muted">Loading projects...</td>
+                              </tr>
+                            </tbody>
+                          </table>
                         </div>
                       </div>
-                      <div class="d-flex gap-2 mt-3">
-                        <button type="submit" id="projSubmitBtn" class="btn btn-primary fw-semibold py-2 px-4">
-                          <i class="bi bi-save me-2"></i>Save Project
-                        </button>
-                        <button type="button" id="cancelProjEditBtn" class="btn btn-outline-secondary py-2 px-3 d-none">
-                          Cancel Edit
-                        </button>
-                      </div>
-                    </form>
-                  </div>
-                  <!-- Directory -->
-                  <div class="card p-4 rounded-4 shadow-sm border">
-                    <h3 class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
-                      <i class="bi bi-list-task me-2 text-primary"></i>Projects Directory
-                    </h3>
-                    <div class="table-responsive">
-                      <table class="table table-hover align-middle mb-0" id="projectsTable">
-                        <thead class="table-light">
-                          <tr>
-                            <th>Project ID</th>
-                            <th>Project Name</th>
-                            <th>Client / Sponsor</th>
-                            <th>Manager</th>
-                            <th>Timeline</th>
-                            <th>Status</th>
-                            <th class="text-center">Actions</th>
-                          </tr>
-                        </thead>
-                        <tbody id="projectsTableBody">
-                          <tr>
-                            <td colspan="7" class="text-center py-4 text-muted">Loading projects...</td>
-                          </tr>
-                        </tbody>
-                      </table>
                     </div>
                   </div>
                 </div>
 
                 <!-- 1B. EMPLOYEE INFORMATION DATABASE PANEL -->
                 <div class="tab-pane fade" id="employeesPanel" role="tabpanel">
-                  <!-- Form -->
-                  <div class="card p-4 rounded-4 shadow-sm border mb-4">
-                    <h3 id="empFormTitle" class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
-                      <i class="bi bi-person-plus-fill me-2 text-primary"></i>Add Employee Record
-                    </h3>
-                    <form id="employeeForm">
-                      <div class="row g-3">
-                        <div class="col-md-6">
-                          <label class="form-label small fw-semibold" for="emp_employee_name">Full Name <span
-                              class="text-danger">*</span></label>
-                          <input class="form-control" id="emp_employee_name" type="text" placeholder="e.g. John Doe"
-                            required maxlength="100">
-                        </div>
-                        <div class="col-md-6">
-                          <label class="form-label small fw-semibold" for="emp_designation">Designation <span
-                              class="text-danger">*</span></label>
-                          <input class="form-control" id="emp_designation" type="text" placeholder="e.g. Project Manager" required maxlength="100">
-                        </div>
-                        <div class="col-md-4">
-                          <label class="form-label small fw-semibold" for="emp_department">Department <span
-                              class="text-danger">*</span></label>
-                          <select class="form-select" id="emp_department" required>
-                            <option value="" disabled selected>Select department</option>
-                            <option value="Engineering">Engineering</option>
-                            <option value="Operations">Operations</option>
-                            <option value="Procurement">Procurement</option>
-                            <option value="IT & Cloud">IT &amp; Cloud</option>
-                            <option value="Human Resources">Human Resources</option>
-                            <option value="Finance">Finance</option>
-                          </select>
-                        </div>
-                        <div class="col-md-4">
-                          <label class="form-label small fw-semibold" for="emp_mobile_phone">Mobile Number</label>
-                          <input class="form-control" id="emp_mobile_phone" type="tel"
-                            placeholder="e.g. +88017XXXXXXXX">
-                        </div>
-                        <div class="col-md-4">
-                          <label class="form-label small fw-semibold" for="emp_email">E-mail Address</label>
-                          <input class="form-control" id="emp_email" type="email" placeholder="e.g. name@domain.com">
-                        </div>
-                        <div class="col-md-6">
-                          <label class="form-label small fw-semibold" for="emp_status">Employment Status</label>
-                          <select class="form-select" id="emp_status">
-                            <option value="Active" selected>Active</option>
-                            <option value="Inactive">Inactive</option>
-                          </select>
-                        </div>
-                        <div class="col-md-6">
-                          <label class="form-label small fw-semibold" for="emp_employee_id">Employee ID <span
-                              class="text-muted">(e.g. EMP-0001, auto-generated if blank)</span></label>
-                          <input class="form-control" id="emp_employee_id" type="text" placeholder="e.g. EMP-0001">
+                  <!-- Sub-tabs at the top -->
+                  <ul class="nav nav-tabs mb-3" id="employeeSubTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                      <button class="nav-link active fw-semibold text-primary" id="employee-form-subtab" data-bs-toggle="tab" data-bs-target="#employeeFormSubPanel" type="button" role="tab" aria-controls="employeeFormSubPanel" aria-selected="true">
+                        <i class="bi bi-person-plus-fill me-1"></i>Add Employee
+                      </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                      <button class="nav-link fw-semibold text-primary" id="employee-list-subtab" data-bs-toggle="tab" data-bs-target="#employeeListSubPanel" type="button" role="tab" aria-controls="employeeListSubPanel" aria-selected="false">
+                        <i class="bi bi-people me-1"></i>Employee Directory
+                      </button>
+                    </li>
+                  </ul>
+                  <div class="tab-content" id="employeeSubTabsContent">
+                    <!-- Tab 1: Form -->
+                    <div class="tab-pane fade show active" id="employeeFormSubPanel" role="tabpanel" aria-labelledby="employee-form-subtab">
+                      <div class="card p-4 rounded-4 shadow-sm border mb-4">
+                        <h3 id="empFormTitle" class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
+                          <i class="bi bi-person-plus-fill me-2 text-primary"></i>Add Employee Record
+                        </h3>
+                        <form id="employeeForm">
+                          <div class="row g-3">
+                            <div class="col-md-6">
+                              <label class="form-label small fw-semibold" for="emp_employee_name">Full Name <span
+                                  class="text-danger">*</span></label>
+                              <input class="form-control" id="emp_employee_name" type="text" placeholder="e.g. John Doe"
+                                required maxlength="100">
+                            </div>
+                            <div class="col-md-6">
+                              <label class="form-label small fw-semibold" for="emp_designation">Designation <span
+                                  class="text-danger">*</span></label>
+                              <input class="form-control" id="emp_designation" type="text"
+                                placeholder="e.g. Project Manager" required maxlength="100">
+                            </div>
+                            <div class="col-md-4">
+                              <label class="form-label small fw-semibold" for="emp_department">Department <span
+                                  class="text-danger">*</span></label>
+                              <select class="form-select" id="emp_department" required>
+                                <option value="" disabled selected>Select department</option>
+                                <option value="Engineering">Engineering</option>
+                                <option value="Operations">Operations</option>
+                                <option value="Procurement">Procurement</option>
+                                <option value="IT & Cloud">IT &amp; Cloud</option>
+                                <option value="Human Resources">Human Resources</option>
+                                <option value="Finance">Finance</option>
+                              </select>
+                            </div>
+                            <div class="col-md-4">
+                              <label class="form-label small fw-semibold" for="emp_mobile_phone">Mobile Number</label>
+                              <input class="form-control" id="emp_mobile_phone" type="tel"
+                                placeholder="e.g. +88017XXXXXXXX">
+                            </div>
+                            <div class="col-md-4">
+                              <label class="form-label small fw-semibold" for="emp_email">E-mail Address</label>
+                              <input class="form-control" id="emp_email" type="email" placeholder="e.g. name@domain.com">
+                            </div>
+                            <div class="col-md-6">
+                              <label class="form-label small fw-semibold" for="emp_status">Employment Status</label>
+                              <select class="form-select" id="emp_status">
+                                <option value="Active" selected>Active</option>
+                                <option value="Inactive">Inactive</option>
+                              </select>
+                            </div>
+                            <div class="col-md-6">
+                              <label class="form-label small fw-semibold" for="emp_employee_id">Employee ID <span
+                                  class="text-muted">(e.g. EMP-0001, auto-generated if blank)</span></label>
+                              <input class="form-control" id="emp_employee_id" type="text" placeholder="e.g. EMP-0001">
+                            </div>
+                          </div>
+                          <div class="d-flex gap-2 mt-3">
+                            <button type="submit" id="empSubmitBtn" class="btn btn-primary fw-semibold py-2 px-4">
+                              <i class="bi bi-save me-2"></i>Save Employee Record
+                            </button>
+                            <button type="button" id="cancelEmpEditBtn" class="btn btn-outline-secondary py-2 px-3 d-none">
+                              Cancel Edit
+                            </button>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                    <!-- Tab 2: Directory -->
+                    <div class="tab-pane fade" id="employeeListSubPanel" role="tabpanel" aria-labelledby="employee-list-subtab">
+                      <div class="card p-4 rounded-4 shadow-sm border">
+                        <h3 class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
+                          <i class="bi bi-people me-2 text-primary"></i>Employee Directory
+                        </h3>
+                        <div class="table-responsive">
+                          <table class="table table-hover align-middle mb-0" id="employeesTable">
+                            <thead class="table-light">
+                              <tr>
+                                <th>Employee ID</th>
+                                <th>Name</th>
+                                <th>Designation</th>
+                                <th>Department</th>
+                                <th>Mobile</th>
+                                <th>Email</th>
+                                <th>Status</th>
+                                <th class="text-center">Actions</th>
+                              </tr>
+                            </thead>
+                            <tbody id="employeesTableBody">
+                              <tr>
+                                <td colspan="8" class="text-center py-4 text-muted">Loading employees...</td>
+                              </tr>
+                            </tbody>
+                          </table>
                         </div>
                       </div>
-                      <div class="d-flex gap-2 mt-3">
-                        <button type="submit" id="empSubmitBtn" class="btn btn-primary fw-semibold py-2 px-4">
-                          <i class="bi bi-save me-2"></i>Save Employee Record
-                        </button>
-                        <button type="button" id="cancelEmpEditBtn" class="btn btn-outline-secondary py-2 px-3 d-none">
-                          Cancel Edit
-                        </button>
-                      </div>
-                    </form>
-                  </div>
-                  <!-- Directory -->
-                  <div class="card p-4 rounded-4 shadow-sm border">
-                    <h3 class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
-                      <i class="bi bi-people me-2 text-primary"></i>Employee Directory
-                    </h3>
-                    <div class="table-responsive">
-                      <table class="table table-hover align-middle mb-0" id="employeesTable">
-                        <thead class="table-light">
-                          <tr>
-                            <th>Employee ID</th>
-                            <th>Name</th>
-                            <th>Designation</th>
-                            <th>Department</th>
-                            <th>Mobile</th>
-                            <th>Email</th>
-                            <th>Status</th>
-                            <th class="text-center">Actions</th>
-                          </tr>
-                        </thead>
-                        <tbody id="employeesTableBody">
-                          <tr>
-                            <td colspan="8" class="text-center py-4 text-muted">Loading employees...</td>
-                          </tr>
-                        </tbody>
-                      </table>
                     </div>
                   </div>
                 </div>
 
                 <!-- 2. CONTACT DIRECTORY PANEL -->
                 <div class="tab-pane fade" id="contactsPanel" role="tabpanel">
-                  <!-- Form -->
-                  <div class="card p-4 rounded-4 shadow-sm border mb-4">
-                    <h3 id="contactFormTitle" class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
-                      <i class="bi bi-telephone-plus me-2 text-primary"></i>Add Contact
-                    </h3>
-                    <form id="contactForm">
-                      <input type="hidden" id="contact_id">
-                      <div class="row g-3">
-                        <div class="col-md-12">
-                          <label class="form-label small fw-semibold text-primary" for="contact_employee_import">Assign
-                            from Employee Database <span class="text-muted">(Optional - auto-fills details
-                              below)</span></label>
-                          <select class="form-select border-primary" id="contact_employee_import">
-                            <option value="">-- Type Details Manually --</option>
-                          </select>
+                  <!-- Sub-tabs at the top -->
+                  <ul class="nav nav-tabs mb-3" id="contactSubTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                      <button class="nav-link active fw-semibold text-primary" id="contact-form-subtab" data-bs-toggle="tab" data-bs-target="#contactFormSubPanel" type="button" role="tab" aria-controls="contactFormSubPanel" aria-selected="true">
+                        <i class="bi bi-person-plus-fill me-1"></i>Add Contact
+                      </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                      <button class="nav-link fw-semibold text-primary" id="contact-list-subtab" data-bs-toggle="tab" data-bs-target="#contactListSubPanel" type="button" role="tab" aria-controls="contactListSubPanel" aria-selected="false">
+                        <i class="bi bi-journals me-1"></i>Contact Directory
+                      </button>
+                    </li>
+                  </ul>
+                  <div class="tab-content" id="contactSubTabsContent">
+                    <!-- Tab 1: Form -->
+                    <div class="tab-pane fade show active" id="contactFormSubPanel" role="tabpanel" aria-labelledby="contact-form-subtab">
+                      <div class="card p-4 rounded-4 shadow-sm border mb-4">
+                        <h3 id="contactFormTitle" class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
+                          <i class="bi bi-telephone-plus me-2 text-primary"></i>Add Contact
+                        </h3>
+                        <form id="contactForm">
+                          <input type="hidden" id="contact_id">
+                          <div class="row g-3">
+                            <div class="col-md-6">
+                              <label class="form-label small fw-semibold" for="contact_name">Full Name <span
+                                  class="text-danger">*</span></label>
+                              <input class="form-control" id="contact_name" type="text" placeholder="e.g. Jobaer Hossain"
+                                required maxlength="100">
+                            </div>
+                            <div class="col-md-6">
+                              <label class="form-label small fw-semibold" for="contact_type">Contact Type <span
+                                  class="text-danger">*</span></label>
+                              <select class="form-select" id="contact_type" required>
+                                <option value="Client" selected>Client</option>
+                                <option value="Vendor">Vendor</option>
+                              </select>
+                            </div>
+                            <div class="col-md-6">
+                              <label class="form-label small fw-semibold" for="contact_designation">Designation <span
+                                  class="text-danger">*</span></label>
+                              <input class="form-control" id="contact_designation" type="text"
+                                placeholder="e.g. Project Manager" required maxlength="100">
+                            </div>
+                            <div class="col-md-6">
+                              <label class="form-label small fw-semibold" for="contact_organization">Organization <span
+                                  class="text-danger">*</span></label>
+                              <input class="form-control" id="contact_organization" type="text"
+                                placeholder="e.g. Intrex Digital" required>
+                            </div>
+                            <div class="col-md-6">
+                              <label class="form-label small fw-semibold" for="contact_mobile_phone">Mobile Number</label>
+                              <input class="form-control" id="contact_mobile_phone" type="tel"
+                                placeholder="e.g. +88017XXXXXXXX">
+                            </div>
+                            <div class="col-md-6">
+                              <label class="form-label small fw-semibold" for="contact_email">E-mail Address</label>
+                              <input class="form-control" id="contact_email" type="email"
+                                placeholder="e.g. name@domain.com">
+                            </div>
+                          </div>
+                          <div class="d-flex gap-2 mt-3">
+                            <button type="submit" id="contactSubmitBtn" class="btn btn-primary fw-semibold py-2 px-4">
+                              <i class="bi bi-save me-2"></i>Save Contact
+                            </button>
+                            <button type="button" id="cancelContactEditBtn"
+                              class="btn btn-outline-secondary py-2 px-3 d-none">
+                              Cancel Edit
+                            </button>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                    <!-- Tab 2: Contact Directory with Client/Vendor Subtabs -->
+                    <div class="tab-pane fade" id="contactListSubPanel" role="tabpanel" aria-labelledby="contact-list-subtab">
+                      <div class="card p-4 rounded-4 shadow-sm border">
+                        <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom flex-wrap gap-2">
+                          <h3 class="h5 fw-bold text-heading-color mb-0">
+                            <i class="bi bi-journals me-2 text-primary"></i>Contact Directory
+                          </h3>
+                          <!-- Search and Refresh -->
+                          <div class="d-flex align-items-center gap-2 flex-wrap">
+                            <input type="text" id="searchContact" class="form-control form-control-sm" style="max-width: 200px;" placeholder="Search name, phone...">
+                            <button id="refreshContactsBtn" class="btn btn-sm btn-outline-secondary" type="button" title="Refresh Directory">
+                              <i class="bi bi-arrow-clockwise"></i>
+                            </button>
+                          </div>
                         </div>
-                        <div class="col-md-6">
-                          <label class="form-label small fw-semibold" for="contact_name">Full Name <span
-                              class="text-danger">*</span></label>
-                          <input class="form-control" id="contact_name" type="text" placeholder="e.g. Jobaer Hossain"
-                            required maxlength="100">
-                        </div>
-                        <div class="col-md-6">
-                          <label class="form-label small fw-semibold" for="contact_designation">Designation <span
-                              class="text-danger">*</span></label>
-                          <input class="form-control" id="contact_designation" type="text" placeholder="e.g. Project Manager" required maxlength="100">
-                        </div>
-                        <div class="col-md-6">
-                          <label class="form-label small fw-semibold" for="contact_organization">Organization <span
-                              class="text-danger">*</span></label>
-                          <input class="form-control" id="contact_organization" type="text"
-                            placeholder="e.g. Intrex Digital" required>
-                        </div>
-                        <div class="col-md-6">
-                          <label class="form-label small fw-semibold" for="contact_mobile_phone">Mobile Number</label>
-                          <input class="form-control" id="contact_mobile_phone" type="tel"
-                            placeholder="e.g. +88017XXXXXXXX">
-                        </div>
-                        <div class="col-md-6">
-                          <label class="form-label small fw-semibold" for="contact_email">E-mail Address</label>
-                          <input class="form-control" id="contact_email" type="email"
-                            placeholder="e.g. name@domain.com">
+
+                        <!-- Sub-tabs: Client vs Vendor -->
+                        <ul class="nav nav-tabs mb-3" id="contactDirectorySubTabs" role="tablist">
+                          <li class="nav-item" role="presentation">
+                            <button class="nav-link active fw-semibold text-primary" id="client-contacts-subtab" data-bs-toggle="tab" data-bs-target="#clientContactsSubPanel" type="button" role="tab" aria-controls="clientContactsSubPanel" aria-selected="true">
+                              <i class="bi bi-person-badge me-1"></i>Client Contacts
+                            </button>
+                          </li>
+                          <li class="nav-item" role="presentation">
+                            <button class="nav-link fw-semibold text-primary" id="vendor-contacts-subtab" data-bs-toggle="tab" data-bs-target="#vendorContactsSubPanel" type="button" role="tab" aria-controls="vendorContactsSubPanel" aria-selected="false">
+                              <i class="bi bi-truck me-1"></i>Vendor Contacts
+                            </button>
+                          </li>
+                        </ul>
+
+                        <div class="tab-content" id="contactDirectorySubTabsContent">
+                          <!-- Client Panel -->
+                          <div class="tab-pane fade show active" id="clientContactsSubPanel" role="tabpanel" aria-labelledby="client-contacts-subtab">
+                            <div class="table-responsive">
+                              <table class="table table-hover align-middle mb-0" id="clientContactsTable">
+                                <thead class="table-light">
+                                  <tr>
+                                    <th>Contact ID</th>
+                                    <th>Name</th>
+                                    <th>Designation</th>
+                                    <th>Organization</th>
+                                    <th>Mobile</th>
+                                    <th>Email</th>
+                                    <th>Project IDs</th>
+                                    <th class="text-center">Actions</th>
+                                  </tr>
+                                </thead>
+                                <tbody id="clientContactsTableBody">
+                                  <tr>
+                                    <td colspan="8" class="text-center py-4 text-muted">Loading client contacts...</td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+                          <!-- Vendor Panel -->
+                          <div class="tab-pane fade" id="vendorContactsSubPanel" role="tabpanel" aria-labelledby="vendor-contacts-subtab">
+                            <div class="table-responsive">
+                              <table class="table table-hover align-middle mb-0" id="vendorContactsTable">
+                                <thead class="table-light">
+                                  <tr>
+                                    <th>Contact ID</th>
+                                    <th>Name</th>
+                                    <th>Designation</th>
+                                    <th>Organization</th>
+                                    <th>Mobile</th>
+                                    <th>Email</th>
+                                    <th>Project IDs</th>
+                                    <th class="text-center">Actions</th>
+                                  </tr>
+                                </thead>
+                                <tbody id="vendorContactsTableBody">
+                                  <tr>
+                                    <td colspan="8" class="text-center py-4 text-muted">Loading vendor contacts...</td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
                         </div>
                       </div>
-                      <div class="d-flex gap-2 mt-3">
-                        <button type="submit" id="contactSubmitBtn" class="btn btn-primary fw-semibold py-2 px-4">
-                          <i class="bi bi-save me-2"></i>Save Contact
-                        </button>
-                        <button type="button" id="cancelContactEditBtn" class="btn btn-outline-secondary py-2 px-3 d-none">
-                          Cancel Edit
-                        </button>
-                      </div>
-                    </form>
-                  </div>
-                  <!-- Directory -->
-                  <div class="card p-4 rounded-4 shadow-sm border">
-                    <h3 class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
-                      <i class="bi bi-journals me-2 text-primary"></i>Contact Directory
-                    </h3>
-                    <div class="table-responsive">
-                      <table class="table table-hover align-middle mb-0" id="contactsTable">
-                        <thead class="table-light">
-                          <tr>
-                            <th>Contact ID</th>
-                            <th>Name</th>
-                            <th>Designation</th>
-                            <th>Organization</th>
-                            <th>Mobile</th>
-                            <th>Email</th>
-                            <th>Project IDs</th>
-                            <th class="text-center">Actions</th>
-                          </tr>
-                        </thead>
-                        <tbody id="contactsTableBody">
-                          <tr>
-                            <td colspan="8" class="text-center py-4 text-muted">Loading contacts...</td>
-                          </tr>
-                        </tbody>
-                      </table>
                     </div>
                   </div>
                 </div>
 
                 <!-- 3. MEETING SCHEDULER PANEL -->
                 <div class="tab-pane fade" id="meetingsPanel" role="tabpanel">
-                  <!-- Form -->
-                  <div class="card p-4 rounded-4 shadow-sm border mb-4">
+                  <!-- Sub-tabs at the top -->
+                  <ul class="nav nav-tabs mb-3" id="meetingSubTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                      <button class="nav-link active fw-semibold text-primary" id="meeting-form-subtab" data-bs-toggle="tab" data-bs-target="#meetingFormSubPanel" type="button" role="tab" aria-controls="meetingFormSubPanel" aria-selected="true">
+                        <i class="bi bi-calendar-plus me-1"></i>Schedule Meeting
+                      </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                      <button class="nav-link fw-semibold text-primary" id="meeting-list-subtab" data-bs-toggle="tab" data-bs-target="#meetingListSubPanel" type="button" role="tab" aria-controls="meetingListSubPanel" aria-selected="false">
+                        <i class="bi bi-calendar3 me-1"></i>Meetings Log
+                      </button>
+                    </li>
+                  </ul>
+                  <div class="tab-content" id="meetingSubTabsContent">
+                    <!-- Tab 1: Form -->
+                    <div class="tab-pane fade show active" id="meetingFormSubPanel" role="tabpanel" aria-labelledby="meeting-form-subtab">
+                      <div class="card p-4 rounded-4 shadow-sm border mb-4">
                     <h3 id="meetFormTitle" class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
                       <i class="bi bi-calendar-plus me-2 text-primary"></i>Schedule Meeting
                     </h3>
@@ -648,8 +776,10 @@
                       </div>
                     </form>
                   </div>
-                  <!-- Directory -->
-                  <div class="card p-4 rounded-4 shadow-sm border">
+                    </div>
+                    <!-- Tab 2: Directory -->
+                    <div class="tab-pane fade" id="meetingListSubPanel" role="tabpanel" aria-labelledby="meeting-list-subtab">
+                      <div class="card p-4 rounded-4 shadow-sm border">
                     <h3 class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
                       <i class="bi bi-calendar3 me-2 text-primary"></i>Meetings Log
                     </h3>
@@ -674,12 +804,29 @@
                       </table>
                     </div>
                   </div>
+                    </div>
+                  </div>
                 </div>
 
                 <!-- 4. BUDGET PLANNER PANEL -->
                 <div class="tab-pane fade" id="budgetPanel" role="tabpanel">
-                  <!-- Form -->
-                  <div class="card p-4 rounded-4 shadow-sm border mb-4">
+                  <!-- Sub-tabs at the top -->
+                  <ul class="nav nav-tabs mb-3" id="budgetSubTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                      <button class="nav-link active fw-semibold text-primary" id="budget-form-subtab" data-bs-toggle="tab" data-bs-target="#budgetFormSubPanel" type="button" role="tab" aria-controls="budgetFormSubPanel" aria-selected="true">
+                        <i class="bi bi-cash-stack me-1"></i>Allocate Budget Line
+                      </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                      <button class="nav-link fw-semibold text-primary" id="budget-list-subtab" data-bs-toggle="tab" data-bs-target="#budgetListSubPanel" type="button" role="tab" aria-controls="budgetListSubPanel" aria-selected="false">
+                        <i class="bi bi-wallet-fill me-1"></i>Budget Overview
+                      </button>
+                    </li>
+                  </ul>
+                  <div class="tab-content" id="budgetSubTabsContent">
+                    <!-- Tab 1: Form -->
+                    <div class="tab-pane fade show active" id="budgetFormSubPanel" role="tabpanel" aria-labelledby="budget-form-subtab">
+                      <div class="card p-4 rounded-4 shadow-sm border mb-4">
                     <h3 id="budgetFormTitle" class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
                       <i class="bi bi-cash-stack me-2 text-primary"></i>Allocate Budget Line
                     </h3>
@@ -729,14 +876,17 @@
                         <button type="submit" id="budgetSubmitBtn" class="btn btn-primary fw-semibold py-2 px-4">
                           <i class="bi bi-plus-circle me-2"></i>Save Budget Line
                         </button>
-                        <button type="button" id="cancelBudgetEditBtn" class="btn btn-outline-secondary py-2 px-3 d-none">
+                        <button type="button" id="cancelBudgetEditBtn"
+                          class="btn btn-outline-secondary py-2 px-3 d-none">
                           Cancel Edit
                         </button>
                       </div>
                     </form>
                   </div>
-                  <!-- Directory -->
-                  <div class="card p-4 rounded-4 shadow-sm border">
+                    </div>
+                    <!-- Tab 2: Directory -->
+                    <div class="tab-pane fade" id="budgetListSubPanel" role="tabpanel" aria-labelledby="budget-list-subtab">
+                      <div class="card p-4 rounded-4 shadow-sm border">
                     <h3 class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
                       <i class="bi bi-wallet-fill me-2 text-primary"></i>Budget Overview
                     </h3>
@@ -762,12 +912,29 @@
                       </table>
                     </div>
                   </div>
+                    </div>
+                  </div>
                 </div>
 
                 <!-- 5. PROJECT TASKS PANEL -->
                 <div class="tab-pane fade" id="tasksPanel" role="tabpanel">
-                  <!-- Form -->
-                  <div class="card p-4 rounded-4 shadow-sm border mb-4">
+                  <!-- Sub-tabs at the top -->
+                  <ul class="nav nav-tabs mb-3" id="taskSubTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                      <button class="nav-link active fw-semibold text-primary" id="task-form-subtab" data-bs-toggle="tab" data-bs-target="#taskFormSubPanel" type="button" role="tab" aria-controls="taskFormSubPanel" aria-selected="true">
+                        <i class="bi-activity me-1"></i>Create / Manage Task
+                      </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                      <button class="nav-link fw-semibold text-primary" id="task-list-subtab" data-bs-toggle="tab" data-bs-target="#taskListSubPanel" type="button" role="tab" aria-controls="taskListSubPanel" aria-selected="false">
+                        <i class="bi-list-stars me-1"></i>Tasks Directory
+                      </button>
+                    </li>
+                  </ul>
+                  <div class="tab-content" id="taskSubTabsContent">
+                    <!-- Tab 1: Form -->
+                    <div class="tab-pane fade show active" id="taskFormSubPanel" role="tabpanel" aria-labelledby="task-form-subtab">
+                      <div class="card p-4 rounded-4 shadow-sm border mb-4">
                     <h3 id="taskFormTitle" class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
                       <i class="bi bi-activity me-2 text-primary"></i>Create / Manage Task
                     </h3>
@@ -845,8 +1012,10 @@
                       </div>
                     </form>
                   </div>
-                  <!-- Directory -->
-                  <div class="card p-4 rounded-4 shadow-sm border">
+                  </div>
+                    <!-- Tab 2: Directory -->
+                    <div class="tab-pane fade" id="taskListSubPanel" role="tabpanel" aria-labelledby="task-list-subtab">
+                      <div class="card p-4 rounded-4 shadow-sm border">
                     <h3 class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
                       <i class="bi bi-list-stars me-2 text-primary"></i>Tasks Directory
                     </h3>
@@ -873,12 +1042,31 @@
                       </table>
                     </div>
                   </div>
+
+                    </div>
+
+                  </div>
                 </div>
 
                 <!-- 6. REQUISITIONS PANEL -->
                 <div class="tab-pane fade" id="requisitionPanel" role="tabpanel">
-                  <!-- Form -->
-                  <div class="card p-4 rounded-4 shadow-sm border mb-4">
+                  <!-- Sub-tabs at the top -->
+                  <ul class="nav nav-tabs mb-3" id="reqSubTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                      <button class="nav-link active fw-semibold text-primary" id="req-form-subtab" data-bs-toggle="tab" data-bs-target="#reqFormSubPanel" type="button" role="tab" aria-controls="reqFormSubPanel" aria-selected="true">
+                        <i class="bi-file-earmark-plus me-1"></i>Create Requisition
+                      </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                      <button class="nav-link fw-semibold text-primary" id="req-list-subtab" data-bs-toggle="tab" data-bs-target="#reqListSubPanel" type="button" role="tab" aria-controls="reqListSubPanel" aria-selected="false">
+                        <i class="bi-file-earmark-spreadsheet me-1"></i>Requisitions Directory
+                      </button>
+                    </li>
+                  </ul>
+                  <div class="tab-content" id="reqSubTabsContent">
+                    <!-- Tab 1: Form -->
+                    <div class="tab-pane fade show active" id="reqFormSubPanel" role="tabpanel" aria-labelledby="req-form-subtab">
+                      <div class="card p-4 rounded-4 shadow-sm border mb-4">
                     <h3 id="reqFormTitle" class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
                       <i class="bi bi-file-earmark-plus me-2 text-primary"></i>Create Requisition
                     </h3>
@@ -956,8 +1144,10 @@
                       </div>
                     </form>
                   </div>
-                  <!-- Directory -->
-                  <div class="card p-4 rounded-4 shadow-sm border">
+                  </div>
+                    <!-- Tab 2: Directory -->
+                    <div class="tab-pane fade" id="reqListSubPanel" role="tabpanel" aria-labelledby="req-list-subtab">
+                      <div class="card p-4 rounded-4 shadow-sm border">
                     <h3 class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
                       <i class="bi bi-file-earmark-spreadsheet me-2 text-primary"></i>Requisitions Directory
                     </h3>
@@ -984,12 +1174,31 @@
                       </table>
                     </div>
                   </div>
+
+                    </div>
+
+                  </div>
                 </div>
 
                 <!-- 7. PURCHASE ORDERS PANEL -->
                 <div class="tab-pane fade" id="purchasesPanel" role="tabpanel">
-                  <!-- Form -->
-                  <div class="card p-4 rounded-4 shadow-sm border mb-4">
+                  <!-- Sub-tabs at the top -->
+                  <ul class="nav nav-tabs mb-3" id="poSubTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                      <button class="nav-link active fw-semibold text-primary" id="po-form-subtab" data-bs-toggle="tab" data-bs-target="#poFormSubPanel" type="button" role="tab" aria-controls="poFormSubPanel" aria-selected="true">
+                        <i class="bi-cart-plus me-1"></i>Create Purchase Order
+                      </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                      <button class="nav-link fw-semibold text-primary" id="po-list-subtab" data-bs-toggle="tab" data-bs-target="#poListSubPanel" type="button" role="tab" aria-controls="poListSubPanel" aria-selected="false">
+                        <i class="bi-receipt-cutoff me-1"></i>Purchase Ledger
+                      </button>
+                    </li>
+                  </ul>
+                  <div class="tab-content" id="poSubTabsContent">
+                    <!-- Tab 1: Form -->
+                    <div class="tab-pane fade show active" id="poFormSubPanel" role="tabpanel" aria-labelledby="po-form-subtab">
+                      <div class="card p-4 rounded-4 shadow-sm border mb-4">
                     <h3 id="poFormTitle" class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
                       <i class="bi bi-cart-plus me-2 text-primary"></i>Create Purchase Order
                     </h3>
@@ -1064,8 +1273,10 @@
                       </div>
                     </form>
                   </div>
-                  <!-- Directory -->
-                  <div class="card p-4 rounded-4 shadow-sm border">
+                  </div>
+                    <!-- Tab 2: Directory -->
+                    <div class="tab-pane fade" id="poListSubPanel" role="tabpanel" aria-labelledby="po-list-subtab">
+                      <div class="card p-4 rounded-4 shadow-sm border">
                     <h3 class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
                       <i class="bi bi-receipt-cutoff me-2 text-primary"></i>Purchase Ledger
                     </h3>
@@ -1092,12 +1303,31 @@
                       </table>
                     </div>
                   </div>
+
+                    </div>
+
+                  </div>
                 </div>
 
                 <!-- 8. COST / EXPENSE PANEL -->
                 <div class="tab-pane fade" id="expensesPanel" role="tabpanel">
-                  <!-- Form -->
-                  <div class="card p-4 rounded-4 shadow-sm border mb-4">
+                  <!-- Sub-tabs at the top -->
+                  <ul class="nav nav-tabs mb-3" id="expenseSubTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                      <button class="nav-link active fw-semibold text-primary" id="expense-form-subtab" data-bs-toggle="tab" data-bs-target="#expenseFormSubPanel" type="button" role="tab" aria-controls="expenseFormSubPanel" aria-selected="true">
+                        <i class="bi-cash-coin me-1"></i>Log Expense / Payment
+                      </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                      <button class="nav-link fw-semibold text-primary" id="expense-list-subtab" data-bs-toggle="tab" data-bs-target="#expenseListSubPanel" type="button" role="tab" aria-controls="expenseListSubPanel" aria-selected="false">
+                        <i class="bi-clipboard-data me-1"></i>Operational Expenses Ledger
+                      </button>
+                    </li>
+                  </ul>
+                  <div class="tab-content" id="expenseSubTabsContent">
+                    <!-- Tab 1: Form -->
+                    <div class="tab-pane fade show active" id="expenseFormSubPanel" role="tabpanel" aria-labelledby="expense-form-subtab">
+                      <div class="card p-4 rounded-4 shadow-sm border mb-4">
                     <h3 id="expenseFormTitle" class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
                       <i class="bi bi-cash-coin me-2 text-primary"></i>Log Expense / Payment
                     </h3>
@@ -1174,14 +1404,17 @@
                         <button type="submit" id="expenseSubmitBtn" class="btn btn-primary fw-semibold py-2 px-4">
                           <i class="bi bi-cash-coin me-2"></i>Post Expense Record
                         </button>
-                        <button type="button" id="cancelExpenseEditBtn" class="btn btn-outline-secondary py-2 px-3 d-none">
+                        <button type="button" id="cancelExpenseEditBtn"
+                          class="btn btn-outline-secondary py-2 px-3 d-none">
                           Cancel Edit
                         </button>
                       </div>
                     </form>
                   </div>
-                  <!-- Directory -->
-                  <div class="card p-4 rounded-4 shadow-sm border">
+                  </div>
+                    <!-- Tab 2: Directory -->
+                    <div class="tab-pane fade" id="expenseListSubPanel" role="tabpanel" aria-labelledby="expense-list-subtab">
+                      <div class="card p-4 rounded-4 shadow-sm border">
                     <h3 class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
                       <i class="bi bi-clipboard-data me-2 text-primary"></i>Operational Expenses Ledger
                     </h3>
@@ -1209,12 +1442,31 @@
                       </table>
                     </div>
                   </div>
+
+                    </div>
+
+                  </div>
                 </div>
 
                 <!-- 8. CLIENT INVOICING PANEL -->
                 <div class="tab-pane fade" id="paymentsPanel" role="tabpanel">
-                  <!-- Form -->
-                  <div class="card p-4 rounded-4 shadow-sm border mb-4">
+                  <!-- Sub-tabs at the top -->
+                  <ul class="nav nav-tabs mb-3" id="paymentSubTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                      <button class="nav-link active fw-semibold text-primary" id="payment-form-subtab" data-bs-toggle="tab" data-bs-target="#paymentFormSubPanel" type="button" role="tab" aria-controls="paymentFormSubPanel" aria-selected="true">
+                        <i class="bi-file-earmark-spreadsheet me-1"></i>Log Client Invoice
+                      </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                      <button class="nav-link fw-semibold text-primary" id="payment-list-subtab" data-bs-toggle="tab" data-bs-target="#paymentListSubPanel" type="button" role="tab" aria-controls="paymentListSubPanel" aria-selected="false">
+                        <i class="bi-cash-stack me-1"></i>Invoices & Revenue Ledger
+                      </button>
+                    </li>
+                  </ul>
+                  <div class="tab-content" id="paymentSubTabsContent">
+                    <!-- Tab 1: Form -->
+                    <div class="tab-pane fade show active" id="paymentFormSubPanel" role="tabpanel" aria-labelledby="payment-form-subtab">
+                      <div class="card p-4 rounded-4 shadow-sm border mb-4">
                     <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
                       <h3 class="h5 fw-bold mb-0 text-heading-color">
                         <i class="bi bi-file-earmark-spreadsheet me-2 text-primary"></i><span id="paymentFormTitle">Log
@@ -1301,8 +1553,10 @@
                       </button>
                     </form>
                   </div>
-                  <!-- Directory -->
-                  <div class="card p-4 rounded-4 shadow-sm border">
+                  </div>
+                    <!-- Tab 2: Directory -->
+                    <div class="tab-pane fade" id="paymentListSubPanel" role="tabpanel" aria-labelledby="payment-list-subtab">
+                      <div class="card p-4 rounded-4 shadow-sm border">
                     <h3 class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
                       <i class="bi bi-cash-stack me-2 text-primary"></i>Invoices &amp; Revenue Ledger
                     </h3>
@@ -1332,12 +1586,31 @@
                       </table>
                     </div>
                   </div>
+
+                    </div>
+
+                  </div>
                 </div>
 
                 <!-- 9. SUPPORT TICKETING PANEL -->
                 <div class="tab-pane fade" id="ticketsPanel" role="tabpanel">
-                  <!-- Form -->
-                  <div class="card p-4 rounded-4 shadow-sm border mb-4">
+                  <!-- Sub-tabs at the top -->
+                  <ul class="nav nav-tabs mb-3" id="ticketSubTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                      <button class="nav-link active fw-semibold text-primary" id="ticket-form-subtab" data-bs-toggle="tab" data-bs-target="#ticketFormSubPanel" type="button" role="tab" aria-controls="ticketFormSubPanel" aria-selected="true">
+                        <i class="bi-ticket-detailed me-1"></i>Log Support Ticket
+                      </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                      <button class="nav-link fw-semibold text-primary" id="ticket-list-subtab" data-bs-toggle="tab" data-bs-target="#ticketListSubPanel" type="button" role="tab" aria-controls="ticketListSubPanel" aria-selected="false">
+                        <i class="bi-ticket-perforated me-1"></i>Support Tickets Directory
+                      </button>
+                    </li>
+                  </ul>
+                  <div class="tab-content" id="ticketSubTabsContent">
+                    <!-- Tab 1: Form -->
+                    <div class="tab-pane fade show active" id="ticketFormSubPanel" role="tabpanel" aria-labelledby="ticket-form-subtab">
+                      <div class="card p-4 rounded-4 shadow-sm border mb-4">
                     <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
                       <h3 class="h5 fw-bold mb-0 text-heading-color">
                         <i class="bi bi-ticket-detailed me-2 text-primary"></i><span id="ticketFormTitle">Log Support
@@ -1424,8 +1697,10 @@
                       </button>
                     </form>
                   </div>
-                  <!-- Directory -->
-                  <div class="card p-4 rounded-4 shadow-sm border">
+                  </div>
+                    <!-- Tab 2: Directory -->
+                    <div class="tab-pane fade" id="ticketListSubPanel" role="tabpanel" aria-labelledby="ticket-list-subtab">
+                      <div class="card p-4 rounded-4 shadow-sm border">
                     <h3 class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
                       <i class="bi bi-ticket-perforated me-2 text-primary"></i>Support Tickets Directory
                     </h3>
@@ -1455,12 +1730,31 @@
                       </table>
                     </div>
                   </div>
+
+                    </div>
+
+                  </div>
                 </div>
 
                 <!-- 10. DOMAIN & HOSTING SALES PANEL -->
                 <div class="tab-pane fade" id="hostingPanel" role="tabpanel">
-                  <!-- Form -->
-                  <div class="card p-4 rounded-4 shadow-sm border mb-4">
+                  <!-- Sub-tabs at the top -->
+                  <ul class="nav nav-tabs mb-3" id="hostingSubTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                      <button class="nav-link active fw-semibold text-primary" id="hosting-form-subtab" data-bs-toggle="tab" data-bs-target="#hostingFormSubPanel" type="button" role="tab" aria-controls="hostingFormSubPanel" aria-selected="true">
+                        <i class="bi-server me-1"></i>Add Domain & Hosting Asset
+                      </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                      <button class="nav-link fw-semibold text-primary" id="hosting-list-subtab" data-bs-toggle="tab" data-bs-target="#hostingListSubPanel" type="button" role="tab" aria-controls="hostingListSubPanel" aria-selected="false">
+                        <i class="bi-check2-circle me-1"></i>Domain & Hosting Assets
+                      </button>
+                    </li>
+                  </ul>
+                  <div class="tab-content" id="hostingSubTabsContent">
+                    <!-- Tab 1: Form -->
+                    <div class="tab-pane fade show active" id="hostingFormSubPanel" role="tabpanel" aria-labelledby="hosting-form-subtab">
+                      <div class="card p-4 rounded-4 shadow-sm border mb-4">
                     <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
                       <h3 class="h5 fw-bold mb-0 text-heading-color">
                         <i class="bi bi-server me-2 text-primary"></i><span id="hostingFormTitle">Add Domain & Hosting
@@ -1573,8 +1867,10 @@
                       </button>
                     </form>
                   </div>
-                  <!-- Directory -->
-                  <div class="card p-4 rounded-4 shadow-sm border">
+                  </div>
+                    <!-- Tab 2: Directory -->
+                    <div class="tab-pane fade" id="hostingListSubPanel" role="tabpanel" aria-labelledby="hosting-list-subtab">
+                      <div class="card p-4 rounded-4 shadow-sm border">
                     <h3 class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
                       <i class="bi bi-check2-circle me-2 text-primary"></i>Domain & Hosting Assets
                     </h3>
@@ -1604,6 +1900,10 @@
                       </table>
                     </div>
                   </div>
+
+                    </div>
+
+                  </div>
                 </div>
 
                 <!-- PROJECT REPORT GENERATOR PANEL -->
@@ -1614,7 +1914,8 @@
                     </h3>
                     <div class="row g-3 align-items-end mb-4">
                       <div class="col-md-6">
-                        <label class="form-label small fw-semibold" for="report_project_id">Select Project <span class="text-danger">*</span></label>
+                        <label class="form-label small fw-semibold" for="report_project_id">Select Project <span
+                            class="text-danger">*</span></label>
                         <select class="form-select project-id-select" id="report_project_id" required>
                           <option value="" disabled selected>Select Project</option>
                         </select>
@@ -1623,7 +1924,8 @@
                         <button type="button" class="btn btn-primary fw-semibold py-2 px-4" id="generateReportBtn">
                           <i class="bi bi-gear me-2"></i>Generate Report
                         </button>
-                        <button type="button" class="btn btn-outline-secondary fw-semibold py-2 px-3 d-none" id="printReportBtn">
+                        <button type="button" class="btn btn-outline-secondary fw-semibold py-2 px-3 d-none"
+                          id="printReportBtn">
                           <i class="bi bi-printer me-2"></i>Print Report
                         </button>
                       </div>
@@ -1672,7 +1974,7 @@
 
                       <!-- Main sections stacked blocks -->
                       <div class="vstack gap-4">
-                        
+
                         <!-- 1. PROJECT METADATA CARD -->
                         <div class="report-section border rounded-3 p-3">
                           <h4 class="h6 fw-bold mb-3 text-heading-color border-bottom pb-2">
@@ -1715,7 +2017,9 @@
                                 </tr>
                               </thead>
                               <tbody id="repBudgetBody">
-                                <tr><td colspan="5" class="text-center text-muted py-3">No budget records found.</td></tr>
+                                <tr>
+                                  <td colspan="5" class="text-center text-muted py-3">No budget records found.</td>
+                                </tr>
                               </tbody>
                             </table>
                           </div>
@@ -1740,7 +2044,9 @@
                                 </tr>
                               </thead>
                               <tbody id="repReqPOBody">
-                                <tr><td colspan="7" class="text-center text-muted py-3">No requisition records found.</td></tr>
+                                <tr>
+                                  <td colspan="7" class="text-center text-muted py-3">No requisition records found.</td>
+                                </tr>
                               </tbody>
                             </table>
                           </div>
@@ -1766,7 +2072,9 @@
                                 </tr>
                               </thead>
                               <tbody id="repExpenseBody">
-                                <tr><td colspan="8" class="text-center text-muted py-3">No expense records logged.</td></tr>
+                                <tr>
+                                  <td colspan="8" class="text-center text-muted py-3">No expense records logged.</td>
+                                </tr>
                               </tbody>
                             </table>
                           </div>
@@ -1792,7 +2100,10 @@
                                 </tr>
                               </thead>
                               <tbody id="repInvoiceBody">
-                                <tr><td colspan="8" class="text-center text-muted py-3">No client invoice records found.</td></tr>
+                                <tr>
+                                  <td colspan="8" class="text-center text-muted py-3">No client invoice records found.
+                                  </td>
+                                </tr>
                               </tbody>
                             </table>
                           </div>
@@ -1820,7 +2131,9 @@
                                 </tr>
                               </thead>
                               <tbody id="repHostingBody">
-                                <tr><td colspan="10" class="text-center text-muted py-3">No hosting assets allocated.</td></tr>
+                                <tr>
+                                  <td colspan="10" class="text-center text-muted py-3">No hosting assets allocated.</td>
+                                </tr>
                               </tbody>
                             </table>
                           </div>
@@ -1835,7 +2148,8 @@
                 <!-- 10. ONLINE INQUIRIES PANEL -->
                 <div class="tab-pane fade" id="inquiriesPanel" role="tabpanel">
                   <div class="card p-4 rounded-4 shadow-sm border mb-4">
-                    <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom flex-wrap gap-2">
+                    <div
+                      class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom flex-wrap gap-2">
                       <h3 class="h5 fw-bold text-heading-color mb-0">
                         <i class="bi bi-chat-left-text me-2 text-primary"></i>Online Inquiries
                       </h3>
@@ -1846,7 +2160,9 @@
                           <option value="Replied">Replied</option>
                           <option value="Closed">Closed</option>
                         </select>
-                        <button id="refreshInquiriesBtn" class="btn btn-sm btn-outline-primary py-2 px-3 d-flex align-items-center gap-2" type="button" title="Refresh Inquiries">
+                        <button id="refreshInquiriesBtn"
+                          class="btn btn-sm btn-outline-primary py-2 px-3 d-flex align-items-center gap-2" type="button"
+                          title="Refresh Inquiries">
                           <i class="bi bi-arrow-clockwise"></i> Refresh
                         </button>
                       </div>
@@ -1881,12 +2197,15 @@
                 <!-- 10.5. NEWSLETTER SUBSCRIPTIONS PANEL -->
                 <div class="tab-pane fade" id="newsletterPanel" role="tabpanel">
                   <div class="card p-4 rounded-4 shadow-sm border mb-4">
-                    <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom flex-wrap gap-2">
+                    <div
+                      class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom flex-wrap gap-2">
                       <h3 class="h5 fw-bold text-heading-color mb-0">
                         <i class="bi bi-envelope-at me-2 text-primary"></i>Newsletter Subscriptions
                       </h3>
                       <div class="d-flex align-items-center gap-2">
-                        <button id="refreshNewsletterBtn" class="btn btn-sm btn-outline-primary py-2 px-3 d-flex align-items-center gap-2" type="button" title="Refresh Subscriptions">
+                        <button id="refreshNewsletterBtn"
+                          class="btn btn-sm btn-outline-primary py-2 px-3 d-flex align-items-center gap-2" type="button"
+                          title="Refresh Subscriptions">
                           <i class="bi bi-arrow-clockwise"></i> Refresh
                         </button>
                       </div>
@@ -1920,7 +2239,8 @@
                       <h3 class="h5 fw-bold mb-0 text-heading-color">
                         <i class="bi bi-shield-check me-2 text-primary"></i>System Audit Logs
                       </h3>
-                      <button type="button" id="refreshLogsBtn" class="btn btn-outline-primary py-1 px-3 d-flex align-items-center gap-2">
+                      <button type="button" id="refreshLogsBtn"
+                        class="btn btn-outline-primary py-1 px-3 d-flex align-items-center gap-2">
                         <i class="bi bi-arrow-clockwise"></i> Refresh Logs
                       </button>
                     </div>
@@ -2481,6 +2801,7 @@
       document.getElementById("paymentFormTitle").textContent = "Log Client Invoice";
       document.getElementById("paymentSubmitBtn").innerHTML = '<i class="bi bi-file-earmark-check-fill me-2"></i>Log Invoice';
       document.getElementById("cancelPaymentEditBtn").classList.add("d-none");
+      document.getElementById("payment-list-subtab")?.click();
       document.getElementById("inv_date_received").disabled = true;
       document.getElementById("inv_date_received").required = false;
       document.getElementById("inv_date_received").classList.add("bg-light");
@@ -2515,6 +2836,7 @@
       document.getElementById("ticketFormTitle").textContent = "Log Support Ticket";
       document.getElementById("ticketSubmitBtn").innerHTML = '<i class="bi bi-send-plus me-2"></i>Log Ticket';
       document.getElementById("cancelTicketEditBtn").classList.add("d-none");
+      document.getElementById("ticket-list-subtab")?.click();
       document.getElementById("ticket_resolution_container").style.display = "none";
       document.getElementById("ticket_resolution_notes").required = false;
       document.getElementById("ticket_resolution_notes").value = "";
@@ -2532,6 +2854,7 @@
         if (input.id === "exp_clearance_date" || input.id === "inv_date_received") return;
         input.value = todayDateStr;
       });
+      document.getElementById("project-list-subtab")?.click();
     });
 
     // Cancel Employee Edit
@@ -2541,6 +2864,7 @@
       document.getElementById("empFormTitle").innerHTML = '<i class="bi bi-person-plus-fill me-2 text-primary"></i>Add Employee Record';
       document.getElementById("empSubmitBtn").innerHTML = '<i class="bi bi-save me-2"></i>Save Employee Record';
       document.getElementById("cancelEmpEditBtn").classList.add("d-none");
+      document.getElementById("employee-list-subtab")?.click();
     });
 
     // Cancel Contact Edit
@@ -2550,6 +2874,7 @@
       document.getElementById("contactFormTitle").innerHTML = '<i class="bi bi-telephone-plus me-2 text-primary"></i>Add Contact';
       document.getElementById("contactSubmitBtn").innerHTML = '<i class="bi bi-save me-2"></i>Save Contact';
       document.getElementById("cancelContactEditBtn").classList.add("d-none");
+      document.getElementById("contact-list-subtab")?.click();
     });
 
     // Cancel Meeting Edit
@@ -2563,6 +2888,7 @@
         if (input.id === "exp_clearance_date" || input.id === "inv_date_received") return;
         input.value = todayDateStr;
       });
+      document.getElementById("meeting-list-subtab")?.click();
     });
 
     // Cancel Budget Edit
@@ -2572,6 +2898,7 @@
       document.getElementById("budgetFormTitle").innerHTML = '<i class="bi bi-cash-stack me-2 text-primary"></i>Allocate Budget Line';
       document.getElementById("budgetSubmitBtn").innerHTML = '<i class="bi bi-plus-circle me-2"></i>Save Budget Line';
       document.getElementById("cancelBudgetEditBtn").classList.add("d-none");
+      document.getElementById("budget-list-subtab")?.click();
     });
 
     // Cancel Requisition Edit
@@ -2581,6 +2908,7 @@
       document.getElementById("reqFormTitle").innerHTML = '<i class="bi bi-file-earmark-plus me-2 text-primary"></i>Create Requisition';
       document.getElementById("reqSubmitBtn").innerHTML = '<i class="bi bi-send-plus me-2"></i>Submit Requisition';
       document.getElementById("cancelReqEditBtn").classList.add("d-none");
+      document.getElementById("req-list-subtab")?.click();
       document.getElementById("req_rejection_reason_container").style.display = "none";
       calculateReqTotal();
     });
@@ -2592,6 +2920,7 @@
       document.getElementById("poFormTitle").innerHTML = '<i class="bi bi-cart-plus me-2 text-primary"></i>Create Purchase Order';
       document.getElementById("poSubmitBtn").innerHTML = '<i class="bi bi-cart-check-fill me-2"></i>Save Purchase Order';
       document.getElementById("cancelPoEditBtn").classList.add("d-none");
+      document.getElementById("po-list-subtab")?.click();
       populateRequisitionDropdowns();
       document.querySelectorAll('input[type="date"]').forEach(input => {
         if (input.id === "exp_clearance_date" || input.id === "inv_date_received") return;
@@ -2606,6 +2935,7 @@
       document.getElementById("expenseFormTitle").innerHTML = '<i class="bi bi-cash-coin me-2 text-primary"></i>Log Expense / Payment';
       document.getElementById("expenseSubmitBtn").innerHTML = '<i class="bi bi-cash-coin me-2"></i>Post Expense Record';
       document.getElementById("cancelExpenseEditBtn").classList.add("d-none");
+      document.getElementById("expense-list-subtab")?.click();
       document.getElementById("exp_po_number_container").style.display = "none";
       document.getElementById("exp_clearance_date").disabled = true;
       document.getElementById("exp_clearance_date").classList.add("bg-light");
@@ -3054,6 +3384,7 @@
             document.getElementById("projFormTitle").innerHTML = '<i class="bi bi-kanban me-2 text-primary"></i>Edit Project';
             document.getElementById("projSubmitBtn").innerHTML = '<i class="bi bi-pencil-square me-2"></i>Update Project';
             document.getElementById("cancelProjEditBtn").classList.remove("d-none");
+            document.getElementById("project-form-subtab")?.click();
             document.getElementById("projectForm").scrollIntoView({ behavior: 'smooth' });
           }
         };
@@ -3068,7 +3399,7 @@
               await addAuditLog({
                 user_email: currentUserEmail || "admin@example.com",
                 action_type: "DELETE",
-                collection_name: "tbl_projects",
+                collection_name: "sol_projects",
                 record_id: id,
                 details: `Deleted project with ID: ${id}`
               });
@@ -3137,6 +3468,7 @@
             document.getElementById("contactFormTitle").innerHTML = '<i class="bi bi-telephone-plus me-2 text-primary"></i>Edit Contact';
             document.getElementById("contactSubmitBtn").innerHTML = '<i class="bi bi-pencil-square me-2"></i>Update Contact';
             document.getElementById("cancelContactEditBtn").classList.remove("d-none");
+            document.getElementById("contact-form-subtab")?.click();
             document.getElementById("contactForm").scrollIntoView({ behavior: 'smooth' });
           }
         };
@@ -3151,7 +3483,7 @@
               await addAuditLog({
                 user_email: currentUserEmail || "admin@example.com",
                 action_type: "DELETE",
-                collection_name: "tbl_contacts",
+                collection_name: "sol_contacts",
                 record_id: id,
                 details: `Deleted contact with ID: ${id}`
               });
@@ -3218,6 +3550,7 @@
             document.getElementById("empFormTitle").innerHTML = '<i class="bi bi-person-plus-fill me-2 text-primary"></i>Edit Employee Record';
             document.getElementById("empSubmitBtn").innerHTML = '<i class="bi bi-pencil-square me-2"></i>Update Employee Record';
             document.getElementById("cancelEmpEditBtn").classList.remove("d-none");
+            document.getElementById("employee-form-subtab")?.click();
             document.getElementById("employeeForm").scrollIntoView({ behavior: 'smooth' });
           }
         };
@@ -3232,7 +3565,7 @@
               await addAuditLog({
                 user_email: currentUserEmail || "admin@example.com",
                 action_type: "DELETE",
-                collection_name: "tbl_employees",
+                collection_name: "sol_employees",
                 record_id: id,
                 details: `Deleted employee with ID: ${id}`
               });
@@ -3311,6 +3644,7 @@
             document.getElementById("meetFormTitle").innerHTML = '<i class="bi bi-calendar-plus me-2 text-primary"></i>Edit Scheduled Meeting';
             document.getElementById("meetSubmitBtn").innerHTML = '<i class="bi bi-pencil-square me-2"></i>Update Meeting';
             document.getElementById("cancelMeetEditBtn").classList.remove("d-none");
+            document.getElementById("meeting-form-subtab")?.click();
             document.getElementById("meetingForm").scrollIntoView({ behavior: 'smooth' });
           }
         };
@@ -3325,7 +3659,7 @@
               await addAuditLog({
                 user_email: currentUserEmail || "admin@example.com",
                 action_type: "DELETE",
-                collection_name: "tbl_meetings",
+                collection_name: "sol_meetings",
                 record_id: id,
                 details: `Cancelled meeting with ID: ${id}`
               });
@@ -3393,6 +3727,7 @@
             document.getElementById("budgetFormTitle").innerHTML = '<i class="bi bi-cash-stack me-2 text-primary"></i>Edit Allocated Budget Line';
             document.getElementById("budgetSubmitBtn").innerHTML = '<i class="bi bi-pencil-square me-2"></i>Update Budget Line';
             document.getElementById("cancelBudgetEditBtn").classList.remove("d-none");
+            document.getElementById("budget-form-subtab")?.click();
             document.getElementById("budgetForm").scrollIntoView({ behavior: 'smooth' });
           }
         };
@@ -3407,7 +3742,7 @@
               await addAuditLog({
                 user_email: currentUserEmail || "admin@example.com",
                 action_type: "DELETE",
-                collection_name: "tbl_budget",
+                collection_name: "sol_budget",
                 record_id: id,
                 details: `Removed budget line with ID: ${id}`
               });
@@ -3490,6 +3825,7 @@
             document.getElementById("cancelTaskEditBtn").classList.remove("d-none");
 
             // Scroll smoothly to task form
+            document.getElementById("task-form-subtab")?.click();
             document.getElementById("taskForm").scrollIntoView({ behavior: 'smooth' });
           }
         };
@@ -3502,6 +3838,7 @@
         document.getElementById("taskFormTitle").innerHTML = '<i class="bi bi-activity me-2 text-primary"></i>Create / Manage Task';
         document.getElementById("taskSubmitBtn").innerHTML = '<i class="bi bi-save me-2"></i>Save Task';
         document.getElementById("cancelTaskEditBtn").classList.add("d-none");
+      document.getElementById("task-list-subtab")?.click();
       };
 
       document.querySelectorAll(".delete-task-btn").forEach(btn => {
@@ -3513,7 +3850,7 @@
               await addAuditLog({
                 user_email: currentUserEmail || "admin@example.com",
                 action_type: "DELETE",
-                collection_name: "tbl_tasks",
+                collection_name: "sol_tasks",
                 record_id: id,
                 details: `Deleted task with ID: ${id}`
               });
@@ -3596,6 +3933,7 @@
             document.getElementById("reqFormTitle").innerHTML = '<i class="bi bi-file-earmark-plus me-2 text-primary"></i>Edit Requisition';
             document.getElementById("reqSubmitBtn").innerHTML = '<i class="bi bi-pencil-square me-2"></i>Update Requisition';
             document.getElementById("cancelReqEditBtn").classList.remove("d-none");
+            document.getElementById("req-form-subtab")?.click();
             document.getElementById("requisitionForm").scrollIntoView({ behavior: 'smooth' });
           }
         };
@@ -3610,7 +3948,7 @@
               await addAuditLog({
                 user_email: currentUserEmail || "admin@example.com",
                 action_type: "DELETE",
-                collection_name: "tbl_requisitions",
+                collection_name: "sol_requisitions",
                 record_id: id,
                 details: `Deleted requisition with ID: ${id}`
               });
@@ -3683,6 +4021,7 @@
             document.getElementById("poFormTitle").innerHTML = '<i class="bi bi-cart-plus me-2 text-primary"></i>Edit Purchase Order';
             document.getElementById("poSubmitBtn").innerHTML = '<i class="bi bi-pencil-square me-2"></i>Update Purchase Order';
             document.getElementById("cancelPoEditBtn").classList.remove("d-none");
+            document.getElementById("po-form-subtab")?.click();
             document.getElementById("purchaseForm").scrollIntoView({ behavior: 'smooth' });
           }
         };
@@ -3697,7 +4036,7 @@
               await addAuditLog({
                 user_email: currentUserEmail || "admin@example.com",
                 action_type: "DELETE",
-                collection_name: "tbl_purchase_orders",
+                collection_name: "sol_purchase_orders",
                 record_id: id,
                 details: `Deleted purchase order with ID: ${id}`
               });
@@ -3792,6 +4131,7 @@
             document.getElementById("expenseFormTitle").innerHTML = '<i class="bi bi-cash-coin me-2 text-primary"></i>Edit Expense / Payment';
             document.getElementById("expenseSubmitBtn").innerHTML = '<i class="bi bi-pencil-square me-2"></i>Update Expense Record';
             document.getElementById("cancelExpenseEditBtn").classList.remove("d-none");
+            document.getElementById("expense-form-subtab")?.click();
             document.getElementById("expenseForm").scrollIntoView({ behavior: 'smooth' });
           }
         };
@@ -3806,7 +4146,7 @@
               await addAuditLog({
                 user_email: currentUserEmail || "admin@example.com",
                 action_type: "DELETE",
-                collection_name: "tbl_expenses",
+                collection_name: "sol_expenses",
                 record_id: id,
                 details: `Deleted expense record with ID: ${id}`
               });
@@ -3912,6 +4252,7 @@
             document.getElementById("ticketSubmitBtn").innerHTML = '<i class="bi bi-pencil-square me-2"></i>Update Ticket';
             document.getElementById("cancelTicketEditBtn").classList.remove("d-none");
 
+            document.getElementById("ticket-form-subtab")?.click();
             document.getElementById("ticketForm").scrollIntoView({ behavior: 'smooth' });
           }
         };
@@ -3926,7 +4267,7 @@
               await addAuditLog({
                 user_email: currentUserEmail || "admin@example.com",
                 action_type: "DELETE",
-                collection_name: "tbl_support_tickets",
+                collection_name: "sol_support_tickets",
                 record_id: id,
                 details: `Deleted support ticket with ID: ${id}`
               });
@@ -4033,6 +4374,7 @@
             document.getElementById("paymentFormTitle").textContent = "Edit Client Invoice";
             document.getElementById("paymentSubmitBtn").innerHTML = '<i class="bi bi-pencil-square me-2"></i>Update Invoice';
             document.getElementById("cancelPaymentEditBtn").classList.remove("d-none");
+            document.getElementById("payment-form-subtab")?.click();
             document.getElementById("paymentForm").scrollIntoView({ behavior: 'smooth' });
           }
         };
@@ -4047,7 +4389,7 @@
               await addAuditLog({
                 user_email: currentUserEmail || "admin@example.com",
                 action_type: "DELETE",
-                collection_name: "tbl_client_payments",
+                collection_name: "sol_client_payments",
                 record_id: id,
                 details: `Deleted client invoice with ID: ${id}`
               });
@@ -4091,7 +4433,7 @@
         await addAuditLog({
           user_email: currentUserEmail || "admin@example.com",
           action_type: isEdit ? "UPDATE" : "CREATE",
-          collection_name: "tbl_projects",
+          collection_name: "sol_projects",
           record_id: savedId,
           details: `${isEdit ? "Updated" : "Created"} project "${projectName}"`
         });
@@ -4106,6 +4448,7 @@
         });
         refreshProjects();
         refreshAuditLogs();
+        document.getElementById("project-list-subtab")?.click();
         alert("Project saved successfully.");
       } catch (err) {
         alert("Failed to save project: " + err.message);
@@ -4138,7 +4481,7 @@
         await addAuditLog({
           user_email: currentUserEmail || "admin@example.com",
           action_type: isEdit ? "UPDATE" : "CREATE",
-          collection_name: "tbl_employees",
+          collection_name: "sol_employees",
           record_id: savedId,
           details: `${isEdit ? "Updated" : "Created"} employee "${employeeName}"`
         });
@@ -4149,6 +4492,7 @@
         document.getElementById("cancelEmpEditBtn").classList.add("d-none");
         refreshEmployees();
         refreshAuditLogs();
+        document.getElementById("employee-list-subtab")?.click();
         alert("Employee saved successfully.");
       } catch (err) {
         alert("Failed to save employee: " + err.message);
@@ -4181,7 +4525,7 @@
         await addAuditLog({
           user_email: currentUserEmail || "admin@example.com",
           action_type: isEdit ? "UPDATE" : "CREATE",
-          collection_name: "tbl_contacts",
+          collection_name: "sol_contacts",
           record_id: savedId,
           details: `${isEdit ? "Updated" : "Created"} contact "${contactName}"`
         });
@@ -4192,6 +4536,7 @@
         document.getElementById("cancelContactEditBtn").classList.add("d-none");
         refreshContacts();
         refreshAuditLogs();
+        document.getElementById("contact-list-subtab")?.click();
         alert("Contact added successfully.");
       } catch (err) {
         alert("Failed to save contact: " + err.message);
@@ -4226,7 +4571,7 @@
         await addAuditLog({
           user_email: currentUserEmail || "admin@example.com",
           action_type: isEdit ? "UPDATE" : "CREATE",
-          collection_name: "tbl_meetings",
+          collection_name: "sol_meetings",
           record_id: savedId,
           details: `${isEdit ? "Updated" : "Scheduled"} meeting "${meetingTitle}"`
         });
@@ -4241,6 +4586,7 @@
         });
         refreshMeetings();
         refreshAuditLogs();
+        document.getElementById("meeting-list-subtab")?.click();
         alert("Meeting scheduled successfully.");
       } catch (err) {
         alert("Failed to schedule meeting: " + err.message);
@@ -4264,7 +4610,7 @@
         await addAuditLog({
           user_email: currentUserEmail || "admin@example.com",
           action_type: isEdit ? "UPDATE" : "CREATE",
-          collection_name: "tbl_budget",
+          collection_name: "sol_budget",
           record_id: savedId,
           details: `${isEdit ? "Updated" : "Allocated"} budget line for category "${costCategory}" in project ${projectId}`
         });
@@ -4275,6 +4621,7 @@
         document.getElementById("cancelBudgetEditBtn").classList.add("d-none");
         refreshBudgets();
         refreshAuditLogs();
+        document.getElementById("budget-list-subtab")?.click();
         alert("Budget allocation configured successfully.");
       } catch (err) {
         alert("Failed to configure budget: " + err.message);
@@ -4335,7 +4682,7 @@
         await addAuditLog({
           user_email: currentUserEmail || "admin@example.com",
           action_type: isEdit ? "UPDATE" : "CREATE",
-          collection_name: "tbl_tasks",
+          collection_name: "sol_tasks",
           record_id: savedId,
           details: `${isEdit ? "Updated" : "Created"} task "${taskName}"`
         });
@@ -4346,6 +4693,7 @@
         document.getElementById("taskFormTitle").innerHTML = '<i class="bi bi-activity me-2 text-primary"></i>Create / Manage Task';
         document.getElementById("taskSubmitBtn").innerHTML = '<i class="bi bi-save me-2"></i>Save Task';
         document.getElementById("cancelTaskEditBtn").classList.add("d-none");
+      document.getElementById("task-list-subtab")?.click();
 
         refreshTasks();
         refreshAuditLogs();
@@ -4373,7 +4721,7 @@
         await addAuditLog({
           user_email: currentUserEmail || "admin@example.com",
           action_type: isEdit ? "UPDATE" : "CREATE",
-          collection_name: "tbl_requisitions",
+          collection_name: "sol_requisitions",
           record_id: savedId,
           details: `${isEdit ? "Updated" : "Submitted"} requisition for "${itemCategory}"`
         });
@@ -4382,10 +4730,12 @@
         document.getElementById("reqFormTitle").innerHTML = '<i class="bi bi-file-earmark-plus me-2 text-primary"></i>Create Requisition';
         document.getElementById("reqSubmitBtn").innerHTML = '<i class="bi bi-send-plus me-2"></i>Submit Requisition';
         document.getElementById("cancelReqEditBtn").classList.add("d-none");
+      document.getElementById("req-list-subtab")?.click();
         document.getElementById("req_rejection_reason_container").style.display = "none";
         calculateReqTotal();
         refreshRequisitions();
         refreshAuditLogs();
+        document.getElementById("req-list-subtab")?.click();
         alert("Requisition submitted successfully.");
       } catch (err) {
         alert("Failed to save requisition: " + err.message);
@@ -4420,7 +4770,7 @@
         await addAuditLog({
           user_email: currentUserEmail || "admin@example.com",
           action_type: isEdit ? "UPDATE" : "CREATE",
-          collection_name: "tbl_purchase_orders",
+          collection_name: "sol_purchase_orders",
           record_id: savedId,
           details: `${isEdit ? "Updated" : "Logged"} purchase order with vendor "${vendorName}"`
         });
@@ -4429,6 +4779,7 @@
         document.getElementById("poFormTitle").innerHTML = '<i class="bi bi-cart-plus me-2 text-primary"></i>Create Purchase Order';
         document.getElementById("poSubmitBtn").innerHTML = '<i class="bi bi-cart-check-fill me-2"></i>Save Purchase Order';
         document.getElementById("cancelPoEditBtn").classList.add("d-none");
+      document.getElementById("po-list-subtab")?.click();
         populateRequisitionDropdowns();
         document.querySelectorAll('input[type="date"]').forEach(input => {
           if (input.id === "exp_clearance_date" || input.id === "inv_date_received") return;
@@ -4479,7 +4830,7 @@
         await addAuditLog({
           user_email: currentUserEmail || "admin@example.com",
           action_type: isEdit ? "UPDATE" : "CREATE",
-          collection_name: "tbl_expenses",
+          collection_name: "sol_expenses",
           record_id: savedId,
           details: `${isEdit ? "Updated" : "Posted"} expense for invoice "${vendorInvoiceNum}" (Status: ${status})`
         });
@@ -4488,6 +4839,7 @@
         document.getElementById("expenseFormTitle").innerHTML = '<i class="bi bi-cash-coin me-2 text-primary"></i>Log Expense / Payment';
         document.getElementById("expenseSubmitBtn").innerHTML = '<i class="bi bi-cash-coin me-2"></i>Post Expense Record';
         document.getElementById("cancelExpenseEditBtn").classList.add("d-none");
+      document.getElementById("expense-list-subtab")?.click();
         document.getElementById("exp_po_number_container").style.display = "none";
         document.getElementById("exp_clearance_date").disabled = true;
         document.getElementById("exp_clearance_date").classList.add("bg-light");
@@ -4542,7 +4894,7 @@
         await addAuditLog({
           user_email: currentUserEmail || "admin@example.com",
           action_type: isEdit ? "UPDATE" : "CREATE",
-          collection_name: "tbl_client_payments",
+          collection_name: "sol_client_payments",
           record_id: savedId,
           details: `${isEdit ? "Updated" : "Logged"} invoice for milestone "${milestoneType}"`
         });
@@ -4552,6 +4904,7 @@
         document.getElementById("paymentFormTitle").textContent = "Log Client Invoice";
         document.getElementById("paymentSubmitBtn").innerHTML = '<i class="bi bi-file-earmark-check-fill me-2"></i>Log Invoice';
         document.getElementById("cancelPaymentEditBtn").classList.add("d-none");
+      document.getElementById("payment-list-subtab")?.click();
         document.getElementById("inv_date_received").disabled = true;
         document.getElementById("inv_date_received").required = false;
         document.getElementById("inv_date_received").classList.add("bg-light");
@@ -4601,7 +4954,7 @@
         await addAuditLog({
           user_email: currentUserEmail || "admin@example.com",
           action_type: isEdit ? "UPDATE" : "CREATE",
-          collection_name: "tbl_support_tickets",
+          collection_name: "sol_support_tickets",
           record_id: savedId,
           details: `${isEdit ? "Updated" : "Logged"} support ticket "${ticketSubject}" (Status: ${status})`
         });
@@ -4612,6 +4965,7 @@
         document.getElementById("ticketFormTitle").textContent = "Log Support Ticket";
         document.getElementById("ticketSubmitBtn").innerHTML = '<i class="bi bi-send-plus me-2"></i>Log Ticket';
         document.getElementById("cancelTicketEditBtn").classList.add("d-none");
+      document.getElementById("ticket-list-subtab")?.click();
         document.getElementById("ticket_resolution_container").style.display = "none";
         document.getElementById("ticket_resolution_notes").required = false;
 
@@ -4662,6 +5016,7 @@
       document.getElementById("hostingFormTitle").textContent = "Add Domain & Hosting Asset";
       document.getElementById("hostingSubmitBtn").innerHTML = '<i class="bi bi-save me-2"></i>Save Asset';
       document.getElementById("cancelHostingEditBtn").classList.add("d-none");
+      document.getElementById("hosting-list-subtab")?.click();
       document.getElementById("host_reg_date").value = todayDateStr;
       calculateRenewalDate();
     });
@@ -4709,7 +5064,7 @@
         await addAuditLog({
           user_email: currentUserEmail || "admin@example.com",
           action_type: isEdit ? "UPDATE" : "CREATE",
-          collection_name: "tbl_domain_hosting",
+          collection_name: "sol_domain_hosting",
           record_id: savedId,
           details: `${isEdit ? "Updated" : "Saved"} domain/hosting asset for URL "${assetUrl}"`
         });
@@ -4719,6 +5074,7 @@
         document.getElementById("hostingFormTitle").textContent = "Add Domain & Hosting Asset";
         document.getElementById("hostingSubmitBtn").innerHTML = '<i class="bi bi-save me-2"></i>Save Asset';
         document.getElementById("cancelHostingEditBtn").classList.add("d-none");
+      document.getElementById("hosting-list-subtab")?.click();
         document.getElementById("host_reg_date").value = todayDateStr;
         calculateRenewalDate();
         refreshHosting();
@@ -4810,6 +5166,7 @@
             document.getElementById("hostingFormTitle").textContent = "Edit Domain & Hosting Asset";
             document.getElementById("hostingSubmitBtn").innerHTML = '<i class="bi bi-pencil-square me-2"></i>Update Asset';
             document.getElementById("cancelHostingEditBtn").classList.remove("d-none");
+            document.getElementById("hosting-form-subtab")?.click();
             document.getElementById("hostingForm").scrollIntoView({ behavior: 'smooth' });
           }
         };
@@ -4824,7 +5181,7 @@
               await addAuditLog({
                 user_email: currentUserEmail || "admin@example.com",
                 action_type: "DELETE",
-                collection_name: "tbl_domain_hosting",
+                collection_name: "sol_domain_hosting",
                 record_id: id,
                 details: `Deleted domain & hosting asset with ID: ${id}`
               });
@@ -4885,7 +5242,7 @@
         }
         const statusColor = inq.status === 'New' ? 'danger' : inq.status === 'Replied' ? 'warning' : 'secondary';
         const msgPreview = (inq.message || "").length > 80 ? (inq.message || "").substring(0, 80) + "…" : (inq.message || "");
-        
+
         return `
           <tr>
             <td><code class="badge bg-primary text-white font-monospace" style="font-size:0.7rem;">${inq.inquiryKey}</code></td>
@@ -4934,7 +5291,7 @@
             await addAuditLog({
               user_email: currentUserEmail || "admin@example.com",
               action_type: "DELETE",
-              collection_name: "online_inquiries",
+              collection_name: "learn_online_inquiries",
               record_id: key,
               details: `Deleted online inquiry from "${name}"`
             });
@@ -4985,7 +5342,7 @@
           const dt = sub.createdAt.toDate ? sub.createdAt.toDate() : new Date(sub.createdAt);
           dateStr = dt.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: '2-digit', hour: '2-digit', minute: '2-digit' });
         }
-        
+
         return `
           <tr>
             <td><a href="mailto:${sub.email || ""}" class="fw-semibold text-primary text-decoration-none">${sub.email || ""}</a></td>
@@ -5013,7 +5370,7 @@
             await addAuditLog({
               user_email: currentUserEmail || "admin@example.com",
               action_type: "DELETE",
-              collection_name: "newsletter_subscriptions",
+              collection_name: "learn_newsletter_subscriptions",
               record_id: email,
               details: `Deleted newsletter subscription for "${email}"`
             });
@@ -5534,22 +5891,22 @@
         alert("Please select a project first.");
         return;
       }
-      
+
       const project = allProjects.find(p => p.project_id === projId);
       if (!project) {
         alert("Selected project not found.");
         return;
       }
-      
+
       // Show report container, show print button
       document.getElementById("reportOutput").classList.remove("d-none");
       document.getElementById("printReportBtn").classList.remove("d-none");
-      
+
       // 0. Project Overview
       document.getElementById("repProjName").textContent = project.project_name;
       document.getElementById("repProjId").textContent = project.project_id;
       document.getElementById("repProjStatus").textContent = project.project_status;
-      
+
       // Set status badge style
       const statusBadge = document.getElementById("repProjStatus");
       statusBadge.className = "badge px-3 py-2 fw-semibold";
@@ -5560,19 +5917,19 @@
       } else {
         statusBadge.classList.add("bg-danger", "text-white");
       }
-      
+
       // Project Metadata
       // Resolve PM Name
       const pm = allEmployees.find(e => e.employee_id === project.project_manager);
       document.getElementById("repProjManager").textContent = pm ? pm.employee_name : (project.project_manager || "—");
-      
+
       // Resolve Client Name
       const client = allContacts.find(c => c.contact_id === project.client_sponsor);
       document.getElementById("repProjClient").textContent = client ? client.contact_name : (project.client_sponsor || "—");
-      
+
       document.getElementById("repProjTimeline").textContent = `${project.start_date} to ${project.end_date}`;
       document.getElementById("repProjDesc").textContent = project.project_desc || "No description provided.";
-      
+
       // 1. Filter related data
       const projBudgets = allBudgets.filter(b => b.project_id === projId);
       const projReqs = allRequisitions.filter(r => r.project_id === projId);
@@ -5580,18 +5937,18 @@
       const projExpenses = allExpenses.filter(e => e.project_id === projId);
       const projInvoices = allClientPayments.filter(inv => inv.project_id === projId);
       const projHosting = allDomainHosting.filter(a => a.project_id === projId);
-      
+
       // 2. Calculations
       const totalBudget = projBudgets.reduce((sum, b) => sum + (Number(b.allocated_amount) || 0), 0);
       const totalExpenses = projExpenses.reduce((sum, e) => sum + (Number(e.amount_paid) || 0), 0);
       const totalInvoiced = projInvoices.reduce((sum, inv) => sum + (Number(inv.invoiced_amount) || 0), 0);
       const totalCollected = projInvoices.reduce((sum, inv) => sum + (Number(inv.amount_received) || 0), 0);
-      
+
       document.getElementById("repTotalBudget").textContent = `${totalBudget.toLocaleString()} BDT`;
       document.getElementById("repTotalExpenses").textContent = `${totalExpenses.toLocaleString()} BDT`;
       document.getElementById("repTotalInvoiced").textContent = `${totalInvoiced.toLocaleString()} BDT`;
       document.getElementById("repTotalCollected").textContent = `${totalCollected.toLocaleString()} BDT`;
-      
+
       // 3. Render Budget Table
       const budgetBody = document.getElementById("repBudgetBody");
       if (projBudgets.length === 0) {
@@ -5611,7 +5968,7 @@
           `;
         }).join('');
       }
-      
+
       // 4. Render Requisitions & POs
       const reqPOBody = document.getElementById("repReqPOBody");
       if (projReqs.length === 0) {
@@ -5619,15 +5976,15 @@
       } else {
         reqPOBody.innerHTML = projReqs.map(r => {
           const matchingPO = projPOs.find(po => po.requisition_id === r.requisition_id);
-          const poCell = matchingPO 
+          const poCell = matchingPO
             ? `<code class="text-dark font-monospace">${matchingPO.po_number}</code> <span class="small text-muted">(${matchingPO.vendor_name})</span>`
             : '<span class="text-muted small"><em>No PO Generated</em></span>';
-          
+
           let approvalBadgeClass = 'bg-secondary';
           if (r.dept_approval === 'Approved') approvalBadgeClass = 'bg-success';
           else if (r.dept_approval === 'Pending Review') approvalBadgeClass = 'bg-warning text-dark';
           else if (r.dept_approval === 'Rejected') approvalBadgeClass = 'bg-danger';
-          
+
           return `
             <tr>
               <td><code class="text-dark font-monospace">${r.requisition_id}</code></td>
@@ -5641,7 +5998,7 @@
           `;
         }).join('');
       }
-      
+
       // 5. Render Expense Table
       const expenseBody = document.getElementById("repExpenseBody");
       if (projExpenses.length === 0) {
@@ -5652,7 +6009,7 @@
           if (e.payment_status === 'Fully Settled' || e.payment_status === 'Fully Paid') statusClass = 'bg-success';
           else if (e.payment_status === 'Partially Paid') statusClass = 'bg-warning text-dark';
           else if (e.payment_status === 'Unpaid / Awaiting Approval') statusClass = 'bg-danger';
-          
+
           return `
             <tr>
               <td><code class="text-dark font-monospace">${e.expense_id}</code></td>
@@ -5667,7 +6024,7 @@
           `;
         }).join('');
       }
-      
+
       // 6. Render Client Invoices
       const invoiceBody = document.getElementById("repInvoiceBody");
       if (projInvoices.length === 0) {
@@ -5678,7 +6035,7 @@
           if (inv.payment_status === 'Fully Paid') statusClass = 'bg-success';
           else if (inv.payment_status === 'Partially Paid') statusClass = 'bg-warning text-dark';
           else if (inv.payment_status === 'Awaiting Payment') statusClass = 'bg-danger';
-          
+
           return `
             <tr>
               <td><code class="text-dark font-monospace">${inv.invoice_id}</code></td>
@@ -5693,7 +6050,7 @@
           `;
         }).join('');
       }
-      
+
       // 7. Render Domain & Hosting Assets
       const hostingBody = document.getElementById("repHostingBody");
       if (projHosting.length === 0) {
@@ -5704,12 +6061,12 @@
           const pkgBadge = a.package_name
             ? `<span class="badge ${pkgBadgeMap[a.package_name] || 'bg-secondary'}">${a.package_name}</span>`
             : '<span class="text-muted small">—</span>';
-          
+
           let statusClass = 'bg-secondary';
           if (a.asset_status === 'Active / Good Standing') statusClass = 'bg-success';
           else if (a.asset_status === 'Expired / Action Required') statusClass = 'bg-danger';
           else if (a.asset_status === 'Suspended / Terminated') statusClass = 'bg-dark text-white';
-          
+
           return `
             <tr>
               <td><code class="text-dark font-monospace">${a.asset_id}</code></td>
@@ -5757,7 +6114,7 @@
         </body>
         </html>
       `);
-      
+
       const script = win.document.createElement("script");
       script.textContent = `
         window.onload = function() {

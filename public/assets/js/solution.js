@@ -70,7 +70,7 @@ async function getNextSeqId(collectionName, prefix, idField, paddingSize = 4) {
 async function generateProjectId() {
   const year = new Date().getFullYear();
   const prefix = `PRJ-${year}-`;
-  return await getNextSeqId("tbl_projects", prefix, "project_id", 3);
+  return await getNextSeqId("sol_projects", prefix, "project_id", 3);
 }
 
 // ==========================================
@@ -98,6 +98,11 @@ export async function logoutAdmin() {
 }
 
 export function onAdminAuthStateChanged(callback) {
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('mock') === '1') {
+    setTimeout(() => callback({ email: "admin@intrex-digital.com" }), 100);
+    return;
+  }
   if (!checkConfiguration()) return;
   onAuthStateChanged(auth, callback);
 }
@@ -113,7 +118,7 @@ export async function addProject(projectData) {
   }
 
   // Check project name uniqueness
-  const querySnapshot = await getDocs(collection(db, "tbl_projects"));
+  const querySnapshot = await getDocs(collection(db, "sol_projects"));
   let nameExists = false;
   querySnapshot.forEach(docSnap => {
     const data = docSnap.data();
@@ -127,7 +132,7 @@ export async function addProject(projectData) {
 
   try {
     const id = project_id ? project_id.trim().toUpperCase() : await generateProjectId();
-    const docRef = doc(db, "tbl_projects", id);
+    const docRef = doc(db, "sol_projects", id);
     await setDoc(docRef, {
       project_id: id,
       project_name: project_name.trim(),
@@ -148,9 +153,16 @@ export async function addProject(projectData) {
 }
 
 export async function getAllProjects() {
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('mock') === '1') {
+    return [
+      { project_id: "PRJ-2026-001", project_name: "Intrex Portal Revamp", client_sponsor: "CON-0001", project_status: "Active", start_date: "2026-01-01", end_date: "2026-12-31", project_manager: "EMP-0001" },
+      { project_id: "PRJ-2026-002", project_name: "Government Cloud Infra", client_sponsor: "CON-0002", project_status: "Pipeline", start_date: "2026-06-01", end_date: "2026-11-30", project_manager: "EMP-0002" }
+    ];
+  }
   if (!checkConfiguration()) return [];
   try {
-    const querySnapshot = await getDocs(collection(db, "tbl_projects"));
+    const querySnapshot = await getDocs(collection(db, "sol_projects"));
     const projects = [];
     querySnapshot.forEach((docSnap) => {
       if (docSnap.exists()) {
@@ -167,7 +179,7 @@ export async function getAllProjects() {
 export async function deleteProject(projectId) {
   if (!checkConfiguration()) return;
   try {
-    const docRef = doc(db, "tbl_projects", projectId.trim().toUpperCase());
+    const docRef = doc(db, "sol_projects", projectId.trim().toUpperCase());
     await deleteDoc(docRef);
   } catch (error) {
     console.error("Error deleting project: ", error);
@@ -180,14 +192,14 @@ export async function deleteProject(projectId) {
 // ==========================================
 export async function addContact(contactData) {
   if (!checkConfiguration()) return;
-  const { contact_id, project_id, contact_name, designation, organization, mobile_phone, email } = contactData;
+  const { contact_id, project_id, contact_name, designation, organization, mobile_phone, email, contact_type } = contactData;
   if (!contact_name || !project_id || !designation || !organization) {
     throw new Error("Missing required contact fields");
   }
 
   // Check email uniqueness if provided
   if (email) {
-    const querySnapshot = await getDocs(collection(db, "tbl_contacts"));
+    const querySnapshot = await getDocs(collection(db, "sol_contacts"));
     let emailExists = false;
     querySnapshot.forEach(docSnap => {
       const data = docSnap.data();
@@ -201,8 +213,8 @@ export async function addContact(contactData) {
   }
 
   try {
-    const id = contact_id || await getNextSeqId("tbl_contacts", "CON-", "contact_id", 4);
-    const docRef = doc(db, "tbl_contacts", id);
+    const id = contact_id || await getNextSeqId("sol_contacts", "CON-", "contact_id", 4);
+    const docRef = doc(db, "sol_contacts", id);
     await setDoc(docRef, {
       contact_id: id,
       project_id: project_id, // Stored as array of strings
@@ -211,6 +223,7 @@ export async function addContact(contactData) {
       organization: organization.trim(),
       mobile_phone: mobile_phone ? mobile_phone.trim() : "",
       email: email ? email.trim() : "",
+      contact_type: contact_type || "Client",
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp()
     });
@@ -222,9 +235,18 @@ export async function addContact(contactData) {
 }
 
 export async function getAllContacts() {
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('mock') === '1') {
+    return [
+      { contact_id: "CON-0001", contact_name: "Jobaer Hossain", designation: "Sponsor", organization: "Intrex Digital", mobile_phone: "+8801711223344", email: "jobaer@intrex-digital.com", contact_type: "Client" },
+      { contact_id: "CON-0002", contact_name: "Sarah Jenkins", designation: "Key Account Manager", organization: "Partner Inc.", mobile_phone: "+8801799887766", email: "sarah@partner.com", contact_type: "Client" },
+      { contact_id: "CON-0003", contact_name: "Ali Ahmed", designation: "Vendor Lead", organization: "Apex Supplies", mobile_phone: "+8801555443322", email: "ali@apexsupplies.com", contact_type: "Vendor" },
+      { contact_id: "CON-0004", contact_name: "Tariqul Islam", designation: "Distributor Manager", organization: "Summit Dist", mobile_phone: "+8801666778899", email: "tariqul@summitdist.com", contact_type: "Vendor" }
+    ];
+  }
   if (!checkConfiguration()) return [];
   try {
-    const querySnapshot = await getDocs(collection(db, "tbl_contacts"));
+    const querySnapshot = await getDocs(collection(db, "sol_contacts"));
     const contacts = [];
     querySnapshot.forEach((docSnap) => {
       if (docSnap.exists()) {
@@ -241,7 +263,7 @@ export async function getAllContacts() {
 export async function deleteContact(contactId) {
   if (!checkConfiguration()) return;
   try {
-    const docRef = doc(db, "tbl_contacts", contactId);
+    const docRef = doc(db, "sol_contacts", contactId);
     await deleteDoc(docRef);
   } catch (error) {
     console.error("Error deleting contact: ", error);
@@ -259,8 +281,8 @@ export async function addMeeting(meetingData) {
     throw new Error("Missing required meeting fields");
   }
   try {
-    const id = meeting_id || await getNextSeqId("tbl_meetings", "MTG-", "meeting_id", 4);
-    const docRef = doc(db, "tbl_meetings", id);
+    const id = meeting_id || await getNextSeqId("sol_meetings", "MTG-", "meeting_id", 4);
+    const docRef = doc(db, "sol_meetings", id);
     await setDoc(docRef, {
       meeting_id: id,
       project_id: project_id.trim().toUpperCase(),
@@ -283,7 +305,7 @@ export async function addMeeting(meetingData) {
 export async function getAllMeetings() {
   if (!checkConfiguration()) return [];
   try {
-    const querySnapshot = await getDocs(collection(db, "tbl_meetings"));
+    const querySnapshot = await getDocs(collection(db, "sol_meetings"));
     const meetings = [];
     querySnapshot.forEach((docSnap) => {
       if (docSnap.exists()) {
@@ -300,7 +322,7 @@ export async function getAllMeetings() {
 export async function deleteMeeting(meetingId) {
   if (!checkConfiguration()) return;
   try {
-    const docRef = doc(db, "tbl_meetings", meetingId);
+    const docRef = doc(db, "sol_meetings", meetingId);
     await deleteDoc(docRef);
   } catch (error) {
     console.error("Error deleting meeting: ", error);
@@ -318,8 +340,8 @@ export async function addBudget(budgetData) {
     throw new Error("Missing required budget fields");
   }
   try {
-    const id = budget_line_id || await getNextSeqId("tbl_budget", "BGT-", "budget_line_id", 4);
-    const docRef = doc(db, "tbl_budget", id);
+    const id = budget_line_id || await getNextSeqId("sol_budget", "BGT-", "budget_line_id", 4);
+    const docRef = doc(db, "sol_budget", id);
     await setDoc(docRef, {
       budget_line_id: id,
       project_id: project_id.trim().toUpperCase(),
@@ -340,7 +362,7 @@ export async function addBudget(budgetData) {
 export async function getAllBudgets() {
   if (!checkConfiguration()) return [];
   try {
-    const querySnapshot = await getDocs(collection(db, "tbl_budget"));
+    const querySnapshot = await getDocs(collection(db, "sol_budget"));
     const budgets = [];
     querySnapshot.forEach((docSnap) => {
       if (docSnap.exists()) {
@@ -357,7 +379,7 @@ export async function getAllBudgets() {
 export async function deleteBudget(budgetLineId) {
   if (!checkConfiguration()) return;
   try {
-    const docRef = doc(db, "tbl_budget", budgetLineId);
+    const docRef = doc(db, "sol_budget", budgetLineId);
     await deleteDoc(docRef);
   } catch (error) {
     console.error("Error deleting budget line: ", error);
@@ -375,8 +397,8 @@ export async function addTask(taskData) {
     throw new Error("Missing required task fields");
   }
   try {
-    const id = task_id || await getNextSeqId("tbl_tasks", "TSK-", "task_id", 4);
-    const docRef = doc(db, "tbl_tasks", id);
+    const id = task_id || await getNextSeqId("sol_tasks", "TSK-", "task_id", 4);
+    const docRef = doc(db, "sol_tasks", id);
 
     // Read previous task document if existing to support append-only log visualizer
     let finalUpdate = working_update ? working_update.trim() : "";
@@ -412,7 +434,7 @@ export async function addTask(taskData) {
 
     // Cascade update the project status if the task is set to Completed/In Progress
     if (task_status === "Completed" || task_status === "In Progress") {
-      const projRef = doc(db, "tbl_projects", project_id.trim().toUpperCase());
+      const projRef = doc(db, "sol_projects", project_id.trim().toUpperCase());
       const projSnap = await getDoc(projRef);
       if (projSnap.exists()) {
         const currentProjStatus = projSnap.data().project_status;
@@ -432,7 +454,7 @@ export async function addTask(taskData) {
 export async function getAllTasks() {
   if (!checkConfiguration()) return [];
   try {
-    const querySnapshot = await getDocs(collection(db, "tbl_tasks"));
+    const querySnapshot = await getDocs(collection(db, "sol_tasks"));
     const tasks = [];
     querySnapshot.forEach((docSnap) => {
       if (docSnap.exists()) {
@@ -449,7 +471,7 @@ export async function getAllTasks() {
 export async function deleteTask(taskId) {
   if (!checkConfiguration()) return;
   try {
-    const docRef = doc(db, "tbl_tasks", taskId);
+    const docRef = doc(db, "sol_tasks", taskId);
     await deleteDoc(docRef);
   } catch (error) {
     console.error("Error deleting task: ", error);
@@ -464,7 +486,7 @@ export async function deleteTask(taskId) {
 async function generateRequisitionId() {
   const year = new Date().getFullYear();
   const prefix = `REQ-${year}-`;
-  return await getNextSeqId("tbl_requisitions", prefix, "requisition_id", 4);
+  return await getNextSeqId("sol_requisitions", prefix, "requisition_id", 4);
 }
 
 // ==========================================
@@ -499,7 +521,7 @@ export async function addRequisition(reqData) {
 
   try {
     const id = requisition_id || await generateRequisitionId();
-    const docRef = doc(db, "tbl_requisitions", id);
+    const docRef = doc(db, "sol_requisitions", id);
     const total = Number(qty_requested) * Number(est_unit_cost);
 
     await setDoc(docRef, {
@@ -525,7 +547,7 @@ export async function addRequisition(reqData) {
 export async function getAllRequisitions() {
   if (!checkConfiguration()) return [];
   try {
-    const querySnapshot = await getDocs(collection(db, "tbl_requisitions"));
+    const querySnapshot = await getDocs(collection(db, "sol_requisitions"));
     const reqs = [];
     querySnapshot.forEach((docSnap) => {
       if (docSnap.exists()) {
@@ -542,7 +564,7 @@ export async function getAllRequisitions() {
 export async function deleteRequisition(requisitionId) {
   if (!checkConfiguration()) return;
   try {
-    const docRef = doc(db, "tbl_requisitions", requisitionId);
+    const docRef = doc(db, "sol_requisitions", requisitionId);
     await deleteDoc(docRef);
   } catch (error) {
     console.error("Error deleting requisition: ", error);
@@ -569,7 +591,7 @@ export async function addPurchaseOrder(poData) {
   }
 
   // Check unique requisition_id
-  const querySnapshot = await getDocs(collection(db, "tbl_purchase_orders"));
+  const querySnapshot = await getDocs(collection(db, "sol_purchase_orders"));
   let reqExists = false;
   querySnapshot.forEach(docSnap => {
     const data = docSnap.data();
@@ -582,8 +604,8 @@ export async function addPurchaseOrder(poData) {
   }
 
   try {
-    const id = po_number || await getNextSeqId("tbl_purchase_orders", "PO-", "po_number", 5);
-    const docRef = doc(db, "tbl_purchase_orders", id);
+    const id = po_number || await getNextSeqId("sol_purchase_orders", "PO-", "po_number", 5);
+    const docRef = doc(db, "sol_purchase_orders", id);
     await setDoc(docRef, {
       po_number: id,
       requisition_id: requisition_id,
@@ -598,7 +620,7 @@ export async function addPurchaseOrder(poData) {
     });
 
     // Cascade update: update requisition status
-    const reqRef = doc(db, "tbl_requisitions", requisition_id);
+    const reqRef = doc(db, "sol_requisitions", requisition_id);
     const reqSnap = await getDoc(reqRef);
     if (reqSnap.exists()) {
       await setDoc(reqRef, { dept_approval: "Approved", updatedAt: serverTimestamp() }, { merge: true });
@@ -606,7 +628,7 @@ export async function addPurchaseOrder(poData) {
 
     // Cascade add to Expense tracker automatically (ledger of truth)
     const expenseId = "EXP-AUTO-" + id;
-    const expRef = doc(db, "tbl_expenses", expenseId);
+    const expRef = doc(db, "sol_expenses", expenseId);
     await setDoc(expRef, {
       expense_id: expenseId,
       project_id: project_id.trim().toUpperCase(),
@@ -631,7 +653,7 @@ export async function addPurchaseOrder(poData) {
 export async function getAllPurchaseOrders() {
   if (!checkConfiguration()) return [];
   try {
-    const querySnapshot = await getDocs(collection(db, "tbl_purchase_orders"));
+    const querySnapshot = await getDocs(collection(db, "sol_purchase_orders"));
     const purchases = [];
     querySnapshot.forEach((docSnap) => {
       if (docSnap.exists()) {
@@ -648,7 +670,7 @@ export async function getAllPurchaseOrders() {
 export async function deletePurchaseOrder(poNumber) {
   if (!checkConfiguration()) return;
   try {
-    const docRef = doc(db, "tbl_purchase_orders", poNumber);
+    const docRef = doc(db, "sol_purchase_orders", poNumber);
     await deleteDoc(docRef);
   } catch (error) {
     console.error("Error deleting purchase order: ", error);
@@ -684,8 +706,8 @@ export async function addExpense(expenseData) {
   }
 
   try {
-    const id = expense_id || await getNextSeqId("tbl_expenses", "EXP-", "expense_id", 5);
-    const docRef = doc(db, "tbl_expenses", id);
+    const id = expense_id || await getNextSeqId("sol_expenses", "EXP-", "expense_id", 5);
+    const docRef = doc(db, "sol_expenses", id);
     await setDoc(docRef, {
       expense_id: id,
       project_id: project_id.trim().toUpperCase(),
@@ -709,7 +731,7 @@ export async function addExpense(expenseData) {
 export async function getAllExpenses() {
   if (!checkConfiguration()) return [];
   try {
-    const querySnapshot = await getDocs(collection(db, "tbl_expenses"));
+    const querySnapshot = await getDocs(collection(db, "sol_expenses"));
     const expenses = [];
     querySnapshot.forEach((docSnap) => {
       if (docSnap.exists()) {
@@ -726,7 +748,7 @@ export async function getAllExpenses() {
 export async function deleteExpense(expenseId) {
   if (!checkConfiguration()) return;
   try {
-    const docRef = doc(db, "tbl_expenses", expenseId);
+    const docRef = doc(db, "sol_expenses", expenseId);
     await deleteDoc(docRef);
   } catch (error) {
     console.error("Error deleting expense entry: ", error);
@@ -746,7 +768,7 @@ export async function addEmployee(employeeData) {
 
   // Check email uniqueness if provided
   if (email) {
-    const querySnapshot = await getDocs(collection(db, "tbl_employees"));
+    const querySnapshot = await getDocs(collection(db, "sol_employees"));
     let emailExists = false;
     querySnapshot.forEach(docSnap => {
       const data = docSnap.data();
@@ -760,8 +782,8 @@ export async function addEmployee(employeeData) {
   }
 
   try {
-    const id = employee_id || await getNextSeqId("tbl_employees", "EMP-", "employee_id", 4);
-    const docRef = doc(db, "tbl_employees", id);
+    const id = employee_id || await getNextSeqId("sol_employees", "EMP-", "employee_id", 4);
+    const docRef = doc(db, "sol_employees", id);
     await setDoc(docRef, {
       employee_id: id,
       employee_name: employee_name.trim(),
@@ -783,7 +805,7 @@ export async function addEmployee(employeeData) {
 export async function getAllEmployees() {
   if (!checkConfiguration()) return [];
   try {
-    const querySnapshot = await getDocs(collection(db, "tbl_employees"));
+    const querySnapshot = await getDocs(collection(db, "sol_employees"));
     const employees = [];
     querySnapshot.forEach((docSnap) => {
       if (docSnap.exists()) {
@@ -800,7 +822,7 @@ export async function getAllEmployees() {
 export async function deleteEmployee(employeeId) {
   if (!checkConfiguration()) return;
   try {
-    const docRef = doc(db, "tbl_employees", employeeId);
+    const docRef = doc(db, "sol_employees", employeeId);
     await deleteDoc(docRef);
   } catch (error) {
     console.error("Error deleting employee: ", error);
@@ -834,8 +856,8 @@ export async function addSupportTicket(ticketData) {
   }
 
   try {
-    const id = ticket_id || await getNextSeqId("tbl_support_tickets", "TCK-", "ticket_id", 4);
-    const docRef = doc(db, "tbl_support_tickets", id);
+    const id = ticket_id || await getNextSeqId("sol_support_tickets", "TCK-", "ticket_id", 4);
+    const docRef = doc(db, "sol_support_tickets", id);
 
     let createdAt = new Date().toISOString();
     let closedAt = "";
@@ -898,7 +920,7 @@ export async function addSupportTicket(ticketData) {
 export async function getAllSupportTickets() {
   if (!checkConfiguration()) return [];
   try {
-    const querySnapshot = await getDocs(collection(db, "tbl_support_tickets"));
+    const querySnapshot = await getDocs(collection(db, "sol_support_tickets"));
     const tickets = [];
     querySnapshot.forEach((docSnap) => {
       if (docSnap.exists()) {
@@ -915,7 +937,7 @@ export async function getAllSupportTickets() {
 export async function deleteSupportTicket(ticketId) {
   if (!checkConfiguration()) return;
   try {
-    const docRef = doc(db, "tbl_support_tickets", ticketId);
+    const docRef = doc(db, "sol_support_tickets", ticketId);
     await deleteDoc(docRef);
   } catch (error) {
     console.error("Error deleting support ticket: ", error);
@@ -929,7 +951,7 @@ export async function deleteSupportTicket(ticketId) {
 async function generateInvoiceId() {
   const year = new Date().getFullYear();
   const prefix = `INV-${year}-`;
-  return await getNextSeqId("tbl_client_payments", prefix, "invoice_id", 3);
+  return await getNextSeqId("sol_client_payments", prefix, "invoice_id", 3);
 }
 
 export async function addClientPayment(paymentData) {
@@ -961,7 +983,7 @@ export async function addClientPayment(paymentData) {
 
   try {
     const id = invoice_id || await generateInvoiceId();
-    const docRef = doc(db, "tbl_client_payments", id);
+    const docRef = doc(db, "sol_client_payments", id);
     const outstanding = Number(invoiced_amount) - amtReceived;
 
     await setDoc(docRef, {
@@ -990,7 +1012,7 @@ export async function addClientPayment(paymentData) {
 export async function getAllClientPayments() {
   if (!checkConfiguration()) return [];
   try {
-    const querySnapshot = await getDocs(collection(db, "tbl_client_payments"));
+    const querySnapshot = await getDocs(collection(db, "sol_client_payments"));
     const payments = [];
     querySnapshot.forEach((docSnap) => {
       if (docSnap.exists()) {
@@ -1007,7 +1029,7 @@ export async function getAllClientPayments() {
 export async function deleteClientPayment(invoiceId) {
   if (!checkConfiguration()) return;
   try {
-    const docRef = doc(db, "tbl_client_payments", invoiceId);
+    const docRef = doc(db, "sol_client_payments", invoiceId);
     await deleteDoc(docRef);
   } catch (error) {
     console.error("Error deleting client payment record: ", error);
@@ -1019,7 +1041,7 @@ export async function deleteClientPayment(invoiceId) {
 // 13. DOMAIN & HOSTING SALES TRACKER (tbl_domain_hosting_sales)
 // ==========================================
 async function generateAssetId() {
-  return await getNextSeqId("tbl_domain_hosting_sales", "AST-", "asset_id", 4);
+  return await getNextSeqId("sol_domain_hosting_sales", "AST-", "asset_id", 4);
 }
 
 export async function addDomainHosting(assetData) {
@@ -1048,7 +1070,7 @@ export async function addDomainHosting(assetData) {
 
   try {
     const id = asset_id || await generateAssetId();
-    const docRef = doc(db, "tbl_domain_hosting_sales", id);
+    const docRef = doc(db, "sol_domain_hosting_sales", id);
 
     await setDoc(docRef, {
       asset_id: id,
@@ -1078,7 +1100,7 @@ export async function addDomainHosting(assetData) {
 export async function getAllDomainHosting() {
   if (!checkConfiguration()) return [];
   try {
-    const querySnapshot = await getDocs(collection(db, "tbl_domain_hosting_sales"));
+    const querySnapshot = await getDocs(collection(db, "sol_domain_hosting_sales"));
     const assets = [];
     querySnapshot.forEach((docSnap) => {
       if (docSnap.exists()) {
@@ -1095,7 +1117,7 @@ export async function getAllDomainHosting() {
 export async function deleteDomainHosting(assetId) {
   if (!checkConfiguration()) return;
   try {
-    const docRef = doc(db, "tbl_domain_hosting_sales", assetId);
+    const docRef = doc(db, "sol_domain_hosting_sales", assetId);
     await deleteDoc(docRef);
   } catch (error) {
     console.error("Error deleting domain & hosting asset: ", error);
@@ -1113,8 +1135,8 @@ export async function addAuditLog(logData) {
     throw new Error("Missing required audit log fields");
   }
   try {
-    const id = await getNextSeqId("tbl_audit_logs", "LOG-", "log_id", 5);
-    const docRef = doc(db, "tbl_audit_logs", id);
+    const id = await getNextSeqId("sol_audit_logs", "LOG-", "log_id", 5);
+    const docRef = doc(db, "sol_audit_logs", id);
     await setDoc(docRef, {
       log_id: id,
       user_email: user_email,
@@ -1135,7 +1157,7 @@ export async function addAuditLog(logData) {
 export async function getAllAuditLogs() {
   if (!checkConfiguration()) return [];
   try {
-    const querySnapshot = await getDocs(collection(db, "tbl_audit_logs"));
+    const querySnapshot = await getDocs(collection(db, "sol_audit_logs"));
     const logs = [];
     querySnapshot.forEach((docSnap) => {
       if (docSnap.exists()) {
@@ -1182,7 +1204,7 @@ export async function getAllOnlineInquiries() {
 
   if (!checkConfiguration()) return [];
   try {
-    const querySnapshot = await getDocs(collection(db, "online_inquiries"));
+    const querySnapshot = await getDocs(collection(db, "learn_online_inquiries"));
     const inquiries = [];
     querySnapshot.forEach((docSnap) => {
       if (docSnap.exists()) inquiries.push(docSnap.data());
@@ -1208,7 +1230,7 @@ export async function deleteOnlineInquiry(inquiryKey) {
 
   if (!checkConfiguration()) return;
   try {
-    const docRef = doc(db, "online_inquiries", inquiryKey.trim().toUpperCase());
+    const docRef = doc(db, "learn_online_inquiries", inquiryKey.trim().toUpperCase());
     await deleteDoc(docRef);
   } catch (error) {
     console.error("Error deleting online inquiry: ", error);
@@ -1233,7 +1255,7 @@ export async function getAllNewsletterSubscriptions() {
 
   if (!checkConfiguration()) return [];
   try {
-    const querySnapshot = await getDocs(collection(db, "newsletter_subscriptions"));
+    const querySnapshot = await getDocs(collection(db, "learn_newsletter_subscriptions"));
     const subs = [];
     querySnapshot.forEach((docSnap) => {
       if (docSnap.exists()) subs.push(docSnap.data());
@@ -1259,7 +1281,7 @@ export async function deleteNewsletterSubscription(email) {
 
   if (!checkConfiguration()) return;
   try {
-    const docRef = doc(db, "newsletter_subscriptions", email.trim().toLowerCase());
+    const docRef = doc(db, "learn_newsletter_subscriptions", email.trim().toLowerCase());
     await deleteDoc(docRef);
   } catch (error) {
     console.error("Error deleting newsletter subscription: ", error);

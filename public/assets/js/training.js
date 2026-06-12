@@ -49,7 +49,7 @@ export async function verifyCertificate(certificateId) {
   if (!checkConfiguration()) return null;
 
   try {
-    const docRef = doc(db, "certificates", certificateId.trim());
+    const docRef = doc(db, "learn_certificates", certificateId.trim());
     const docSnap = await getDoc(docRef);
 
     if (docSnap.exists()) {
@@ -112,7 +112,7 @@ export async function addCertificate(certData) {
   }
 
   try {
-    const docRef = doc(db, "certificates", certificateId.trim());
+    const docRef = doc(db, "learn_certificates", certificateId.trim());
     await setDoc(docRef, {
       certificateId: certificateId.trim(),
       studentId: studentId ? studentId.trim() : "",
@@ -149,7 +149,7 @@ export async function getAllCertificates() {
   }
   if (!checkConfiguration()) return [];
   try {
-    const querySnapshot = await getDocs(collection(db, "certificates"));
+    const querySnapshot = await getDocs(collection(db, "learn_certificates"));
     const certs = [];
     querySnapshot.forEach((docSnap) => {
       if (docSnap.exists()) {
@@ -167,7 +167,7 @@ export async function getAllCertificates() {
 export async function deleteCertificate(certificateId) {
   if (!checkConfiguration()) return;
   try {
-    const docRef = doc(db, "certificates", certificateId.trim());
+    const docRef = doc(db, "learn_certificates", certificateId.trim());
     await deleteDoc(docRef);
   } catch (error) {
     console.error("Error deleting certificate: ", error);
@@ -212,7 +212,7 @@ export async function addRegistration(regData) {
 
   try {
     // 1. Fetch current registrations to compute student ID
-    const querySnapshot = await getDocs(collection(db, "registrations"));
+    const querySnapshot = await getDocs(collection(db, "learn_registrations"));
     const regs = [];
     querySnapshot.forEach((docSnap) => {
       if (docSnap.exists()) {
@@ -225,7 +225,7 @@ export async function addRegistration(regData) {
     const docId = finalStudentId + "_" + cleanCourse;
 
     // 2. Save registration info using docId as document ID
-    const regRef = doc(db, "registrations", docId);
+    const regRef = doc(db, "learn_registrations", docId);
     await setDoc(regRef, {
       studentId: finalStudentId,
       fullName: fullName.trim(),
@@ -255,7 +255,7 @@ export async function addRegistration(regData) {
       status = paid >= effectiveFee ? "Fully Paid" : "Partially Paid";
     }
 
-    const payRef = doc(db, "payments", docId);
+    const payRef = doc(db, "learn_payments", docId);
     await setDoc(payRef, {
       studentId: finalStudentId,
       studentName: fullName.trim(),
@@ -305,7 +305,7 @@ export async function getAllRegistrations() {
   }
   if (!checkConfiguration()) return [];
   try {
-    const querySnapshot = await getDocs(collection(db, "registrations"));
+    const querySnapshot = await getDocs(collection(db, "learn_registrations"));
     const regs = [];
     querySnapshot.forEach((docSnap) => {
       if (docSnap.exists()) {
@@ -332,7 +332,7 @@ export async function updateRegistration(docId, regData) {
   }
 
   try {
-    const regRef = doc(db, "registrations", docId);
+    const regRef = doc(db, "learn_registrations", docId);
     const regSnap = await getDoc(regRef);
     const existingData = regSnap.exists() ? regSnap.data() : {};
     const studentId = existingData.studentId || "";
@@ -354,7 +354,7 @@ export async function updateRegistration(docId, regData) {
     }, { merge: true });
 
     // Sync student name, email, course and batch to the payment record
-    const payRef = doc(db, "payments", docId);
+    const payRef = doc(db, "learn_payments", docId);
 
     const paySnap = await getDoc(payRef);
     if (paySnap.exists()) {
@@ -389,12 +389,12 @@ export async function updateRegistration(docId, regData) {
     }
 
     // Sync certificate records as well if they exist
-    const certQuerySnapshot = await getDocs(collection(db, "certificates"));
+    const certQuerySnapshot = await getDocs(collection(db, "learn_certificates"));
     certQuerySnapshot.forEach(async (docSnap) => {
       if (docSnap.exists()) {
         const certData = docSnap.data();
         if (certData.studentId === studentId) {
-          const certRef = doc(db, "certificates", certData.certificateId);
+          const certRef = doc(db, "learn_certificates", certData.certificateId);
           await setDoc(certRef, {
             studentName: fullName.trim(),
             courseName: course.trim(),
@@ -413,7 +413,7 @@ export async function updateRegistration(docId, regData) {
 export async function deleteRegistration(docId) {
   if (!checkConfiguration()) return;
   try {
-    const regRef = doc(db, "registrations", docId);
+    const regRef = doc(db, "learn_registrations", docId);
     const regSnap = await getDoc(regRef);
     let studentId = "";
     let course = "";
@@ -424,16 +424,16 @@ export async function deleteRegistration(docId) {
 
     await deleteDoc(regRef);
 
-    const payRef = doc(db, "payments", docId);
+    const payRef = doc(db, "learn_payments", docId);
     await deleteDoc(payRef);
 
     // Also delete any certificates for this student's specific course
-    const certQuerySnapshot = await getDocs(collection(db, "certificates"));
+    const certQuerySnapshot = await getDocs(collection(db, "learn_certificates"));
     certQuerySnapshot.forEach(async (docSnap) => {
       if (docSnap.exists()) {
         const certData = docSnap.data();
         if (certData.studentId === studentId && (!course || certData.courseName === course)) {
-          const certRef = doc(db, "certificates", certData.certificateId);
+          const certRef = doc(db, "learn_certificates", certData.certificateId);
           await deleteDoc(certRef);
         }
       }
@@ -478,7 +478,7 @@ export async function getAllPayments() {
   }
   if (!checkConfiguration()) return [];
   try {
-    const querySnapshot = await getDocs(collection(db, "payments"));
+    const querySnapshot = await getDocs(collection(db, "learn_payments"));
     const pays = [];
     querySnapshot.forEach((docSnap) => {
       if (docSnap.exists()) {
@@ -509,7 +509,7 @@ export async function updatePayment(docId, totalFee, discount, amountPaid, payme
       status = paid >= effectiveFee ? "Fully Paid" : "Partially Paid";
     }
 
-    const payRef = doc(db, "payments", docId);
+    const payRef = doc(db, "learn_payments", docId);
     await setDoc(payRef, {
       totalFee: fee,
       discount: disc,
@@ -586,7 +586,7 @@ export async function addAuditLog(logData) {
 
   try {
     const id = await getNextSeqId("tbl_audit_logs", "LOG-", "log_id", 5);
-    const docRef = doc(db, "tbl_audit_logs", id);
+    const docRef = doc(db, "learn_tbl_audit_logs", id);
     await setDoc(docRef, {
       log_id: id,
       user_email: user_email,
@@ -643,7 +643,7 @@ export async function getAllAuditLogs() {
 
   if (!checkConfiguration()) return [];
   try {
-    const querySnapshot = await getDocs(collection(db, "tbl_audit_logs"));
+    const querySnapshot = await getDocs(collection(db, "learn_tbl_audit_logs"));
     const logs = [];
     querySnapshot.forEach((docSnap) => {
       if (docSnap.exists()) {
@@ -684,14 +684,14 @@ export async function addOnlineRegistration(regData) {
       regKey = `REG-${randomNum}`;
 
       // Verify uniqueness by checking if the doc already exists
-      const docRef = doc(db, "online_registrations", regKey);
+      const docRef = doc(db, "learn_online_registrations", regKey);
       const docSnap = await getDoc(docRef);
       if (!docSnap.exists()) {
         isUnique = true;
       }
     }
 
-    const regRef = doc(db, "online_registrations", regKey);
+    const regRef = doc(db, "learn_online_registrations", regKey);
     await setDoc(regRef, {
       registrationKey: regKey,
       fullName: fullName.trim(),
@@ -734,7 +734,7 @@ export async function getAllOnlineRegistrations() {
   }
   if (!checkConfiguration()) return [];
   try {
-    const querySnapshot = await getDocs(collection(db, "online_registrations"));
+    const querySnapshot = await getDocs(collection(db, "learn_online_registrations"));
     const regs = [];
     querySnapshot.forEach((docSnap) => {
       if (docSnap.exists()) {
@@ -758,7 +758,7 @@ export async function getAllOnlineRegistrations() {
 export async function getOnlineRegistration(regKey) {
   if (!checkConfiguration()) return null;
   try {
-    const docRef = doc(db, "online_registrations", regKey.trim().toUpperCase());
+    const docRef = doc(db, "learn_online_registrations", regKey.trim().toUpperCase());
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
       return docSnap.data();
@@ -774,7 +774,7 @@ export async function getOnlineRegistration(regKey) {
 export async function deleteOnlineRegistration(regKey) {
   if (!checkConfiguration()) return;
   try {
-    const docRef = doc(db, "online_registrations", regKey.trim().toUpperCase());
+    const docRef = doc(db, "learn_online_registrations", regKey.trim().toUpperCase());
     await deleteDoc(docRef);
   } catch (error) {
     console.error("Error deleting online registration: ", error);
@@ -806,12 +806,12 @@ export async function addOnlineInquiry(inquiryData) {
       attempts++;
       const randomNum = Math.floor(100000 + Math.random() * 900000);
       inquiryKey = `INQ-${randomNum}`;
-      const docRef = doc(db, "online_inquiries", inquiryKey);
+      const docRef = doc(db, "learn_online_inquiries", inquiryKey);
       const docSnap = await getDoc(docRef);
       if (!docSnap.exists()) isUnique = true;
     }
 
-    const inquiryRef = doc(db, "online_inquiries", inquiryKey);
+    const inquiryRef = doc(db, "learn_online_inquiries", inquiryKey);
     await setDoc(inquiryRef, {
       inquiryKey,
       name: name.trim(),
@@ -851,7 +851,7 @@ export async function getAllOnlineInquiries() {
   }
   if (!checkConfiguration()) return [];
   try {
-    const querySnapshot = await getDocs(collection(db, "online_inquiries"));
+    const querySnapshot = await getDocs(collection(db, "learn_online_inquiries"));
     const inquiries = [];
     querySnapshot.forEach((docSnap) => {
       if (docSnap.exists()) inquiries.push(docSnap.data());
@@ -872,7 +872,7 @@ export async function getAllOnlineInquiries() {
 export async function deleteOnlineInquiry(inquiryKey) {
   if (!checkConfiguration()) return;
   try {
-    const docRef = doc(db, "online_inquiries", inquiryKey.trim().toUpperCase());
+    const docRef = doc(db, "learn_online_inquiries", inquiryKey.trim().toUpperCase());
     await deleteDoc(docRef);
   } catch (error) {
     console.error("Error deleting online inquiry: ", error);
@@ -891,7 +891,7 @@ export async function addNewsletterSubscription(email) {
     throw new Error("Email is required");
   }
   try {
-    const docRef = doc(db, "newsletter_subscriptions", email.trim().toLowerCase());
+    const docRef = doc(db, "learn_newsletter_subscriptions", email.trim().toLowerCase());
     await setDoc(docRef, {
       email: email.trim().toLowerCase(),
       createdAt: serverTimestamp()
@@ -952,7 +952,7 @@ export async function addEmployee(employeeData) {
 
   // Check email uniqueness if provided
   if (email) {
-    const querySnapshot = await getDocs(collection(db, "tbl_employees"));
+    const querySnapshot = await getDocs(collection(db, "learn_tbl_employees"));
     let emailExists = false;
     querySnapshot.forEach(docSnap => {
       const data = docSnap.data();
@@ -967,7 +967,7 @@ export async function addEmployee(employeeData) {
 
   try {
     const id = employee_id || await getNextSeqId("tbl_employees", "EMP-", "employee_id", 4);
-    const docRef = doc(db, "tbl_employees", id);
+    const docRef = doc(db, "learn_tbl_employees", id);
     let originalCreatedAt = null;
     if (employee_id) {
       const snap = await getDoc(docRef);
@@ -1038,7 +1038,7 @@ export async function getAllEmployees() {
 
   if (!checkConfiguration()) return [];
   try {
-    const querySnapshot = await getDocs(collection(db, "tbl_employees"));
+    const querySnapshot = await getDocs(collection(db, "learn_tbl_employees"));
     const employees = [];
     querySnapshot.forEach((docSnap) => {
       if (docSnap.exists()) {
@@ -1065,7 +1065,7 @@ export async function deleteEmployee(employeeId) {
 
   if (!checkConfiguration()) return;
   try {
-    const docRef = doc(db, "tbl_employees", employeeId);
+    const docRef = doc(db, "learn_tbl_employees", employeeId);
     await deleteDoc(docRef);
   } catch (error) {
     console.error("Error deleting employee: ", error);
@@ -1114,7 +1114,7 @@ export async function getAllBatches() {
 
   if (!checkConfiguration()) return [];
   try {
-    const querySnapshot = await getDocs(collection(db, "batches"));
+    const querySnapshot = await getDocs(collection(db, "learn_batches"));
     const batches = [];
     querySnapshot.forEach((docSnap) => {
       if (docSnap.exists()) {
@@ -1159,7 +1159,7 @@ export async function addBatch(batchData) {
   if (!checkConfiguration()) return null;
 
   try {
-    const docRef = doc(db, "batches", batchId.trim());
+    const docRef = doc(db, "learn_batches", batchId.trim());
     const snap = await getDoc(docRef);
     if (snap.exists()) {
       throw new Error(`Batch ID ${batchId} already exists.`);
@@ -1204,7 +1204,7 @@ export async function updateBatch(batchId, batchData) {
   if (!checkConfiguration()) return;
 
   try {
-    const docRef = doc(db, "batches", batchId.trim());
+    const docRef = doc(db, "learn_batches", batchId.trim());
     await setDoc(docRef, {
       courseName: courseName.trim(),
       schedule: schedule || "Morning (9am – 12pm)",
@@ -1230,7 +1230,7 @@ export async function deleteBatch(batchId) {
 
   if (!checkConfiguration()) return;
   try {
-    const docRef = doc(db, "batches", batchId.trim());
+    const docRef = doc(db, "learn_batches", batchId.trim());
     await deleteDoc(docRef);
   } catch (error) {
     console.error("Error deleting batch: ", error);
@@ -1294,7 +1294,7 @@ export async function getAllPublicInstitutes() {
 
   if (!checkConfiguration()) return [];
   try {
-    const querySnapshot = await getDocs(collection(db, "public_institutes"));
+    const querySnapshot = await getDocs(collection(db, "learn_public_institutes"));
     const institutes = [];
     querySnapshot.forEach((docSnap) => {
       if (docSnap.exists()) {
@@ -1342,7 +1342,7 @@ export async function addPublicInstitute(instData) {
 
   try {
     const id = await getNextSeqId("public_institutes", "INST-", "id", 4);
-    const docRef = doc(db, "public_institutes", id);
+    const docRef = doc(db, "learn_public_institutes", id);
     await setDoc(docRef, {
       id,
       name: name.trim(),
@@ -1393,7 +1393,7 @@ export async function updatePublicInstitute(instId, instData) {
   if (!checkConfiguration()) return;
 
   try {
-    const docRef = doc(db, "public_institutes", instId.trim());
+    const docRef = doc(db, "learn_public_institutes", instId.trim());
     await setDoc(docRef, {
       name: name.trim(),
       contactPerson: contactPerson ? contactPerson.trim() : "",
@@ -1424,7 +1424,7 @@ export async function deletePublicInstitute(instId) {
 
   if (!checkConfiguration()) return;
   try {
-    const docRef = doc(db, "public_institutes", instId.trim());
+    const docRef = doc(db, "learn_public_institutes", instId.trim());
     await deleteDoc(docRef);
   } catch (error) {
     console.error("Error deleting public institute: ", error);
@@ -1474,7 +1474,7 @@ export async function getAllJobPlacements() {
 
   if (!checkConfiguration()) return [];
   try {
-    const querySnapshot = await getDocs(collection(db, "job_placements"));
+    const querySnapshot = await getDocs(collection(db, "learn_job_placements"));
     const placements = [];
     querySnapshot.forEach((docSnap) => {
       if (docSnap.exists()) {
@@ -1523,7 +1523,7 @@ export async function addJobPlacement(placementData) {
 
   try {
     const id = await getNextSeqId("job_placements", "PLACE-", "id", 4);
-    const docRef = doc(db, "job_placements", id);
+    const docRef = doc(db, "learn_job_placements", id);
     await setDoc(docRef, {
       id,
       studentId: studentId.trim(),
@@ -1572,7 +1572,7 @@ export async function updateJobPlacement(placementId, placementData) {
   if (!checkConfiguration()) return;
 
   try {
-    const docRef = doc(db, "job_placements", placementId.trim());
+    const docRef = doc(db, "learn_job_placements", placementId.trim());
     await setDoc(docRef, {
       company: company.trim(),
       jobTitle: jobTitle.trim(),
@@ -1600,7 +1600,7 @@ export async function deleteJobPlacement(placementId) {
 
   if (!checkConfiguration()) return;
   try {
-    const docRef = doc(db, "job_placements", placementId.trim());
+    const docRef = doc(db, "learn_job_placements", placementId.trim());
     await deleteDoc(docRef);
   } catch (error) {
     console.error("Error deleting job placement: ", error);
@@ -1655,7 +1655,7 @@ export async function getAllExpenses() {
 
   if (!checkConfiguration()) return [];
   try {
-    const querySnapshot = await getDocs(collection(db, "expenses"));
+    const querySnapshot = await getDocs(collection(db, "learn_expenses"));
     const expenses = [];
     querySnapshot.forEach((docSnap) => {
       if (docSnap.exists()) {
@@ -1700,7 +1700,7 @@ export async function addExpense(expenseData) {
 
   try {
     const id = await getNextSeqId("expenses", "EXP-", "id", 4);
-    const docRef = doc(db, "expenses", id);
+    const docRef = doc(db, "learn_expenses", id);
     await setDoc(docRef, {
       id,
       category: category.trim(),
@@ -1745,7 +1745,7 @@ export async function updateExpense(id, expenseData) {
   if (!checkConfiguration()) return;
 
   try {
-    const docRef = doc(db, "expenses", id.trim());
+    const docRef = doc(db, "learn_expenses", id.trim());
     await setDoc(docRef, {
       category: category.trim(),
       subCategory: subCategory.trim(),
@@ -1778,7 +1778,7 @@ export async function deleteExpense(id) {
   if (!checkConfiguration()) return;
 
   try {
-    const docRef = doc(db, "expenses", id.trim());
+    const docRef = doc(db, "learn_expenses", id.trim());
     await deleteDoc(docRef);
   } catch (error) {
     console.error("Error deleting expense: ", error);
@@ -1816,7 +1816,7 @@ export async function getAllAssessments() {
 
   if (!checkConfiguration()) return [];
   try {
-    const querySnapshot = await getDocs(collection(db, "course_assessments"));
+    const querySnapshot = await getDocs(collection(db, "learn_course_assessments"));
     const assessments = [];
     querySnapshot.forEach((docSnap) => {
       if (docSnap.exists()) {
@@ -1855,7 +1855,7 @@ export async function saveAssessment(id, assessmentData) {
   if (!checkConfiguration()) return null;
 
   try {
-    const docRef = doc(db, "course_assessments", id);
+    const docRef = doc(db, "learn_course_assessments", id);
     await setDoc(docRef, {
       ...assessmentData,
       updatedAt: serverTimestamp()
@@ -1895,7 +1895,7 @@ export async function getAllMarketingAgents() {
 
   if (!checkConfiguration()) return [];
   try {
-    const querySnapshot = await getDocs(collection(db, "marketing_agents"));
+    const querySnapshot = await getDocs(collection(db, "learn_marketing_agents"));
     const agents = [];
     querySnapshot.forEach((docSnap) => {
       if (docSnap.exists()) {
@@ -1941,7 +1941,7 @@ export async function addMarketingAgent(agentData) {
 
   try {
     const id = await getNextSeqId("marketing_agents", "AGT-", "id", 4);
-    const docRef = doc(db, "marketing_agents", id);
+    const docRef = doc(db, "learn_marketing_agents", id);
     await setDoc(docRef, {
       id,
       name: name.trim(),
@@ -1988,7 +1988,7 @@ export async function updateMarketingAgent(agentId, agentData) {
   if (!checkConfiguration()) return;
 
   try {
-    const docRef = doc(db, "marketing_agents", agentId.trim());
+    const docRef = doc(db, "learn_marketing_agents", agentId.trim());
     await setDoc(docRef, {
       name: name.trim(),
       email: email ? email.trim() : "",
@@ -2017,7 +2017,7 @@ export async function deleteMarketingAgent(agentId) {
 
   if (!checkConfiguration()) return;
   try {
-    const docRef = doc(db, "marketing_agents", agentId.trim());
+    const docRef = doc(db, "learn_marketing_agents", agentId.trim());
     await deleteDoc(docRef);
   } catch (error) {
     console.error("Error deleting marketing agent: ", error);
@@ -2039,7 +2039,7 @@ export async function getAllCommissions() {
 
   if (!checkConfiguration()) return [];
   try {
-    const querySnapshot = await getDocs(collection(db, "commissions"));
+    const querySnapshot = await getDocs(collection(db, "learn_commissions"));
     const comms = [];
     querySnapshot.forEach((docSnap) => {
       if (docSnap.exists()) {
@@ -2066,7 +2066,7 @@ export async function addCommission(commData) {
   if (!checkConfiguration()) return null;
 
   try {
-    const docRef = doc(db, "commissions", commData.id);
+    const docRef = doc(db, "learn_commissions", commData.id);
     await setDoc(docRef, {
       ...commData,
       createdAt: serverTimestamp()
@@ -2081,7 +2081,7 @@ export async function addCommission(commData) {
 export async function deleteCommission(id) {
   if (!checkConfiguration()) return;
   try {
-    const docRef = doc(db, "commissions", id);
+    const docRef = doc(db, "learn_commissions", id);
     await deleteDoc(docRef);
   } catch (error) {
     console.error("Error deleting commission: ", error);
@@ -2122,7 +2122,7 @@ export async function getAllCourses() {
 
   if (!checkConfiguration()) return [];
   try {
-    const querySnapshot = await getDocs(collection(db, "courses"));
+    const querySnapshot = await getDocs(collection(db, "learn_courses"));
     const courses = [];
     querySnapshot.forEach((docSnap) => {
       if (docSnap.exists()) {
@@ -2167,7 +2167,7 @@ export async function addCourse(courseData) {
 
   if (!checkConfiguration()) return null;
   try {
-    const docRef = doc(db, "courses", id);
+    const docRef = doc(db, "learn_courses", id);
     newCourse.createdAt = serverTimestamp();
     await setDoc(docRef, newCourse);
     return id;
@@ -2190,7 +2190,7 @@ export async function updateCourse(id, courseData) {
 
   if (!checkConfiguration()) return;
   try {
-    const docRef = doc(db, "courses", id);
+    const docRef = doc(db, "learn_courses", id);
     await setDoc(docRef, { ...courseData, updatedAt: serverTimestamp() }, { merge: true });
   } catch (error) {
     console.error("Error updating course: ", error);
@@ -2208,7 +2208,7 @@ export async function deleteCourse(id) {
 
   if (!checkConfiguration()) return;
   try {
-    const docRef = doc(db, "courses", id);
+    const docRef = doc(db, "learn_courses", id);
     await deleteDoc(docRef);
   } catch (error) {
     console.error("Error deleting course: ", error);

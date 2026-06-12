@@ -82,6 +82,7 @@
         flex: 1;
         min-height: 0;
         display: flex;
+        flex-wrap: nowrap;
         margin-right: 0 !important;
         /* Make sure row aligns to the very right edge */
       }
@@ -101,7 +102,7 @@
       }
     }
 
-    
+
 
     /* Custom thin scrollbars and bottom padding for scroll breathing room */
     .sidebar-container,
@@ -460,12 +461,14 @@
 
               <form id="loginForm">
                 <div class="mb-3">
-                  <label for="adminEmail" class="form-label small fw-semibold">Email Address <span class="text-danger">*</span></label>
+                  <label for="adminEmail" class="form-label small fw-semibold">Email Address <span
+                      class="text-danger">*</span></label>
                   <input type="email" class="form-control" id="adminEmail" required
                     placeholder="admin@intrex-digital.com">
                 </div>
                 <div class="mb-3">
-                  <label for="adminPassword" class="form-label small fw-semibold">Password <span class="text-danger">*</span></label>
+                  <label for="adminPassword" class="form-label small fw-semibold">Password <span
+                      class="text-danger">*</span></label>
                   <input type="password" class="form-control" id="adminPassword" required placeholder="••••••••">
                 </div>
                 <button type="submit" class="btn btn-primary w-100 fw-semibold py-2 mt-2">
@@ -551,14 +554,9 @@
                     <i class="bi bi-collection"></i> Batch Management
                   </button>
                   <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
-                    id="registration-tab" data-bs-toggle="tab" data-bs-target="#registrationPanel" type="button"
-                    role="tab" aria-controls="registrationPanel" aria-selected="false">
-                    <i class="bi bi-pencil-square"></i> Course Registration
-                  </button>
-                  <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
-                    id="student-list-tab" data-bs-toggle="tab" data-bs-target="#studentListPanel" type="button"
-                    role="tab" aria-controls="studentListPanel" aria-selected="false">
-                    <i class="bi bi-people"></i> Student Database
+                    id="student-list-main-tab" data-bs-toggle="tab" data-bs-target="#studentListMainPanel" type="button"
+                    role="tab" aria-controls="studentListMainPanel" aria-selected="false">
+                    <i class="bi bi-people"></i> Student List
                   </button>
                   <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
                     id="installment-tab" data-bs-toggle="tab" data-bs-target="#installmentPanel" type="button"
@@ -576,14 +574,9 @@
                     <i class="bi bi-wallet2"></i> Expense Tracker
                   </button>
                   <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
-                    id="sales-records-tab" data-bs-toggle="tab" data-bs-target="#salesRecordsPanel" type="button"
-                    role="tab" aria-controls="salesRecordsPanel" aria-selected="false">
-                    <i class="bi bi-receipt"></i> Sales Records
-                  </button>
-                  <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
-                    id="sales-commission-tab" data-bs-toggle="tab" data-bs-target="#salesCommissionPanel" type="button"
-                    role="tab" aria-controls="salesCommissionPanel" aria-selected="false">
-                    <i class="bi bi-graph-up"></i> Sales Commissions
+                    id="sales-management-tab" data-bs-toggle="tab" data-bs-target="#salesManagementPanel" type="button"
+                    role="tab" aria-controls="salesManagementPanel" aria-selected="false">
+                    <i class="bi bi-graph-up"></i> Sales Management
                   </button>
                   <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
                     id="course-assessment-tab" data-bs-toggle="tab" data-bs-target="#assessmentPanel" type="button"
@@ -591,14 +584,9 @@
                     <i class="bi bi-journal-check"></i> Course Assessments
                   </button>
                   <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
-                    id="generate-tab" data-bs-toggle="tab" data-bs-target="#generatePanel" type="button" role="tab"
-                    aria-controls="generatePanel" aria-selected="false">
-                    <i class="bi bi-patch-plus"></i> Generate Cert
-                  </button>
-                  <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
-                    id="records-tab" data-bs-toggle="tab" data-bs-target="#recordsPanel" type="button" role="tab"
-                    aria-controls="recordsPanel" aria-selected="false">
-                    <i class="bi bi-award"></i> Issued Certificates
+                    id="certificates-main-tab" data-bs-toggle="tab" data-bs-target="#certificatesPanel" type="button"
+                    role="tab" aria-controls="certificatesPanel" aria-selected="false">
+                    <i class="bi bi-award"></i> Certificates
                   </button>
                   <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
                     id="job-placement-tab" data-bs-toggle="tab" data-bs-target="#jobPlacementPanel" type="button"
@@ -993,8 +981,29 @@
                 </div>
                 <!-- End Overview Panel -->
 
-                <!-- Sub-Page 1: Course Registration Form -->
-                <div class="tab-pane fade" id="registrationPanel" role="tabpanel" aria-labelledby="registration-tab">
+                <!-- Sub-Page 1: Student List Main Panel -->
+                <div class="tab-pane fade" id="studentListMainPanel" role="tabpanel" aria-labelledby="student-list-main-tab">
+                  <!-- Student List Sub-Tabs -->
+                  <ul class="nav nav-tabs mb-4" id="studentSubTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                      <button class="nav-link active fw-semibold" id="registration-subtab" data-bs-toggle="tab"
+                        data-bs-target="#registrationPanel" type="button" role="tab" aria-controls="registrationPanel"
+                        aria-selected="true">
+                        <i class="bi bi-pencil-square me-1"></i> Course Registration
+                      </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                      <button class="nav-link fw-semibold" id="student-database-subtab" data-bs-toggle="tab"
+                        data-bs-target="#studentListPanel" type="button" role="tab" aria-controls="studentListPanel"
+                        aria-selected="false">
+                        <i class="bi bi-people me-1"></i> Student Database
+                      </button>
+                    </li>
+                  </ul>
+
+                  <div class="tab-content" id="studentSubTabsContent">
+                    <!-- Sub-Page 1.1: Course Registration Form -->
+                    <div class="tab-pane fade show active" id="registrationPanel" role="tabpanel" aria-labelledby="registration-subtab">
                   <div class="row g-4">
                     <!-- Left: Form -->
                     <div class="col-lg-7">
@@ -1311,8 +1320,8 @@
                   </div>
                 </div>
 
-                <!-- Sub-Page 2: Student List -->
-                <div class="tab-pane fade" id="studentListPanel" role="tabpanel" aria-labelledby="student-list-tab">
+                <!-- Sub-Page 1.2: Student List -->
+                <div class="tab-pane fade" id="studentListPanel" role="tabpanel" aria-labelledby="student-database-subtab">
                   <div class="row">
                     <div class="col-12">
                       <!-- STUDENT LIST CARD -->
@@ -1383,6 +1392,8 @@
                           </table>
                         </div>
                       </div>
+                    </div>
+                  </div>
                     </div>
                   </div>
                 </div>
@@ -1657,8 +1668,29 @@
 
                 </div>
 
-                <!-- Sub-Page 4: Generate Certificate -->
-                <div class="tab-pane fade" id="generatePanel" role="tabpanel" aria-labelledby="generate-tab">
+                <!-- Sub-Page 4: Certificates Main Panel -->
+                <div class="tab-pane fade" id="certificatesPanel" role="tabpanel" aria-labelledby="certificates-main-tab">
+                  <!-- Certificates Sub-Tabs -->
+                  <ul class="nav nav-tabs mb-4" id="certificatesSubTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                      <button class="nav-link active fw-semibold" id="generate-cert-subtab" data-bs-toggle="tab"
+                        data-bs-target="#generatePanel" type="button" role="tab" aria-controls="generatePanel"
+                        aria-selected="true">
+                        <i class="bi bi-patch-plus me-1"></i> Generate Certificate
+                      </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                      <button class="nav-link fw-semibold" id="records-subtab" data-bs-toggle="tab"
+                        data-bs-target="#recordsPanel" type="button" role="tab" aria-controls="recordsPanel"
+                        aria-selected="false">
+                        <i class="bi bi-award me-1"></i> Issued Certificates
+                      </button>
+                    </li>
+                  </ul>
+
+                  <div class="tab-content" id="certificatesSubTabsContent">
+                    <!-- Sub-Page 4.1: Generate Certificate -->
+                    <div class="tab-pane fade show active" id="generatePanel" role="tabpanel" aria-labelledby="generate-cert-subtab">
                   <div class="row justify-content-center">
                     <div class="col-lg-10 d-flex flex-column gap-4">
                       <!-- GENERATOR CARD -->
@@ -1717,7 +1749,8 @@
 
                           <div class="row g-3 mb-3">
                             <div class="col-md-4">
-                              <label class="form-label small fw-semibold mb-1" for="certStudentId">Student ID <span class="text-danger">*</span></label>
+                              <label class="form-label small fw-semibold mb-1" for="certStudentId">Student ID <span
+                                  class="text-danger">*</span></label>
                               <input type="text" class="form-control bg-body-secondary" id="certStudentId" readonly
                                 placeholder="Auto-fills from lookup">
                             </div>
@@ -1807,8 +1840,8 @@
                   </div>
                 </div>
 
-                <!-- Sub-Page 5: Issued Certificate -->
-                <div class="tab-pane fade" id="recordsPanel" role="tabpanel" aria-labelledby="records-tab">
+                <!-- Sub-Page 4.2: Issued Certificate -->
+                <div class="tab-pane fade" id="recordsPanel" role="tabpanel" aria-labelledby="records-subtab">
                   <div class="row">
                     <div class="col-12">
                       <!-- BATCH WISE STUDENT LIST CARD -->
@@ -1862,6 +1895,8 @@
                           </table>
                         </div>
                       </div>
+                    </div>
+                  </div>
                     </div>
                   </div>
                 </div>
@@ -2098,10 +2133,30 @@
 
                 <!-- Sub-Page 6.4: Batch Management -->
                 <div class="tab-pane fade" id="batchPanel" role="tabpanel" aria-labelledby="batch-management-tab">
-                  <div class="row g-4">
-                    <!-- Left: Form -->
-                    <div class="col-lg-4">
-                      <div class="card p-4 rounded-4 shadow-sm border">
+                  <!-- Batch Management Sub-Tabs -->
+                  <ul class="nav nav-tabs mb-4" id="batchSubTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                      <button class="nav-link active fw-semibold" id="batch-add-tab" data-bs-toggle="tab"
+                        data-bs-target="#batchAddPane" type="button" role="tab" aria-controls="batchAddPane"
+                        aria-selected="true">
+                        <i class="bi bi-collection-play me-1"></i> Create New Batch
+                      </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                      <button class="nav-link fw-semibold" id="batch-directory-tab" data-bs-toggle="tab"
+                        data-bs-target="#batchDirectoryPane" type="button" role="tab" aria-controls="batchDirectoryPane"
+                        aria-selected="false">
+                        <i class="bi bi-list-stars me-1"></i> Batches Registry
+                      </button>
+                    </li>
+                  </ul>
+
+                  <div class="tab-content" id="batchSubTabsContent">
+                    <!-- Add Batch Pane -->
+                    <div class="tab-pane fade show active" id="batchAddPane" role="tabpanel"
+                      aria-labelledby="batch-add-tab">
+                      <!-- Form -->
+                      <div class="card p-4 rounded-4 shadow-sm border mb-4">
                         <h3 id="batchFormTitle" class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
                           <i class="bi bi-collection-play me-2 text-primary"></i>Create New Batch
                         </h3>
@@ -2204,9 +2259,11 @@
                       </div>
                     </div>
 
-                    <!-- Right: Table -->
-                    <div class="col-lg-8">
-                      <div class="card p-4 rounded-4 shadow-sm border h-100">
+                    <!-- Batches Registry Pane -->
+                    <div class="tab-pane fade" id="batchDirectoryPane" role="tabpanel"
+                      aria-labelledby="batch-directory-tab">
+                      <!-- Directory -->
+                      <div class="card p-4 rounded-4 shadow-sm border mb-4">
                         <div
                           class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom flex-wrap gap-2">
                           <h3 class="h5 fw-bold text-heading-color mb-0">
@@ -2386,9 +2443,9 @@
                           <h3 class="h6 fw-bold text-heading-color mb-0">
                             <i class="bi bi-people me-2 text-primary"></i>Student Contact Directory
                           </h3>
-                          <div class="d-flex align-items-center gap-2 flex-wrap">
+                          <div class="d-flex align-items-center gap-2 flex-nowrap">
                             <input type="text" id="searchStudentContact" class="form-control form-control-sm"
-                              style="max-width: 240px;" placeholder="Search name, phone, email...">
+                              style="width: 220px;" placeholder="Search name, phone, email...">
                             <select id="courseStudentContactFilter" class="form-select form-select-sm"
                               style="width: auto; min-width: 140px;">
                               <option value="all">All Courses</option>
@@ -2409,6 +2466,10 @@
                               <option value="FCP NSE5">FCP NSE5</option>
                               <option value="CCNA & MTCNA">CCNA &amp; MTCNA</option>
                             </select>
+                            <button id="refreshStudentContactBtn" class="btn btn-sm btn-outline-secondary" type="button"
+                              title="Refresh List">
+                              <i class="bi bi-arrow-clockwise"></i>
+                            </button>
                           </div>
                         </div>
 
@@ -2607,10 +2668,30 @@
                 <!-- Sub-Page: Marketing Agents -->
                 <div class="tab-pane fade" id="marketingAgentsPanel" role="tabpanel"
                   aria-labelledby="marketing-agents-tab">
-                  <div class="row g-4">
-                    <!-- Left: Form -->
-                    <div class="col-lg-4">
-                      <div class="card p-4 rounded-4 shadow-sm border">
+                  <!-- Brand Ambassadors Sub-Tabs -->
+                  <ul class="nav nav-tabs mb-4" id="agentSubTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                      <button class="nav-link active fw-semibold" id="agent-add-tab" data-bs-toggle="tab"
+                        data-bs-target="#agentAddPane" type="button" role="tab" aria-controls="agentAddPane"
+                        aria-selected="true">
+                        <i class="bi bi-person-plus-fill me-1"></i> Add Brand Ambassador
+                      </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                      <button class="nav-link fw-semibold" id="agent-directory-tab" data-bs-toggle="tab"
+                        data-bs-target="#agentDirectoryPane" type="button" role="tab" aria-controls="agentDirectoryPane"
+                        aria-selected="false">
+                        <i class="bi bi-headset me-1"></i> Brand Ambassadors Directory
+                      </button>
+                    </li>
+                  </ul>
+
+                  <div class="tab-content" id="agentSubTabsContent">
+                    <!-- Add Brand Ambassador Pane -->
+                    <div class="tab-pane fade show active" id="agentAddPane" role="tabpanel"
+                      aria-labelledby="agent-add-tab">
+                      <!-- Form -->
+                      <div class="card p-4 rounded-4 shadow-sm border mb-4">
                         <h3 id="agentFormTitle" class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
                           <i class="bi bi-person-plus-fill me-2 text-primary"></i>Add Brand Ambassador
                         </h3>
@@ -2703,9 +2784,11 @@
                       </div>
                     </div>
 
-                    <!-- Right: Table -->
-                    <div class="col-lg-8">
-                      <div class="card p-4 rounded-4 shadow-sm border h-100">
+                    <!-- Brand Ambassadors Directory Pane -->
+                    <div class="tab-pane fade" id="agentDirectoryPane" role="tabpanel"
+                      aria-labelledby="agent-directory-tab">
+                      <!-- Directory -->
+                      <div class="card p-4 rounded-4 shadow-sm border mb-4">
                         <div
                           class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom flex-wrap gap-2">
                           <h3 class="h5 fw-bold text-heading-color mb-0">
@@ -2765,10 +2848,30 @@
                 <!-- Sub-Page: Course Creation -->
                 <div class="tab-pane fade" id="courseCreationPanel" role="tabpanel"
                   aria-labelledby="course-creation-tab">
-                  <div class="row g-4">
-                    <!-- Left: Form -->
-                    <div class="col-lg-4">
-                      <div class="card p-4 rounded-4 shadow-sm border">
+                  <!-- Course Creation Sub-Tabs -->
+                  <ul class="nav nav-tabs mb-4" id="courseSubTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                      <button class="nav-link active fw-semibold" id="course-add-tab" data-bs-toggle="tab"
+                        data-bs-target="#courseAddPane" type="button" role="tab" aria-controls="courseAddPane"
+                        aria-selected="true">
+                        <i class="bi bi-journal-plus me-1"></i> Create New Course
+                      </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                      <button class="nav-link fw-semibold" id="course-directory-tab" data-bs-toggle="tab"
+                        data-bs-target="#courseDirectoryPane" type="button" role="tab"
+                        aria-controls="courseDirectoryPane" aria-selected="false">
+                        <i class="bi bi-book me-1"></i> Courses Directory
+                      </button>
+                    </li>
+                  </ul>
+
+                  <div class="tab-content" id="courseSubTabsContent">
+                    <!-- Add Course Pane -->
+                    <div class="tab-pane fade show active" id="courseAddPane" role="tabpanel"
+                      aria-labelledby="course-add-tab">
+                      <!-- Form -->
+                      <div class="card p-4 rounded-4 shadow-sm border mb-4">
                         <h3 id="courseFormTitle" class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
                           <i class="bi bi-journal-plus me-2 text-primary"></i>Create New Course
                         </h3>
@@ -2867,9 +2970,11 @@
                       </div>
                     </div>
 
-                    <!-- Right: Table -->
-                    <div class="col-lg-8">
-                      <div class="card p-4 rounded-4 shadow-sm border h-100">
+                    <!-- Courses Directory Pane -->
+                    <div class="tab-pane fade" id="courseDirectoryPane" role="tabpanel"
+                      aria-labelledby="course-directory-tab">
+                      <!-- Directory -->
+                      <div class="card p-4 rounded-4 shadow-sm border mb-4">
                         <div
                           class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom flex-wrap gap-2">
                           <h3 class="h5 fw-bold text-heading-color mb-0">
@@ -2917,9 +3022,29 @@
                   </div>
                 </div>
 
-                <!-- Sub-Page: Sales Commission -->
-                <div class="tab-pane fade" id="salesCommissionPanel" role="tabpanel"
-                  aria-labelledby="sales-commission-tab">
+                <!-- Sub-Page: Sales Management Main Panel -->
+                <div class="tab-pane fade" id="salesManagementPanel" role="tabpanel" aria-labelledby="sales-management-tab">
+                  <!-- Sales Management Sub-Tabs -->
+                  <ul class="nav nav-tabs mb-4" id="salesSubTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                      <button class="nav-link active fw-semibold" id="sales-records-subtab" data-bs-toggle="tab"
+                        data-bs-target="#salesRecordsPanel" type="button" role="tab" aria-controls="salesRecordsPanel"
+                        aria-selected="true">
+                        <i class="bi bi-receipt me-1"></i> Sales Records
+                      </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                      <button class="nav-link fw-semibold" id="sales-commission-subtab" data-bs-toggle="tab"
+                        data-bs-target="#salesCommissionPanel" type="button" role="tab" aria-controls="salesCommissionPanel"
+                        aria-selected="false">
+                        <i class="bi bi-graph-up me-1"></i> Sales Commissions
+                      </button>
+                    </li>
+                  </ul>
+
+                  <div class="tab-content" id="salesSubTabsContent">
+                    <!-- Sub-Page: Sales Commission -->
+                    <div class="tab-pane fade" id="salesCommissionPanel" role="tabpanel" aria-labelledby="sales-commission-subtab">
                   <div class="row g-4">
                     <!-- Left: Form -->
                     <div class="col-lg-4">
@@ -2942,18 +3067,22 @@
                         <form id="commissionForm">
                           <div class="row g-2 mb-3">
                             <div class="col-md-6">
-                              <label class="form-label small fw-semibold mb-1">Target Month <span class="text-danger">*</span></label>
+                              <label class="form-label small fw-semibold mb-1">Target Month <span
+                                  class="text-danger">*</span></label>
                               <div class="d-flex" style="gap:0.5rem;">
-                                <select class="form-select w-auto" id="commissionMonthSelect" required aria-label="Month select">
+                                <select class="form-select w-auto" id="commissionMonthSelect" required
+                                  aria-label="Month select">
                                   <option value="" disabled selected>Month</option>
                                 </select>
-                                <select class="form-select w-auto" id="commissionYearSelect" required aria-label="Year select">
+                                <select class="form-select w-auto" id="commissionYearSelect" required
+                                  aria-label="Year select">
                                   <option value="" disabled selected>Year</option>
                                 </select>
                               </div>
                             </div>
                             <div class="col-md-6">
-                              <label class="form-label small fw-semibold mb-1" for="commissionAgentSelect">Brand Ambassador / KAM <span class="text-danger">*</span></label>
+                              <label class="form-label small fw-semibold mb-1" for="commissionAgentSelect">Brand
+                                Ambassador / KAM <span class="text-danger">*</span></label>
                               <select class="form-select" id="commissionAgentSelect" required>
                                 <option value="" disabled selected>Select an agent or employee</option>
                               </select>
@@ -3005,7 +3134,9 @@
                             </button>
                           </div>
                         </form>
-                        <div id="commissionDebug" class="small text-muted mt-2" style="white-space:pre-wrap; display:none; background:#f8f9fa; padding:8px; border-radius:6px; border:1px solid #e9ecef;"></div>
+                        <div id="commissionDebug" class="small text-muted mt-2"
+                          style="white-space:pre-wrap; display:none; background:#f8f9fa; padding:8px; border-radius:6px; border:1px solid #e9ecef;">
+                        </div>
                       </div>
                     </div>
 
@@ -3047,10 +3178,12 @@
                             <select id="filterCommissionAgent" class="form-select form-select-sm" style="width: auto;">
                               <option value="all">All Agents / Employees</option>
                             </select>
-                            <button id="exportCommissionBtn" class="btn btn-sm btn-outline-success" type="button" title="Export CSV">
+                            <button id="exportCommissionBtn" class="btn btn-sm btn-outline-success" type="button"
+                              title="Export CSV">
                               <i class="bi bi-file-earmark-excel"></i>
                             </button>
-                            <button id="refreshCommissionListBtn" class="btn btn-sm btn-outline-secondary" type="button" title="Refresh List">
+                            <button id="refreshCommissionListBtn" class="btn btn-sm btn-outline-secondary" type="button"
+                              title="Refresh List">
                               <i class="bi bi-arrow-clockwise"></i>
                             </button>
                           </div>
@@ -3083,7 +3216,7 @@
                 </div>
 
                 <!-- Sub-Page: Sales Records -->
-                <div class="tab-pane fade" id="salesRecordsPanel" role="tabpanel" aria-labelledby="sales-records-tab">
+                <div class="tab-pane fade show active" id="salesRecordsPanel" role="tabpanel" aria-labelledby="sales-records-subtab">
                   <div class="row">
                     <div class="col-12">
                       <div class="card p-4 rounded-4 shadow-sm border">
@@ -3093,10 +3226,12 @@
                             <i class="bi bi-receipt me-2 text-primary"></i>Sales Records & Commissions
                           </h3>
                           <div class="d-flex align-items-center gap-2 flex-wrap">
-                            <select id="filterSalesMonth" class="form-select form-select-sm" style="width: auto;" title="Filter by Month">
+                            <select id="filterSalesMonth" class="form-select form-select-sm" style="width: auto;"
+                              title="Filter by Month">
                               <option value="">Month</option>
                             </select>
-                            <select id="filterSalesYear" class="form-select form-select-sm" style="width: auto;" title="Filter by Year">
+                            <select id="filterSalesYear" class="form-select form-select-sm" style="width: auto;"
+                              title="Filter by Year">
                               <option value="">Year</option>
                             </select>
                             <select id="filterSalesKam" class="form-select form-select-sm"
@@ -3135,14 +3270,36 @@
                       </div>
                     </div>
                   </div>
+                    </div>
+                  </div>
                 </div>
 
                 <!-- Sub-Page 6.48: Student Job Placement -->
                 <div class="tab-pane fade" id="jobPlacementPanel" role="tabpanel" aria-labelledby="job-placement-tab">
-                  <div class="row g-4">
-                    <!-- Left: Form -->
-                    <div class="col-lg-4">
-                      <div class="card p-4 rounded-4 shadow-sm border">
+                  <!-- Job Placement Sub-Tabs -->
+                  <ul class="nav nav-tabs mb-4" id="placementSubTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                      <button class="nav-link active fw-semibold" id="placement-add-tab" data-bs-toggle="tab"
+                        data-bs-target="#placementAddPane" type="button" role="tab" aria-controls="placementAddPane"
+                        aria-selected="true">
+                        <i class="bi bi-briefcase-fill me-1"></i> Add Placement Record
+                      </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                      <button class="nav-link fw-semibold" id="placement-directory-tab" data-bs-toggle="tab"
+                        data-bs-target="#placementDirectoryPane" type="button" role="tab"
+                        aria-controls="placementDirectoryPane" aria-selected="false">
+                        <i class="bi bi-briefcase me-1"></i> Job Placement Registry
+                      </button>
+                    </li>
+                  </ul>
+
+                  <div class="tab-content" id="placementSubTabsContent">
+                    <!-- Add Placement Pane -->
+                    <div class="tab-pane fade show active" id="placementAddPane" role="tabpanel"
+                      aria-labelledby="placement-add-tab">
+                      <!-- Form -->
+                      <div class="card p-4 rounded-4 shadow-sm border mb-4">
                         <h3 id="placementFormTitle" class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
                           <i class="bi bi-briefcase-fill me-2 text-primary"></i>Add Placement Record
                         </h3>
@@ -3257,9 +3414,11 @@
                       </div>
                     </div>
 
-                    <!-- Right: Table -->
-                    <div class="col-lg-8">
-                      <div class="card p-4 rounded-4 shadow-sm border h-100">
+                    <!-- Job Placement Registry Pane -->
+                    <div class="tab-pane fade" id="placementDirectoryPane" role="tabpanel"
+                      aria-labelledby="placement-directory-tab">
+                      <!-- Directory -->
+                      <div class="card p-4 rounded-4 shadow-sm border mb-4">
                         <div
                           class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom flex-wrap gap-2">
                           <h3 class="h5 fw-bold text-heading-color mb-0">
@@ -3312,150 +3471,184 @@
 
                 <!-- Sub-Page 6.5: Employee Database -->
                 <div class="tab-pane fade" id="employeesPanel" role="tabpanel" aria-labelledby="employees-tab">
-                  <!-- Form -->
-                  <div class="card p-4 rounded-4 shadow-sm border mb-4">
-                    <h3 id="empFormTitle" class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
-                      <i class="bi bi-person-plus-fill me-2 text-primary"></i>Add Employee Record
-                    </h3>
-                    <div id="empSuccess" class="alert alert-success d-none alert-dismissible fade show small"
-                      role="alert">
-                      <span>Employee saved successfully!</span>
-                      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                    <div id="empError" class="alert alert-danger d-none alert-dismissible fade show small" role="alert">
-                      <span>An error occurred. Please try again.</span>
-                      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                    <form id="employeeForm">
-                      <div class="row g-3">
-                        <div class="col-md-6">
-                          <label class="form-label small fw-semibold mb-1" for="emp_employee_name">Full Name <span
-                              class="text-danger">*</span></label>
-                          <input class="form-control" id="emp_employee_name" type="text" placeholder="e.g. John Doe"
-                            required maxlength="100">
+                  <!-- Employee Database Sub-Tabs -->
+                  <ul class="nav nav-tabs mb-4" id="employeeSubTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                      <button class="nav-link active fw-semibold" id="emp-add-tab" data-bs-toggle="tab"
+                        data-bs-target="#empAddPane" type="button" role="tab" aria-controls="empAddPane"
+                        aria-selected="true">
+                        <i class="bi bi-person-plus-fill me-1"></i> Add Employee Record
+                      </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                      <button class="nav-link fw-semibold" id="emp-directory-tab" data-bs-toggle="tab"
+                        data-bs-target="#empDirectoryPane" type="button" role="tab" aria-controls="empDirectoryPane"
+                        aria-selected="false">
+                        <i class="bi bi-people me-1"></i> Employee Directory
+                      </button>
+                    </li>
+                  </ul>
+
+                  <div class="tab-content" id="employeeSubTabsContent">
+                    <!-- Add Employee Pane -->
+                    <div class="tab-pane fade show active" id="empAddPane" role="tabpanel"
+                      aria-labelledby="emp-add-tab">
+                      <!-- Form -->
+                      <div class="card p-4 rounded-4 shadow-sm border mb-4">
+                        <h3 id="empFormTitle" class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
+                          <i class="bi bi-person-plus-fill me-2 text-primary"></i>Add Employee Record
+                        </h3>
+                        <div id="empSuccess" class="alert alert-success d-none alert-dismissible fade show small"
+                          role="alert">
+                          <span>Employee saved successfully!</span>
+                          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
-                        <div class="col-md-6">
-                          <label class="form-label small fw-semibold mb-1" for="emp_designation">Designation <span
-                              class="text-danger">*</span></label>
-                          <select class="form-select" id="emp_designation" required>
-                            <option value="" disabled selected>Select Designation</option>
-                            <option value="Finance Officer">Finance Officer</option>
-                            <option value="Business Development Executive">Business Development Executive</option>
-                            <option value="Business Development Manager">Business Development Manager</option>
-                            <option value="Career Services Manager">Career Services Manager</option>
-                            <option value="Admissions Counselor">Admissions Counselor</option>
-                            <option value="Training Coordinator">Training Coordinator</option>
-                            <option value="Lab Administrator">Lab Administrator</option>
-                            <option value="Operations Manager">Operations Manager</option>
-                            <option value="Lab Demonstrator">Lab Demonstrator</option>
-                            <option value="Technical Trainer">Technical Trainer</option>
-                            <option value="Principal Trainer">Principal Trainer</option>
-                            <option value="Corporate Trainer">Corporate Trainer</option>
-                            <option value="Industry Expert">Industry Expert</option>
-                          </select>
+                        <div id="empError" class="alert alert-danger d-none alert-dismissible fade show small"
+                          role="alert">
+                          <span>An error occurred. Please try again.</span>
+                          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
-                        <div class="col-md-4">
-                          <label class="form-label small fw-semibold mb-1" for="emp_employee_type">Employee Type <span
-                              class="text-danger">*</span></label>
-                          <select class="form-select" id="emp_employee_type" required>
-                            <option value="In-house Staff" selected>In-house Staff</option>
-                            <option value="External Professionals">External Professionals</option>
-                          </select>
-                        </div>
-                        <div class="col-md-4">
-                          <label class="form-label small fw-semibold mb-1" for="emp_mobile_phone">Mobile Number</label>
-                          <input class="form-control" id="emp_mobile_phone" type="tel"
-                            placeholder="e.g. +880 1XXX-XXXXXX">
-                        </div>
-                        <div class="col-md-4">
-                          <label class="form-label small fw-semibold mb-1" for="emp_email">E-mail Address</label>
-                          <input class="form-control" id="emp_email" type="email" placeholder="e.g. name@domain.com">
-                        </div>
-                        <div class="col-md-6">
-                          <label class="form-label small fw-semibold mb-1" for="emp_status">Employment Status</label>
-                          <select class="form-select" id="emp_status">
-                            <option value="Active" selected>Active</option>
-                            <option value="Inactive">Inactive</option>
-                          </select>
-                        </div>
-                        <div class="col-md-6">
-                          <label class="form-label small fw-semibold mb-1" for="emp_employee_id">Employee ID <span
-                              class="text-muted">(auto-generated if blank)</span></label>
-                          <input class="form-control" id="emp_employee_id" type="text" placeholder="e.g. EMP-0001">
-                        </div>
-                      </div>
-                      <div class="d-flex gap-2 mt-3">
-                        <button type="submit" id="empSubmitBtn" class="btn btn-primary fw-semibold py-2 px-4">
-                          <i class="bi bi-save me-2"></i>Save Employee Record
-                        </button>
-                        <button type="button" id="cancelEmpEditBtn" class="btn btn-outline-secondary py-2 px-3 d-none">
-                          Cancel Edit
-                        </button>
-                      </div>
-                    </form>
-                  </div>
-                  <!-- Directory -->
-                  <div class="card p-4 rounded-4 shadow-sm border">
-                    <div
-                      class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom flex-wrap gap-2">
-                      <h3 class="h5 fw-bold text-heading-color mb-0">
-                        <i class="bi bi-people me-2 text-primary"></i>Employee Directory
-                      </h3>
-                      <div class="d-flex align-items-center gap-2 flex-wrap">
-                        <input type="text" id="searchEmployee" class="form-control form-control-sm"
-                          style="max-width: 200px;" placeholder="Search employee...">
-                        <select id="filterDesignation" class="form-select form-select-sm"
-                          style="width: auto; min-width: 140px;">
-                          <option value="all">All Designations</option>
-                          <option value="Finance Officer">Finance Officer</option>
-                          <option value="Business Development Executive">Business Development Executive</option>
-                          <option value="Business Development Manager">Business Development Manager</option>
-                          <option value="Career Services Manager">Career Services Manager</option>
-                          <option value="Admissions Counselor">Admissions Counselor</option>
-                          <option value="Training Coordinator">Training Coordinator</option>
-                          <option value="Lab Administrator">Lab Administrator</option>
-                          <option value="Operations Manager">Operations Manager</option>
-                          <option value="Lab Demonstrator">Lab Demonstrator</option>
-                          <option value="Technical Trainer">Technical Trainer</option>
-                          <option value="Principal Trainer">Principal Trainer</option>
-                          <option value="Corporate Trainer">Corporate Trainer</option>
-                          <option value="Industry Expert">Industry Expert</option>
-                        </select>
-                        <select id="filterStatus" class="form-select form-select-sm"
-                          style="width: auto; min-width: 100px;">
-                          <option value="all">All Status</option>
-                          <option value="Active">Active</option>
-                          <option value="Inactive">Inactive</option>
-                        </select>
-                        <button id="refreshEmployeesBtn" class="btn btn-sm btn-outline-secondary" type="button"
-                          title="Refresh Directory">
-                          <i class="bi bi-arrow-clockwise"></i>
-                        </button>
+                        <form id="employeeForm">
+                          <div class="row g-3">
+                            <div class="col-md-6">
+                              <label class="form-label small fw-semibold mb-1" for="emp_employee_name">Full Name <span
+                                  class="text-danger">*</span></label>
+                              <input class="form-control" id="emp_employee_name" type="text" placeholder="e.g. John Doe"
+                                required maxlength="100">
+                            </div>
+                            <div class="col-md-6">
+                              <label class="form-label small fw-semibold mb-1" for="emp_designation">Designation <span
+                                  class="text-danger">*</span></label>
+                              <select class="form-select" id="emp_designation" required>
+                                <option value="" disabled selected>Select Designation</option>
+                                <option value="Finance Officer">Finance Officer</option>
+                                <option value="Business Development Executive">Business Development Executive</option>
+                                <option value="Business Development Manager">Business Development Manager</option>
+                                <option value="Career Services Manager">Career Services Manager</option>
+                                <option value="Admissions Counselor">Admissions Counselor</option>
+                                <option value="Training Coordinator">Training Coordinator</option>
+                                <option value="Lab Administrator">Lab Administrator</option>
+                                <option value="Operations Manager">Operations Manager</option>
+                                <option value="Lab Demonstrator">Lab Demonstrator</option>
+                                <option value="Technical Trainer">Technical Trainer</option>
+                                <option value="Principal Trainer">Principal Trainer</option>
+                                <option value="Corporate Trainer">Corporate Trainer</option>
+                                <option value="Industry Expert">Industry Expert</option>
+                              </select>
+                            </div>
+                            <div class="col-md-4">
+                              <label class="form-label small fw-semibold mb-1" for="emp_employee_type">Employee Type
+                                <span class="text-danger">*</span></label>
+                              <select class="form-select" id="emp_employee_type" required>
+                                <option value="In-house Staff" selected>In-house Staff</option>
+                                <option value="External Professionals">External Professionals</option>
+                              </select>
+                            </div>
+                            <div class="col-md-4">
+                              <label class="form-label small fw-semibold mb-1" for="emp_mobile_phone">Mobile
+                                Number</label>
+                              <input class="form-control" id="emp_mobile_phone" type="tel"
+                                placeholder="e.g. +880 1XXX-XXXXXX">
+                            </div>
+                            <div class="col-md-4">
+                              <label class="form-label small fw-semibold mb-1" for="emp_email">E-mail Address</label>
+                              <input class="form-control" id="emp_email" type="email"
+                                placeholder="e.g. name@domain.com">
+                            </div>
+                            <div class="col-md-6">
+                              <label class="form-label small fw-semibold mb-1" for="emp_status">Employment
+                                Status</label>
+                              <select class="form-select" id="emp_status">
+                                <option value="Active" selected>Active</option>
+                                <option value="Inactive">Inactive</option>
+                              </select>
+                            </div>
+                            <div class="col-md-6">
+                              <label class="form-label small fw-semibold mb-1" for="emp_employee_id">Employee ID <span
+                                  class="text-muted">(auto-generated if blank)</span></label>
+                              <input class="form-control" id="emp_employee_id" type="text" placeholder="e.g. EMP-0001">
+                            </div>
+                          </div>
+                          <div class="d-flex gap-2 mt-3">
+                            <button type="submit" id="empSubmitBtn" class="btn btn-primary fw-semibold py-2 px-4">
+                              <i class="bi bi-save me-2"></i>Save Employee Record
+                            </button>
+                            <button type="button" id="cancelEmpEditBtn"
+                              class="btn btn-outline-secondary py-2 px-3 d-none">
+                              Cancel Edit
+                            </button>
+                          </div>
+                        </form>
                       </div>
                     </div>
-                    <div class="table-responsive">
-                      <table class="table table-hover align-middle mb-0" id="employeesTable">
-                        <thead class="table-light">
-                          <tr>
-                            <th class="small fw-semibold">Employee ID</th>
-                            <th class="small fw-semibold">Name</th>
-                            <th class="small fw-semibold">Designation</th>
-                            <th class="small fw-semibold">Employee Type</th>
-                            <th class="small fw-semibold">Mobile</th>
-                            <th class="small fw-semibold">Email</th>
-                            <th class="small fw-semibold text-center">Status</th>
-                            <th class="small fw-semibold text-center" style="min-width: 100px;">Actions</th>
-                          </tr>
-                        </thead>
-                        <tbody id="employeesTableBody">
-                          <tr>
-                            <td colspan="8" class="text-center py-4 text-muted">
-                              <div class="spinner-border spinner-border-sm text-primary me-2" role="status"></div>
-                              Loading employees...
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
+
+                    <!-- Employee Directory Pane -->
+                    <div class="tab-pane fade" id="empDirectoryPane" role="tabpanel"
+                      aria-labelledby="emp-directory-tab">
+                      <!-- Directory -->
+                      <div class="card p-4 rounded-4 shadow-sm border">
+                        <div
+                          class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom flex-wrap gap-2">
+                          <h3 class="h5 fw-bold text-heading-color mb-0">
+                            <i class="bi bi-people me-2 text-primary"></i>Employee Directory
+                          </h3>
+                          <div class="d-flex align-items-center gap-2 flex-wrap">
+                            <input type="text" id="searchEmployee" class="form-control form-control-sm"
+                              style="max-width: 200px;" placeholder="Search employee...">
+                            <select id="filterDesignation" class="form-select form-select-sm"
+                              style="width: auto; min-width: 140px;">
+                              <option value="all">All Designations</option>
+                              <option value="Finance Officer">Finance Officer</option>
+                              <option value="Business Development Executive">Business Development Executive</option>
+                              <option value="Business Development Manager">Business Development Manager</option>
+                              <option value="Career Services Manager">Career Services Manager</option>
+                              <option value="Admissions Counselor">Admissions Counselor</option>
+                              <option value="Training Coordinator">Training Coordinator</option>
+                              <option value="Lab Administrator">Lab Administrator</option>
+                              <option value="Operations Manager">Operations Manager</option>
+                              <option value="Lab Demonstrator">Lab Demonstrator</option>
+                              <option value="Technical Trainer">Technical Trainer</option>
+                              <option value="Principal Trainer">Principal Trainer</option>
+                              <option value="Corporate Trainer">Corporate Trainer</option>
+                              <option value="Industry Expert">Industry Expert</option>
+                            </select>
+                            <select id="filterStatus" class="form-select form-select-sm"
+                              style="width: auto; min-width: 100px;">
+                              <option value="all">All Status</option>
+                              <option value="Active">Active</option>
+                              <option value="Inactive">Inactive</option>
+                            </select>
+                            <button id="refreshEmployeesBtn" class="btn btn-sm btn-outline-secondary" type="button"
+                              title="Refresh Directory">
+                              <i class="bi bi-arrow-clockwise"></i>
+                            </button>
+                          </div>
+                        </div>
+                        <div class="table-responsive">
+                          <table class="table table-hover align-middle mb-0" id="employeesTable">
+                            <thead class="table-light">
+                              <tr>
+                                <th class="small fw-semibold">Employee ID</th>
+                                <th class="small fw-semibold">Name</th>
+                                <th class="small fw-semibold">Designation</th>
+                                <th class="small fw-semibold">Employee Type</th>
+                                <th class="small fw-semibold">Mobile</th>
+                                <th class="small fw-semibold">Email</th>
+                                <th class="small fw-semibold text-center">Status</th>
+                                <th class="small fw-semibold text-center" style="min-width: 100px;">Actions</th>
+                              </tr>
+                            </thead>
+                            <tbody id="employeesTableBody">
+                              <tr>
+                                <td colspan="8" class="text-center py-4 text-muted">
+                                  <div class="spinner-border spinner-border-sm text-primary me-2" role="status"></div>
+                                  Loading employees...
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -3788,7 +3981,7 @@
       const yearSel = document.getElementById('commissionYearSelect');
       if (!monthSel || !yearSel) return;
       // months (01-12)
-      const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+      const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
       months.forEach((m, idx) => {
         const opt = document.createElement('option');
         const val = String(idx + 1).padStart(2, '0');
@@ -4778,7 +4971,11 @@
       editingCertId = record.certificateId;
 
       // Switch tab to Generate Certificate
-      const generateTab = document.getElementById('generate-tab');
+      const mainTab = document.getElementById('certificates-main-tab');
+      if (mainTab) {
+        bootstrap.Tab.getOrCreateInstance(mainTab).show();
+      }
+      const generateTab = document.getElementById('generate-cert-subtab');
       if (generateTab) {
         bootstrap.Tab.getOrCreateInstance(generateTab).show();
       }
@@ -4844,7 +5041,11 @@
     document.getElementById("cancelEditBtn").addEventListener("click", function () {
       cancelEditMode();
       // Switch tab back to Student Records
-      const recordsTab = document.getElementById('records-tab');
+      const mainTab = document.getElementById('certificates-main-tab');
+      if (mainTab) {
+        bootstrap.Tab.getOrCreateInstance(mainTab).show();
+      }
+      const recordsTab = document.getElementById('records-subtab');
       if (recordsTab) {
         bootstrap.Tab.getOrCreateInstance(recordsTab).show();
       }
@@ -5254,7 +5455,11 @@
       editingDocId = record.id || record.studentId;
 
       // Switch tab to registration form
-      const regTab = document.getElementById("registration-tab");
+      const mainTab = document.getElementById("student-list-main-tab");
+      if (mainTab) {
+        bootstrap.Tab.getOrCreateInstance(mainTab).show();
+      }
+      const regTab = document.getElementById("registration-subtab");
       if (regTab) {
         bootstrap.Tab.getOrCreateInstance(regTab).show();
       }
@@ -5411,7 +5616,11 @@
     // Cancel registration edit button
     document.getElementById("cancelRegEditBtn").addEventListener("click", function () {
       cancelRegEditMode();
-      const studentTab = document.getElementById("student-list-tab");
+      const mainTab = document.getElementById("student-list-main-tab");
+      if (mainTab) {
+        bootstrap.Tab.getOrCreateInstance(mainTab).show();
+      }
+      const studentTab = document.getElementById("student-database-subtab");
       if (studentTab) {
         bootstrap.Tab.getOrCreateInstance(studentTab).show();
       }
@@ -5422,7 +5631,11 @@
       reusedStudentId = record.studentId;
 
       // Switch tab to registration form
-      const regTab = document.getElementById("registration-tab");
+      const mainTab = document.getElementById("student-list-main-tab");
+      if (mainTab) {
+        bootstrap.Tab.getOrCreateInstance(mainTab).show();
+      }
+      const regTab = document.getElementById("registration-subtab");
       if (regTab) {
         bootstrap.Tab.getOrCreateInstance(regTab).show();
       }
@@ -5683,7 +5896,11 @@
         // Switch to Student List Tab to view the new registration
         setTimeout(() => {
           successAlert.classList.add("d-none");
-          const studentTab = document.getElementById("student-list-tab");
+          const mainTab = document.getElementById("student-list-main-tab");
+          if (mainTab) {
+            bootstrap.Tab.getOrCreateInstance(mainTab).show();
+          }
+          const studentTab = document.getElementById("student-database-subtab");
           if (studentTab) {
             bootstrap.Tab.getOrCreateInstance(studentTab).show();
           }
@@ -9721,7 +9938,7 @@
         const activeAgents = allMarketingAgents.filter(a => a.status === "Active");
         if (activeAgents.length > 0) {
           const optgroup = document.createElement("optgroup");
-              optgroup.label = "Brand Ambassadors";
+          optgroup.label = "Brand Ambassadors";
           activeAgents.forEach(a => {
             const opt = document.createElement("option");
             opt.value = a.id;
@@ -11424,7 +11641,7 @@
       });
 
       if (filtered.length === 0) {
-            tbody.innerHTML = `<tr><td colspan="7" class="text-center py-4 text-muted">No brand ambassadors found.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="7" class="text-center py-4 text-muted">No brand ambassadors found.</td></tr>`;
         return;
       }
 
@@ -11508,7 +11725,7 @@
 
     function editMarketingAgent(agent) {
       editingAgentId = agent.id;
-          document.getElementById("agentFormTitle").innerHTML = `<i class="bi bi-pencil-square me-2 text-primary"></i>Edit Brand Ambassador Contact`;
+      document.getElementById("agentFormTitle").innerHTML = `<i class="bi bi-pencil-square me-2 text-primary"></i>Edit Brand Ambassador Contact`;
       document.getElementById("agentNameInput").value = agent.name;
       document.getElementById("agentEmailInput").value = agent.email || "";
       document.getElementById("agentPhoneInput").value = agent.phone || "";
@@ -11525,7 +11742,7 @@
 
     function resetMarketingAgentForm() {
       editingAgentId = null;
-          document.getElementById("agentFormTitle").innerHTML = `<i class="bi bi-person-plus-fill me-2 text-primary"></i>Add Brand Ambassador`;
+      document.getElementById("agentFormTitle").innerHTML = `<i class="bi bi-person-plus-fill me-2 text-primary"></i>Add Brand Ambassador`;
       document.getElementById("agentForm")?.reset();
       const cancelBtn = document.getElementById("cancelAgentEditBtn");
       if (cancelBtn) cancelBtn.classList.add("d-none");
@@ -11581,7 +11798,7 @@
         refreshAuditLogs();
 
         if (successAlert) {
-              successAlert.querySelector("span").textContent = `Brand ambassador saved successfully!`;
+          successAlert.querySelector("span").textContent = `Brand ambassador saved successfully!`;
           successAlert.classList.remove("d-none");
           setTimeout(() => successAlert.classList.add("d-none"), 4000);
         }
@@ -11632,7 +11849,7 @@
         agentSelect.innerHTML = '<option value="" disabled selected>Select an agent or employee</option>';
 
         const optgroupAg = document.createElement("optgroup");
-            optgroupAg.label = "Brand Ambassadors";
+        optgroupAg.label = "Brand Ambassadors";
         allMarketingAgents.forEach(a => {
           const opt = document.createElement("option");
           opt.value = a.id;
@@ -11660,7 +11877,7 @@
         agentFilter.innerHTML = '<option value="all">All Agents / Employees</option>';
 
         const optgroupAg = document.createElement("optgroup");
-            optgroupAg.label = "Brand Ambassadors";
+        optgroupAg.label = "Brand Ambassadors";
         allMarketingAgents.forEach(a => {
           const opt = document.createElement("option");
           opt.value = a.name || a.id; // use name as filter value
@@ -11694,7 +11911,7 @@
       const agentFilter = document.getElementById("filterCommissionAgent")?.value || "all";
       const monthFilter = document.getElementById("filterCommissionMonth")?.value || "";
 
-        const filtered = allCommissions.filter(c => {
+      const filtered = allCommissions.filter(c => {
         const agent = allMarketingAgents.find(a => a.id === c.agentId) || allEmployees.find(e => e.employee_id === c.agentId) || {};
         const student = allRegistrations.find(r => r.studentId === c.studentId) || {};
         const agentName = agent.name || agent.employee_name || c.agentId;
@@ -11858,18 +12075,18 @@
 
       if (monthFilter) {
         regs = regs.filter(r => {
-           let dateObj = null;
-           if (r.createdAt) {
-             dateObj = r.createdAt.toDate ? r.createdAt.toDate() : new Date(r.createdAt);
-           }
-           if (dateObj && !isNaN(dateObj.getTime())) {
-             return dateObj.toISOString().substring(0, 7) === monthFilter;
-           }
-           return false;
+          let dateObj = null;
+          if (r.createdAt) {
+            dateObj = r.createdAt.toDate ? r.createdAt.toDate() : new Date(r.createdAt);
+          }
+          if (dateObj && !isNaN(dateObj.getTime())) {
+            return dateObj.toISOString().substring(0, 7) === monthFilter;
+          }
+          return false;
         });
       }
 
-      console.debug('calcCommission:matchedRegs', regs.map(r => ({ studentId: r.studentId, createdAt: r.createdAt }))); 
+      console.debug('calcCommission:matchedRegs', regs.map(r => ({ studentId: r.studentId, createdAt: r.createdAt })));
       let totalEarned = 0;
       regs.forEach(r => {
         const pay = allPayments.find(p => p.studentId === r.studentId) || {};
@@ -11896,7 +12113,7 @@
             const p = allPayments.find(x => x.studentId === r.studentId) || {};
             return { studentId: r.studentId, totalFee: p.totalFee || null, discount: p.discount || null, amountPaid: p.amountPaid || null };
           });
-          const txt = `Agent: ${agentId}\nMonthFilter: ${monthFilter || '<none>'}\nMatched registrations: ${regs.length} (${regIds.join(', ') || '—'})\n\nPayments:\n${payments.map(pp=>JSON.stringify(pp)).join('\n')}\n\nRate: ${rate}%\nTotal Earned: ${totalEarned}\nAlready Paid: ${alreadyPaid}\nPayable: ${payable}`;
+          const txt = `Agent: ${agentId}\nMonthFilter: ${monthFilter || '<none>'}\nMatched registrations: ${regs.length} (${regIds.join(', ') || '—'})\n\nPayments:\n${payments.map(pp => JSON.stringify(pp)).join('\n')}\n\nRate: ${rate}%\nTotal Earned: ${totalEarned}\nAlready Paid: ${alreadyPaid}\nPayable: ${payable}`;
           dbg.style.display = 'block';
           dbg.textContent = txt;
         }
@@ -11905,7 +12122,7 @@
       }
 
       document.getElementById("commissionAmountInput").value = payable;
-      
+
       const noteEl = document.getElementById("commissionNotesTextarea");
       if (noteEl) {
         if (alreadyPaid > 0 && payable > 0) {
@@ -12011,7 +12228,7 @@
     document.getElementById("refreshCommissionListBtn")?.addEventListener("click", () => {
       loadCommissions();
     });
-    document.getElementById("sales-commission-tab")?.addEventListener("click", () => {
+    document.getElementById("sales-commission-subtab")?.addEventListener("click", () => {
       loadCommissions();
     });
 
@@ -12021,7 +12238,7 @@
         return;
       }
       let csvContent = "data:text/csv;charset=utf-8,";
-          csvContent += "Date,Ambassador/Employee Name,Student Name,Method,Amount (BDT),Notes\n";
+      csvContent += "Date,Ambassador/Employee Name,Student Name,Method,Amount (BDT),Notes\n";
 
       const monthFilter = document.getElementById("filterCommissionMonth")?.value || "";
       const agentFilter = document.getElementById("filterCommissionAgent")?.value || "all";
@@ -12061,7 +12278,7 @@
     // SALES RECORDS & COMMISSIONS SYSTEM
     // ============================================================
     function loadSalesRecords() {
-          populateSalesMonthDropdown();
+      populateSalesMonthDropdown();
       populateSalesKamDropdown();
       renderSalesRecords();
     }
@@ -12076,7 +12293,7 @@
       yearSelect.innerHTML = '<option value="">Year</option>';
 
       // months
-      const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+      const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
       months.forEach((m, idx) => {
         const opt = document.createElement('option');
         const val = String(idx + 1).padStart(2, '0');
@@ -12215,7 +12432,15 @@
       document.getElementById("totalSalesCommission").textContent = `${totalCommission.toLocaleString()} BDT`;
     }
 
-    document.getElementById("sales-records-tab")?.addEventListener("click", loadSalesRecords);
+    document.getElementById("sales-records-subtab")?.addEventListener("click", loadSalesRecords);
+    document.getElementById("sales-management-tab")?.addEventListener("click", () => {
+      const recordsTab = document.getElementById("sales-records-subtab");
+      if (recordsTab && recordsTab.classList.contains("active")) {
+        loadSalesRecords();
+      } else {
+        loadCommissions();
+      }
+    });
     document.getElementById("filterSalesMonth")?.addEventListener("change", renderSalesRecords);
     document.getElementById("filterSalesYear")?.addEventListener("change", renderSalesRecords);
     document.getElementById("filterSalesKam")?.addEventListener("change", renderSalesRecords);

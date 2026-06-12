@@ -4,131 +4,152 @@ service cloud.firestore {
     
     // Certificates collection:
     // Anyone can read (for verification), but only logged-in administrators can create/edit/delete.
-    match /certificates/{certificateId} {
+    match /learn_certificates/{certificateId} {
       allow read: if true;
       allow write: if request.auth != null;
     }
 
     // Courses collection:
     // Anyone can read (for course directory), but only logged-in administrators can create/edit/delete.
-    match /courses/{courseId} {
+    match /learn_courses/{courseId} {
       allow read: if true;
       allow write: if request.auth != null;
     }
     
     // Course Registrations collection:
     // Only logged-in administrators can view, edit, or delete registration entries.
-    match /registrations/{registrationId} {
+    match /learn_registrations/{registrationId} {
       allow read, write: if request.auth != null;
     }
     
     // Online registrations (submitted from public training page)
-    match /online_registrations/{regKey} {
+    match /learn_online_registrations/{regKey} {
       allow create, get: if true;
       allow list, update, delete: if request.auth != null;
     }
 
     // Online inquiries (submitted from public training/service pages)
-    match /online_inquiries/{inquiryKey} {
+    match /learn_online_inquiries/{inquiryKey} {
       allow create, get: if true;
       allow list, update, delete: if request.auth != null;
     }
 
     // Newsletter subscriptions (submitted from public pages)
-    match /newsletter_subscriptions/{email} {
+    match /learn_newsletter_subscriptions/{email} {
       allow create, get: if true;
       allow list, update, delete: if request.auth != null;
     }
     
     // Payment Records collection:
     // Only logged-in administrators can view or update payments.
-    match /payments/{paymentId} {
+    match /learn_payments/{paymentId} {
       allow read, write: if request.auth != null;
     }
 
     // Training Batches collection:
     // Only logged-in administrators can view or update batches.
-    match /batches/{batchId} {
+    match /learn_batches/{batchId} {
+      allow read, write: if request.auth != null;
+    }
+
+    // Employee Database collection:
+    match /learn_tbl_employees/{employeeId} {
+      allow read, write: if request.auth != null;
+    }
+
+    // Training Audit Logs collection:
+    match /learn_tbl_audit_logs/{logId} {
       allow read, write: if request.auth != null;
     }
 
     // Public Institutes collection:
     // Only logged-in administrators can view or update public institutes.
-    match /public_institutes/{id} {
+    match /learn_public_institutes/{id} {
       allow read, write: if request.auth != null;
     }
 
     // Job Placements collection:
     // Only logged-in administrators can view or update job placements.
-    match /job_placements/{id} {
+    match /learn_job_placements/{id} {
       allow read, write: if request.auth != null;
     }
 
     // Expenses collection:
     // Only logged-in administrators can view or update expenses.
-    match /expenses/{id} {
+    match /learn_expenses/{id} {
       allow read, write: if request.auth != null;
     }
 
     // Solution Dashboard collections:
     // Only logged-in administrators can view or update these documents.
-    match /tbl_projects/{id} {
+    match /sol_projects/{id} {
       allow read, write: if request.auth != null;
     }
-    match /tbl_contacts/{id} {
+    match /sol_contacts/{id} {
       allow read, write: if request.auth != null;
     }
-    match /tbl_meetings/{id} {
+    match /sol_meetings/{id} {
       allow read, write: if request.auth != null;
     }
-    match /tbl_budget/{id} {
+    match /sol_budget/{id} {
       allow read, write: if request.auth != null;
     }
-    match /tbl_tasks/{id} {
+    match /sol_tasks/{id} {
       allow read, write: if request.auth != null;
     }
-    match /tbl_requisitions/{id} {
+    match /sol_requisitions/{id} {
       allow read, write: if request.auth != null;
     }
-    match /tbl_purchase_orders/{id} {
+    match /sol_purchase_orders/{id} {
       allow read, write: if request.auth != null;
     }
-    match /tbl_expenses/{id} {
+    match /sol_expenses/{id} {
       allow read, write: if request.auth != null;
     }
-    match /tbl_client_payments/{id} {
+    match /sol_client_payments/{id} {
       allow read, write: if request.auth != null;
     }
-    match /tbl_employees/{id} {
+    match /sol_employees/{id} {
       allow read, write: if request.auth != null;
     }
-    match /tbl_support_tickets/{id} {
+    match /sol_support_tickets/{id} {
       allow read, write: if request.auth != null;
     }
-    match /tbl_domain_hosting_sales/{id} {
+    match /sol_domain_hosting_sales/{id} {
       allow read, write: if request.auth != null;
     }
-    match /tbl_audit_logs/{id} {
+    match /sol_audit_logs/{id} {
       allow read, write: if request.auth != null;
     }
 
     // Course Final Assessments:
     // Only logged-in administrators can view or update assessments.
-    match /course_assessments/{assessmentId} {
+    match /learn_course_assessments/{assessmentId} {
       allow read, write: if request.auth != null;
     }
     
     // Marketing Agents collection:
     // Only logged-in administrators can view or update marketing agents.
-    match /marketing_agents/{agentId} {
+    match /learn_marketing_agents/{agentId} {
       allow read, write: if request.auth != null;
     }
 
     // Sales Commissions collection:
     // Only logged-in administrators can view or update commissions.
-    match /commissions/{commissionId} {
+    match /learn_commissions/{commissionId} {
       allow read, write: if request.auth != null;
     }
     
+    // Investment & Finance Dashboard collections:
+    // Only logged-in administrators can view or update.
+    match /inv_investors/{id} {
+      allow read, write: if request.auth != null;
+    }
+    match /inv_investments/{id} {
+      allow read, write: if request.auth != null;
+    }
+    match /inv_audit_logs/{id} {
+      allow read, write: if request.auth != null;
+    }
   }
 }
