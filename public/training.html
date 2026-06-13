@@ -257,9 +257,9 @@
                   </div>
                 </div>
 
-                <!-- Row 3: Education + Schedule -->
+                <!-- Row 3: Education -->
                 <div class="row g-3 mb-3">
-                  <div class="col-md-6">
+                  <div class="col-12">
                     <label class="form-label small fw-semibold mb-1" for="reg-education">Educational Background</label>
                     <select class="form-select" id="reg-education" name="education">
                       <option value="" selected>Select (optional)</option>
@@ -268,31 +268,6 @@
                       <option value="Bachelor's Degree">Bachelor's Degree</option>
                       <option value="Master's Degree">Master's Degree</option>
                       <option value="Other">Other</option>
-                    </select>
-                  </div>
-                  <div class="col-md-6">
-                    <label class="form-label small fw-semibold mb-1" for="reg-schedule">Preferred Schedule <span
-                        class="text-danger">*</span></label>
-                    <select class="form-select" id="reg-schedule" name="schedule" required>
-                      <option value="" disabled selected>Select a slot</option>
-                      <option value="Morning">Morning</option>
-                      <option value="Afternoon">Afternoon</option>
-                      <option value="Evening">Evening</option>
-                      <option value="Weekend">Weekend</option>
-                    </select>
-                  </div>
-                </div>
-
-                <!-- Row 3.5: Class Days -->
-                <div class="row g-3 mb-3">
-                  <div class="col-md-12">
-                    <label class="form-label small fw-semibold mb-1" for="reg-class-days">Class Days <span
-                        class="text-danger">*</span></label>
-                    <select class="form-select" id="reg-class-days" name="class_days" required>
-                      <option value="" disabled selected>Select class days</option>
-                      <option value="Saturday, Monday & Wednesday">Saturday, Monday & Wednesday</option>
-                      <option value="Sunday, Tuesday & Thursday">Sunday, Tuesday & Thursday</option>
-                      <option value="Friday">Friday</option>
                     </select>
                   </div>
                 </div>
@@ -602,25 +577,6 @@
         });
       }
 
-      // Auto-select Class Days based on Schedule and vice-versa
-      const regSchedule = document.getElementById("reg-schedule");
-      const regClassDays = document.getElementById("reg-class-days");
-      if (regSchedule && regClassDays) {
-        regSchedule.addEventListener("change", function (e) {
-          if (e.target.value === "Weekend") {
-            if (regClassDays.value !== "Friday") regClassDays.value = "Friday";
-          } else if (regClassDays.value === "Friday") {
-            regClassDays.value = "";
-          }
-        });
-        regClassDays.addEventListener("change", function (e) {
-          if (e.target.value === "Friday") {
-            if (regSchedule.value !== "Weekend") regSchedule.value = "Weekend";
-          } else if (regSchedule.value === "Weekend") {
-            regSchedule.value = "";
-          }
-        });
-      }
 
       // Pre-fill course dropdown when any "Register" button opens the modal
       if (registrationModal && regCourseSelect) {
@@ -656,8 +612,8 @@
         const phone = document.getElementById("reg-phone").value.trim();
         const course = document.getElementById("reg-course").value;
         const education = document.getElementById("reg-education").value;
-        const schedule = document.getElementById("reg-schedule").value;
-        const classDays = document.getElementById("reg-class-days").value;
+        const schedule = "Not Set";
+        const classDays = "Not Set";
         const message = document.getElementById("reg-message").value.trim();
 
         const isJobHolder = isJobHolderSwitch ? isJobHolderSwitch.checked : false;
