@@ -1103,6 +1103,11 @@ export async function getAllBatches() {
           classDays: "Saturday, Monday & Wednesday",
           capacity: 10,
           status: "Active",
+          trainer: "Sarah Jenkins",
+          trainerId: "EMP-0002",
+          startDate: "2026-06-01",
+          endDate: "2026-08-12",
+          totalClasses: 32,
           createdAt: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)
         },
         {
@@ -1112,6 +1117,11 @@ export async function getAllBatches() {
           classDays: "Sunday, Tuesday & Thursday",
           capacity: 10,
           status: "Active",
+          trainer: "Sarah Jenkins",
+          trainerId: "EMP-0002",
+          startDate: "2026-06-10",
+          endDate: "2026-08-30",
+          totalClasses: 36,
           createdAt: new Date(Date.now() - 15 * 24 * 60 * 60 * 1000)
         },
         {
@@ -1121,6 +1131,11 @@ export async function getAllBatches() {
           classDays: "Friday",
           capacity: 10,
           status: "Upcoming",
+          trainer: "Sarah Jenkins",
+          trainerId: "EMP-0002",
+          startDate: "2026-06-05",
+          endDate: "2026-08-07",
+          totalClasses: 10,
           createdAt: new Date()
         }
       ];

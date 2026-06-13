@@ -421,6 +421,89 @@
         width: 100%;
       }
     }
+
+    /* ── Class Calendar Custom CSS ── */
+    .calendar-cell {
+      width: 14.285%;
+      min-height: 120px;
+      padding: 8px;
+      background-color: var(--bs-body-bg);
+      border-right: 1px solid var(--bs-border-color);
+      border-bottom: 1px solid var(--bs-border-color);
+      position: relative;
+      transition: background-color 0.2s;
+      display: flex;
+      flex-direction: column;
+    }
+    .calendar-cell:hover {
+      background-color: var(--bs-tertiary-bg);
+    }
+    .calendar-cell.other-month {
+      background-color: var(--bs-secondary-bg);
+      opacity: 0.5;
+    }
+    .calendar-cell.today {
+      background-color: rgba(var(--bs-primary-rgb, 13, 110, 253), 0.08);
+    }
+    .calendar-cell.today .calendar-day-num {
+      background-color: var(--bs-primary);
+      color: #fff;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+    }
+    .calendar-day-num {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--bs-secondary-color);
+      margin-bottom: 6px;
+    }
+    .calendar-events-container {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      overflow-y: auto;
+      flex-grow: 1;
+    }
+    .calendar-event {
+      font-size: 0.7rem;
+      padding: 4px 6px;
+      border-radius: 4px;
+      font-weight: 600;
+      line-height: 1.25;
+      border-left: 3px solid;
+      cursor: pointer;
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+    .calendar-event:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+    }
+    /* Event schedule slot badge themes */
+    .event-morning {
+      background-color: rgba(40, 167, 69, 0.12);
+      color: #155724;
+      border-left-color: #28a745;
+    }
+    .event-afternoon {
+      background-color: rgba(255, 193, 7, 0.18);
+      color: #856404;
+      border-left-color: #ffc107;
+    }
+    .event-evening {
+      background-color: rgba(13, 110, 253, 0.12);
+      color: #084298;
+      border-left-color: #0d6efd;
+    }
+    .event-weekend {
+      background-color: rgba(111, 66, 193, 0.12);
+      color: #381a6c;
+      border-left-color: #6f42c1;
+    }
   </style>
 
   <script>
@@ -552,6 +635,11 @@
                     id="batch-management-tab" data-bs-toggle="tab" data-bs-target="#batchPanel" type="button" role="tab"
                     aria-controls="batchPanel" aria-selected="false">
                     <i class="bi bi-collection"></i> Batch Management
+                  </button>
+                  <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
+                    id="class-calendar-tab" data-bs-toggle="tab" data-bs-target="#classCalendarPanel" type="button" role="tab"
+                    aria-controls="classCalendarPanel" aria-selected="false">
+                    <i class="bi bi-calendar3"></i> Class Calendar
                   </button>
                   <button class="nav-link text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
                     id="student-list-main-tab" data-bs-toggle="tab" data-bs-target="#studentListMainPanel" type="button"
@@ -2386,6 +2474,51 @@
                           </table>
                         </div>
                       </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Sub-Page: Class Calendar -->
+                <div class="tab-pane fade" id="classCalendarPanel" role="tabpanel" aria-labelledby="class-calendar-tab">
+                  <div class="card p-4 rounded-4 shadow-sm border mb-4">
+                    <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom flex-wrap gap-2">
+                      <h3 class="h5 fw-bold text-heading-color mb-0">
+                        <i class="bi bi-calendar3 me-2 text-primary"></i>Class Calendar
+                      </h3>
+                      <!-- Month Navigation and Filter Controls -->
+                      <div class="d-flex align-items-center gap-3 flex-wrap">
+                        <div class="btn-group btn-group-sm shadow-sm">
+                          <button class="btn btn-outline-secondary px-2" id="calendarPrevMonthBtn"><i class="bi bi-chevron-left"></i></button>
+                          <span class="btn btn-outline-secondary disabled fw-bold text-dark px-3" id="calendarCurrentMonthLabel">—</span>
+                          <button class="btn btn-outline-secondary px-2" id="calendarNextMonthBtn"><i class="bi bi-chevron-right"></i></button>
+                        </div>
+                        
+                        <div class="d-flex align-items-center gap-2">
+                          <select class="form-select form-select-sm shadow-sm" id="calendarBatchFilter" style="width: 160px;">
+                            <option value="">All Batches</option>
+                          </select>
+                          
+                          <select class="form-select form-select-sm shadow-sm" id="calendarTrainerFilter" style="width: 160px;">
+                            <option value="">All Trainers</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Calendar Grid Header -->
+                    <div class="row g-0 text-center fw-bold bg-body-secondary border py-2 rounded-top mb-1 small text-heading-color shadow-sm">
+                      <div class="col" style="width: 14.285%;">Sunday</div>
+                      <div class="col" style="width: 14.285%;">Monday</div>
+                      <div class="col" style="width: 14.285%;">Tuesday</div>
+                      <div class="col" style="width: 14.285%;">Wednesday</div>
+                      <div class="col" style="width: 14.285%;">Thursday</div>
+                      <div class="col" style="width: 14.285%;">Friday</div>
+                      <div class="col" style="width: 14.285%;">Saturday</div>
+                    </div>
+
+                    <!-- Calendar Grid Days -->
+                    <div class="d-flex flex-wrap border-start border-top bg-white rounded-bottom overflow-hidden shadow-sm" id="calendarDaysGrid" style="min-height: 480px;">
+                      <!-- Populated dynamically -->
                     </div>
                   </div>
                 </div>
@@ -11214,6 +11347,187 @@
     document.getElementById("batchStartDateInput")?.addEventListener("change", triggerBatchEndDateCalculation);
     document.getElementById("batchTotalClassesInput")?.addEventListener("input", triggerBatchEndDateCalculation);
     document.getElementById("batchEndDateInput")?.addEventListener("change", triggerBatchTotalClassesCalculation);
+
+    // ============================================================
+    // CLASS CALENDAR SYSTEM
+    // ============================================================
+    let currentCalendarMonth = new Date().getMonth();
+    let currentCalendarYear = new Date().getFullYear();
+
+    function batchHasClassOnDay(batch, dayName) {
+      const scheduleToDays = {
+        "Morning": "Saturday, Monday & Wednesday",
+        "Afternoon": "Saturday, Monday & Wednesday",
+        "Evening": "Sunday, Tuesday & Thursday",
+        "Weekend": "Friday"
+      };
+      const resolvedClassDays = batch.classDays || scheduleToDays[batch.schedule] || "";
+      if (!resolvedClassDays) return false;
+      return resolvedClassDays.toLowerCase().includes(dayName.toLowerCase());
+    }
+
+    function populateCalendarFilters() {
+      const batchFilter = document.getElementById("calendarBatchFilter");
+      const trainerFilter = document.getElementById("calendarTrainerFilter");
+      if (!batchFilter || !trainerFilter) return;
+
+      const prevSelectedBatch = batchFilter.value;
+      const prevSelectedTrainer = trainerFilter.value;
+
+      batchFilter.innerHTML = '<option value="">All Batches</option>';
+      allBatches.forEach(b => {
+        const opt = document.createElement("option");
+        opt.value = b.batchId;
+        opt.textContent = b.batchId;
+        batchFilter.appendChild(opt);
+      });
+      batchFilter.value = prevSelectedBatch;
+
+      trainerFilter.innerHTML = '<option value="">All Trainers</option>';
+      if (allEmployees && allEmployees.length > 0) {
+        const trainers = allEmployees.filter(emp => {
+          const designation = emp.designation ? emp.designation.toLowerCase() : "";
+          return emp.status === "Active" && (designation.includes("trainer") || designation.includes("expert"));
+        });
+        trainers.forEach(t => {
+          const opt = document.createElement("option");
+          opt.value = t.employee_id;
+          opt.textContent = t.employee_name;
+          trainerFilter.appendChild(opt);
+        });
+      }
+      trainerFilter.value = prevSelectedTrainer;
+    }
+
+    function renderEventsForDay(dateStr) {
+      const cellDate = new Date(dateStr);
+      const weekdayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+      const dayName = weekdayNames[cellDate.getDay()];
+      
+      const batchFilter = document.getElementById("calendarBatchFilter")?.value || "";
+      const trainerFilter = document.getElementById("calendarTrainerFilter")?.value || "";
+
+      let html = "";
+      allBatches.forEach(b => {
+        // Check filters
+        if (batchFilter && b.batchId !== batchFilter) return;
+        if (trainerFilter && b.trainerId !== trainerFilter) return;
+
+        // Check if within date range
+        if (!b.startDate || !b.endDate) return;
+        const start = new Date(b.startDate);
+        const end = new Date(b.endDate);
+        
+        // Reset hours to compare dates cleanly
+        cellDate.setHours(0, 0, 0, 0);
+        start.setHours(0, 0, 0, 0);
+        end.setHours(0, 0, 0, 0);
+
+        if (cellDate >= start && cellDate <= end) {
+          if (batchHasClassOnDay(b, dayName)) {
+            let eventSlotClass = "event-morning";
+            if (b.schedule === "Afternoon") eventSlotClass = "event-afternoon";
+            else if (b.schedule === "Evening") eventSlotClass = "event-evening";
+            else if (b.schedule === "Weekend") eventSlotClass = "event-weekend";
+
+            html += `
+              <div class="calendar-event ${eventSlotClass}" data-batch-id="${b.batchId}" title="Course: ${b.courseName}\nTrainer: ${b.trainer || 'TBA'}">
+                <strong>${b.batchId}</strong>: ${b.trainer ? b.trainer.split(' ')[0] : 'TBA'}
+              </div>
+            `;
+          }
+        }
+      });
+      return html;
+    }
+
+    function renderCalendar() {
+      const grid = document.getElementById("calendarDaysGrid");
+      const label = document.getElementById("calendarCurrentMonthLabel");
+      if (!grid || !label) return;
+
+      const monthNames = [
+        "January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
+      ];
+      label.textContent = `${monthNames[currentCalendarMonth]} ${currentCalendarYear}`;
+
+      const firstDayOfMonth = new Date(currentCalendarYear, currentCalendarMonth, 1);
+      const startDayOfWeek = firstDayOfMonth.getDay();
+      const daysInMonth = new Date(currentCalendarYear, currentCalendarMonth + 1, 0).getDate();
+      const prevMonthDays = new Date(currentCalendarYear, currentCalendarMonth, 0).getDate();
+
+      let html = "";
+
+      // Previous month days
+      for (let i = startDayOfWeek - 1; i >= 0; i--) {
+        const day = prevMonthDays - i;
+        html += `<div class="calendar-cell other-month"><div class="calendar-day-num">${day}</div></div>`;
+      }
+
+      // Current month days
+      const today = new Date();
+      for (let day = 1; day <= daysInMonth; day++) {
+        const dateStr = `${currentCalendarYear}-${String(currentCalendarMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+        const isToday = (today.getDate() === day && today.getMonth() === currentCalendarMonth && today.getFullYear() === currentCalendarYear);
+        const todayClass = isToday ? "today" : "";
+        
+        html += `
+          <div class="calendar-cell ${todayClass}" data-date="${dateStr}">
+            <div class="calendar-day-num">${day}</div>
+            <div class="calendar-events-container">
+              ${renderEventsForDay(dateStr)}
+            </div>
+          </div>
+        `;
+      }
+
+      // Next month days
+      const totalCells = startDayOfWeek + daysInMonth;
+      const remaining = (7 - (totalCells % 7)) % 7;
+      for (let day = 1; day <= remaining; day++) {
+        html += `<div class="calendar-cell other-month"><div class="calendar-day-num">${day}</div></div>`;
+      }
+
+      grid.innerHTML = html;
+
+      // Click event listeners for calendar events
+      grid.querySelectorAll(".calendar-event").forEach(el => {
+        el.addEventListener("click", (e) => {
+          e.stopPropagation();
+          const batchId = el.getAttribute("data-batch-id");
+          if (batchId && typeof showBatchStudentsModal === "function") {
+            showBatchStudentsModal(batchId);
+          }
+        });
+      });
+    }
+
+    function initCalendar() {
+      populateCalendarFilters();
+      renderCalendar();
+    }
+
+    // Attach calendar listeners
+    document.getElementById("class-calendar-tab")?.addEventListener("click", initCalendar);
+    document.getElementById("calendarPrevMonthBtn")?.addEventListener("click", () => {
+      currentCalendarMonth--;
+      if (currentCalendarMonth < 0) {
+        currentCalendarMonth = 11;
+        currentCalendarYear--;
+      }
+      renderCalendar();
+    });
+    document.getElementById("calendarNextMonthBtn")?.addEventListener("click", () => {
+      currentCalendarMonth++;
+      if (currentCalendarMonth > 11) {
+        currentCalendarMonth = 0;
+        currentCalendarYear++;
+      }
+      renderCalendar();
+    });
+    document.getElementById("calendarBatchFilter")?.addEventListener("change", renderCalendar);
+    document.getElementById("calendarTrainerFilter")?.addEventListener("change", renderCalendar);
 
     // Globally register loadBatches and updateRegistrationBatchDropdown functions in window just in case
     window.loadBatches = loadBatches;
