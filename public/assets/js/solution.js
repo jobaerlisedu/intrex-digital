@@ -782,7 +782,7 @@ export async function addEmployee(employeeData) {
   }
 
   try {
-    const id = employee_id || await getNextSeqId("sol_employees", "EMP-", "employee_id", 4);
+    const id = employee_id || await getNextSeqId("sol_employees", "EMP-S-", "employee_id", 4);
     const docRef = doc(db, "sol_employees", id);
     await setDoc(docRef, {
       employee_id: id,

@@ -92,6 +92,8 @@
       color: var(--bs-heading-color);
       word-break: break-word;
     }
+
+
   </style>
   <script>
     (function () {
@@ -455,22 +457,24 @@
                                 required maxlength="100">
                             </div>
                             <div class="col-md-6">
-                              <label class="form-label small fw-semibold" for="emp_designation">Designation <span
-                                  class="text-danger">*</span></label>
-                              <input class="form-control" id="emp_designation" type="text"
-                                placeholder="e.g. Project Manager" required maxlength="100">
-                            </div>
-                            <div class="col-md-4">
                               <label class="form-label small fw-semibold" for="emp_department">Department <span
                                   class="text-danger">*</span></label>
                               <select class="form-select" id="emp_department" required>
                                 <option value="" disabled selected>Select department</option>
-                                <option value="Engineering">Engineering</option>
-                                <option value="Operations">Operations</option>
-                                <option value="Procurement">Procurement</option>
-                                <option value="IT & Cloud">IT &amp; Cloud</option>
-                                <option value="Human Resources">Human Resources</option>
-                                <option value="Finance">Finance</option>
+                                <option value="Network & Cloud Solutions">Network & Cloud Solutions</option>
+                                <option value="Software Solutions">Software Solutions</option>
+                                <option value="Managed IT Support">Managed IT Support</option>
+                                <option value="Business Suite">Business Suite</option>
+                                <option value="Project Management">Project Management</option>
+                                <option value="Sales & Business Development">Sales & Business Development</option>
+                                <option value="Corporate Operations">Corporate Operations</option>
+                              </select>
+                            </div>
+                            <div class="col-md-4">
+                              <label class="form-label small fw-semibold" for="emp_designation">Designation <span
+                                  class="text-danger">*</span></label>
+                              <select class="form-select" id="emp_designation" required>
+                                <option value="" disabled selected>Select department first</option>
                               </select>
                             </div>
                             <div class="col-md-4">
@@ -491,8 +495,8 @@
                             </div>
                             <div class="col-md-6">
                               <label class="form-label small fw-semibold" for="emp_employee_id">Employee ID <span
-                                  class="text-muted">(e.g. EMP-0001, auto-generated if blank)</span></label>
-                              <input class="form-control" id="emp_employee_id" type="text" placeholder="e.g. EMP-0001">
+                                  class="text-muted">(e.g. EMP-S-0001, auto-generated if blank)</span></label>
+                              <input class="form-control" id="emp_employee_id" type="text" placeholder="e.g. EMP-S-0001">
                             </div>
                           </div>
                           <div class="d-flex gap-2 mt-3">
@@ -2331,6 +2335,95 @@
       getAllNewsletterSubscriptions, deleteNewsletterSubscription
     } from "./assets/js/solution.js";
 
+    const departmentDesignations = {
+      "Network & Cloud Solutions": [
+        "Head of Network & Cloud",
+        "Senior Cloud Architect",
+        "Cloud Engineer",
+        "Senior Network Engineer",
+        "Network Administrator",
+        "Network Security Specialist",
+        "System Administrator",
+        "Junior Network Support Technician"
+      ],
+      "Software Solutions": [
+        "Head of Software Development",
+        "Software Architect",
+        "Lead Full-Stack Developer",
+        "Senior Frontend Developer",
+        "Senior Backend Developer",
+        "UI/UX Designer",
+        "QA Engineer",
+        "Junior Software Engineer"
+      ],
+      "Managed IT Support": [
+        "IT Support & Operations Manager",
+        "Service Desk Lead",
+        "L3 Technical Support Engineer",
+        "L2 Support Specialist",
+        "L1 Helpdesk Technician",
+        "On-Site Support Executive",
+        "IT Asset Controller"
+      ],
+      "Business Suite": [
+        "Business Suite Product Manager",
+        "ERP Implementation Consultant",
+        "Business Analyst",
+        "Technical Integration Consultant",
+        "Customer Success Specialist",
+        "ERP Training Instructor"
+      ],
+      "Project Management": [
+        "Project Manager",
+        "Project Coordinator",
+        "Scrum Master"
+      ],
+      "Sales & Business Development": [
+        "Head of Business Development",
+        "IT Solutions Sales Executive",
+        "Key Account Manager"
+      ],
+      "Corporate Operations": [
+        "HR & Admin Manager",
+        "Procurement & Logistics Executive",
+        "Finance & Accounts Officer"
+      ]
+    };
+
+    function populateDesignations() {
+      const deptSelect = document.getElementById("emp_department");
+      const desSelect = document.getElementById("emp_designation");
+      if (!deptSelect || !desSelect) return;
+
+      const selectedDept = deptSelect.value;
+      desSelect.innerHTML = "";
+
+      if (!selectedDept || !departmentDesignations[selectedDept]) {
+        const opt = document.createElement("option");
+        opt.value = "";
+        opt.disabled = true;
+        opt.selected = true;
+        opt.textContent = "Select department first";
+        desSelect.appendChild(opt);
+        return;
+      }
+
+      const optDefault = document.createElement("option");
+      optDefault.value = "";
+      optDefault.disabled = true;
+      optDefault.selected = true;
+      optDefault.textContent = "Select designation";
+      desSelect.appendChild(optDefault);
+
+      departmentDesignations[selectedDept].forEach(role => {
+        const opt = document.createElement("option");
+        opt.value = role;
+        opt.textContent = role;
+        desSelect.appendChild(opt);
+      });
+    }
+
+
     // Set today's dates as default (except clearance date & client payment received date)
     const todayDateStr = new Date().toISOString().substring(0, 10);
     document.querySelectorAll('input[type="date"]').forEach(input => {
@@ -2686,6 +2779,9 @@
       }
     });
 
+    // Event handler when Department is selected in Employee form to load designations
+    document.getElementById("emp_department")?.addEventListener("change", populateDesignations);
+
     // Event handler when Employee is selected in Contact form for auto-fill
     document.getElementById("contact_employee_import")?.addEventListener("change", function (e) {
       const empId = e.target.value;
@@ -2860,6 +2956,7 @@
     // Cancel Employee Edit
     document.getElementById("cancelEmpEditBtn")?.addEventListener("click", function () {
       document.getElementById("employeeForm").reset();
+      populateDesignations();
       document.getElementById("emp_employee_id").readOnly = false;
       document.getElementById("empFormTitle").innerHTML = '<i class="bi bi-person-plus-fill me-2 text-primary"></i>Add Employee Record';
       document.getElementById("empSubmitBtn").innerHTML = '<i class="bi bi-save me-2"></i>Save Employee Record';
@@ -3331,15 +3428,17 @@
             <td><span class="small">${p.start_date} to ${p.end_date}</span></td>
             <td><span class="badge bg-secondary text-dark">${p.project_status}</span></td>
             <td class="text-center">
-              <button class="btn btn-sm btn-outline-success view-proj-btn me-1" data-id="${p.project_id}" title="View Details">
-                <i class="bi bi-eye"></i>
-              </button>
-              <button class="btn btn-sm btn-outline-primary edit-proj-btn me-1" data-id="${p.project_id}">
-                <i class="bi bi-pencil"></i>
-              </button>
-              <button class="btn btn-sm btn-outline-danger delete-proj-btn" data-id="${p.project_id}">
-                <i class="bi bi-trash"></i>
-              </button>
+              <div class="btn-group gap-1">
+                <button class="btn btn-sm btn-outline-info view-proj-btn" data-id="${p.project_id}" title="View Details">
+                  <i class="bi bi-eye"></i>
+                </button>
+                <button class="btn btn-sm btn-outline-secondary edit-proj-btn" data-id="${p.project_id}" title="Edit">
+                  <i class="bi bi-pencil"></i>
+                </button>
+                <button class="btn btn-sm btn-outline-danger delete-proj-btn" data-id="${p.project_id}" title="Delete">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </div>
             </td>
           </tr>
         `;
@@ -3414,38 +3513,24 @@
     }
 
     function renderContacts() {
-      const tbody = document.getElementById("contactsTableBody");
-      if (!tbody) return;
-      if (allContacts.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="8" class="text-center py-3 text-muted">No contacts found.</td></tr>';
-        return;
+      const clientTbody = document.getElementById("clientContactsTableBody");
+      const vendorTbody = document.getElementById("vendorContactsTableBody");
+      if (!clientTbody || !vendorTbody) return;
+
+      const clients = allContacts.filter(c => c.contact_type !== 'Vendor');
+      const vendors = allContacts.filter(c => c.contact_type === 'Vendor');
+
+      if (clients.length === 0) {
+        clientTbody.innerHTML = '<tr><td colspan="8" class="text-center py-3 text-muted">No client contacts found.</td></tr>';
+      } else {
+        clientTbody.innerHTML = renderContactRows(clients);
       }
-      tbody.innerHTML = allContacts.map(c => {
-        const matchingProjects = allProjects.filter(p => p.client_sponsor === c.contact_id || p.client_sponsor === c.contact_name);
-        const linkedProjs = matchingProjects.length > 0 ? matchingProjects.map(p => p.project_id).join(', ') : 'None';
-        return `
-          <tr>
-            <td><code class="text-dark font-monospace">${c.contact_id}</code></td>
-            <td><strong>${c.contact_name}</strong></td>
-            <td>${c.designation}</td>
-            <td>${c.organization}</td>
-            <td>${c.mobile_phone || 'N/A'}</td>
-            <td>${c.email || 'N/A'}</td>
-            <td><span class="small text-muted font-monospace">${linkedProjs}</span></td>
-            <td class="text-center">
-              <button class="btn btn-sm btn-outline-success view-contact-btn me-1" data-id="${c.contact_id}" title="View Details">
-                <i class="bi bi-eye"></i>
-              </button>
-              <button class="btn btn-sm btn-outline-primary edit-contact-btn me-1" data-id="${c.contact_id}">
-                <i class="bi bi-pencil"></i>
-              </button>
-              <button class="btn btn-sm btn-outline-danger delete-contact-btn" data-id="${c.contact_id}">
-                <i class="bi bi-trash"></i>
-              </button>
-            </td>
-          </tr>
-        `;
-      }).join('');
+
+      if (vendors.length === 0) {
+        vendorTbody.innerHTML = '<tr><td colspan="8" class="text-center py-3 text-muted">No vendor contacts found.</td></tr>';
+      } else {
+        vendorTbody.innerHTML = renderContactRows(vendors);
+      }
 
       document.querySelectorAll(".view-contact-btn").forEach(btn => {
         btn.onclick = () => {
@@ -3460,6 +3545,9 @@
           if (c) {
             document.getElementById("contact_id").value = c.contact_id;
             document.getElementById("contact_name").value = c.contact_name;
+            if (document.getElementById("contact_type")) {
+              document.getElementById("contact_type").value = c.contact_type || "Client";
+            }
             document.getElementById("contact_designation").value = c.designation;
             document.getElementById("contact_organization").value = c.organization;
             document.getElementById("contact_mobile_phone").value = c.mobile_phone || "";
@@ -3497,6 +3585,37 @@
       });
     }
 
+    function renderContactRows(contactsList) {
+      return contactsList.map(c => {
+        const matchingProjects = allProjects.filter(p => p.client_sponsor === c.contact_id || p.client_sponsor === c.contact_name);
+        const linkedProjs = matchingProjects.length > 0 ? matchingProjects.map(p => p.project_id).join(', ') : 'None';
+        return `
+          <tr>
+            <td><code class="text-dark font-monospace">${c.contact_id}</code></td>
+            <td><strong>${c.contact_name}</strong></td>
+            <td>${c.designation}</td>
+            <td>${c.organization}</td>
+            <td>${c.mobile_phone || 'N/A'}</td>
+            <td>${c.email || 'N/A'}</td>
+            <td><span class="small text-muted font-monospace">${linkedProjs}</span></td>
+            <td class="text-center">
+              <div class="btn-group gap-1">
+                <button class="btn btn-sm btn-outline-info view-contact-btn" data-id="${c.contact_id}" title="View Details">
+                  <i class="bi bi-eye"></i>
+                </button>
+                <button class="btn btn-sm btn-outline-secondary edit-contact-btn" data-id="${c.contact_id}" title="Edit">
+                  <i class="bi bi-pencil"></i>
+                </button>
+                <button class="btn btn-sm btn-outline-danger delete-contact-btn" data-id="${c.contact_id}" title="Delete">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
     function renderEmployees() {
       const tbody = document.getElementById("employeesTableBody");
       if (!tbody) return;
@@ -3514,15 +3633,17 @@
           <td>${e.email || 'N/A'}</td>
           <td><span class="badge bg-secondary text-dark">${e.status}</span></td>
           <td class="text-center">
-            <button class="btn btn-sm btn-outline-success view-emp-btn me-1" data-id="${e.employee_id}" title="View Details">
-              <i class="bi bi-eye"></i>
-            </button>
-            <button class="btn btn-sm btn-outline-primary edit-emp-btn me-1" data-id="${e.employee_id}">
-              <i class="bi bi-pencil"></i>
-            </button>
-            <button class="btn btn-sm btn-outline-danger delete-emp-btn" data-id="${e.employee_id}">
-              <i class="bi bi-trash"></i>
-            </button>
+            <div class="btn-group gap-1">
+              <button class="btn btn-sm btn-outline-info view-emp-btn" data-id="${e.employee_id}" title="View Details">
+                <i class="bi bi-eye"></i>
+              </button>
+              <button class="btn btn-sm btn-outline-secondary edit-emp-btn" data-id="${e.employee_id}" title="Edit">
+                <i class="bi bi-pencil"></i>
+              </button>
+              <button class="btn btn-sm btn-outline-danger delete-emp-btn" data-id="${e.employee_id}" title="Delete">
+                <i class="bi bi-trash"></i>
+              </button>
+            </div>
           </td>
         </tr>
       `).join('');
@@ -3541,8 +3662,9 @@
             document.getElementById("emp_employee_id").value = e.employee_id;
             document.getElementById("emp_employee_id").readOnly = true;
             document.getElementById("emp_employee_name").value = e.employee_name;
-            document.getElementById("emp_designation").value = e.designation;
             document.getElementById("emp_department").value = e.department;
+            populateDesignations();
+            document.getElementById("emp_designation").value = e.designation;
             document.getElementById("emp_mobile_phone").value = e.mobile_phone || "";
             document.getElementById("emp_email").value = e.email || "";
             document.getElementById("emp_status").value = e.status;
@@ -3602,15 +3724,17 @@
             <td><span class="small text-muted">${attendees}</span></td>
             <td><a href="${url}" target="_blank" class="small"><i class="bi bi-link-45deg"></i> Join Meeting</a></td>
             <td class="text-center">
-              <button class="btn btn-sm btn-outline-success view-meeting-btn me-1" data-id="${m.meeting_id}" title="View Details">
-                <i class="bi bi-eye"></i>
-              </button>
-              <button class="btn btn-sm btn-outline-primary edit-meeting-btn me-1" data-id="${m.meeting_id}">
-                <i class="bi bi-pencil"></i>
-              </button>
-              <button class="btn btn-sm btn-outline-danger delete-meeting-btn" data-id="${m.meeting_id}">
-                <i class="bi bi-trash"></i>
-              </button>
+              <div class="btn-group gap-1">
+                <button class="btn btn-sm btn-outline-info view-meeting-btn" data-id="${m.meeting_id}" title="View Details">
+                  <i class="bi bi-eye"></i>
+                </button>
+                <button class="btn btn-sm btn-outline-secondary edit-meeting-btn" data-id="${m.meeting_id}" title="Edit">
+                  <i class="bi bi-pencil"></i>
+                </button>
+                <button class="btn btn-sm btn-outline-danger delete-meeting-btn" data-id="${m.meeting_id}" title="Delete">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </div>
             </td>
           </tr>
         `;
@@ -3692,15 +3816,17 @@
             <td>${approver ? (approver.employee_name || approver.contact_name) : 'Unknown Approver'}</td>
             <td><span class="small">${b.last_updated}</span></td>
             <td class="text-center">
-              <button class="btn btn-sm btn-outline-success view-budget-btn me-1" data-id="${b.budget_line_id}" title="View Details">
-                <i class="bi bi-eye"></i>
-              </button>
-              <button class="btn btn-sm btn-outline-primary edit-budget-btn me-1" data-id="${b.budget_line_id}">
-                <i class="bi bi-pencil"></i>
-              </button>
-              <button class="btn btn-sm btn-outline-danger delete-budget-btn" data-id="${b.budget_line_id}">
-                <i class="bi bi-trash"></i>
-              </button>
+              <div class="btn-group gap-1">
+                <button class="btn btn-sm btn-outline-info view-budget-btn" data-id="${b.budget_line_id}" title="View Details">
+                  <i class="bi bi-eye"></i>
+                </button>
+                <button class="btn btn-sm btn-outline-secondary edit-budget-btn" data-id="${b.budget_line_id}" title="Edit">
+                  <i class="bi bi-pencil"></i>
+                </button>
+                <button class="btn btn-sm btn-outline-danger delete-budget-btn" data-id="${b.budget_line_id}" title="Delete">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </div>
             </td>
           </tr>
         `;
@@ -3783,15 +3909,17 @@
             <td><span class="small">${t.task_startDate} to ${t.task_endDate}</span></td>
             <td><span class="badge bg-secondary text-dark">${t.task_status}</span></td>
             <td class="text-center">
-              <button class="btn btn-sm btn-outline-success view-task-btn me-1" data-id="${t.task_id}" title="View Details">
-                <i class="bi bi-eye"></i>
-              </button>
-              <button class="btn btn-sm btn-outline-primary edit-task-btn me-1" data-id="${t.task_id}">
-                <i class="bi bi-pencil"></i>
-              </button>
-              <button class="btn btn-sm btn-outline-danger delete-task-btn" data-id="${t.task_id}">
-                <i class="bi bi-trash"></i>
-              </button>
+              <div class="btn-group gap-1">
+                <button class="btn btn-sm btn-outline-info view-task-btn" data-id="${t.task_id}" title="View Details">
+                  <i class="bi bi-eye"></i>
+                </button>
+                <button class="btn btn-sm btn-outline-secondary edit-task-btn" data-id="${t.task_id}" title="Edit">
+                  <i class="bi bi-pencil"></i>
+                </button>
+                <button class="btn btn-sm btn-outline-danger delete-task-btn" data-id="${t.task_id}" title="Delete">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </div>
             </td>
           </tr>
         `;
@@ -3883,15 +4011,17 @@
             <td><span class="badge bg-secondary text-dark">${r.dept_approval}</span></td>
             <td><span class="small text-muted">${r.rejection_reason || '—'}</span></td>
             <td class="text-center">
-              <button class="btn btn-sm btn-outline-success view-req-btn me-1" data-id="${r.requisition_id}" title="View Details">
-                <i class="bi bi-eye"></i>
-              </button>
-              <button class="btn btn-sm btn-outline-primary edit-req-btn me-1" data-id="${r.requisition_id}">
-                <i class="bi bi-pencil"></i>
-              </button>
-              <button class="btn btn-sm btn-outline-danger delete-req-btn" data-id="${r.requisition_id}">
-                <i class="bi bi-trash"></i>
-              </button>
+              <div class="btn-group gap-1">
+                <button class="btn btn-sm btn-outline-info view-req-btn" data-id="${r.requisition_id}" title="View Details">
+                  <i class="bi bi-eye"></i>
+                </button>
+                <button class="btn btn-sm btn-outline-secondary edit-req-btn" data-id="${r.requisition_id}" title="Edit">
+                  <i class="bi bi-pencil"></i>
+                </button>
+                <button class="btn btn-sm btn-outline-danger delete-req-btn" data-id="${r.requisition_id}" title="Delete">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </div>
             </td>
           </tr>
         `;
@@ -3980,15 +4110,17 @@
           <td><span class="small">${po.po_issue_date}</span></td>
           <td><span class="badge bg-secondary text-dark">${po.po_status}</span></td>
           <td class="text-center">
-            <button class="btn btn-sm btn-outline-success view-po-btn me-1" data-id="${po.po_number}" title="View Details">
-              <i class="bi bi-eye"></i>
-            </button>
-            <button class="btn btn-sm btn-outline-primary edit-po-btn me-1" data-id="${po.po_number}">
-              <i class="bi bi-pencil"></i>
-            </button>
-            <button class="btn btn-sm btn-outline-danger delete-po-btn" data-id="${po.po_number}">
-              <i class="bi bi-trash"></i>
-            </button>
+            <div class="btn-group gap-1">
+              <button class="btn btn-sm btn-outline-info view-po-btn" data-id="${po.po_number}" title="View Details">
+                <i class="bi bi-eye"></i>
+              </button>
+              <button class="btn btn-sm btn-outline-secondary edit-po-btn" data-id="${po.po_number}" title="Edit">
+                <i class="bi bi-pencil"></i>
+              </button>
+              <button class="btn btn-sm btn-outline-danger delete-po-btn" data-id="${po.po_number}" title="Delete">
+                <i class="bi bi-trash"></i>
+              </button>
+            </div>
           </td>
         </tr>
       `).join('');
@@ -4069,15 +4201,17 @@
           <td><span class="badge bg-secondary text-dark">${e.payment_status}</span></td>
           <td><span class="small">${e.clearance_date || '—'}</span></td>
           <td class="text-center">
-            <button class="btn btn-sm btn-outline-success view-exp-btn me-1" data-id="${e.expense_id}" title="View Details">
-              <i class="bi bi-eye"></i>
-            </button>
-            <button class="btn btn-sm btn-outline-primary edit-exp-btn me-1" data-id="${e.expense_id}">
-              <i class="bi bi-pencil"></i>
-            </button>
-            <button class="btn btn-sm btn-outline-danger delete-exp-btn" data-id="${e.expense_id}">
-              <i class="bi bi-trash"></i>
-            </button>
+            <div class="btn-group gap-1">
+              <button class="btn btn-sm btn-outline-info view-exp-btn" data-id="${e.expense_id}" title="View Details">
+                <i class="bi bi-eye"></i>
+              </button>
+              <button class="btn btn-sm btn-outline-secondary edit-exp-btn" data-id="${e.expense_id}" title="Edit">
+                <i class="bi bi-pencil"></i>
+              </button>
+              <button class="btn btn-sm btn-outline-danger delete-exp-btn" data-id="${e.expense_id}" title="Delete">
+                <i class="bi bi-trash"></i>
+              </button>
+            </div>
           </td>
         </tr>
       `).join('');
@@ -4199,15 +4333,17 @@
             <td><span class="small text-muted">${formatDateTime(t.created_at)}</span></td>
             <td><span class="small text-muted">${formatDateTime(t.closed_at)}</span></td>
             <td class="text-center">
-              <button class="btn btn-sm btn-outline-success view-ticket-btn me-1" data-id="${t.ticket_id}" title="View Details">
-                <i class="bi bi-eye"></i>
-              </button>
-              <button class="btn btn-sm btn-outline-primary edit-ticket-btn me-1" data-id="${t.ticket_id}">
-                <i class="bi bi-pencil"></i>
-              </button>
-              <button class="btn btn-sm btn-outline-danger delete-ticket-btn" data-id="${t.ticket_id}">
-                <i class="bi bi-trash"></i>
-              </button>
+              <div class="btn-group gap-1">
+                <button class="btn btn-sm btn-outline-info view-ticket-btn" data-id="${t.ticket_id}" title="View Details">
+                  <i class="bi bi-eye"></i>
+                </button>
+                <button class="btn btn-sm btn-outline-secondary edit-ticket-btn" data-id="${t.ticket_id}" title="Edit">
+                  <i class="bi bi-pencil"></i>
+                </button>
+                <button class="btn btn-sm btn-outline-danger delete-ticket-btn" data-id="${t.ticket_id}" title="Delete">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </div>
             </td>
           </tr>
         `;
@@ -4322,15 +4458,17 @@
             <td>${inv.date_received || '—'}</td>
             <td>${inv.transaction_ref || '—'}</td>
             <td class="text-center">
-              <button class="btn btn-sm btn-outline-success view-payment-btn me-1" data-id="${inv.invoice_id}" title="View Details">
-                <i class="bi bi-eye"></i>
-              </button>
-              <button class="btn btn-sm btn-outline-primary edit-payment-btn me-1" data-id="${inv.invoice_id}">
-                <i class="bi bi-pencil"></i>
-              </button>
-              <button class="btn btn-sm btn-outline-danger delete-payment-btn" data-id="${inv.invoice_id}">
-                <i class="bi bi-trash"></i>
-              </button>
+              <div class="btn-group gap-1">
+                <button class="btn btn-sm btn-outline-info view-payment-btn" data-id="${inv.invoice_id}" title="View Details">
+                  <i class="bi bi-eye"></i>
+                </button>
+                <button class="btn btn-sm btn-outline-secondary edit-payment-btn" data-id="${inv.invoice_id}" title="Edit">
+                  <i class="bi bi-pencil"></i>
+                </button>
+                <button class="btn btn-sm btn-outline-danger delete-payment-btn" data-id="${inv.invoice_id}" title="Delete">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </div>
             </td>
           </tr>
         `;
@@ -4486,6 +4624,7 @@
           details: `${isEdit ? "Updated" : "Created"} employee "${employeeName}"`
         });
         document.getElementById("employeeForm").reset();
+        populateDesignations();
         document.getElementById("emp_employee_id").readOnly = false;
         document.getElementById("empFormTitle").innerHTML = '<i class="bi bi-person-plus-fill me-2 text-primary"></i>Add Employee Record';
         document.getElementById("empSubmitBtn").innerHTML = '<i class="bi bi-save me-2"></i>Save Employee Record';
@@ -5124,15 +5263,17 @@
             <td class="fw-semibold">${asset.renewal_date}</td>
             <td>${statusBadge(asset.asset_status)}</td>
             <td class="text-center">
-              <button class="btn btn-sm btn-outline-success view-hosting-btn me-1" data-id="${asset.asset_id}" title="View Details">
-                <i class="bi bi-eye"></i>
-              </button>
-              <button class="btn btn-sm btn-outline-primary edit-hosting-btn me-1" data-id="${asset.asset_id}">
-                <i class="bi bi-pencil"></i>
-              </button>
-              <button class="btn btn-sm btn-outline-danger delete-hosting-btn" data-id="${asset.asset_id}">
-                <i class="bi bi-trash"></i>
-              </button>
+              <div class="btn-group gap-1">
+                <button class="btn btn-sm btn-outline-info view-hosting-btn" data-id="${asset.asset_id}" title="View Details">
+                  <i class="bi bi-eye"></i>
+                </button>
+                <button class="btn btn-sm btn-outline-secondary edit-hosting-btn" data-id="${asset.asset_id}" title="Edit">
+                  <i class="bi bi-pencil"></i>
+                </button>
+                <button class="btn btn-sm btn-outline-danger delete-hosting-btn" data-id="${asset.asset_id}" title="Delete">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </div>
             </td>
           </tr>
         `;
@@ -5256,11 +5397,11 @@
             <td class="text-center"><span class="badge bg-${statusColor}" style="font-size:0.7rem;">${inq.status || 'New'}</span></td>
             <td><span class="text-muted small">${dateStr}</span></td>
             <td class="text-center">
-              <div class="d-flex justify-content-center gap-1">
-                <button class="btn btn-sm btn-outline-info py-0 px-2 view-inq-btn" data-key="${inq.inquiryKey}" title="View full details">
+              <div class="btn-group gap-1">
+                <button class="btn btn-sm btn-outline-info view-inq-btn" data-key="${inq.inquiryKey}" title="View Details">
                   <i class="bi bi-eye"></i>
                 </button>
-                <button class="btn btn-sm btn-outline-danger py-0 px-2 delete-inq-btn" data-key="${inq.inquiryKey}" data-name="${inq.name}" title="Delete inquiry">
+                <button class="btn btn-sm btn-outline-danger delete-inq-btn" data-key="${inq.inquiryKey}" data-name="${inq.name}" title="Delete">
                   <i class="bi bi-trash"></i>
                 </button>
               </div>
@@ -5348,9 +5489,11 @@
             <td><a href="mailto:${sub.email || ""}" class="fw-semibold text-primary text-decoration-none">${sub.email || ""}</a></td>
             <td><span class="text-muted small">${dateStr}</span></td>
             <td class="text-center">
-              <button class="btn btn-sm btn-outline-danger py-0 px-2 delete-sub-btn" data-email="${sub.email}" title="Delete subscription">
-                <i class="bi bi-trash"></i>
-              </button>
+              <div class="btn-group gap-1">
+                <button class="btn btn-sm btn-outline-danger delete-sub-btn" data-email="${sub.email}" title="Delete">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </div>
             </td>
           </tr>
         `;
