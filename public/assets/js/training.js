@@ -1146,7 +1146,7 @@ export async function getAllBatches() {
 }
 
 export async function addBatch(batchData) {
-  const { batchId, courseName, schedule, classDays, capacity, status, trainer, trainerId } = batchData;
+  const { batchId, courseName, schedule, classDays, capacity, status, trainer, trainerId, startDate, endDate, totalClasses } = batchData;
   if (!batchId || !courseName || !status) {
     throw new Error("Missing required batch fields");
   }
@@ -1169,6 +1169,9 @@ export async function addBatch(batchData) {
       status: status || "Active",
       trainer: trainer || "",
       trainerId: trainerId || "",
+      startDate: startDate || "",
+      endDate: endDate || "",
+      totalClasses: totalClasses !== undefined ? Number(totalClasses) : 0,
       createdAt: new Date()
     };
     mockBatches.push(newBatch);
@@ -1192,6 +1195,9 @@ export async function addBatch(batchData) {
       status: status || "Active",
       trainer: trainer || "",
       trainerId: trainerId || "",
+      startDate: startDate || "",
+      endDate: endDate || "",
+      totalClasses: totalClasses !== undefined ? Number(totalClasses) : 0,
       createdAt: serverTimestamp()
     });
     return batchId;
@@ -1202,7 +1208,7 @@ export async function addBatch(batchData) {
 }
 
 export async function updateBatch(batchId, batchData) {
-  const { courseName, schedule, classDays, capacity, status, trainer, trainerId } = batchData;
+  const { courseName, schedule, classDays, capacity, status, trainer, trainerId, startDate, endDate, totalClasses } = batchData;
 
   const urlParams = new URLSearchParams(window.location.search);
   if (urlParams.get('mock') === '1') {
@@ -1220,6 +1226,9 @@ export async function updateBatch(batchId, batchData) {
         status: status ? status.trim() : mockBatches[existingIndex].status,
         trainer: trainer !== undefined ? trainer : mockBatches[existingIndex].trainer,
         trainerId: trainerId !== undefined ? trainerId : mockBatches[existingIndex].trainerId,
+        startDate: startDate !== undefined ? startDate : mockBatches[existingIndex].startDate,
+        endDate: endDate !== undefined ? endDate : mockBatches[existingIndex].endDate,
+        totalClasses: totalClasses !== undefined ? Number(totalClasses) : mockBatches[existingIndex].totalClasses,
         updatedAt: new Date()
       };
     }
@@ -1238,6 +1247,9 @@ export async function updateBatch(batchId, batchData) {
       status: status || "Active",
       trainer: trainer || "",
       trainerId: trainerId || "",
+      startDate: startDate || "",
+      endDate: endDate || "",
+      totalClasses: totalClasses !== undefined ? Number(totalClasses) : 0,
       updatedAt: serverTimestamp()
     }, { merge: true });
   } catch (error) {

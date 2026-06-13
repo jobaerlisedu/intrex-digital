@@ -2269,6 +2269,21 @@
                           </div>
 
                           <div class="mb-3">
+                            <label class="form-label small fw-semibold mb-1" for="batchStartDateInput">Class Starting Date</label>
+                            <input class="form-control" id="batchStartDateInput" type="date">
+                          </div>
+
+                          <div class="mb-3">
+                            <label class="form-label small fw-semibold mb-1" for="batchTotalClassesInput">Total Number of Class</label>
+                            <input class="form-control" id="batchTotalClassesInput" type="number" min="1" placeholder="e.g. 32">
+                          </div>
+
+                          <div class="mb-3">
+                            <label class="form-label small fw-semibold mb-1" for="batchEndDateInput">Class Ending Date</label>
+                            <input class="form-control" id="batchEndDateInput" type="date">
+                          </div>
+
+                          <div class="mb-3">
                             <label class="form-label small fw-semibold mb-1" for="batchCapacityInput">Max Capacity
                               (Students)</label>
                             <input class="form-control bg-body-secondary" id="batchCapacityInput" type="number"
@@ -2352,6 +2367,9 @@
                                 <th class="small fw-semibold text-center">Course</th>
                                 <th class="small fw-semibold text-center">Schedule</th>
                                 <th class="small fw-semibold text-center">Trainer</th>
+                                <th class="small fw-semibold text-center">Start Date</th>
+                                <th class="small fw-semibold text-center">End Date</th>
+                                <th class="small fw-semibold text-center">Classes</th>
                                 <th class="small fw-semibold text-center">Students Count</th>
                                 <th class="small fw-semibold text-center">Status</th>
                                 <th class="small fw-semibold text-center">Actions</th>
@@ -2359,7 +2377,7 @@
                             </thead>
                             <tbody id="batchesTableBody">
                               <tr>
-                                <td colspan="7" class="text-center py-4 text-muted">
+                                <td colspan="10" class="text-center py-4 text-muted">
                                   <div class="spinner-border spinner-border-sm text-primary me-2" role="status"></div>
                                   Loading training batches...
                                 </td>
@@ -10537,7 +10555,7 @@
       if (tbody) {
         tbody.innerHTML = `
           <tr>
-            <td colspan="7" class="text-center py-4 text-muted">
+            <td colspan="10" class="text-center py-4 text-muted">
               <div class="spinner-border spinner-border-sm text-primary me-2" role="status"></div>
               Loading batches...
             </td>
@@ -10553,7 +10571,7 @@
       } catch (err) {
         console.error("Error loading batches: ", err);
         if (tbody) {
-          tbody.innerHTML = `<tr><td colspan="7" class="text-center py-4 text-danger">Failed to load training batches.</td></tr>`;
+          tbody.innerHTML = `<tr><td colspan="10" class="text-center py-4 text-danger">Failed to load training batches.</td></tr>`;
         }
       }
     }
@@ -10570,7 +10588,7 @@
       }
 
       if (filtered.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="7" class="text-center py-4 text-muted">No training batches found.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="10" class="text-center py-4 text-muted">No training batches found.</td></tr>`;
         return;
       }
 
@@ -10599,6 +10617,9 @@
             <td><strong>${b.courseName}</strong></td>
             <td><span class="small">${b.schedule}</span></td>
             <td><span class="small fw-semibold text-heading-color">${b.trainer || 'None / TBA'}</span></td>
+            <td class="text-center"><span class="small font-monospace">${b.startDate || '—'}</span></td>
+            <td class="text-center"><span class="small font-monospace">${b.endDate || '—'}</span></td>
+            <td class="text-center"><span class="small">${b.totalClasses || 0}</span></td>
             <td>
               <div class="d-flex align-items-center justify-content-center gap-2">
                 <span class="small fw-semibold">${enrolledCount} / ${capacity}</span>
@@ -10679,6 +10700,9 @@
       document.getElementById("batchClassDaysSelect").value = batch.classDays || "";
       document.getElementById("batchTrainerSelect").value = batch.trainerId || "";
       document.getElementById("batchStatusSelect").value = batch.status;
+      document.getElementById("batchStartDateInput").value = batch.startDate || "";
+      document.getElementById("batchEndDateInput").value = batch.endDate || "";
+      document.getElementById("batchTotalClassesInput").value = batch.totalClasses || "";
 
       const cancelBtn = document.getElementById("cancelBatchEditBtn");
       if (cancelBtn) cancelBtn.classList.remove("d-none");
@@ -10707,6 +10731,10 @@
       const schedule = document.getElementById("batchScheduleSelect").value;
       const classDays = document.getElementById("batchClassDaysSelect").value;
       const status = document.getElementById("batchStatusSelect").value;
+      const startDate = document.getElementById("batchStartDateInput").value;
+      const endDate = document.getElementById("batchEndDateInput").value;
+      const totalClassesVal = document.getElementById("batchTotalClassesInput").value;
+      const totalClasses = totalClassesVal ? Number(totalClassesVal) : 0;
 
       const batchTrainerSelect = document.getElementById("batchTrainerSelect");
       const trainerId = batchTrainerSelect ? batchTrainerSelect.value : "";
@@ -10727,7 +10755,10 @@
         capacity: 10,
         status,
         trainer,
-        trainerId
+        trainerId,
+        startDate,
+        endDate,
+        totalClasses
       };
 
       try {
@@ -10786,6 +10817,9 @@
       };
       const resolvedClassDays = batch.classDays || scheduleToDays[batch.schedule] || "—";
       document.getElementById("modalBatchClassDays").textContent = resolvedClassDays;
+      document.getElementById("modalBatchStartDate").textContent = batch.startDate || "Not Set";
+      document.getElementById("modalBatchEndDate").textContent = batch.endDate || "Not Set";
+      document.getElementById("modalBatchTotalClasses").textContent = batch.totalClasses || "0";
 
       const enrolled = allRegistrations.filter(r => r.batch === batch.batchId);
       document.getElementById("modalBatchCount").textContent = `${enrolled.length} / ${batch.capacity || 10}`;
@@ -11052,6 +11086,134 @@
         }
       }
     });
+
+    // ============================================================
+    // BATCH DATES & CLASS COUNT AUTO-CALCULATOR
+    // ============================================================
+    function calculateBatchEndDate(startDateStr, totalClasses, classDaysStr) {
+      if (!startDateStr || !totalClasses || !classDaysStr) return "";
+      let currentDate = new Date(startDateStr);
+      let count = 0;
+      let safetyCounter = 0;
+      const weekdayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+      
+      while (count < totalClasses && safetyCounter < 1000) {
+        safetyCounter++;
+        const dayName = weekdayNames[currentDate.getDay()];
+        if (classDaysStr.toLowerCase().includes(dayName.toLowerCase())) {
+          count++;
+          if (count === totalClasses) {
+            break;
+          }
+        }
+        currentDate.setDate(currentDate.getDate() + 1);
+      }
+      return currentDate.toISOString().substring(0, 10);
+    }
+
+    function calculateBatchTotalClasses(startDateStr, endDateStr, classDaysStr) {
+      if (!startDateStr || !endDateStr || !classDaysStr) return 0;
+      let currentDate = new Date(startDateStr);
+      const endDate = new Date(endDateStr);
+      if (currentDate > endDate) return 0;
+      
+      let count = 0;
+      let safetyCounter = 0;
+      const weekdayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+      
+      while (currentDate <= endDate && safetyCounter < 1000) {
+        safetyCounter++;
+        const dayName = weekdayNames[currentDate.getDay()];
+        if (classDaysStr.toLowerCase().includes(dayName.toLowerCase())) {
+          count++;
+        }
+        currentDate.setDate(currentDate.getDate() + 1);
+      }
+      return count;
+    }
+
+    function getClassesPerWeek(classDaysStr) {
+      if (!classDaysStr) return 0;
+      const lower = classDaysStr.toLowerCase();
+      const weekdayNames = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
+      let count = 0;
+      weekdayNames.forEach(w => {
+        if (lower.includes(w)) count++;
+      });
+      return count;
+    }
+
+    function updateBatchTotalClassesFromCourse() {
+      const courseSelect = document.getElementById("batchCourseSelect");
+      const classDaysSelect = document.getElementById("batchClassDaysSelect");
+      const totalInput = document.getElementById("batchTotalClassesInput");
+      
+      if (!courseSelect || !classDaysSelect || !totalInput) return;
+      
+      const courseName = courseSelect.value;
+      const classDaysVal = classDaysSelect.value;
+      if (!courseName || !classDaysVal) return;
+      
+      const course = allCourses.find(c => c.title === courseName);
+      if (!course || !course.duration) return;
+      
+      const monthsMatch = course.duration.match(/([\d.]+)/);
+      const months = monthsMatch ? parseFloat(monthsMatch[1]) : 0;
+      if (months <= 0) return;
+      
+      const classesPerWeek = getClassesPerWeek(classDaysVal);
+      if (classesPerWeek <= 0) return;
+      
+      const totalClasses = Math.round(months * 4.33 * classesPerWeek);
+      totalInput.value = totalClasses;
+      
+      triggerBatchEndDateCalculation();
+    }
+
+    function triggerBatchEndDateCalculation() {
+      const startInput = document.getElementById("batchStartDateInput");
+      const totalInput = document.getElementById("batchTotalClassesInput");
+      const classDaysSelect = document.getElementById("batchClassDaysSelect");
+      const endInput = document.getElementById("batchEndDateInput");
+      
+      if (!startInput || !totalInput || !classDaysSelect || !endInput) return;
+      
+      const startVal = startInput.value;
+      const totalVal = parseInt(totalInput.value, 10);
+      const classDaysVal = classDaysSelect.value;
+      
+      if (startVal && totalVal && classDaysVal) {
+        const calculatedEnd = calculateBatchEndDate(startVal, totalVal, classDaysVal);
+        if (calculatedEnd) {
+          endInput.value = calculatedEnd;
+        }
+      }
+    }
+
+    function triggerBatchTotalClassesCalculation() {
+      const startInput = document.getElementById("batchStartDateInput");
+      const totalInput = document.getElementById("batchTotalClassesInput");
+      const classDaysSelect = document.getElementById("batchClassDaysSelect");
+      const endInput = document.getElementById("batchEndDateInput");
+      
+      if (!startInput || !totalInput || !classDaysSelect || !endInput) return;
+      
+      const startVal = startInput.value;
+      const endVal = endInput.value;
+      const classDaysVal = classDaysSelect.value;
+      
+      if (startVal && endVal && classDaysVal) {
+        const calculatedClasses = calculateBatchTotalClasses(startVal, endVal, classDaysVal);
+        totalInput.value = calculatedClasses;
+      }
+    }
+
+    // Attach date calculation change event listeners
+    document.getElementById("batchCourseSelect")?.addEventListener("change", updateBatchTotalClassesFromCourse);
+    document.getElementById("batchClassDaysSelect")?.addEventListener("change", updateBatchTotalClassesFromCourse);
+    document.getElementById("batchStartDateInput")?.addEventListener("change", triggerBatchEndDateCalculation);
+    document.getElementById("batchTotalClassesInput")?.addEventListener("input", triggerBatchEndDateCalculation);
+    document.getElementById("batchEndDateInput")?.addEventListener("change", triggerBatchTotalClassesCalculation);
 
     // Globally register loadBatches and updateRegistrationBatchDropdown functions in window just in case
     window.loadBatches = loadBatches;
@@ -13743,7 +13905,7 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body p-4">
-          <div class="row g-3 mb-4">
+          <div class="row g-3 mb-3">
             <div class="col-3">
               <div class="p-2 border rounded bg-light text-center h-100 d-flex flex-column justify-content-center">
                 <span class="small text-muted d-block text-uppercase fw-semibold" style="font-size: 0.65rem;">Batch
@@ -13770,6 +13932,26 @@
                 <span class="small text-muted d-block text-uppercase fw-semibold" style="font-size: 0.65rem;">Class
                   Days</span>
                 <strong id="modalBatchClassDays" class="text-dark">—</strong>
+              </div>
+            </div>
+          </div>
+          <div class="row g-3 mb-4">
+            <div class="col-4">
+              <div class="p-2 border rounded bg-light text-center h-100 d-flex flex-column justify-content-center">
+                <span class="small text-muted d-block text-uppercase fw-semibold" style="font-size: 0.65rem;">Start Date</span>
+                <strong id="modalBatchStartDate" class="text-dark">—</strong>
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="p-2 border rounded bg-light text-center h-100 d-flex flex-column justify-content-center">
+                <span class="small text-muted d-block text-uppercase fw-semibold" style="font-size: 0.65rem;">End Date</span>
+                <strong id="modalBatchEndDate" class="text-dark">—</strong>
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="p-2 border rounded bg-light text-center h-100 d-flex flex-column justify-content-center">
+                <span class="small text-muted d-block text-uppercase fw-semibold" style="font-size: 0.65rem;">Total Classes</span>
+                <strong id="modalBatchTotalClasses" class="text-dark">—</strong>
               </div>
             </div>
           </div>
