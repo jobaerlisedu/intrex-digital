@@ -700,240 +700,239 @@
                     </div>
                   </div>
                 </div>
-              </div>
 
-              <!-- Tab 3: Investment Tracker -->
-              <div class="tab-pane fade" id="investmentPanel" role="tabpanel" aria-labelledby="investment-tab">
+                <!-- Tab 3: Investment Tracker -->
+                <div class="tab-pane fade" id="investmentPanel" role="tabpanel" aria-labelledby="investment-tab">
 
-                <!-- Sub-tabs Nav -->
-                <ul class="nav nav-tabs mb-3" id="investmentSubTabs" role="tablist">
-                  <li class="nav-item" role="presentation">
-                    <button class="nav-link active fw-semibold text-primary" id="investment-form-subtab"
-                      data-bs-toggle="tab" data-bs-target="#investmentFormSubPanel" type="button" role="tab"
-                      aria-controls="investmentFormSubPanel" aria-selected="true">
-                      <i class="bi bi-graph-up-arrow me-1"></i>Investment Form
-                    </button>
-                  </li>
-                  <li class="nav-item" role="presentation">
-                    <button class="nav-link fw-semibold text-primary" id="investment-list-subtab" data-bs-toggle="tab"
-                      data-bs-target="#investmentListSubPanel" type="button" role="tab"
-                      aria-controls="investmentListSubPanel" aria-selected="false">
-                      <i class="bi bi-file-earmark-text-fill me-1"></i>Investments Ledger
-                    </button>
-                  </li>
-                </ul>
+                  <!-- Sub-tabs Nav -->
+                  <ul class="nav nav-tabs mb-3" id="investmentSubTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                      <button class="nav-link active fw-semibold text-primary" id="investment-form-subtab"
+                        data-bs-toggle="tab" data-bs-target="#investmentFormSubPanel" type="button" role="tab"
+                        aria-controls="investmentFormSubPanel" aria-selected="true">
+                        <i class="bi bi-graph-up-arrow me-1"></i>Investment Form
+                      </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                      <button class="nav-link fw-semibold text-primary" id="investment-list-subtab" data-bs-toggle="tab"
+                        data-bs-target="#investmentListSubPanel" type="button" role="tab"
+                        aria-controls="investmentListSubPanel" aria-selected="false">
+                        <i class="bi bi-file-earmark-text-fill me-1"></i>Investments Ledger
+                      </button>
+                    </li>
+                  </ul>
 
-                <div class="tab-content" id="investmentSubTabsContent">
-                  <!-- Tab 1: Form -->
-                  <div class="tab-pane fade show active" id="investmentFormSubPanel" role="tabpanel"
-                    aria-labelledby="investment-form-subtab">
-                    <div class="card p-4 rounded-4 shadow-sm border mb-4">
-                      <h3 id="investmentFormTitle" class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
-                        <i class="bi bi-graph-up-arrow me-2 text-primary"></i>Record Investment
-                      </h3>
+                  <div class="tab-content" id="investmentSubTabsContent">
+                    <!-- Tab 1: Form -->
+                    <div class="tab-pane fade show active" id="investmentFormSubPanel" role="tabpanel"
+                      aria-labelledby="investment-form-subtab">
+                      <div class="card p-4 rounded-4 shadow-sm border mb-4">
+                        <h3 id="investmentFormTitle" class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
+                          <i class="bi bi-graph-up-arrow me-2 text-primary"></i>Record Investment
+                        </h3>
 
-                      <div id="investmentSuccess" class="alert alert-success d-none alert-dismissible fade show small"
-                        role="alert">
-                        <span>Investment transaction recorded!</span>
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                      </div>
-                      <div id="investmentError" class="alert alert-danger d-none alert-dismissible fade show small"
-                        role="alert">
-                        <span>An error occurred. Please try again.</span>
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                      </div>
+                        <div id="investmentSuccess" class="alert alert-success d-none alert-dismissible fade show small"
+                          role="alert">
+                          <span>Investment transaction recorded!</span>
+                          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                        <div id="investmentError" class="alert alert-danger d-none alert-dismissible fade show small"
+                          role="alert">
+                          <span>An error occurred. Please try again.</span>
+                          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
 
-                      <form id="investmentForm">
-                        <input type="hidden" id="editInvestmentId">
+                        <form id="investmentForm">
+                          <input type="hidden" id="editInvestmentId">
 
-                        <!-- Investor ID Lookup & Verification -->
-                        <div class="mb-3">
-                          <label class="form-label small fw-semibold mb-1" for="invtInvestorId">Investor ID <span
-                              class="text-danger">*</span></label>
-                          <div class="input-group">
-                            <input type="text" class="form-control" id="invtInvestorId" placeholder="e.g. INV-0001"
-                              required>
-                            <button id="lookupInvestorBtn" class="btn btn-outline-primary" type="button">
-                              <i class="bi bi-search"></i> Verify ID
+                          <!-- Investor ID Lookup & Verification -->
+                          <div class="mb-3">
+                            <label class="form-label small fw-semibold mb-1" for="invtInvestorId">Investor ID <span
+                                class="text-danger">*</span></label>
+                            <div class="input-group">
+                              <input type="text" class="form-control" id="invtInvestorId" placeholder="e.g. INV-0001"
+                                required>
+                              <button id="lookupInvestorBtn" class="btn btn-outline-primary" type="button">
+                                <i class="bi bi-search"></i> Verify ID
+                              </button>
+                            </div>
+                            <div id="lookupInvestorFeedback" class="form-text small text-muted mt-1">Enter Investor ID
+                              to
+                              link transaction.</div>
+                          </div>
+
+                          <!-- Read-only verified name display -->
+                          <div class="mb-3">
+                            <label class="form-label small fw-semibold mb-1" for="invtInvestorName">Investor
+                              Name</label>
+                            <input type="text" class="form-control bg-body-secondary" id="invtInvestorName" readonly
+                              placeholder="Lookup verifies investor name" required>
+                          </div>
+
+                          <div class="row g-2 mb-3">
+                            <div class="col-md-6">
+                              <label class="form-label small fw-semibold mb-1" for="invtType">Investment Type <span
+                                  class="text-danger">*</span></label>
+                              <select class="form-select" id="invtType" required>
+                                <option value="Fixed Deposit" selected>Fixed Deposit</option>
+                                <option value="Equity">Equity</option>
+                                <option value="Bond">Bond</option>
+                                <option value="Mutual Fund">Mutual Fund</option>
+                                <option value="Real Estate">Real Estate</option>
+                                <option value="Startup">Startup</option>
+                                <option value="Other">Other</option>
+                              </select>
+                            </div>
+                            <div class="col-md-6">
+                              <label class="form-label small fw-semibold mb-1" for="invtAmount">Amount (BDT) <span
+                                  class="text-danger">*</span></label>
+                              <input class="form-control" id="invtAmount" type="number" min="1"
+                                placeholder="e.g. 500000" required>
+                            </div>
+                          </div>
+
+                          <div class="row g-2 mb-3">
+                            <div class="col-md-6">
+                              <label class="form-label small fw-semibold mb-1" for="invtStartDate">Start Date <span
+                                  class="text-danger">*</span></label>
+                              <input class="form-control" id="invtStartDate" type="date" required>
+                            </div>
+                            <div class="col-md-6">
+                              <label class="form-label small fw-semibold mb-1" for="invtMaturityDate">Maturity
+                                Date</label>
+                              <input class="form-control" id="invtMaturityDate" type="date">
+                            </div>
+                          </div>
+
+                          <div class="row g-2 mb-3">
+                            <div class="col-md-6">
+                              <label class="form-label small fw-semibold mb-1" for="invtReturnRate">Return Rate (% p.a.)
+                                <span class="text-danger">*</span></label>
+                              <input class="form-control" id="invtReturnRate" type="number" step="0.01" min="0"
+                                placeholder="e.g. 8.5" required>
+                            </div>
+                            <div class="col-md-6">
+                              <label class="form-label small fw-semibold mb-1" for="invtReturnType">Return Type</label>
+                              <select class="form-select" id="invtReturnType">
+                                <option value="Annual" selected>Annual</option>
+                                <option value="Monthly">Monthly</option>
+                                <option value="Quarterly">Quarterly</option>
+                                <option value="One-time">One-time</option>
+                              </select>
+                            </div>
+                          </div>
+
+                          <div class="row g-2 mb-3">
+                            <div class="col-md-6">
+                              <label class="form-label small fw-semibold mb-1" for="invtStatus">Status</label>
+                              <select class="form-select" id="invtStatus">
+                                <option value="Active" selected>Active</option>
+                                <option value="Matured">Matured</option>
+                                <option value="Withdrawn">Withdrawn</option>
+                                <option value="Cancelled">Cancelled</option>
+                              </select>
+                            </div>
+                            <div class="col-md-6">
+                              <label class="form-label small fw-semibold mb-1" for="invtCurrency">Currency</label>
+                              <select class="form-select" id="invtCurrency">
+                                <option value="BDT" selected>BDT</option>
+                                <option value="USD">USD</option>
+                                <option value="EUR">EUR</option>
+                              </select>
+                            </div>
+                          </div>
+
+                          <!-- Expected Return Indicator Box -->
+                          <div class="card bg-light border-dashed rounded-3 p-3 mb-4">
+                            <div class="d-flex justify-content-between align-items-center">
+                              <span class="small fw-semibold text-secondary">Calculated Est. Return:</span>
+                              <strong class="text-primary fs-5" id="lblExpectedReturn">0 BDT</strong>
+                            </div>
+                          </div>
+
+                          <div class="mb-4">
+                            <label class="form-label small fw-semibold mb-1" for="invtNotes">Transaction Remarks</label>
+                            <textarea class="form-control" id="invtNotes" rows="2"
+                              placeholder="Bank details, certificate numbers, references..."></textarea>
+                          </div>
+
+                          <div class="d-flex gap-2">
+                            <button type="submit" id="submitInvestmentBtn"
+                              class="btn btn-primary w-100 fw-semibold py-2">
+                              <i class="bi bi-plus-circle me-2"></i>Record Investment
+                            </button>
+                            <button type="button" id="cancelInvestmentEditBtn"
+                              class="btn btn-outline-secondary w-50 fw-semibold py-2 d-none">
+                              Cancel
                             </button>
                           </div>
-                          <div id="lookupInvestorFeedback" class="form-text small text-muted mt-1">Enter Investor ID to
-                            link transaction.</div>
-                        </div>
-
-                        <!-- Read-only verified name display -->
-                        <div class="mb-3">
-                          <label class="form-label small fw-semibold mb-1" for="invtInvestorName">Investor Name</label>
-                          <input type="text" class="form-control bg-body-secondary" id="invtInvestorName" readonly
-                            placeholder="Lookup verifies investor name" required>
-                        </div>
-
-                        <div class="row g-2 mb-3">
-                          <div class="col-md-6">
-                            <label class="form-label small fw-semibold mb-1" for="invtType">Investment Type <span
-                                class="text-danger">*</span></label>
-                            <select class="form-select" id="invtType" required>
-                              <option value="Fixed Deposit" selected>Fixed Deposit</option>
-                              <option value="Equity">Equity</option>
-                              <option value="Bond">Bond</option>
-                              <option value="Mutual Fund">Mutual Fund</option>
-                              <option value="Real Estate">Real Estate</option>
-                              <option value="Startup">Startup</option>
-                              <option value="Other">Other</option>
-                            </select>
-                          </div>
-                          <div class="col-md-6">
-                            <label class="form-label small fw-semibold mb-1" for="invtAmount">Amount (BDT) <span
-                                class="text-danger">*</span></label>
-                            <input class="form-control" id="invtAmount" type="number" min="1" placeholder="e.g. 500000"
-                              required>
-                          </div>
-                        </div>
-
-                        <div class="row g-2 mb-3">
-                          <div class="col-md-6">
-                            <label class="form-label small fw-semibold mb-1" for="invtStartDate">Start Date <span
-                                class="text-danger">*</span></label>
-                            <input class="form-control" id="invtStartDate" type="date" required>
-                          </div>
-                          <div class="col-md-6">
-                            <label class="form-label small fw-semibold mb-1" for="invtMaturityDate">Maturity
-                              Date</label>
-                            <input class="form-control" id="invtMaturityDate" type="date">
-                          </div>
-                        </div>
-
-                        <div class="row g-2 mb-3">
-                          <div class="col-md-6">
-                            <label class="form-label small fw-semibold mb-1" for="invtReturnRate">Return Rate (% p.a.)
-                              <span class="text-danger">*</span></label>
-                            <input class="form-control" id="invtReturnRate" type="number" step="0.01" min="0"
-                              placeholder="e.g. 8.5" required>
-                          </div>
-                          <div class="col-md-6">
-                            <label class="form-label small fw-semibold mb-1" for="invtReturnType">Return Type</label>
-                            <select class="form-select" id="invtReturnType">
-                              <option value="Annual" selected>Annual</option>
-                              <option value="Monthly">Monthly</option>
-                              <option value="Quarterly">Quarterly</option>
-                              <option value="One-time">One-time</option>
-                            </select>
-                          </div>
-                        </div>
-
-                        <div class="row g-2 mb-3">
-                          <div class="col-md-6">
-                            <label class="form-label small fw-semibold mb-1" for="invtStatus">Status</label>
-                            <select class="form-select" id="invtStatus">
-                              <option value="Active" selected>Active</option>
+                        </form>
+                      </div>
+                    </div>
+                    <!-- Tab 2: Ledger -->
+                    <div class="tab-pane fade" id="investmentListSubPanel" role="tabpanel"
+                      aria-labelledby="investment-list-subtab">
+                      <div class="card p-4 rounded-4 shadow-sm border">
+                        <div
+                          class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom flex-wrap gap-2">
+                          <h3 class="h5 fw-bold text-heading-color mb-0">
+                            <i class="bi bi-file-earmark-text-fill me-2 text-primary"></i>Investments Ledger
+                          </h3>
+                          <div class="d-flex align-items-center gap-2 flex-wrap">
+                            <input type="text" id="searchInvestment" class="form-control form-control-sm"
+                              style="max-width: 180px;" placeholder="Search ID, investor name...">
+                            <select id="filterInvestmentStatus" class="form-select form-select-sm" style="width: auto;">
+                              <option value="all">All Statuses</option>
+                              <option value="Active">Active</option>
                               <option value="Matured">Matured</option>
                               <option value="Withdrawn">Withdrawn</option>
                               <option value="Cancelled">Cancelled</option>
                             </select>
-                          </div>
-                          <div class="col-md-6">
-                            <label class="form-label small fw-semibold mb-1" for="invtCurrency">Currency</label>
-                            <select class="form-select" id="invtCurrency">
-                              <option value="BDT" selected>BDT</option>
-                              <option value="USD">USD</option>
-                              <option value="EUR">EUR</option>
-                            </select>
-                          </div>
-                        </div>
-
-                        <!-- Expected Return Indicator Box -->
-                        <div class="card bg-light border-dashed rounded-3 p-3 mb-4">
-                          <div class="d-flex justify-content-between align-items-center">
-                            <span class="small fw-semibold text-secondary">Calculated Est. Return:</span>
-                            <strong class="text-primary fs-5" id="lblExpectedReturn">0 BDT</strong>
+                            <button id="exportInvestmentsBtn" class="btn btn-sm btn-outline-success" type="button"
+                              title="Export Ledger">
+                              <i class="bi bi-file-earmark-spreadsheet me-1"></i> Export
+                            </button>
+                            <button id="refreshInvestmentsBtn" class="btn btn-sm btn-outline-secondary" type="button"
+                              title="Refresh Ledger">
+                              <i class="bi bi-arrow-clockwise"></i>
+                            </button>
                           </div>
                         </div>
 
-                        <div class="mb-4">
-                          <label class="form-label small fw-semibold mb-1" for="invtNotes">Transaction Remarks</label>
-                          <textarea class="form-control" id="invtNotes" rows="2"
-                            placeholder="Bank details, certificate numbers, references..."></textarea>
+                        <div class="table-responsive" style="max-height: 620px; overflow-y: auto;">
+                          <table class="table table-hover align-middle mb-0" id="investmentsTable">
+                            <thead class="table-light">
+                              <tr>
+                                <th class="small fw-semibold">ID</th>
+                                <th class="small fw-semibold">Investor Name</th>
+                                <th class="small fw-semibold">Investment Type</th>
+                                <th class="small fw-semibold text-end">Amount</th>
+                                <th class="small fw-semibold text-center">Rate</th>
+                                <th class="small fw-semibold text-end">Est. Return</th>
+                                <th class="small fw-semibold text-center">Status</th>
+                                <th class="small fw-semibold text-center">Actions</th>
+                              </tr>
+                            </thead>
+                            <tbody id="investmentsTableBody">
+                              <tr>
+                                <td colspan="8" class="text-center py-4 text-muted">
+                                  <div class="spinner-border spinner-border-sm text-primary me-2" role="status"></div>
+                                  Loading ledger...
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
                         </div>
-
-                        <div class="d-flex gap-2">
-                          <button type="submit" id="submitInvestmentBtn" class="btn btn-primary w-100 fw-semibold py-2">
-                            <i class="bi bi-plus-circle me-2"></i>Record Investment
-                          </button>
-                          <button type="button" id="cancelInvestmentEditBtn"
-                            class="btn btn-outline-secondary w-50 fw-semibold py-2 d-none">
-                            Cancel
-                          </button>
-                        </div>
-                      </form>
-                    </div>
-                  </div>
-                  <!-- Tab 2: Ledger -->
-                  <div class="tab-pane fade" id="investmentListSubPanel" role="tabpanel"
-                    aria-labelledby="investment-list-subtab">
-                    <div class="card p-4 rounded-4 shadow-sm border">
-                      <div
-                        class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom flex-wrap gap-2">
-                        <h3 class="h5 fw-bold text-heading-color mb-0">
-                          <i class="bi bi-file-earmark-text-fill me-2 text-primary"></i>Investments Ledger
-                        </h3>
-                        <div class="d-flex align-items-center gap-2 flex-wrap">
-                          <input type="text" id="searchInvestment" class="form-control form-control-sm"
-                            style="max-width: 180px;" placeholder="Search ID, investor name...">
-                          <select id="filterInvestmentStatus" class="form-select form-select-sm" style="width: auto;">
-                            <option value="all">All Statuses</option>
-                            <option value="Active">Active</option>
-                            <option value="Matured">Matured</option>
-                            <option value="Withdrawn">Withdrawn</option>
-                            <option value="Cancelled">Cancelled</option>
-                          </select>
-                          <button id="exportInvestmentsBtn" class="btn btn-sm btn-outline-success" type="button"
-                            title="Export Ledger">
-                            <i class="bi bi-file-earmark-spreadsheet me-1"></i> Export
-                          </button>
-                          <button id="refreshInvestmentsBtn" class="btn btn-sm btn-outline-secondary" type="button"
-                            title="Refresh Ledger">
-                            <i class="bi bi-arrow-clockwise"></i>
-                          </button>
-                        </div>
-                      </div>
-
-                      <div class="table-responsive" style="max-height: 620px; overflow-y: auto;">
-                        <table class="table table-hover align-middle mb-0" id="investmentsTable">
-                          <thead class="table-light">
-                            <tr>
-                              <th class="small fw-semibold">ID</th>
-                              <th class="small fw-semibold">Investor Name</th>
-                              <th class="small fw-semibold">Investment Type</th>
-                              <th class="small fw-semibold text-end">Amount</th>
-                              <th class="small fw-semibold text-center">Rate</th>
-                              <th class="small fw-semibold text-end">Est. Return</th>
-                              <th class="small fw-semibold text-center">Status</th>
-                              <th class="small fw-semibold text-center">Actions</th>
-                            </tr>
-                          </thead>
-                          <tbody id="investmentsTableBody">
-                            <tr>
-                              <td colspan="8" class="text-center py-4 text-muted">
-                                <div class="spinner-border spinner-border-sm text-primary me-2" role="status"></div>
-                                Loading ledger...
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-
           </div>
         </div>
       </div>
-  </div>
-
-  </div>
-  </section>
+    </section>
   </div>
 
   <!-- ============================================================ -->
@@ -1472,14 +1471,14 @@
     function resetInvestmentForm() {
       document.getElementById("editInvestmentId").value = "";
       document.getElementById("investmentForm").reset();
- const invIdInput = document.getElementById("invtInvestorId");
+      const invIdInput = document.getElementById("invtInvestorId");
       invIdInput.disabled = false;
       invIdInput.readOnly = false;
 
-     ent.getElementById("invtInvestorName").value = "";
+      document.getElementById("invtInvestorName").value = "";
       document.getElementById("lookupInvestorFeedback").innerHTML = "Enter Investor ID to link transaction.";
 
-      documtElementById("lblExpectedReturn").textContent = "0 BDT";
+      document.getElementById("lblExpectedReturn").textContent = "0 BDT";
       document.getElementById("investmentFormTitle").innerHTML = `<i class="bi bi-graph-up-arrow me-2 text-primary"></i>Record Investment`;
       document.getElementById("submitInvestmentBtn").innerHTML = `<i class="bi bi-plus-circle me-2"></i>Record Investment`;
       document.getElementById("cancelInvestmentEditBtn").classList.add("d-none");
@@ -1550,9 +1549,9 @@
       if (searchQuery) {
         filtered = filtered.filter(x => {
           return x.fullName.toLowerCase().includes(searchQuery) ||
-            x.phon            Query) ||
-            x.email.toL            es(searchQuery) ||
-            x.investorId.toL            es(searchQuery);
+            x.phone.includes(searchQuery) ||
+            x.email.toLowerCase().includes(searchQuery) ||
+            x.investorId.toLowerCase().includes(searchQuery);
         });
       }
 
@@ -1608,9 +1607,9 @@
       if (searchQuery) {
         filtered = filtered.filter(x => {
           return x.investmentId.toLowerCase().includes(searchQuery) ||
-            x.investorName.toLowe            searchQuery) ||
-            x.investorId.toLowerCase()            uery) ||
-            x.investmentType.toLowerCase().            ery);
+            x.investorName.toLowerCase().includes(searchQuery) ||
+            x.investorId.toLowerCase().includes(searchQuery) ||
+            x.investmentType.toLowerCase().includes(searchQuery);
         });
       }
 
@@ -1630,8 +1629,8 @@
           <td class="text-center text-secondary">${x.returnRate}% <small>${x.returnType[0]}</small></td>
           <td class="text-end text-success fw-bold">${returnVal.toLocaleString()} BDT</td>
           <td class="text-center"><span class="badge rounded-pill ${x.status === 'Active' ? 'bg-success' :
-         == 'Matured' ? 'bg-primary' :
-              x.status === 'Withdrawn' ? 'bg-warning text-dar              ger'
+            x.status === 'Matured' ? 'bg-primary' :
+              x.status === 'Withdrawn' ? 'bg-warning text-dark' : 'bg-danger'
           }">${x.status}</span></td>
           <td class="text-center">
             <div class="btn-group btn-group-sm">
