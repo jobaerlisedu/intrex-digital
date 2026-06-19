@@ -166,7 +166,7 @@
 
     /* Dynamic Border transitions on hover (No Shadows) */
     .portal-card-solutions:hover {
-      border-color: var(--bs-primary);
+      border-color: var(--bs-secondary);
       transform: translateY(-6px);
     }
 
@@ -176,7 +176,22 @@
     }
 
     .portal-card-investment:hover {
-      border-color: var(--bs-primary);
+      border-color: var(--bs-secondary);
+      transform: translateY(-6px);
+    }
+
+    .portal-card-hr:hover {
+      border-color: var(--bs-secondary);
+      transform: translateY(-6px);
+    }
+
+    .portal-card-billing:hover {
+      border-color: var(--bs-secondary);
+      transform: translateY(-6px);
+    }
+
+    .portal-card-settings:hover {
+      border-color: var(--bs-secondary);
       transform: translateY(-6px);
     }
 
@@ -197,9 +212,9 @@
     }
 
     .solutions-icon {
-      background: rgba(var(--bs-primary-rgb), 0.15);
-      color: var(--bs-primary);
-      border: 1px solid rgba(var(--bs-primary-rgb), 0.25);
+      background: rgba(var(--bs-secondary-rgb), 0.15);
+      color: var(--bs-secondary);
+      border: 1px solid rgba(var(--bs-secondary-rgb), 0.25);
     }
 
     .training-icon {
@@ -209,9 +224,27 @@
     }
 
     .investment-icon {
-      background: rgba(var(--bs-primary-rgb), 0.15);
-      color: var(--bs-primary);
-      border: 1px solid rgba(var(--bs-primary-rgb), 0.25);
+      background: rgba(var(--bs-secondary-rgb), 0.15);
+      color: var(--bs-secondary);
+      border: 1px solid rgba(var(--bs-secondary-rgb), 0.25);
+    }
+
+    .hr-icon {
+      background: rgba(var(--bs-secondary-rgb), 0.15);
+      color: var(--bs-secondary);
+      border: 1px solid rgba(var(--bs-secondary-rgb), 0.25);
+    }
+
+    .billing-icon {
+      background: rgba(var(--bs-secondary-rgb), 0.15);
+      color: var(--bs-secondary);
+      border: 1px solid rgba(var(--bs-secondary-rgb), 0.25);
+    }
+
+    .settings-icon {
+      background: rgba(var(--bs-secondary-rgb), 0.15);
+      color: var(--bs-secondary);
+      border: 1px solid rgba(var(--bs-secondary-rgb), 0.25);
     }
 
     .card-title-color {
@@ -232,9 +265,9 @@
       font-weight: 600;
       padding: 0.25rem 0.65rem;
       border-radius: 2rem;
-      background-color: rgba(var(--bs-primary-rgb), 0.05);
-      border: 1px solid rgba(var(--bs-primary-rgb), 0.1);
-      color: var(--bs-primary);
+      background-color: rgba(var(--bs-secondary-rgb), 0.05);
+      border: 1px solid rgba(var(--bs-secondary-rgb), 0.1);
+      color: var(--bs-secondary);
       letter-spacing: 0.05em;
       text-uppercase: uppercase;
     }
@@ -243,9 +276,9 @@
     .stat-badge {
       font-size: 0.75rem;
       font-weight: 500;
-      background-color: rgba(var(--bs-primary-rgb), 0.04);
-      border: 1px solid rgba(var(--bs-primary-rgb), 0.08);
-      color: var(--bs-primary);
+      background-color: rgba(var(--bs-secondary-rgb), 0.04);
+      border: 1px solid rgba(var(--bs-secondary-rgb), 0.08);
+      color: var(--bs-secondary);
       border-radius: 2rem;
       padding: 0.25rem 0.65rem;
       display: inline-flex;
@@ -255,7 +288,7 @@
     }
 
     .portal-card:hover .stat-badge {
-      background-color: rgba(var(--bs-primary-rgb), 0.08);
+      background-color: rgba(var(--bs-secondary-rgb), 0.08);
     }
 
     /* Premium Action Button inside cards (No Shadows) */
@@ -274,11 +307,11 @@
     }
 
     .solutions-btn {
-      background-color: var(--bs-primary);
+      background-color: var(--bs-secondary);
       color: #fff;
     }
     .solutions-btn:hover {
-      background-color: var(--bs-primary-hover);
+      background-color: var(--bs-primary);
       color: #fff;
     }
 
@@ -292,11 +325,38 @@
     }
 
     .investment-btn {
-      background-color: var(--bs-primary);
+      background-color: var(--bs-secondary);
       color: #fff;
     }
     .investment-btn:hover {
-      background-color: var(--bs-primary-hover);
+      background-color: var(--bs-primary);
+      color: #fff;
+    }
+
+    .hr-btn {
+      background-color: var(--bs-secondary);
+      color: #fff;
+    }
+    .hr-btn:hover {
+      background-color: var(--bs-primary);
+      color: #fff;
+    }
+
+    .billing-btn {
+      background-color: var(--bs-secondary);
+      color: #fff;
+    }
+    .billing-btn:hover {
+      background-color: var(--bs-primary);
+      color: #fff;
+    }
+
+    .settings-btn {
+      background-color: var(--bs-secondary);
+      color: #fff;
+    }
+    .settings-btn:hover {
+      background-color: var(--bs-primary);
       color: #fff;
     }
 
@@ -482,10 +542,96 @@
       </div>
 
       <!-- Core Admin Portals -->
-      <div class="row g-4 mb-5 justify-content-center" id="portalCardsRow">
+      <div class="row g-4 mb-4 justify-content-center" id="portalCardsRow1">
         
+        <!-- Portal Card: Human Resources -->
+        <div class="col-md-4 portal-card-col" data-aos="fade-up" data-aos-delay="100" data-portal-search="human resources employee database payroll attendance leaves roster hr operations">
+          <div class="portal-card portal-card-hr p-4">
+            <div>
+              <div class="d-flex justify-content-between align-items-start mb-4">
+                <div class="icon-wrapper hr-icon mb-0">
+                  <i class="bi bi-people-fill"></i>
+                </div>
+                <span class="portal-badge">Operations Hub</span>
+              </div>
+              <h3 class="h4 card-title-color mb-3">Human Resources</h3>
+              <p class="card-desc mb-4">Manage employee database registry, dynamic rosters, attendance logs, leave balances, and monthly payroll slips generation.</p>
+              
+              <!-- Quick Stats / Badges -->
+              <div class="d-flex flex-wrap gap-2 mb-4">
+                <span class="stat-badge"><i class="bi bi-people me-1"></i>Employees</span>
+                <span class="stat-badge"><i class="bi bi-calendar-check me-1"></i>Attendance</span>
+                <span class="stat-badge"><i class="bi bi-cash-stack me-1"></i>Payroll</span>
+              </div>
+            </div>
+            
+            <a href="hr-dashboard.html" class="action-btn hr-btn" target="_blank">
+              Enter HR Hub <i class="bi bi-arrow-right-short fs-5"></i>
+            </a>
+          </div>
+        </div>
+
+        <!-- Portal Card: Investment -->
+        <div class="col-md-4 portal-card-col" data-aos="fade-up" data-aos-delay="200" data-portal-search="investments capital finance shareholders ledger distributions statements portfolios">
+          <div class="portal-card portal-card-investment p-4">
+            <div>
+              <div class="d-flex justify-content-between align-items-start mb-4">
+                <div class="icon-wrapper investment-icon mb-0">
+                  <i class="bi bi-cash-coin"></i>
+                </div>
+                <span class="portal-badge">Finance Hub</span>
+              </div>
+              <h3 class="h4 card-title-color mb-3">Investment & Capital</h3>
+              <p class="card-desc mb-4">Track shareholder investment transactions, ledger statements, capital growth distribution schedules, and corporate financial analytics.</p>
+              
+              <!-- Quick Stats / Badges -->
+              <div class="d-flex flex-wrap gap-2 mb-4">
+                <span class="stat-badge"><i class="bi bi-pie-chart me-1"></i>Ledgers</span>
+                <span class="stat-badge"><i class="bi bi-safe me-1"></i>Shareholders</span>
+                <span class="stat-badge"><i class="bi bi-cash-stack me-1"></i>Distributions</span>
+              </div>
+            </div>
+            
+            <a href="investment-dashboard.html" class="action-btn investment-btn" target="_blank">
+              Enter Investment Hub <i class="bi bi-arrow-right-short fs-5"></i>
+            </a>
+          </div>
+        </div>
+
+        <!-- Portal Card: Billing & Accounts -->
+        <div class="col-md-4 portal-card-col" data-aos="fade-up" data-aos-delay="300" data-portal-search="billing accounts invoices clients expenses statement financial ledger receipts">
+          <div class="portal-card portal-card-billing p-4">
+            <div>
+              <div class="d-flex justify-content-between align-items-start mb-4">
+                <div class="icon-wrapper billing-icon mb-0">
+                  <i class="bi bi-receipt-cutoff"></i>
+                </div>
+                <span class="portal-badge">Accounts Portal</span>
+              </div>
+              <h3 class="h4 card-title-color mb-3">Billing & Accounts</h3>
+              <p class="card-desc mb-4">Manage client invoice generation, expense journals, transaction statements, accounts ledger, and period financial reports.</p>
+              
+              <!-- Quick Stats / Badges -->
+              <div class="d-flex flex-wrap gap-2 mb-4">
+                <span class="stat-badge"><i class="bi bi-receipt me-1"></i>Invoices</span>
+                <span class="stat-badge"><i class="bi bi-credit-card me-1"></i>Expenses</span>
+                <span class="stat-badge"><i class="bi bi-file-earmark-bar-graph me-1"></i>Statements</span>
+              </div>
+            </div>
+            
+            <a href="billing-dashboard.html" class="action-btn billing-btn" target="_blank">
+              Enter Accounts Hub <i class="bi bi-arrow-right-short fs-5"></i>
+            </a>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Second Row of Core Portals -->
+      <div class="row g-4 mb-5 justify-content-center" id="portalCardsRow2">
+
         <!-- Portal Card: Solutions -->
-        <div class="col-md-4 portal-card-col" data-aos="fade-up" data-aos-delay="100" data-portal-search="system solutions services clients requests sales pipelines">
+        <div class="col-md-4 portal-card-col" data-aos="fade-up" data-aos-delay="400" data-portal-search="system solutions services clients requests sales pipelines">
           <div class="portal-card portal-card-solutions p-4">
             <div>
               <div class="d-flex justify-content-between align-items-start mb-4">
@@ -512,7 +658,7 @@
         </div>
 
         <!-- Portal Card: Training -->
-        <div class="col-md-4 portal-card-col" data-aos="fade-up" data-aos-delay="200" data-portal-search="training operations academy batches classes courses certificates calendars students expenses">
+        <div class="col-md-4 portal-card-col" data-aos="fade-up" data-aos-delay="500" data-portal-search="training operations academy batches classes courses certificates calendars students expenses">
           <div class="portal-card portal-card-training p-4">
             <div>
               <div class="d-flex justify-content-between align-items-start mb-4">
@@ -538,29 +684,29 @@
           </div>
         </div>
 
-        <!-- Portal Card: Investment -->
-        <div class="col-md-4 portal-card-col" data-aos="fade-up" data-aos-delay="300" data-portal-search="investments capital finance shareholders ledger distributions statements portfolios">
-          <div class="portal-card portal-card-investment p-4">
+        <!-- Portal Card: System Settings & Security -->
+        <div class="col-md-4 portal-card-col" data-aos="fade-up" data-aos-delay="600" data-portal-search="system settings configuration administrative logs core security databases platforms">
+          <div class="portal-card portal-card-settings p-4">
             <div>
               <div class="d-flex justify-content-between align-items-start mb-4">
-                <div class="icon-wrapper investment-icon mb-0">
-                  <i class="bi bi-cash-coin"></i>
+                <div class="icon-wrapper settings-icon mb-0">
+                  <i class="bi bi-gear-fill"></i>
                 </div>
-                <span class="portal-badge">Finance Hub</span>
+                <span class="portal-badge">System Control</span>
               </div>
-              <h3 class="h4 card-title-color mb-3">Investment & Capital</h3>
-              <p class="card-desc mb-4">Track shareholder investment transactions, ledger statements, capital growth distribution schedules, and corporate financial analytics.</p>
+              <h3 class="h4 card-title-color mb-3">Settings & Control</h3>
+              <p class="card-desc mb-4">Configure administrative rules, deploy updates, monitor security logs, review system diagnostics, and set global parameters.</p>
               
               <!-- Quick Stats / Badges -->
               <div class="d-flex flex-wrap gap-2 mb-4">
-                <span class="stat-badge"><i class="bi bi-pie-chart me-1"></i>Ledgers</span>
-                <span class="stat-badge"><i class="bi bi-safe me-1"></i>Shareholders</span>
-                <span class="stat-badge"><i class="bi bi-cash-stack me-1"></i>Distributions</span>
+                <span class="stat-badge"><i class="bi bi-shield-check me-1"></i>Security</span>
+                <span class="stat-badge"><i class="bi bi-sliders me-1"></i>Configs</span>
+                <span class="stat-badge"><i class="bi bi-terminal me-1"></i>Diagnostics</span>
               </div>
             </div>
             
-            <a href="investment-dashboard.html" class="action-btn investment-btn" target="_blank">
-              Enter Investment Hub <i class="bi bi-arrow-right-short fs-5"></i>
+            <a href="javascript:alert('Settings are managed directly via the Firebase Console & Project Rules.');" class="action-btn settings-btn">
+              Configure Console <i class="bi bi-arrow-right-short fs-5"></i>
             </a>
           </div>
         </div>

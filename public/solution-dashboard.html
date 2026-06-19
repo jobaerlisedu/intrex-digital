@@ -61,6 +61,94 @@
       opacity: 0.8;
     }
 
+    /* ── Split Screen Dashboard Layout (MD & Up) ── */
+    @media (min-width: 768px) {
+
+      html,
+      body {
+        height: 100vh;
+        overflow: hidden;
+      }
+
+      .site-wrap {
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
+
+      section.section {
+        flex: 1;
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
+        padding: 24px 0 !important;
+      }
+
+      section.section>.container-fluid {
+        flex: 1;
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
+        padding-right: 0 !important;
+      }
+
+      #dashboardSection {
+        flex: 1;
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .dashboard-main-row {
+        flex: 1;
+        min-height: 0;
+        display: flex;
+        flex-wrap: nowrap;
+        margin-right: 0 !important;
+        /* Make sure row aligns to the very right edge */
+      }
+
+      .sidebar-container {
+        height: 100%;
+        overflow-y: auto;
+        padding-right: 15px;
+        overscroll-behavior: contain;
+      }
+
+      .content-container {
+        height: 100%;
+        overflow-y: auto;
+        padding-right: 24px;
+        /* Breathing room between cards and the rightmost scrollbar */
+      }
+    }
+
+    /* Custom thin scrollbars and bottom padding for scroll breathing room */
+    .sidebar-container,
+    .content-container {
+      scrollbar-width: thin;
+      /* Firefox */
+      scrollbar-color: var(--primary-color) transparent;
+      padding-bottom: 25px;
+    }
+
+    .sidebar-container::-webkit-scrollbar,
+    .content-container::-webkit-scrollbar {
+      width: 5px;
+    }
+
+    .sidebar-container::-webkit-scrollbar-track,
+    .content-container::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .sidebar-container::-webkit-scrollbar-thumb,
+    .content-container::-webkit-scrollbar-thumb {
+      background-color: var(--primary-color);
+      border-radius: 10px;
+    }
+
     /* Premium Detail View Cards CSS */
     .detail-card {
       background-color: var(--bs-body-bg);
@@ -143,20 +231,24 @@
 
         <!-- 2. DASHBOARD PANEL (HIDDEN BY DEFAULT) -->
         <div id="dashboardSection" class="d-none">
-          <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2 pb-3 border-bottom">
+          <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2 pb-3 border-bottom"
+            style="padding-right: 24px;">
             <div>
               <span class="badge bg-primary text-white mb-1">INTREX SOLUTIONS OPERATIONS</span>
               <h2 class="h3 fw-bold text-heading-color mb-0">Operations & Project Management</h2>
             </div>
-            <button id="logoutBtn" class="btn btn-outline-danger btn-sm py-2 px-3">
-              <i class="bi bi-box-arrow-right me-1"></i> Logout
-            </button>
+            <div class="d-flex gap-2 align-items-center">
+              <span class="text-muted small me-1" id="loggedInEmail"></span>
+              <button id="logoutBtn" class="btn btn-outline-danger btn-sm py-2 px-3">
+                <i class="bi bi-box-arrow-right me-1"></i> Logout
+              </button>
+            </div>
           </div>
 
           <!-- Sidebar Layout Row -->
-          <div class="row g-4 mt-2">
+          <div class="row g-4 mt-2 dashboard-main-row">
             <!-- Left Sidebar Tabs Navigation -->
-            <div class="col-12 col-md-3 col-lg-2 border-end pe-md-4">
+            <div class="col-12 col-md-3 col-lg-2 border-end pe-md-4 sidebar-container">
               <div class="nav flex-column nav-pills gap-2" id="dashboardTabs" role="tablist"
                 aria-orientation="vertical">
                 <button class="nav-link active text-start py-2 px-3 fw-semibold d-flex align-items-center gap-2"
@@ -231,7 +323,7 @@
             </div>
 
             <!-- Right Content Panel -->
-            <div class="col-12 col-md-9 col-lg-10">
+            <div class="col-12 col-md-9 col-lg-10 content-container">
               <div class="tab-content" id="dashboardTabContent">
 
                 <!-- 0. OVERVIEW PANEL -->
@@ -5975,6 +6067,8 @@
 
       if (user) {
         currentUserEmail = user.email || "admin@example.com";
+        const emailEl = document.getElementById('loggedInEmail');
+        if(emailEl) emailEl.textContent = currentUserEmail;
         loginSection.classList.add("d-none");
         dashboardSection.classList.remove("d-none");
         loadAllData();

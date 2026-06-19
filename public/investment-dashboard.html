@@ -295,9 +295,12 @@
                 <h2 class="h3 fw-bold text-heading-color mb-0">Investment & Finance Dashboard</h2>
               </div>
             </div>
-            <button id="logoutBtn" class="btn btn-outline-danger btn-sm py-2 px-3">
-              <i class="bi bi-box-arrow-right me-1"></i> Logout
-            </button>
+            <div class="d-flex gap-2 align-items-center">
+              <span class="text-muted small me-1" id="loggedInEmail"></span>
+              <button id="logoutBtn" class="btn btn-outline-danger btn-sm py-2 px-3">
+                <i class="bi bi-box-arrow-right me-1"></i> Logout
+              </button>
+            </div>
           </div>
 
           <!-- Sidebar Layout Row -->
@@ -1219,6 +1222,8 @@
 
         if (user) {
           currentAdmin = user;
+          const emailEl = document.getElementById('loggedInEmail');
+          if(emailEl) emailEl.textContent = user.email || "admin@intrex-digital.com";
           loginSection.classList.add("d-none");
           dashboardSection.classList.remove("d-none");
           loadDashboardData();
