@@ -42,6 +42,10 @@ function requireDb() {
   if (!isFirebaseReady) throw new Error("Firebase is not initialized.");
 }
 
+function checkConfiguration() {
+  return isFirebaseReady;
+}
+
 // ==========================================
 // UTILITY — Sequential ID generator
 // ==========================================
@@ -100,7 +104,7 @@ export async function saveEmployee(data) {
     });
   }
 
-  const id = data.emp_id || await getNextId("hr_employees", "EMP-", "emp_id", 3);
+  const id = data.emp_id || await getNextId("hr_employees", "EMP-495", "emp_id", 3);
   const ref = doc(db, "hr_employees", id);
   
   // Clean up and prepare payload
@@ -360,4 +364,109 @@ export async function getAllAuditLogs() {
     console.error("Error fetching audit logs: ", error);
     throw error;
   }
+}
+
+// ==========================================
+// DEPARTMENTS (collection: hr_departments)
+// ==========================================
+export async function saveDepartment(data) {
+  requireDb();
+  if (!data.name || !data.status) {
+    throw new Error("Missing required department fields (Name, Status).");
+  }
+  const id = data.id || await getNextId("hr_departments", "DEPT-", "id", 4);
+  const ref = doc(db, "hr_departments", id);
+  const payload = {
+    ...data,
+    id: id,
+    updatedAt: serverTimestamp()
+  };
+  if (!data.id) {
+    payload.createdAt = serverTimestamp();
+  }
+  await setDoc(ref, payload, { merge: true });
+  return id;
+}
+
+export async function getAllDepartments() {
+  requireDb();
+  const snap = await getDocs(collection(db, "hr_departments"));
+  const list = snap.docs.map(d => d.data());
+  list.sort((a, b) => (a.name || "").localeCompare(b.name || ""));
+  return list;
+}
+
+export async function deleteDepartment(id) {
+  requireDb();
+  await deleteDoc(doc(db, "hr_departments", id));
+}
+
+// ==========================================
+// SUB DEPARTMENTS (collection: hr_subdepartments)
+// ==========================================
+export async function saveSubDepartment(data) {
+  requireDb();
+  if (!data.name || !data.parentDept || !data.status) {
+    throw new Error("Missing required sub-department fields (Name, Parent Department, Status).");
+  }
+  const id = data.id || await getNextId("hr_subdepartments", "SDEP-", "id", 4);
+  const ref = doc(db, "hr_subdepartments", id);
+  const payload = {
+    ...data,
+    id: id,
+    updatedAt: serverTimestamp()
+  };
+  if (!data.id) {
+    payload.createdAt = serverTimestamp();
+  }
+  await setDoc(ref, payload, { merge: true });
+  return id;
+}
+
+export async function getAllSubDepartments() {
+  requireDb();
+  const snap = await getDocs(collection(db, "hr_subdepartments"));
+  const list = snap.docs.map(d => d.data());
+  list.sort((a, b) => (a.name || "").localeCompare(b.name || ""));
+  return list;
+}
+
+export async function deleteSubDepartment(id) {
+  requireDb();
+  await deleteDoc(doc(db, "hr_subdepartments", id));
+}
+
+// ==========================================
+// POSITIONS / DESIGNATIONS (collection: hr_positions)
+// ==========================================
+export async function savePosition(data) {
+  requireDb();
+  if (!data.title || !data.department || !data.status) {
+    throw new Error("Missing required position fields (Title, Department, Status).");
+  }
+  const id = data.id || await getNextId("hr_positions", "POS-", "id", 4);
+  const ref = doc(db, "hr_positions", id);
+  const payload = {
+    ...data,
+    id: id,
+    updatedAt: serverTimestamp()
+  };
+  if (!data.id) {
+    payload.createdAt = serverTimestamp();
+  }
+  await setDoc(ref, payload, { merge: true });
+  return id;
+}
+
+export async function getAllPositions() {
+  requireDb();
+  const snap = await getDocs(collection(db, "hr_positions"));
+  const list = snap.docs.map(d => d.data());
+  list.sort((a, b) => (a.title || "").localeCompare(b.title || ""));
+  return list;
+}
+
+export async function deletePosition(id) {
+  requireDb();
+  await deleteDoc(doc(db, "hr_positions", id));
 }

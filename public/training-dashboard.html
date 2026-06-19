@@ -3687,17 +3687,17 @@
                 <div class="tab-pane fade" id="employeesPanel" role="tabpanel" aria-labelledby="employees-tab">
                   <!-- Employee Database Sub-Tabs -->
                   <ul class="nav nav-tabs mb-4" id="employeeSubTabs" role="tablist">
-                    <li class="nav-item" role="presentation">
-                      <button class="nav-link active fw-semibold" id="emp-add-tab" data-bs-toggle="tab"
+                    <li class="nav-item" role="presentation" style="display: none;">
+                      <button class="nav-link fw-semibold" id="emp-add-tab" data-bs-toggle="tab"
                         data-bs-target="#empAddPane" type="button" role="tab" aria-controls="empAddPane"
-                        aria-selected="true">
+                        aria-selected="false">
                         <i class="bi bi-person-plus-fill me-1"></i> Add Employee Record
                       </button>
                     </li>
                     <li class="nav-item" role="presentation">
-                      <button class="nav-link fw-semibold" id="emp-directory-tab" data-bs-toggle="tab"
+                      <button class="nav-link active fw-semibold" id="emp-directory-tab" data-bs-toggle="tab"
                         data-bs-target="#empDirectoryPane" type="button" role="tab" aria-controls="empDirectoryPane"
-                        aria-selected="false">
+                        aria-selected="true">
                         <i class="bi bi-people me-1"></i> Employee Directory
                       </button>
                     </li>
@@ -3705,8 +3705,8 @@
 
                   <div class="tab-content" id="employeeSubTabsContent">
                     <!-- Add Employee Pane -->
-                    <div class="tab-pane fade show active" id="empAddPane" role="tabpanel"
-                      aria-labelledby="emp-add-tab">
+                    <div class="tab-pane fade" id="empAddPane" role="tabpanel"
+                      aria-labelledby="emp-add-tab" style="display: none;">
                       <!-- Form -->
                       <div class="card p-4 rounded-4 shadow-sm border mb-4">
                         <h3 id="empFormTitle" class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
@@ -3797,7 +3797,7 @@
                     </div>
 
                     <!-- Employee Directory Pane -->
-                    <div class="tab-pane fade" id="empDirectoryPane" role="tabpanel"
+                    <div class="tab-pane fade show active" id="empDirectoryPane" role="tabpanel"
                       aria-labelledby="emp-directory-tab">
                       <!-- Directory -->
                       <div class="card p-4 rounded-4 shadow-sm border">
@@ -3809,6 +3809,10 @@
                           <div class="d-flex align-items-center gap-2 flex-wrap">
                             <input type="text" id="searchEmployee" class="form-control form-control-sm"
                               style="max-width: 200px;" placeholder="Search employee...">
+                            <select id="filter_employee_dept" class="form-select form-select-sm"
+                              style="width: auto; min-width: 140px;">
+                              <option value="all">All Departments</option>
+                            </select>
                             <select id="filterDesignation" class="form-select form-select-sm"
                               style="width: auto; min-width: 140px;">
                               <option value="all">All Designations</option>
@@ -4176,7 +4180,7 @@
   <script src="assets/vendors/bootstrap/bootstrap.bundle.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script type="module">
-    import { loginAdmin, logoutAdmin, onAdminAuthStateChanged, addCertificate, getAllCertificates, deleteCertificate, addRegistration, getAllRegistrations, updateRegistration, deleteRegistration, getAllPayments, updatePayment, addAuditLog, getAllAuditLogs, getAllOnlineRegistrations, getOnlineRegistration, deleteOnlineRegistration, getAllOnlineInquiries, deleteOnlineInquiry, addEmployee, getAllEmployees, deleteEmployee, getAllBatches, addBatch, updateBatch, deleteBatch, getAllPublicInstitutes, addPublicInstitute, updatePublicInstitute, deletePublicInstitute, getAllJobPlacements, addJobPlacement, updateJobPlacement, deleteJobPlacement, getAllExpenses, addExpense, updateExpense, deleteExpense, getAllAssessments, saveAssessment, getAllBrandAmbassadors, addBrandAmbassador, updateBrandAmbassador, deleteBrandAmbassador, getAllCommissions, addCommission, deleteCommission, getAllCourses, addCourse, updateCourse, deleteCourse } from "./assets/js/training.js?v=1";
+    import { loginAdmin, logoutAdmin, onAdminAuthStateChanged, addCertificate, getAllCertificates, deleteCertificate, addRegistration, getAllRegistrations, updateRegistration, deleteRegistration, getAllPayments, updatePayment, addAuditLog, getAllAuditLogs, getAllOnlineRegistrations, getOnlineRegistration, deleteOnlineRegistration, getAllOnlineInquiries, deleteOnlineInquiry, addEmployee, getAllEmployees, deleteEmployee, getAllDepartments, getAllBatches, addBatch, updateBatch, deleteBatch, getAllPublicInstitutes, addPublicInstitute, updatePublicInstitute, deletePublicInstitute, getAllJobPlacements, addJobPlacement, updateJobPlacement, deleteJobPlacement, getAllExpenses, addExpense, updateExpense, deleteExpense, getAllAssessments, saveAssessment, getAllBrandAmbassadors, addBrandAmbassador, updateBrandAmbassador, deleteBrandAmbassador, getAllCommissions, addCommission, deleteCommission, getAllCourses, addCourse, updateCourse, deleteCourse } from "./assets/js/training.js?v=1";
 
     // Initialize AOS
     if (window.AOS) {
@@ -4387,6 +4391,7 @@
     let allInquiries = [];
     let allAuditLogs = [];
     let allEmployees = [];
+    let allDepartments = [];
     let allBatches = [];
     let allPublicInstitutes = [];
     let allJobPlacements = [];
@@ -10245,6 +10250,22 @@
       }
     });
 
+    function populateDeptDropdowns() {
+      const activeDepts = allDepartments.filter(d => d.status === 'Active');
+      
+      const filterDeptSelect = document.getElementById("filter_employee_dept");
+      if (filterDeptSelect) {
+        const cur = filterDeptSelect.value;
+        filterDeptSelect.innerHTML = '<option value="all">All Departments</option>' +
+          activeDepts.map(d => `<option value="${d.name}">${d.name}</option>`).join('');
+        if (cur) {
+          filterDeptSelect.value = cur;
+        } else {
+          filterDeptSelect.value = "all";
+        }
+      }
+    }
+
     async function loadEmployees() {
       const tbody = document.getElementById("employeesTableBody");
       const trainerBody = document.getElementById("trainerContactsTableBody");
@@ -10270,6 +10291,8 @@
       }
       try {
         allEmployees = await getAllEmployees();
+        allDepartments = await getAllDepartments();
+        populateDeptDropdowns();
         applyEmployeeFilters();
         renderTrainerContacts();
         if (typeof populateKamDropdown === "function") populateKamDropdown();
@@ -10307,12 +10330,6 @@
                 <button class="btn btn-sm btn-outline-info emp-view-btn py-1 px-2" data-id="${emp.employee_id}" title="View Profile">
                   <i class="bi bi-eye"></i>
                 </button>
-                <button class="btn btn-sm btn-outline-primary emp-edit-btn py-1 px-2" data-id="${emp.employee_id}" title="Edit">
-                  <i class="bi bi-pencil-square"></i>
-                </button>
-                <button class="btn btn-sm btn-outline-danger emp-delete-btn py-1 px-2" data-id="${emp.employee_id}" title="Delete">
-                  <i class="bi bi-trash"></i>
-                </button>
               </div>
             </td>
           </tr>
@@ -10326,30 +10343,13 @@
           showRecordDetails("employee", id);
         };
       });
-
-      tbody.querySelectorAll(".emp-edit-btn").forEach(btn => {
-        btn.onclick = function () {
-          const id = this.getAttribute("data-id");
-          const emp = allEmployees.find(e => e.employee_id === id);
-          if (emp) editEmployee(emp);
-        };
-      });
-
-      tbody.querySelectorAll(".emp-delete-btn").forEach(btn => {
-        btn.onclick = function () {
-          const id = this.getAttribute("data-id");
-          const emp = allEmployees.find(e => e.employee_id === id);
-          if (emp && confirm(`Are you sure you want to delete employee "${emp.employee_name}" (${id})?`)) {
-            deleteEmployeeRecord(id, emp.employee_name);
-          }
-        };
-      });
     }
 
     function applyEmployeeFilters() {
       const searchQuery = document.getElementById("searchEmployee")?.value.toLowerCase().trim() || "";
       const designationFilter = document.getElementById("filterDesignation")?.value || "all";
       const statusFilter = document.getElementById("filterStatus")?.value || "all";
+      const deptFilter = document.getElementById("filter_employee_dept")?.value || "all";
 
       const filtered = allEmployees.filter(emp => {
         const nameMatch = (emp.employee_name || '').toLowerCase().includes(searchQuery);
@@ -10360,8 +10360,9 @@
         const matchesSearch = nameMatch || idMatch || emailMatch || phoneMatch;
         const matchesDesignation = designationFilter === "all" || emp.designation === designationFilter;
         const matchesStatus = statusFilter === "all" || emp.status === statusFilter;
+        const matchesDept = deptFilter === "all" || emp.department === deptFilter;
 
-        return matchesSearch && matchesDesignation && matchesStatus;
+        return matchesSearch && matchesDesignation && matchesStatus && matchesDept;
       });
 
       renderEmployeesTable(filtered);
@@ -10506,6 +10507,7 @@
     document.getElementById("employeeForm")?.addEventListener("submit", handleEmployeeSubmit);
     document.getElementById("cancelEmpEditBtn")?.addEventListener("click", resetEmployeeForm);
     document.getElementById("searchEmployee")?.addEventListener("input", applyEmployeeFilters);
+    document.getElementById("filter_employee_dept")?.addEventListener("change", applyEmployeeFilters);
     document.getElementById("filterDesignation")?.addEventListener("change", applyEmployeeFilters);
     document.getElementById("filterStatus")?.addEventListener("change", applyEmployeeFilters);
 
@@ -12020,12 +12022,6 @@
                 <button class="btn btn-sm btn-outline-info trainer-view-btn py-1 px-2" data-id="${emp.employee_id}" title="View Profile">
                   <i class="bi bi-eye"></i>
                 </button>
-                <button class="btn btn-sm btn-outline-primary trainer-edit-btn py-1 px-2" data-id="${emp.employee_id}" title="Edit">
-                  <i class="bi bi-pencil-square"></i>
-                </button>
-                <button class="btn btn-sm btn-outline-danger trainer-delete-btn py-1 px-2" data-id="${emp.employee_id}" title="Delete">
-                  <i class="bi bi-trash"></i>
-                </button>
               </div>
             </td>
           </tr>
@@ -12036,28 +12032,6 @@
         btn.onclick = function () {
           const id = this.getAttribute("data-id");
           showRecordDetails("trainer", id);
-        };
-      });
-
-      tbody.querySelectorAll(".trainer-edit-btn").forEach(btn => {
-        btn.onclick = function () {
-          const id = this.getAttribute("data-id");
-          const emp = allEmployees.find(e => e.employee_id === id);
-          if (emp) {
-            const empTab = document.getElementById("employees-tab");
-            if (empTab) bootstrap.Tab.getOrCreateInstance(empTab).show();
-            editEmployee(emp);
-          }
-        };
-      });
-
-      tbody.querySelectorAll(".trainer-delete-btn").forEach(btn => {
-        btn.onclick = function () {
-          const id = this.getAttribute("data-id");
-          const emp = allEmployees.find(e => e.employee_id === id);
-          if (emp && confirm(`Are you sure you want to delete trainer "${emp.employee_name}" (${id})?`)) {
-            deleteEmployeeRecord(id, emp.employee_name);
-          }
         };
       });
     }

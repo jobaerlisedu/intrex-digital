@@ -758,20 +758,21 @@
                             <div class="card-body p-4">
                               <h6 class="fw-bold mb-4 border-bottom pb-2"><i class="bi bi-plus-square me-2 text-primary"></i>Add Department</h6>
                               <form id="formAddDept">
+                                <input type="hidden" name="id" id="hidden_dept_id">
                                 <div class="mb-3">
                                   <label class="form-label small fw-semibold text-danger">Department Name *</label>
-                                  <input type="text" class="form-control" placeholder="e.g. Human Resources" required>
+                                  <input type="text" class="form-control" name="name" id="dept_name" placeholder="e.g. Human Resources" required>
                                 </div>
                                 <div class="mb-3">
                                   <label class="form-label small fw-semibold text-danger">Status *</label>
-                                  <select class="form-select" required>
+                                  <select class="form-select" name="status" id="dept_status" required>
                                     <option value="Active">Active</option>
                                     <option value="Inactive">Inactive</option>
                                   </select>
                                 </div>
                                 <div class="mb-4">
                                   <label class="form-label small fw-semibold">Additional Notes</label>
-                                  <textarea class="form-control" rows="3" placeholder="Details about this department..."></textarea>
+                                  <textarea class="form-control" name="notes" id="dept_notes" rows="3" placeholder="Details about this department..."></textarea>
                                 </div>
                                 <button type="submit" class="btn btn-primary w-100 fw-semibold"><i class="bi bi-save me-2"></i>Save Department</button>
                               </form>
@@ -819,26 +820,27 @@
                             <div class="card-body p-4">
                               <h6 class="fw-bold mb-4 border-bottom pb-2"><i class="bi bi-plus-square me-2 text-primary"></i>Add Sub Department</h6>
                               <form id="formAddSubDept">
+                                <input type="hidden" name="id" id="hidden_subdept_id">
                                 <div class="mb-3">
                                   <label class="form-label small fw-semibold text-danger">Sub Department Name *</label>
-                                  <input type="text" class="form-control" placeholder="e.g. Recruitment" required>
+                                  <input type="text" class="form-control" name="name" id="subdept_name" placeholder="e.g. Recruitment" required>
                                 </div>
                                 <div class="mb-3">
                                   <label class="form-label small fw-semibold text-danger">Parent Department *</label>
-                                  <select class="form-select" required>
+                                  <select class="form-select" name="parentDept" id="subdept_parent" required>
                                     <option value="" disabled selected>Select Parent...</option>
                                   </select>
                                 </div>
                                 <div class="mb-3">
                                   <label class="form-label small fw-semibold text-danger">Status *</label>
-                                  <select class="form-select" required>
+                                  <select class="form-select" name="status" id="subdept_status" required>
                                     <option value="Active">Active</option>
                                     <option value="Inactive">Inactive</option>
                                   </select>
                                 </div>
                                 <div class="mb-4">
                                   <label class="form-label small fw-semibold">Additional Notes</label>
-                                  <textarea class="form-control" rows="3" placeholder="Details..."></textarea>
+                                  <textarea class="form-control" name="notes" id="subdept_notes" rows="3" placeholder="Details..."></textarea>
                                 </div>
                                 <button type="submit" class="btn btn-primary w-100 fw-semibold"><i class="bi bi-save me-2"></i>Save Sub Department</button>
                               </form>
@@ -884,25 +886,26 @@
                             <div class="card-body p-4">
                               <h6 class="fw-bold mb-4 border-bottom pb-2"><i class="bi bi-plus-square me-2 text-primary"></i>Add Position</h6>
                               <form id="formAddPosition">
+                                <input type="hidden" name="id" id="hidden_position_id">
                                 <div class="mb-3">
                                   <label class="form-label small fw-semibold text-danger">Position Title *</label>
-                                  <input type="text" class="form-control" placeholder="e.g. Software Engineer" required>
+                                  <input type="text" class="form-control" name="title" id="pos_title" placeholder="e.g. Software Engineer" required>
                                 </div>
                                 <div class="mb-3">
                                   <label class="form-label small fw-semibold text-danger">Department *</label>
-                                  <select class="form-select" required name="department">
+                                  <select class="form-select" name="department" id="pos_dept" required>
                                     <option value="" disabled selected>Select Department...</option>
                                   </select>
                                 </div>
                                 <div class="mb-3">
                                   <label class="form-label small fw-semibold">Sub Department</label>
-                                  <select class="form-select" name="subDepartment">
+                                  <select class="form-select" name="subDepartment" id="pos_subdept">
                                     <option value="" disabled selected>Optional...</option>
                                   </select>
                                 </div>
                                 <div class="mb-3">
                                   <label class="form-label small fw-semibold text-danger">Status *</label>
-                                  <select class="form-select" required>
+                                  <select class="form-select" name="status" id="pos_status" required>
                                     <option value="Active">Active</option>
                                     <option value="Inactive">Inactive</option>
                                   </select>
@@ -1955,7 +1958,10 @@ import {
   setAttendance, getAttendanceByMonth, batchSaveAttendance,
   saveLeave, getAllLeaves, updateLeaveStatus, deleteLeave,
   savePayrollRecords, deletePayrollByMonth, getAllPayroll, getPayrollByMonth,
-  batchSaveRoster, getRosterByWeek
+  batchSaveRoster, getRosterByWeek,
+  saveDepartment, getAllDepartments, deleteDepartment,
+  saveSubDepartment, getAllSubDepartments, deleteSubDepartment,
+  savePosition, getAllPositions, deletePosition
 } from './assets/js/hr.js';
 
 // ────────────────────────────────────────────
@@ -1970,6 +1976,7 @@ const MAX_LEAVE = { Annual: 20, Sick: 10, Casual: 7 };
 
 // In-memory cache (refreshed from Firestore)
 let empCache = [], leaveCache = [], payrollCache = [], attCache = [], rosterCache = {};
+let deptCache = [], subDeptCache = [], positionCache = [];
 let payrollPreviewData = [], curPayMonth = null, curPayYear = null;
 let deleteCallback = null;
 let chartDepts = null, chartAtt = null;
@@ -2056,12 +2063,19 @@ async function initDashboard() {
 async function loadAllData() {
   loading(true);
   try {
-    [empCache, leaveCache, payrollCache] = await Promise.all([
+    [empCache, leaveCache, payrollCache, deptCache, subDeptCache, positionCache] = await Promise.all([
       getAllEmployees(),
       getAllLeaves(),
-      getAllPayroll()
+      getAllPayroll(),
+      getAllDepartments(),
+      getAllSubDepartments(),
+      getAllPositions()
     ]);
     renderOverview();
+    renderDeptTable();
+    renderSubDeptTable();
+    renderPositionTable();
+    populateDeptDropdowns();
   } catch (err) {
     console.error(err);
     showToast('Error loading data from Firebase.', 'danger');
@@ -2203,24 +2217,53 @@ function populateEmpDeptFilter() {
 window._editEmp = id => {
   const e = empCache.find(emp => emp.emp_id === id);
   if (!e) return;
-  document.getElementById('emp_edit_id').value = e.emp_id;
-  document.getElementById('emp_id').value = e.emp_id;
-  document.getElementById('emp_name').value = e.name;
-  document.getElementById('emp_gender').value = e.gender || 'Male';
-  document.getElementById('emp_dept').value = e.department;
-  document.getElementById('emp_designation').value = e.designation;
-  document.getElementById('emp_join_date').value = e.joinDate || '';
-  document.getElementById('emp_mobile').value = e.mobile || '';
-  document.getElementById('emp_email').value = e.email || '';
-  document.getElementById('emp_status').value = e.status;
-  document.getElementById('emp_basic').value = e.basic || 0;
-  document.getElementById('emp_allowance').value = e.allowance || 0;
-  document.getElementById('emp_deduction').value = e.deduction || 0;
-  document.getElementById('emp_address').value = e.address || '';
-  document.getElementById('empFormTitle').innerHTML = '<i class="bi bi-pencil-fill me-2 text-primary"></i>Edit Employee';
-  document.getElementById('cancelEmpEditBtn').classList.remove('d-none');
-  bootstrap.Tab.getOrCreateInstance(document.getElementById('emp-form-tab')).show();
-  document.querySelector('#panel-employees').scrollIntoView({ behavior: 'smooth' });
+  
+  const form = document.getElementById('formEmployeeWizard');
+  if (!form) return;
+  
+  form.reset();
+  document.getElementById('hidden_emp_id').value = e.emp_id;
+  
+  // Populate all matching name inputs
+  for (const key in e) {
+    const input = form.querySelector(`[name="${key}"]`);
+    if (input && input.type !== 'file') {
+      input.value = e[key] || '';
+    }
+  }
+  
+  // Custom updates for dropdowns
+  const deptSelect = form.querySelector('[name="department"]');
+  if (deptSelect) {
+    deptSelect.value = e.department || '';
+    deptSelect.dispatchEvent(new Event('change'));
+  }
+  
+  const subDeptSelect = form.querySelector('[name="subDepartment"]');
+  if (subDeptSelect) {
+    subDeptSelect.value = e.subDepartment || '';
+    subDeptSelect.dispatchEvent(new Event('change'));
+  }
+
+  const posSelect = form.querySelector('[name="position"]');
+  if (posSelect) {
+    posSelect.value = e.position || '';
+  }
+
+  // Recalculate salary
+  const basicSalaryInput = document.getElementById('inpBasicSalary');
+  if (basicSalaryInput) {
+    basicSalaryInput.dispatchEvent(new Event('input'));
+  }
+
+  // Switch tab
+  const tabEl = document.getElementById('subtab-emp-entry');
+  if (tabEl) {
+    bootstrap.Tab.getOrCreateInstance(tabEl).show();
+  }
+
+  currentStep = 1;
+  renderStepper();
 };
 
 window._deleteEmp = id => {
@@ -2887,6 +2930,7 @@ document.getElementById('formEmployeeWizard')?.addEventListener('submit', async 
     
     alert(`Employee data submitted successfully. ID: ${empId}`);
     e.target.reset();
+    document.getElementById('hidden_emp_id').value = '';
     currentStep = 1;
     renderStepper();
     
@@ -2973,6 +3017,300 @@ if (inpBasic) {
     inpGross.value = gross.toFixed(2);
   });
 }
+
+// ========================================================
+// DEPARTMENTS, SUB DEPARTMENTS & POSITIONS MANAGEMENT UI
+// ========================================================
+
+// 1. Render directories (Tables)
+function renderDeptTable() {
+  const tbody = document.querySelector('#subpanel-dept table tbody');
+  if (!tbody) return;
+  if (!deptCache.length) {
+    tbody.innerHTML = '<tr><td colspan="3" class="text-center text-muted py-4">No departments found.</td></tr>';
+    return;
+  }
+  tbody.innerHTML = deptCache.map(d => `
+    <tr>
+      <td class="fw-semibold">${d.name}</td>
+      <td><span class="badge text-bg-${d.status === 'Active' ? 'success' : 'secondary'} rounded-pill">${d.status}</span></td>
+      <td class="text-end">
+        <button class="btn btn-sm btn-outline-primary py-1 px-2 me-1" onclick="window._editDept('${d.id}')"><i class="bi bi-pencil-fill"></i></button>
+        <button class="btn btn-sm btn-outline-danger py-1 px-2" onclick="window._deleteDept('${d.id}')"><i class="bi bi-trash-fill"></i></button>
+      </td>
+    </tr>`).join('');
+}
+
+function renderSubDeptTable() {
+  const tbody = document.querySelector('#subpanel-subdept table tbody');
+  if (!tbody) return;
+  if (!subDeptCache.length) {
+    tbody.innerHTML = '<tr><td colspan="4" class="text-center text-muted py-4">No sub departments found.</td></tr>';
+    return;
+  }
+  tbody.innerHTML = subDeptCache.map(sd => `
+    <tr>
+      <td class="fw-semibold">${sd.name}</td>
+      <td><span class="badge text-bg-light border">${sd.parentDept}</span></td>
+      <td><span class="badge text-bg-${sd.status === 'Active' ? 'success' : 'secondary'} rounded-pill">${sd.status}</span></td>
+      <td class="text-end">
+        <button class="btn btn-sm btn-outline-primary py-1 px-2 me-1" onclick="window._editSubDept('${sd.id}')"><i class="bi bi-pencil-fill"></i></button>
+        <button class="btn btn-sm btn-outline-danger py-1 px-2" onclick="window._deleteSubDept('${sd.id}')"><i class="bi bi-trash-fill"></i></button>
+      </td>
+    </tr>`).join('');
+}
+
+function renderPositionTable() {
+  const tbody = document.querySelector('#subpanel-position table tbody');
+  if (!tbody) return;
+  if (!positionCache.length) {
+    tbody.innerHTML = '<tr><td colspan="5" class="text-center text-muted py-4">No positions found.</td></tr>';
+    return;
+  }
+  tbody.innerHTML = positionCache.map(p => `
+    <tr>
+      <td class="fw-semibold">${p.title}</td>
+      <td><span class="badge text-bg-light border">${p.department}</span></td>
+      <td><span class="badge text-bg-light border">${p.subDepartment || '—'}</span></td>
+      <td><span class="badge text-bg-${p.status === 'Active' ? 'success' : 'secondary'} rounded-pill">${p.status}</span></td>
+      <td class="text-end">
+        <button class="btn btn-sm btn-outline-primary py-1 px-2 me-1" onclick="window._editPosition('${p.id}')"><i class="bi bi-pencil-fill"></i></button>
+        <button class="btn btn-sm btn-outline-danger py-1 px-2" onclick="window._deletePosition('${p.id}')"><i class="bi bi-trash-fill"></i></button>
+      </td>
+    </tr>`).join('');
+}
+
+// 2. Populate Dropdowns dynamically
+function populateDeptDropdowns() {
+  const activeDepts = deptCache.filter(d => d.status === 'Active');
+  
+  // Parent Department select in Sub Dept form
+  const subDeptParent = document.getElementById('subdept_parent');
+  if (subDeptParent) {
+    const cur = subDeptParent.value;
+    subDeptParent.innerHTML = '<option value="" disabled selected>Select Parent...</option>' + 
+      activeDepts.map(d => `<option value="${d.name}">${d.name}</option>`).join('');
+    if (cur) subDeptParent.value = cur;
+  }
+
+  // Department select in Position form
+  const posDept = document.getElementById('pos_dept');
+  if (posDept) {
+    const cur = posDept.value;
+    posDept.innerHTML = '<option value="" disabled selected>Select Department...</option>' + 
+      activeDepts.map(d => `<option value="${d.name}">${d.name}</option>`).join('');
+    if (cur) posDept.value = cur;
+  }
+
+  // Department select in Employee wizard step 3
+  const empDept = document.querySelector('#formEmployeeWizard select[name="department"]');
+  if (empDept) {
+    const cur = empDept.value;
+    empDept.innerHTML = '<option value="" disabled selected>Select Department...</option>' + 
+      activeDepts.map(d => `<option value="${d.name}">${d.name}</option>`).join('');
+    if (cur) empDept.value = cur;
+  }
+  
+  populateSubDeptDropdowns();
+}
+
+function populateSubDeptDropdowns() {
+  // Sub-dept dropdown in Position form (filtered by selected department)
+  const posDept = document.getElementById('pos_dept');
+  const posSubDept = document.getElementById('pos_subdept');
+  if (posDept && posSubDept) {
+    const selectedDept = posDept.value;
+    const cur = posSubDept.value;
+    const filtered = subDeptCache.filter(sd => sd.status === 'Active' && sd.parentDept === selectedDept);
+    posSubDept.innerHTML = '<option value="">Optional...</option>' + 
+      filtered.map(sd => `<option value="${sd.name}">${sd.name}</option>`).join('');
+    if (cur) posSubDept.value = cur;
+  }
+
+  // Sub-dept dropdown in Employee wizard step 3 (filtered by selected department)
+  const empDept = document.querySelector('#formEmployeeWizard select[name="department"]');
+  const empSubDept = document.querySelector('#formEmployeeWizard select[name="subDepartment"]');
+  if (empDept && empSubDept) {
+    const selectedDept = empDept.value;
+    const cur = empSubDept.value;
+    const filtered = subDeptCache.filter(sd => sd.status === 'Active' && sd.parentDept === selectedDept);
+    empSubDept.innerHTML = '<option value="">Select sub-department</option>' + 
+      filtered.map(sd => `<option value="${sd.name}">${sd.name}</option>`).join('');
+    if (cur) empSubDept.value = cur;
+  }
+
+  populatePositionDropdowns();
+}
+
+function populatePositionDropdowns() {
+  const empDept = document.querySelector('#formEmployeeWizard select[name="department"]');
+  const empSubDept = document.querySelector('#formEmployeeWizard select[name="subDepartment"]');
+  const empPosition = document.querySelector('#formEmployeeWizard select[name="position"]');
+  if (empDept && empPosition) {
+    const selectedDept = empDept.value;
+    const selectedSubDept = empSubDept ? empSubDept.value : '';
+    const cur = empPosition.value;
+    
+    // Filter positions: must match department, and if sub-department is specified/active, match it too
+    const filtered = positionCache.filter(p => 
+      p.status === 'Active' && 
+      p.department === selectedDept && 
+      (!selectedSubDept || !p.subDepartment || p.subDepartment === selectedSubDept)
+    );
+    
+    empPosition.innerHTML = '<option value="">Select position</option>' + 
+      filtered.map(p => `<option value="${p.title}">${p.title}</option>`).join('');
+    if (cur) empPosition.value = cur;
+  }
+}
+
+// 3. Dropdown change bindings
+document.getElementById('pos_dept')?.addEventListener('change', populateSubDeptDropdowns);
+document.querySelector('#formEmployeeWizard select[name="department"]')?.addEventListener('change', () => {
+  populateSubDeptDropdowns();
+  populatePositionDropdowns();
+});
+document.querySelector('#formEmployeeWizard select[name="subDepartment"]')?.addEventListener('change', populatePositionDropdowns);
+
+// 4. Form Submissions
+document.getElementById('formAddDept')?.addEventListener('submit', async e => {
+  e.preventDefault();
+  loading(true);
+  try {
+    const formData = new FormData(e.target);
+    const data = Object.fromEntries(formData.entries());
+    const id = await saveDepartment(data);
+    showToast(data.id ? 'Department updated successfully.' : 'Department created successfully.');
+    e.target.reset();
+    document.getElementById('hidden_dept_id').value = '';
+    document.querySelector('#subpanel-dept form button[type="submit"]').innerHTML = '<i class="bi bi-save me-2"></i>Save Department';
+    deptCache = await getAllDepartments();
+    renderDeptTable();
+    populateDeptDropdowns();
+  } catch (err) {
+    showToast(err.message, 'danger');
+  } finally {
+    loading(false);
+  }
+});
+
+document.getElementById('formAddSubDept')?.addEventListener('submit', async e => {
+  e.preventDefault();
+  loading(true);
+  try {
+    const formData = new FormData(e.target);
+    const data = Object.fromEntries(formData.entries());
+    const id = await saveSubDepartment(data);
+    showToast(data.id ? 'Sub-department updated successfully.' : 'Sub-department created successfully.');
+    e.target.reset();
+    document.getElementById('hidden_subdept_id').value = '';
+    document.querySelector('#subpanel-subdept form button[type="submit"]').innerHTML = '<i class="bi bi-save me-2"></i>Save Sub Department';
+    subDeptCache = await getAllSubDepartments();
+    renderSubDeptTable();
+    populateDeptDropdowns();
+  } catch (err) {
+    showToast(err.message, 'danger');
+  } finally {
+    loading(false);
+  }
+});
+
+document.getElementById('formAddPosition')?.addEventListener('submit', async e => {
+  e.preventDefault();
+  loading(true);
+  try {
+    const formData = new FormData(e.target);
+    const data = Object.fromEntries(formData.entries());
+    const id = await savePosition(data);
+    showToast(data.id ? 'Position updated successfully.' : 'Position created successfully.');
+    e.target.reset();
+    document.getElementById('hidden_position_id').value = '';
+    document.querySelector('#subpanel-position form button[type="submit"]').innerHTML = '<i class="bi bi-save me-2"></i>Save Position';
+    positionCache = await getAllPositions();
+    renderPositionTable();
+    populateDeptDropdowns();
+  } catch (err) {
+    showToast(err.message, 'danger');
+  } finally {
+    loading(false);
+  }
+});
+
+// 5. Window Edit/Delete Operations
+window._editDept = id => {
+  const d = deptCache.find(x => x.id === id);
+  if (!d) return;
+  document.getElementById('hidden_dept_id').value = d.id;
+  document.getElementById('dept_name').value = d.name;
+  document.getElementById('dept_status').value = d.status;
+  document.getElementById('dept_notes').value = d.notes || '';
+  document.querySelector('#subpanel-dept form button[type="submit"]').innerHTML = '<i class="bi bi-save me-2"></i>Update Department';
+};
+
+window._deleteDept = id => {
+  confirmDelete(`Delete department ${id}? This cannot be undone.`, async () => {
+    loading(true);
+    try {
+      await deleteDepartment(id);
+      deptCache = await getAllDepartments();
+      renderDeptTable();
+      populateDeptDropdowns();
+      showToast('Department deleted.', 'danger');
+    } catch { showToast('Error deleting department.', 'danger'); }
+    finally { loading(false); }
+  });
+};
+
+window._editSubDept = id => {
+  const sd = subDeptCache.find(x => x.id === id);
+  if (!sd) return;
+  document.getElementById('hidden_subdept_id').value = sd.id;
+  document.getElementById('subdept_name').value = sd.name;
+  document.getElementById('subdept_parent').value = sd.parentDept;
+  document.getElementById('subdept_status').value = sd.status;
+  document.getElementById('subdept_notes').value = sd.notes || '';
+  document.querySelector('#subpanel-subdept form button[type="submit"]').innerHTML = '<i class="bi bi-save me-2"></i>Update Sub Dept';
+};
+
+window._deleteSubDept = id => {
+  confirmDelete(`Delete sub department ${id}? This cannot be undone.`, async () => {
+    loading(true);
+    try {
+      await deleteSubDepartment(id);
+      subDeptCache = await getAllSubDepartments();
+      renderSubDeptTable();
+      populateDeptDropdowns();
+      showToast('Sub department deleted.', 'danger');
+    } catch { showToast('Error deleting sub department.', 'danger'); }
+    finally { loading(false); }
+  });
+};
+
+window._editPosition = id => {
+  const p = positionCache.find(x => x.id === id);
+  if (!p) return;
+  document.getElementById('hidden_position_id').value = p.id;
+  document.getElementById('pos_title').value = p.title;
+  document.getElementById('pos_dept').value = p.department;
+  populateSubDeptDropdowns();
+  document.getElementById('pos_subdept').value = p.subDepartment || '';
+  document.getElementById('pos_status').value = p.status;
+  document.querySelector('#subpanel-position form button[type="submit"]').innerHTML = '<i class="bi bi-save me-2"></i>Update Position';
+};
+
+window._deletePosition = id => {
+  confirmDelete(`Delete position ${id}? This cannot be undone.`, async () => {
+    loading(true);
+    try {
+      await deletePosition(id);
+      positionCache = await getAllPositions();
+      renderPositionTable();
+      populateDeptDropdowns();
+      showToast('Position deleted.', 'danger');
+    } catch { showToast('Error deleting position.', 'danger'); }
+    finally { loading(false); }
+  });
+};
 
 </script>
 </body>

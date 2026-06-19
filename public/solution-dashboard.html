@@ -522,20 +522,20 @@
                 <div class="tab-pane fade" id="employeesPanel" role="tabpanel">
                   <!-- Sub-tabs at the top -->
                   <ul class="nav nav-tabs mb-3" id="employeeSubTabs" role="tablist">
-                    <li class="nav-item" role="presentation">
-                      <button class="nav-link active fw-semibold text-primary" id="employee-form-subtab" data-bs-toggle="tab" data-bs-target="#employeeFormSubPanel" type="button" role="tab" aria-controls="employeeFormSubPanel" aria-selected="true">
+                    <li class="nav-item" role="presentation" style="display: none;">
+                      <button class="nav-link fw-semibold text-primary" id="employee-form-subtab" data-bs-toggle="tab" data-bs-target="#employeeFormSubPanel" type="button" role="tab" aria-controls="employeeFormSubPanel" aria-selected="false">
                         <i class="bi bi-person-plus-fill me-1"></i>Add Employee
                       </button>
                     </li>
                     <li class="nav-item" role="presentation">
-                      <button class="nav-link fw-semibold text-primary" id="employee-list-subtab" data-bs-toggle="tab" data-bs-target="#employeeListSubPanel" type="button" role="tab" aria-controls="employeeListSubPanel" aria-selected="false">
+                      <button class="nav-link active fw-semibold text-primary" id="employee-list-subtab" data-bs-toggle="tab" data-bs-target="#employeeListSubPanel" type="button" role="tab" aria-controls="employeeListSubPanel" aria-selected="true">
                         <i class="bi bi-people me-1"></i>Employee Directory
                       </button>
                     </li>
                   </ul>
                   <div class="tab-content" id="employeeSubTabsContent">
                     <!-- Tab 1: Form -->
-                    <div class="tab-pane fade show active" id="employeeFormSubPanel" role="tabpanel" aria-labelledby="employee-form-subtab">
+                    <div class="tab-pane fade" id="employeeFormSubPanel" role="tabpanel" aria-labelledby="employee-form-subtab">
                       <div class="card p-4 rounded-4 shadow-sm border mb-4">
                         <h3 id="empFormTitle" class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
                           <i class="bi bi-person-plus-fill me-2 text-primary"></i>Add Employee Record
@@ -603,11 +603,21 @@
                       </div>
                     </div>
                     <!-- Tab 2: Directory -->
-                    <div class="tab-pane fade" id="employeeListSubPanel" role="tabpanel" aria-labelledby="employee-list-subtab">
+                    <div class="tab-pane fade show active" id="employeeListSubPanel" role="tabpanel" aria-labelledby="employee-list-subtab">
                       <div class="card p-4 rounded-4 shadow-sm border">
-                        <h3 class="h5 fw-bold mb-3 pb-2 border-bottom text-heading-color">
-                          <i class="bi bi-people me-2 text-primary"></i>Employee Directory
-                        </h3>
+                        <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom flex-wrap gap-2">
+                          <h3 class="h5 fw-bold text-heading-color mb-0">
+                            <i class="bi bi-people me-2 text-primary"></i>Employee Directory
+                          </h3>
+                          <div class="d-flex align-items-center gap-2">
+                            <select class="form-select form-select-sm" id="filter_employee_dept" style="width: 200px;">
+                              <option value="all">All Departments</option>
+                            </select>
+                            <button id="refreshEmployeesBtn" class="btn btn-sm btn-outline-primary py-2 px-3 d-flex align-items-center gap-2" type="button" title="Refresh Directory">
+                              <i class="bi bi-arrow-clockwise"></i> Refresh
+                            </button>
+                          </div>
+                        </div>
                         <div class="table-responsive">
                           <table class="table table-hover align-middle mb-0" id="employeesTable">
                             <thead class="table-light">
@@ -2418,7 +2428,7 @@
       addRequisition, getAllRequisitions, deleteRequisition,
       addPurchaseOrder, getAllPurchaseOrders, deletePurchaseOrder,
       addExpense, getAllExpenses, deleteExpense,
-      addEmployee, getAllEmployees, deleteEmployee,
+      addEmployee, getAllEmployees, deleteEmployee, getAllDepartments,
       addSupportTicket, getAllSupportTickets, deleteSupportTicket,
       addClientPayment, getAllClientPayments, deleteClientPayment,
       addDomainHosting, getAllDomainHosting, deleteDomainHosting,
@@ -2515,6 +2525,44 @@
       });
     }
 
+    function populateDeptDropdowns() {
+      const activeDepts = allDepartments.filter(d => d.status === 'Active');
+      
+      const deptSelect = document.getElementById("emp_department");
+      if (deptSelect) {
+        const cur = deptSelect.value;
+        deptSelect.innerHTML = '<option value="" disabled selected>Select department</option>' +
+          activeDepts.map(d => `<option value="${d.name}">${d.name}</option>`).join('');
+        if (cur) deptSelect.value = cur;
+      }
+
+      const filterDeptSelect = document.getElementById("filter_employee_dept");
+      if (filterDeptSelect) {
+        const cur = filterDeptSelect.value;
+        filterDeptSelect.innerHTML = '<option value="all">All Departments</option>' +
+          activeDepts.map(d => `<option value="${d.name}">${d.name}</option>`).join('');
+        if (cur) {
+          filterDeptSelect.value = cur;
+        } else {
+          filterDeptSelect.value = "all";
+        }
+        
+        if (!filterDeptSelect.dataset.listenerBound) {
+          filterDeptSelect.addEventListener("change", renderEmployees);
+          filterDeptSelect.dataset.listenerBound = "true";
+        }
+      }
+
+      const refreshBtn = document.getElementById("refreshEmployeesBtn");
+      if (refreshBtn && !refreshBtn.dataset.listenerBound) {
+        refreshBtn.onclick = async () => {
+          allEmployees = await getAllEmployees();
+          renderEmployees();
+        };
+        refreshBtn.dataset.listenerBound = "true";
+      }
+    }
+
 
     // Set today's dates as default (except clearance date & client payment received date)
     const todayDateStr = new Date().toISOString().substring(0, 10);
@@ -2539,6 +2587,7 @@
     let allPurchaseOrders = [];
     let allExpenses = [];
     let allEmployees = [];
+    let allDepartments = [];
     let allSupportTickets = [];
     let allClientPayments = [];
     let allDomainHosting = [];
@@ -3244,6 +3293,7 @@
         allPurchaseOrders = await getAllPurchaseOrders();
         allExpenses = await getAllExpenses();
         allEmployees = await getAllEmployees();
+        allDepartments = await getAllDepartments();
         allSupportTickets = await getAllSupportTickets();
         allClientPayments = await getAllClientPayments();
         allDomainHosting = await getAllDomainHosting();
@@ -3258,6 +3308,7 @@
         populateRequisitionDropdowns();
         populatePODropdowns();
         populateEmployeeImportDropdown();
+        populateDeptDropdowns();
         populateTicketDropdowns();
         populateTicketAssetDropdown();
 
@@ -3711,11 +3762,15 @@
     function renderEmployees() {
       const tbody = document.getElementById("employeesTableBody");
       if (!tbody) return;
-      if (allEmployees.length === 0) {
+      
+      const filterDept = document.getElementById("filter_employee_dept")?.value || "all";
+      const filtered = allEmployees.filter(e => filterDept === "all" || e.department === filterDept);
+
+      if (filtered.length === 0) {
         tbody.innerHTML = '<tr><td colspan="8" class="text-center py-3 text-muted">No employees found.</td></tr>';
         return;
       }
-      tbody.innerHTML = allEmployees.map(e => `
+      tbody.innerHTML = filtered.map(e => `
         <tr>
           <td><code class="text-dark fw-bold font-monospace">${e.employee_id}</code></td>
           <td><strong>${e.employee_name}</strong></td>
@@ -3729,12 +3784,6 @@
               <button class="btn btn-sm btn-outline-info view-emp-btn" data-id="${e.employee_id}" title="View Details">
                 <i class="bi bi-eye"></i>
               </button>
-              <button class="btn btn-sm btn-outline-secondary edit-emp-btn" data-id="${e.employee_id}" title="Edit">
-                <i class="bi bi-pencil"></i>
-              </button>
-              <button class="btn btn-sm btn-outline-danger delete-emp-btn" data-id="${e.employee_id}" title="Delete">
-                <i class="bi bi-trash"></i>
-              </button>
             </div>
           </td>
         </tr>
@@ -3743,52 +3792,6 @@
       document.querySelectorAll(".view-emp-btn").forEach(btn => {
         btn.onclick = () => {
           showRecordDetails("employee", btn.dataset.id);
-        };
-      });
-
-      document.querySelectorAll(".edit-emp-btn").forEach(btn => {
-        btn.onclick = () => {
-          const id = btn.dataset.id;
-          const e = allEmployees.find(emp => emp.employee_id === id);
-          if (e) {
-            document.getElementById("emp_employee_id").value = e.employee_id;
-            document.getElementById("emp_employee_id").readOnly = true;
-            document.getElementById("emp_employee_name").value = e.employee_name;
-            document.getElementById("emp_department").value = e.department;
-            populateDesignations();
-            document.getElementById("emp_designation").value = e.designation;
-            document.getElementById("emp_mobile_phone").value = e.mobile_phone || "";
-            document.getElementById("emp_email").value = e.email || "";
-            document.getElementById("emp_status").value = e.status;
-
-            document.getElementById("empFormTitle").innerHTML = '<i class="bi bi-person-plus-fill me-2 text-primary"></i>Edit Employee Record';
-            document.getElementById("empSubmitBtn").innerHTML = '<i class="bi bi-pencil-square me-2"></i>Update Employee Record';
-            document.getElementById("cancelEmpEditBtn").classList.remove("d-none");
-            document.getElementById("employee-form-subtab")?.click();
-            document.getElementById("employeeForm").scrollIntoView({ behavior: 'smooth' });
-          }
-        };
-      });
-
-      document.querySelectorAll(".delete-emp-btn").forEach(btn => {
-        btn.onclick = async () => {
-          const id = btn.dataset.id;
-          if (confirm(`Delete employee ${id}?`)) {
-            try {
-              await deleteEmployee(id);
-              await addAuditLog({
-                user_email: currentUserEmail || "admin@example.com",
-                action_type: "DELETE",
-                collection_name: "sol_employees",
-                record_id: id,
-                details: `Deleted employee with ID: ${id}`
-              });
-              refreshEmployees();
-              refreshAuditLogs();
-            } catch (err) {
-              alert("Failed to delete employee: " + err.message);
-            }
-          }
         };
       });
     }

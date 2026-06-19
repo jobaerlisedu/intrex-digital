@@ -922,88 +922,7 @@ export async function addNewsletterSubscription(email) {
 let mockEmployees = null;
 
 export async function addEmployee(employeeData) {
-  const { employee_id, employee_name, designation, employee_type, mobile_phone, email, status } = employeeData;
-  if (!employee_name || !designation || !employee_type || !status) {
-    throw new Error("Missing required employee fields");
-  }
-
-  const urlParams = new URLSearchParams(window.location.search);
-  if (urlParams.get('mock') === '1') {
-    if (!mockEmployees) {
-      await getAllEmployees();
-    }
-    // Check email uniqueness if provided
-    if (email) {
-      const emailExists = mockEmployees.some(emp => emp.email && emp.email.toLowerCase() === email.toLowerCase() && emp.employee_id !== employee_id);
-      if (emailExists) {
-        throw new Error(`Email ${email} is already in use by another employee.`);
-      }
-    }
-    const id = employee_id || "EMP-" + String(mockEmployees.length + 1).padStart(4, '0');
-    const existingIndex = mockEmployees.findIndex(emp => emp.employee_id === id);
-    const newEmp = {
-      employee_id: id,
-      employee_name: employee_name.trim(),
-      designation: designation.trim(),
-      employee_type: employee_type.trim(),
-      mobile_phone: mobile_phone ? mobile_phone.trim() : "",
-      email: email ? email.trim() : "",
-      status: status || "Active",
-      updatedAt: new Date()
-    };
-    if (existingIndex > -1) {
-      newEmp.createdAt = mockEmployees[existingIndex].createdAt || new Date();
-      mockEmployees[existingIndex] = newEmp;
-    } else {
-      newEmp.createdAt = new Date();
-      mockEmployees.push(newEmp);
-    }
-    return id;
-  }
-
-  if (!checkConfiguration()) return null;
-
-  // Check email uniqueness if provided
-  if (email) {
-    const querySnapshot = await getDocs(collection(db, "learn_tbl_employees"));
-    let emailExists = false;
-    querySnapshot.forEach(docSnap => {
-      const data = docSnap.data();
-      if (data.email && data.email.toLowerCase() === email.toLowerCase() && data.employee_id !== employee_id) {
-        emailExists = true;
-      }
-    });
-    if (emailExists) {
-      throw new Error(`Email ${email} is already in use by another employee.`);
-    }
-  }
-
-  try {
-    const id = employee_id || await getNextSeqId("learn_tbl_employees", "EMP-", "employee_id", 4);
-    const docRef = doc(db, "learn_tbl_employees", id);
-    let originalCreatedAt = null;
-    if (employee_id) {
-      const snap = await getDoc(docRef);
-      if (snap.exists()) {
-        originalCreatedAt = snap.data().createdAt;
-      }
-    }
-    await setDoc(docRef, {
-      employee_id: id,
-      employee_name: employee_name.trim(),
-      designation: designation.trim(),
-      employee_type: employee_type.trim(),
-      mobile_phone: mobile_phone ? mobile_phone.trim() : "",
-      email: email ? email.trim() : "",
-      status: status || "Active",
-      createdAt: originalCreatedAt || serverTimestamp(),
-      updatedAt: serverTimestamp()
-    }, { merge: true });
-    return id;
-  } catch (error) {
-    console.error("Error saving employee: ", error);
-    throw error;
-  }
+  throw new Error("Employees must be managed centrally from the HR Dashboard.");
 }
 
 export async function getAllEmployees() {
@@ -1051,14 +970,25 @@ export async function getAllEmployees() {
 
   if (!checkConfiguration()) return [];
   try {
-    const querySnapshot = await getDocs(collection(db, "learn_tbl_employees"));
+    const querySnapshot = await getDocs(collection(db, "hr_employees"));
     const employees = [];
     querySnapshot.forEach((docSnap) => {
       if (docSnap.exists()) {
-        employees.push(docSnap.data());
+        const data = docSnap.data();
+        employees.push({
+          employee_id: data.emp_id || "",
+          employee_name: data.name || `${data.firstName || ''} ${data.lastName || ''}`.trim(),
+          designation: data.position || "",
+          employee_type: data.employeeType || "In-house Staff",
+          mobile_phone: data.phone || "",
+          email: data.email || "",
+          status: data.employmentStatus || data.status || "Active",
+          department: data.department || "",
+          createdAt: data.createdAt,
+          updatedAt: data.updatedAt
+        });
       }
     });
-    employees.sort((a, b) => a.employee_id.localeCompare(b.employee_id));
     return employees;
   } catch (error) {
     console.error("Error fetching employees: ", error);
@@ -1067,21 +997,22 @@ export async function getAllEmployees() {
 }
 
 export async function deleteEmployee(employeeId) {
-  const urlParams = new URLSearchParams(window.location.search);
-  if (urlParams.get('mock') === '1') {
-    if (!mockEmployees) {
-      await getAllEmployees();
-    }
-    mockEmployees = mockEmployees.filter(emp => emp.employee_id !== employeeId);
-    return;
-  }
+  throw new Error("Employees must be managed centrally from the HR Dashboard.");
+}
 
-  if (!checkConfiguration()) return;
+export async function getAllDepartments() {
+  if (!checkConfiguration()) return [];
   try {
-    const docRef = doc(db, "learn_tbl_employees", employeeId);
-    await deleteDoc(docRef);
+    const querySnapshot = await getDocs(collection(db, "hr_departments"));
+    const depts = [];
+    querySnapshot.forEach((docSnap) => {
+      if (docSnap.exists()) {
+        depts.push(docSnap.data());
+      }
+    });
+    return depts;
   } catch (error) {
-    console.error("Error deleting employee: ", error);
+    console.error("Error fetching departments: ", error);
     throw error;
   }
 }
