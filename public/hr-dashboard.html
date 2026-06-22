@@ -2936,6 +2936,21 @@ document.getElementById('formEmployeeWizard')?.addEventListener('submit', async 
     const formData = new FormData(e.target);
     const data = Object.fromEntries(formData.entries());
     
+    // Handle profileImage file input to prevent Firestore unsupported File object error
+    if (data.profileImage instanceof File) {
+      if (data.profileImage.size > 0) {
+        data.profileImage = await new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.readAsDataURL(data.profileImage);
+          reader.onload = () => resolve(reader.result);
+          reader.onerror = error => reject(error);
+        });
+      } else {
+        // Remove empty file object to avoid Firestore unsupported type error
+        delete data.profileImage;
+      }
+    }
+    
     const empId = await saveEmployee(data);
     
     alert(`Employee data submitted successfully. ID: ${empId}`);
@@ -2944,7 +2959,7 @@ document.getElementById('formEmployeeWizard')?.addEventListener('submit', async 
     currentStep = 1;
     renderStepper();
     
-    loadAllData(); renderEmpTable(); populateEmpDeptFilter();
+    await loadAllData(); renderEmpTable(); populateEmpDeptFilter();
   } catch (err) {
     alert(`Error saving employee: ${err.message}`);
   }
