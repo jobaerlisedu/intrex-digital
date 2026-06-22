@@ -441,8 +441,8 @@ export async function deleteSubDepartment(id) {
 // ==========================================
 export async function savePosition(data) {
   requireDb();
-  if (!data.title || !data.department || !data.status) {
-    throw new Error("Missing required position fields (Title, Department, Status).");
+  if (!data.title || !data.department || !data.subDepartment || !data.status) {
+    throw new Error("Missing required position fields (Title, Department, Sub Department, Status).");
   }
   const id = data.id || await getNextId("hr_positions", "POS-", "id", 4);
   const ref = doc(db, "hr_positions", id);

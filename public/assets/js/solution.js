@@ -776,6 +776,7 @@ export async function getAllEmployees() {
           employee_name: data.name || `${data.firstName || ''} ${data.lastName || ''}`.trim(),
           designation: data.position || "",
           department: data.department || "",
+          subDepartment: data.subDepartment || "",
           mobile_phone: data.phone || "",
           email: data.email || "",
           status: data.employmentStatus || data.status || "Active",

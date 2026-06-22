@@ -984,6 +984,7 @@ export async function getAllEmployees() {
           email: data.email || "",
           status: data.employmentStatus || data.status || "Active",
           department: data.department || "",
+          subDepartment: data.subDepartment || "",
           createdAt: data.createdAt,
           updatedAt: data.updatedAt
         });

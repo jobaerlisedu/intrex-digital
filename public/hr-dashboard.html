@@ -786,13 +786,13 @@
                               <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom flex-wrap gap-2">
                                 <h6 class="fw-bold mb-0"><i class="bi bi-building me-2 text-primary"></i>Department Directory</h6>
                                 <div class="d-flex gap-2 align-items-center">
-                                  <input type="text" class="form-control form-control-sm" placeholder="Search name..." style="max-width: 150px;">
-                                  <select class="form-select form-select-sm" style="max-width: 120px;">
+                                  <input type="text" id="searchDept" class="form-control form-control-sm" placeholder="Search name..." style="max-width: 150px;">
+                                  <select id="filterDeptStatus" class="form-select form-select-sm" style="max-width: 120px;">
                                     <option value="">All Status</option>
                                     <option value="Active">Active</option>
                                     <option value="Inactive">Inactive</option>
                                   </select>
-                                  <button class="btn btn-sm btn-primary py-1 px-2"><i class="bi bi-arrow-clockwise"></i></button>
+                                  <button id="refreshDeptBtn" class="btn btn-sm btn-primary py-1 px-2"><i class="bi bi-arrow-clockwise"></i></button>
                                 </div>
                               </div>
                               <div class="table-responsive">
@@ -805,6 +805,8 @@
                                   </tbody>
                                 </table>
                               </div>
+                              <!-- Pagination -->
+                              <div id="deptPagination" class="d-flex justify-content-between align-items-center mt-3 flex-wrap gap-2"></div>
                             </div>
                           </div>
                         </div>
@@ -854,11 +856,13 @@
                               <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom flex-wrap gap-2">
                                 <h6 class="fw-bold mb-0"><i class="bi bi-diagram-2 me-2 text-primary"></i>Sub Department Directory</h6>
                                 <div class="d-flex gap-2 align-items-center">
-                                  <input type="text" class="form-control form-control-sm" placeholder="Search..." style="max-width: 150px;">
-                                  <select class="form-select form-select-sm" style="max-width: 120px;">
+                                  <input type="text" id="searchSubDept" class="form-control form-control-sm" placeholder="Search..." style="max-width: 150px;">
+                                  <select id="filterSubDeptStatus" class="form-select form-select-sm" style="max-width: 120px;">
                                     <option value="">All Status</option>
+                                    <option value="Active">Active</option>
+                                    <option value="Inactive">Inactive</option>
                                   </select>
-                                  <button class="btn btn-sm btn-primary py-1 px-2"><i class="bi bi-arrow-clockwise"></i></button>
+                                  <button id="refreshSubDeptBtn" class="btn btn-sm btn-primary py-1 px-2"><i class="bi bi-arrow-clockwise"></i></button>
                                 </div>
                               </div>
                               <div class="table-responsive">
@@ -871,6 +875,8 @@
                                   </tbody>
                                 </table>
                               </div>
+                              <!-- Pagination -->
+                              <div id="subDeptPagination" class="d-flex justify-content-between align-items-center mt-3 flex-wrap gap-2"></div>
                             </div>
                           </div>
                         </div>
@@ -898,9 +904,9 @@
                                   </select>
                                 </div>
                                 <div class="mb-3">
-                                  <label class="form-label small fw-semibold">Sub Department</label>
-                                  <select class="form-select" name="subDepartment" id="pos_subdept">
-                                    <option value="" disabled selected>Optional...</option>
+                                  <label class="form-label small fw-semibold text-danger">Sub Department *</label>
+                                  <select class="form-select" name="subDepartment" id="pos_subdept" required>
+                                    <option value="" disabled selected>Select Sub Department...</option>
                                   </select>
                                 </div>
                                 <div class="mb-3">
@@ -922,11 +928,13 @@
                               <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom flex-wrap gap-2">
                                 <h6 class="fw-bold mb-0"><i class="bi bi-person-badge me-2 text-primary"></i>Position Directory</h6>
                                 <div class="d-flex gap-2 align-items-center">
-                                  <input type="text" class="form-control form-control-sm" placeholder="Search..." style="max-width: 150px;">
-                                  <select class="form-select form-select-sm" style="max-width: 120px;">
+                                  <input type="text" id="searchPosition" class="form-control form-control-sm" placeholder="Search..." style="max-width: 150px;">
+                                  <select id="filterPositionStatus" class="form-select form-select-sm" style="max-width: 120px;">
                                     <option value="">All Status</option>
+                                    <option value="Active">Active</option>
+                                    <option value="Inactive">Inactive</option>
                                   </select>
-                                  <button class="btn btn-sm btn-primary py-1 px-2"><i class="bi bi-arrow-clockwise"></i></button>
+                                  <button id="refreshPositionBtn" class="btn btn-sm btn-primary py-1 px-2"><i class="bi bi-arrow-clockwise"></i></button>
                                 </div>
                               </div>
                               <div class="table-responsive">
@@ -939,6 +947,8 @@
                                   </tbody>
                                 </table>
                               </div>
+                              <!-- Pagination -->
+                              <div id="positionPagination" class="d-flex justify-content-between align-items-center mt-3 flex-wrap gap-2"></div>
                             </div>
                           </div>
                         </div>
@@ -3023,14 +3033,76 @@ if (inpBasic) {
 // ========================================================
 
 // 1. Render directories (Tables)
+let deptCurrentPage = 1;
+let subDeptCurrentPage = 1;
+let positionCurrentPage = 1;
+const CONFIG_PAGE_SIZE = 10;
+
+function renderTablePagination(containerId, totalItems, totalPages, currentPage, onPageChange) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+  if (totalPages <= 1) {
+    container.innerHTML = '';
+    return;
+  }
+  const startItem = (currentPage - 1) * CONFIG_PAGE_SIZE + 1;
+  const endItem = Math.min(currentPage * CONFIG_PAGE_SIZE, totalItems);
+  
+  let paginationHtml = `
+    <span class="small text-muted">Showing ${startItem} to ${endItem} of ${totalItems} entries</span>
+    <nav>
+      <ul class="pagination pagination-sm mb-0">
+        <li class="page-item ${currentPage === 1 ? 'disabled' : ''}">
+          <button class="page-link" type="button" onclick="window.${containerId}Change(${currentPage - 1})">Prev</button>
+        </li>
+  `;
+  for (let i = 1; i <= totalPages; i++) {
+    paginationHtml += `
+      <li class="page-item ${currentPage === i ? 'active' : ''}">
+        <button class="page-link" type="button" onclick="window.${containerId}Change(${i})">${i}</button>
+      </li>
+    `;
+  }
+  paginationHtml += `
+        <li class="page-item ${currentPage === totalPages ? 'disabled' : ''}">
+          <button class="page-link" type="button" onclick="window.${containerId}Change(${currentPage + 1})">Next</button>
+        </li>
+      </ul>
+    </nav>
+  `;
+  container.innerHTML = paginationHtml;
+  window[`${containerId}Change`] = onPageChange;
+}
+
 function renderDeptTable() {
   const tbody = document.querySelector('#subpanel-dept table tbody');
   if (!tbody) return;
-  if (!deptCache.length) {
+  
+  const query = document.getElementById('searchDept')?.value.toLowerCase().trim() || '';
+  const status = document.getElementById('filterDeptStatus')?.value || '';
+  
+  const filtered = deptCache.filter(d => {
+    const matchesQuery = !query || d.name.toLowerCase().includes(query);
+    const matchesStatus = !status || d.status === status;
+    return matchesQuery && matchesStatus;
+  });
+
+  if (!filtered.length) {
     tbody.innerHTML = '<tr><td colspan="3" class="text-center text-muted py-4">No departments found.</td></tr>';
+    const container = document.getElementById('deptPagination');
+    if (container) container.innerHTML = '';
     return;
   }
-  tbody.innerHTML = deptCache.map(d => `
+  const totalItems = filtered.length;
+  const totalPages = Math.ceil(totalItems / CONFIG_PAGE_SIZE);
+  if (deptCurrentPage > totalPages) deptCurrentPage = totalPages;
+  if (deptCurrentPage < 1) deptCurrentPage = 1;
+  
+  const startIdx = (deptCurrentPage - 1) * CONFIG_PAGE_SIZE;
+  const endIdx = Math.min(startIdx + CONFIG_PAGE_SIZE, totalItems);
+  const pageItems = filtered.slice(startIdx, endIdx);
+
+  tbody.innerHTML = pageItems.map(d => `
     <tr>
       <td class="fw-semibold">${d.name}</td>
       <td><span class="badge text-bg-${d.status === 'Active' ? 'success' : 'secondary'} rounded-pill">${d.status}</span></td>
@@ -3039,16 +3111,42 @@ function renderDeptTable() {
         <button class="btn btn-sm btn-outline-danger py-1 px-2" onclick="window._deleteDept('${d.id}')"><i class="bi bi-trash-fill"></i></button>
       </td>
     </tr>`).join('');
+
+  renderTablePagination('deptPagination', totalItems, totalPages, deptCurrentPage, (page) => {
+    deptCurrentPage = page;
+    renderDeptTable();
+  });
 }
 
 function renderSubDeptTable() {
   const tbody = document.querySelector('#subpanel-subdept table tbody');
   if (!tbody) return;
-  if (!subDeptCache.length) {
+  
+  const query = document.getElementById('searchSubDept')?.value.toLowerCase().trim() || '';
+  const status = document.getElementById('filterSubDeptStatus')?.value || '';
+
+  const filtered = subDeptCache.filter(sd => {
+    const matchesQuery = !query || sd.name.toLowerCase().includes(query) || sd.parentDept.toLowerCase().includes(query);
+    const matchesStatus = !status || sd.status === status;
+    return matchesQuery && matchesStatus;
+  });
+
+  if (!filtered.length) {
     tbody.innerHTML = '<tr><td colspan="4" class="text-center text-muted py-4">No sub departments found.</td></tr>';
+    const container = document.getElementById('subDeptPagination');
+    if (container) container.innerHTML = '';
     return;
   }
-  tbody.innerHTML = subDeptCache.map(sd => `
+  const totalItems = filtered.length;
+  const totalPages = Math.ceil(totalItems / CONFIG_PAGE_SIZE);
+  if (subDeptCurrentPage > totalPages) subDeptCurrentPage = totalPages;
+  if (subDeptCurrentPage < 1) subDeptCurrentPage = 1;
+  
+  const startIdx = (subDeptCurrentPage - 1) * CONFIG_PAGE_SIZE;
+  const endIdx = Math.min(startIdx + CONFIG_PAGE_SIZE, totalItems);
+  const pageItems = filtered.slice(startIdx, endIdx);
+
+  tbody.innerHTML = pageItems.map(sd => `
     <tr>
       <td class="fw-semibold">${sd.name}</td>
       <td><span class="badge text-bg-light border">${sd.parentDept}</span></td>
@@ -3058,16 +3156,42 @@ function renderSubDeptTable() {
         <button class="btn btn-sm btn-outline-danger py-1 px-2" onclick="window._deleteSubDept('${sd.id}')"><i class="bi bi-trash-fill"></i></button>
       </td>
     </tr>`).join('');
+
+  renderTablePagination('subDeptPagination', totalItems, totalPages, subDeptCurrentPage, (page) => {
+    subDeptCurrentPage = page;
+    renderSubDeptTable();
+  });
 }
 
 function renderPositionTable() {
   const tbody = document.querySelector('#subpanel-position table tbody');
   if (!tbody) return;
-  if (!positionCache.length) {
+  
+  const query = document.getElementById('searchPosition')?.value.toLowerCase().trim() || '';
+  const status = document.getElementById('filterPositionStatus')?.value || '';
+
+  const filtered = positionCache.filter(p => {
+    const matchesQuery = !query || p.title.toLowerCase().includes(query) || p.department.toLowerCase().includes(query) || (p.subDepartment || '').toLowerCase().includes(query);
+    const matchesStatus = !status || p.status === status;
+    return matchesQuery && matchesStatus;
+  });
+
+  if (!filtered.length) {
     tbody.innerHTML = '<tr><td colspan="5" class="text-center text-muted py-4">No positions found.</td></tr>';
+    const container = document.getElementById('positionPagination');
+    if (container) container.innerHTML = '';
     return;
   }
-  tbody.innerHTML = positionCache.map(p => `
+  const totalItems = filtered.length;
+  const totalPages = Math.ceil(totalItems / CONFIG_PAGE_SIZE);
+  if (positionCurrentPage > totalPages) positionCurrentPage = totalPages;
+  if (positionCurrentPage < 1) positionCurrentPage = 1;
+  
+  const startIdx = (positionCurrentPage - 1) * CONFIG_PAGE_SIZE;
+  const endIdx = Math.min(startIdx + CONFIG_PAGE_SIZE, totalItems);
+  const pageItems = filtered.slice(startIdx, endIdx);
+
+  tbody.innerHTML = pageItems.map(p => `
     <tr>
       <td class="fw-semibold">${p.title}</td>
       <td><span class="badge text-bg-light border">${p.department}</span></td>
@@ -3078,7 +3202,76 @@ function renderPositionTable() {
         <button class="btn btn-sm btn-outline-danger py-1 px-2" onclick="window._deletePosition('${p.id}')"><i class="bi bi-trash-fill"></i></button>
       </td>
     </tr>`).join('');
+
+  renderTablePagination('positionPagination', totalItems, totalPages, positionCurrentPage, (page) => {
+    positionCurrentPage = page;
+    renderPositionTable();
+  });
 }
+
+// Bind search and filter event listeners
+document.getElementById('searchDept')?.addEventListener('input', () => {
+  deptCurrentPage = 1;
+  renderDeptTable();
+});
+document.getElementById('filterDeptStatus')?.addEventListener('change', () => {
+  deptCurrentPage = 1;
+  renderDeptTable();
+});
+document.getElementById('refreshDeptBtn')?.addEventListener('click', async () => {
+  loading(true);
+  try {
+    deptCache = await getAllDepartments();
+    deptCurrentPage = 1;
+    renderDeptTable();
+  } catch (err) {
+    showToast(err.message, 'danger');
+  } finally {
+    loading(false);
+  }
+});
+
+document.getElementById('searchSubDept')?.addEventListener('input', () => {
+  subDeptCurrentPage = 1;
+  renderSubDeptTable();
+});
+document.getElementById('filterSubDeptStatus')?.addEventListener('change', () => {
+  subDeptCurrentPage = 1;
+  renderSubDeptTable();
+});
+document.getElementById('refreshSubDeptBtn')?.addEventListener('click', async () => {
+  loading(true);
+  try {
+    subDeptCache = await getAllSubDepartments();
+    subDeptCurrentPage = 1;
+    renderSubDeptTable();
+  } catch (err) {
+    showToast(err.message, 'danger');
+  } finally {
+    loading(false);
+  }
+});
+
+document.getElementById('searchPosition')?.addEventListener('input', () => {
+  positionCurrentPage = 1;
+  renderPositionTable();
+});
+document.getElementById('filterPositionStatus')?.addEventListener('change', () => {
+  positionCurrentPage = 1;
+  renderPositionTable();
+});
+document.getElementById('refreshPositionBtn')?.addEventListener('click', async () => {
+  loading(true);
+  try {
+    positionCache = await getAllPositions();
+    positionCurrentPage = 1;
+    renderPositionTable();
+  } catch (err) {
+    showToast(err.message, 'danger');
+  } finally {
+    loading(false);
+  }
+});
 
 // 2. Populate Dropdowns dynamically
 function populateDeptDropdowns() {
@@ -3122,7 +3315,7 @@ function populateSubDeptDropdowns() {
     const selectedDept = posDept.value;
     const cur = posSubDept.value;
     const filtered = subDeptCache.filter(sd => sd.status === 'Active' && sd.parentDept === selectedDept);
-    posSubDept.innerHTML = '<option value="">Optional...</option>' + 
+    posSubDept.innerHTML = '<option value="" disabled selected>Select Sub Department...</option>' + 
       filtered.map(sd => `<option value="${sd.name}">${sd.name}</option>`).join('');
     if (cur) posSubDept.value = cur;
   }
