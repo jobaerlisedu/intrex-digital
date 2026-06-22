@@ -764,6 +764,15 @@
                                   <input type="text" class="form-control" name="name" id="dept_name" placeholder="e.g. Human Resources" required>
                                 </div>
                                 <div class="mb-3">
+                                  <label class="form-label small fw-semibold text-danger">Linked Dashboard *</label>
+                                  <select class="form-select" name="linkedDashboard" id="dept_linked_dashboard" required>
+                                    <option value="All">All Dashboards</option>
+                                    <option value="Training">Training Dashboard</option>
+                                    <option value="Solutions">Solutions Dashboard</option>
+                                    <option value="HR">HR Dashboard</option>
+                                  </select>
+                                </div>
+                                <div class="mb-3">
                                   <label class="form-label small fw-semibold text-danger">Status *</label>
                                   <select class="form-select" name="status" id="dept_status" required>
                                     <option value="Active">Active</option>
@@ -798,10 +807,10 @@
                               <div class="table-responsive">
                                 <table class="table table-hover align-middle">
                                   <thead class="table-light">
-                                    <tr><th>Department Name</th><th>Status</th><th class="text-end">Actions</th></tr>
+                                    <tr><th>Department Name</th><th>Linked Dashboard</th><th>Status</th><th class="text-end">Actions</th></tr>
                                   </thead>
                                   <tbody>
-                                    <tr><td colspan="3" class="text-center text-muted py-4">No departments found.</td></tr>
+                                    <tr><td colspan="4" class="text-center text-muted py-4">No departments found.</td></tr>
                                   </tbody>
                                 </table>
                               </div>
@@ -3103,7 +3112,7 @@ function renderDeptTable() {
   });
 
   if (!filtered.length) {
-    tbody.innerHTML = '<tr><td colspan="3" class="text-center text-muted py-4">No departments found.</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="4" class="text-center text-muted py-4">No departments found.</td></tr>';
     const container = document.getElementById('deptPagination');
     if (container) container.innerHTML = '';
     return;
@@ -3120,6 +3129,7 @@ function renderDeptTable() {
   tbody.innerHTML = pageItems.map(d => `
     <tr>
       <td class="fw-semibold">${d.name}</td>
+      <td><span class="badge text-bg-info rounded-pill">${d.linkedDashboard || 'All'}</span></td>
       <td><span class="badge text-bg-${d.status === 'Active' ? 'success' : 'secondary'} rounded-pill">${d.status}</span></td>
       <td class="text-end">
         <button class="btn btn-sm btn-outline-primary py-1 px-2 me-1" onclick="window._editDept('${d.id}')"><i class="bi bi-pencil-fill"></i></button>
@@ -3450,6 +3460,7 @@ window._editDept = id => {
   if (!d) return;
   document.getElementById('hidden_dept_id').value = d.id;
   document.getElementById('dept_name').value = d.name;
+  document.getElementById('dept_linked_dashboard').value = d.linkedDashboard || 'All';
   document.getElementById('dept_status').value = d.status;
   document.getElementById('dept_notes').value = d.notes || '';
   document.querySelector('#subpanel-dept form button[type="submit"]').innerHTML = '<i class="bi bi-save me-2"></i>Update Department';

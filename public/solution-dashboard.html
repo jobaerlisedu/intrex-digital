@@ -2526,7 +2526,7 @@
     }
 
     function populateDeptDropdowns() {
-      const activeDepts = allDepartments.filter(d => d.status === 'Active');
+      const activeDepts = allDepartments.filter(d => d.status === 'Active' && (!d.linkedDashboard || d.linkedDashboard === 'All' || d.linkedDashboard === 'Solutions'));
       
       const deptSelect = document.getElementById("emp_department");
       if (deptSelect) {

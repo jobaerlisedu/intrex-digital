@@ -10255,7 +10255,7 @@
     });
 
     function populateDeptDropdowns() {
-      const activeDepts = allDepartments.filter(d => d.status === 'Active');
+      const activeDepts = allDepartments.filter(d => d.status === 'Active' && (!d.linkedDashboard || d.linkedDashboard === 'All' || d.linkedDashboard === 'Training'));
       
       const filterDeptSelect = document.getElementById("filter_employee_dept");
       if (filterDeptSelect) {
